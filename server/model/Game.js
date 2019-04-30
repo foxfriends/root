@@ -1,0 +1,106 @@
+import Player from './Player.js';
+import clients from '../store/clients.js';
+import games from '../store/games.js';
+import { Rejection } from '../game/runtime.js';
+
+class GameIsFull extends Rejection {
+  constructor(name) {
+    super(`The game named ${name} is already full.`);
+  }
+}
+
+class PlayerAlreadyJoined extends Rejection {
+  constructor(gameName, playerName) {
+    super(`The game named ${gameName} already has a player named ${playerName}.`);
+  }
+}
+
+class InvalidPlayer extends Rejection {
+  constructor(gameName, playerName) {
+    super(`The game named ${gameName} does not contain a player named ${playerName}.`);
+  }
+}
+
+export default class Game {
+  constructor(name, { factions = ['marquise', 'eyrie', 'alliance', 'vagabond'], assignment = 'auto' } = {}) {
+    /** Game name */
+    this.name = name;
+    /** Usernames of players */
+    this.playerNames = [];
+    /** Client IDs of the players (map of username to client id) */
+    this._clients = {};
+    /** Enabled factions */
+    this.factions = factions;
+    /** How players are to be assigned factions (auto or manual) */
+    this.assignment = assignment;
+    /** The actual player data for each named player */
+    this.players = {};
+  }
+
+  get clients() {
+    return this._clients
+      .map(clientId => clients.get(clientId))
+      .filter(Boolean);
+  }
+
+  notify() {
+    for (const client of this.clients) {
+      client.notify(Message.direct('gameUpdated'));
+    }
+  }
+
+  addPlayer(client) {
+    if (this.isFull) {
+      throw new GameIsFull(this.name);
+    }
+    if (this.playerNames.includes(client.username)) {
+      throw new PlayerAlreadyJoined(this.name, client.username);
+    }
+    this.playerNames.push(client.username);
+    this.players[client.username] = new Player;
+    this.addClient(client);
+  }
+
+  addClient(client) {
+    if (!this.players[client.username]) {
+      throw new InvalidPlayer(this.name, client.username);
+    }
+    this._clients[client.username] = client.id;
+    this.notify();
+  }
+
+  removePlayer(client) {
+    const playerIndex = this.playerNames.indexOf(client.username);
+    if (playerIndex === -1) {
+      throw new InvalidPlayer(this.name, client.username);
+    }
+    removeClient(client);
+    this.playerNames.splice(playerIndex, 1);
+    delete this.players[client.username];
+    this.notify();
+    if (this.playerNames.length === 0) {
+      games.delete(this.name);
+    }
+  }
+
+  removeClient(client) {
+    delete this.clients[client.username];
+    this.notify();
+  }
+
+  setReady(client, ready) {
+    if (!this.players[client.username]) {
+      throw new InvalidPlayer(this.name, client.username);
+    }
+    this.players[client.username].ready = true;
+    this.notify();
+  }
+
+  get isFull() {
+    return this.playerNames.length === this.factions.length;
+  }
+
+  get allReady() {
+    return Object.values(this.players).every(player => player.ready);
+  }
+}

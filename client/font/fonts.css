@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Luminari';
+  font-style: normal;
+  font-weight: normal;
+  src: url('Luminari-Regular.woff2'), url('Luminari-Regular.woff');
+}
+
+@font-face {
+  font-family: 'Baskerville';
+  font-style: normal;
+  font-weight: normal;
+  src: url('Baskerville Ten Pro Regular.woff2');
+}

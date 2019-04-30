@@ -1,0 +1,52 @@
+{
+  "name": "root",
+  "version": "1.0.0",
+  "description": "Play Root online with friends. Original board game by Cole Wehrle, with art by Kyle Ferrin",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "parcel watch client/index.html --no-hmr --no-cache",
+    "serve": "node --experimental-modules server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OinkIguana/root.git"
+  },
+  "keywords": [
+    "boardgame",
+    "board",
+    "game",
+    "root",
+    "play",
+    "online",
+    "multiplayer"
+  ],
+  "author": "Cameron Eldridge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OinkIguana/root/issues"
+  },
+  "homepage": "https://github.com/OinkIguana/root#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-svelte": "^3.0.0",
+    "svelte": "^3.1.0"
+  },
+  "dependencies": {
+    "koa": "^2.7.0",
+    "koa-compress": "^3.0.0",
+    "koa-mount": "^4.0.0",
+    "koa-static": "^5.0.0",
+    "koa-upgrade": "^1.0.1",
+    "uuid": "^3.3.2"
+  },
+  "browserslist": [
+    "last 1 firefox version",
+    "last 1 chrome version"
+  ],
+  "svelte": {
+    "compilerOptions": {
+      "css": false
+    }
+  }
+}
