@@ -1,4 +1,4 @@
-import { accept } from './runtime.js';
+import { accept } from '../model/Acceptor.js';
 
 export default async function * identify ({ username }, threadId) {
   this.username = username;

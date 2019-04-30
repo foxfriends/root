@@ -1,20 +1,24 @@
 import games from '../../store/games.js';
-import { Rejection, accept } from '../runtime.js';
+import Rejection from '../../model/Rejection.js';
+import { accept } from '../../model/Acceptor.js';
+import ready from './ready.js';
+import unready from './unready.js';
+import leave, { Leave } from './leave.js';
 
 class GameDoesNotExist extends Rejection {
-  constructor(name) {
-    super(`A game named ${name} does not exist.`);
+  constructor(threadId, name) {
+    super(threadId, `A game named ${name} does not exist.`);
   }
 }
 
-export default async function * join ({ name }) {
+export default async function * join ({ name }, threadId) {
   const game = games.get(name);
   if (!game) {
-    throw new GameDoesNotExist(name);
+    throw new GameDoesNotExist(threadId, name);
   }
   game.addPlayer(this);
   this.game = game;
-  this.respond('update', game);
+  this.respond(threadId, 'update', game);
   while (!game.allReady) {
     try {
       yield * accept.call(this, leave, ready, unready, 'gameUpdated');

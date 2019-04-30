@@ -1,4 +1,4 @@
-import { Abort } from '../runtime.js';
+import { Abort } from '../../model/Acceptor.js';
 
 export class Leave extends Abort {}
 

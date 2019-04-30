@@ -20,6 +20,14 @@ server
     console.log(`New client ${client.id}`);
     clients.set(client.clientId, client);
     await game(client);
+    if (client.game) {
+      if (client.game.started) {
+        client.game.removeClient(client);
+      } else {
+        client.game.removePlayer(client);
+      }
+    }
+
     clients.delete(client.clientId);
     console.log(`Client ${client.username ? `${client.username} (${client.id})` : client.id} disconnecting`);
   }))

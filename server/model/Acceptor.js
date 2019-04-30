@@ -1,8 +1,4 @@
-export class Rejection {
-  constructor(message) {
-    this.message = message;
-  }
-}
+import Rejection from './Rejection.js';
 
 export class Abort {
   constructor() {}
@@ -54,11 +50,13 @@ class Acceptor {
 
   description() {
     const description = [];
-    for (const [key, handler] of Object.entries(this.spec)) {
-      if (handler.threadId) {
-        description.push(`${key}(${threadId})`);
-      } else {
-        description.push(key);
+    for (const handler of this.spec) {
+      if (typeof handler === 'string') {
+        description.push(`${handler}\n`);
+      } else if (typeof handler === 'function') {
+        description.push(`${handler.name}\n`);
+      } else if (typeof handler === 'object') {
+        description.push(`${handler.type}(${handler.threadId})\n`);
       }
     }
     return description;
@@ -76,12 +74,12 @@ export async function * accept (...spec) {
         throw e;
       }
       if (e instanceof Abort) {
-        // events marked as abort should abort this acceptance instead
+        // events marked as abort should abort this acceptance
         throw e;
       }
-      if (e instanceof Rejection) {
+      if (e instanceof Rejection && !e.remote) {
         // rejections are expected. tell the client why, and then continue in the same phase
-        acceptor.reject(e);
+        this.reject(e.threadId, e.message);
       }
     }
   }

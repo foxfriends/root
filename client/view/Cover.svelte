@@ -1,8 +1,10 @@
 <script>
 import { fly } from 'svelte/transition';
+import { username } from '../store';
 import logo from '../image/logo.png';
 import Loading from './component/Loading.svelte';
 import IdentificationForm from './IdentificationForm.svelte';
+import ChooseGameForm from './ChooseGameForm.svelte';
 
 export let client;
 </script>
@@ -29,7 +31,11 @@ export let client;
   {#if client}
     <div class='contents' transition:fly='{{ delay: 250, y: -100, duration: 2000 }}'>
       <img src={logo} />
-      <IdentificationForm {client} />
+      {#if !$username}
+        <IdentificationForm {client} />
+      {:else}
+        <ChooseGameForm {client} />
+      {/if}
     </div>
   {:else}
     <Loading text='Connecting...' />

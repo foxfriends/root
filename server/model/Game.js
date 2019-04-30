@@ -1,7 +1,8 @@
 import Player from './Player.js';
 import clients from '../store/clients.js';
 import games from '../store/games.js';
-import { Rejection } from '../game/runtime.js';
+import Faction from './Faction.js';
+import Rejection from './Rejection.js';
 
 class GameIsFull extends Rejection {
   constructor(name) {
@@ -22,7 +23,10 @@ class InvalidPlayer extends Rejection {
 }
 
 export default class Game {
-  constructor(name, { factions = ['marquise', 'eyrie', 'alliance', 'vagabond'], assignment = 'auto' } = {}) {
+  constructor(name, {
+    factions = [Faction.Marquise, Faction.Eyrie, Faction.Alliance, Faction.Vagabond],
+    assignment = 'auto',
+  } = {}) {
     /** Game name */
     this.name = name;
     /** Usernames of players */
@@ -35,10 +39,12 @@ export default class Game {
     this.assignment = assignment;
     /** The actual player data for each named player */
     this.players = {};
+    /** Whether this game has begun yet or not */
+    this.started = false;
   }
 
   get clients() {
-    return this._clients
+    return Object.values(this._clients)
       .map(clientId => clients.get(clientId))
       .filter(Boolean);
   }
@@ -74,11 +80,12 @@ export default class Game {
     if (playerIndex === -1) {
       throw new InvalidPlayer(this.name, client.username);
     }
-    removeClient(client);
+    this.removeClient(client);
     this.playerNames.splice(playerIndex, 1);
     delete this.players[client.username];
     this.notify();
     if (this.playerNames.length === 0) {
+      console.log(`Discarding game ${this.name}`)
       games.delete(this.name);
     }
   }

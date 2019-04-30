@@ -1,4 +1,4 @@
-import { accept } from './runtime.js';
+import { accept } from '../model/Acceptor.js';
 import identify from './identify.js';
 import create from './game/create.js';
 import join from './game/join.js';
@@ -13,6 +13,7 @@ async function * game () {
       if (e instanceof Leave) {
         continue;
       }
+      throw e;
     }
   }
 }

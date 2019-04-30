@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4.js';
 import Message from './Message.js';
+import Rejection from './Rejection.js';
 
 class Closed {}
 class Timeout {}
@@ -16,10 +17,10 @@ export default class Client {
       try {
         const message = new Message(data);
         console.log(message.toString());
-        if (message.type === 'error') {
+        if (message.type === 'reject' || message.type === 'error') {
           // notify direct response
           const [,callback] = this.callbacks.get(message.threadId) || [];
-          if (callback) { callback(message.data); }
+          if (callback) { callback(message.type === 'reject' ? new Rejection(message.threadId, message.data, true) : new Error(message.data)); }
           // notify watchers
           const { watchers } = this;
           this.watchers = [];
@@ -81,7 +82,7 @@ export default class Client {
   reject(threadId, reason) {
     this.socket.send(JSON.stringify({
       threadId,
-      type: 'error',
+      type: 'reject',
       data: reason,
     }));
   }
