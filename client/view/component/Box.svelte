@@ -1,8 +1,9 @@
 <script>
 export let small = false;
+export let grow = false;
 </script>
 
-<div class='box' class:small>
+<div class='box' class:small class:grow>
   <div class='content'>
     <slot />
   </div>
@@ -10,6 +11,8 @@ export let small = false;
 
 <style>
 .content {
+  width: 100%;
+  height: 100%;
   background-color: var(--color--background);
 }
 
@@ -20,6 +23,10 @@ export let small = false;
   border-image-slice: 55 fill;
   border-image-width: 55px;
   border-image-repeat: round;
+}
+
+.grow {
+  flex-grow: 1;
 }
 
 .small {

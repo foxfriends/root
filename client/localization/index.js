@@ -18,7 +18,6 @@ const bundle = fetch(enCA)
       },
     });
     const errors = bundle.addMessages(src);
-    console.log(bundle);
     for (const error of errors) {
       console.error(error);
     }

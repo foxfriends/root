@@ -162,14 +162,13 @@ export default class Game {
     if (!this.players[client.username]) {
       throw new InvalidPlayer(threadId, this.name, client.username);
     }
-    if (!this.game.factions.includes(faction)) {
+    if (!this.factions.includes(faction)) {
       throw new IllegalFaction(threadId, faction);
     }
-    const takenBy = Object
-      .values(this.game.players)
+    const takenBy = Object.values(this.players)
       .find(player => player.faction === faction)
-    if (takenBy !== null) {
-      throw new FactionTaken(threadId, faction, player.username);
+    if (takenBy) {
+      throw new FactionTaken(threadId, faction, takenBy.username);
     }
     this.players[client.username].faction = faction;
     this.notify();

@@ -3,6 +3,7 @@ import Rejection from '../model/Rejection';
 import identify from './identify';
 import chooseGame from './chooseGame';
 import lobby, { Leave } from './lobby';
+import start from './start';
 import {
   acceptor as acceptorStore,
   game as gameStore,
@@ -15,7 +16,11 @@ async function * game () {
   for (;;) {
     try {
       const game = yield * chooseGame.call(this);
-      yield * lobby.call(this, { game });
+      if (game.turn === null) {
+        yield * lobby.call(this);
+      } else {
+        yield * start.call(this);
+      }
     } catch (e) {
       if (e instanceof Leave) {
         gameStore.set(null);

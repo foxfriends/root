@@ -17,6 +17,7 @@ leave = Leave
 enter = Enter
 cancel = Cancel
 ready = Ready
+select = Select
 loading = Loading...
 connecting = Connecting...
 

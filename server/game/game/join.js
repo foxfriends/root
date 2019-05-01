@@ -7,7 +7,7 @@ import leave, { Leave } from './leave.js';
 import start from '../play/start.js';
 
 class GameDoesNotExist extends Rejection {
-  constructor(name) {
+  constructor(threadId, name) {
     super(threadId, {
       key: 'rejection-game-does-not-exist',
       params: { name },
@@ -20,7 +20,11 @@ export default async function * join ({ name }, threadId) {
   if (!game) {
     throw new GameDoesNotExist(threadId, name);
   }
-  game.addPlayer(this, threadId);
+  if (game.turn === null) {
+    game.addPlayer(this, threadId);
+  } else {
+    game.addClient(this, threadId);
+  }
   this.game = game;
   this.respond(threadId, 'update', game);
   if (typeof game.turn !== 'number') {
