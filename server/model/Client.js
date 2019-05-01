@@ -16,7 +16,6 @@ export default class Client {
     this.socket.addEventListener('message', ({ data }) => {
       try {
         const message = new Message(data);
-        console.log(message.toString());
         if (message.type === 'reject' || message.type === 'error') {
           // notify direct response
           const [,callback] = this.callbacks.get(message.threadId) || [];
@@ -102,9 +101,11 @@ export default class Client {
   async * [Symbol.asyncIterator] () {
     for (;;) {
       try {
-        yield new Promise((resolve, reject) => this.watchers.push([resolve, reject]));
+        const message = await new Promise((resolve, reject) => this.watchers.push([resolve, reject]));
+        console.log(message.toString());
+        yield message;
       } catch (e) {
-        console.log('here', e);
+        console.error(e);
         if (e instanceof Closed) {
           break;
         } else {

@@ -30,8 +30,8 @@ export default async function * join ({ name }, threadId) {
       if (e instanceof Leave) {
         game.removePlayer(this);
         delete this.game;
-        throw e;
       }
+      throw e;
     }
   }
   this.send('start');

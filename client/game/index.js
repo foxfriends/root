@@ -1,7 +1,9 @@
 import { setRejectionHandler, accept } from '../model/Acceptor';
 import Rejection from '../model/Rejection';
+import identify from './identify';
+import chooseGame from './chooseGame';
+import lobby, { Leave } from './lobby';
 import {
-  username as usernameStore,
   acceptor as acceptorStore,
   game as gameStore,
   rejection as rejectionStore,
@@ -9,28 +11,23 @@ import {
 } from '../store';
 
 async function * game () {
-  const username = yield * accept.call(this,
-    { type: 'IdentificationForm:identify', async * handler ({ username }) {
-      await this.send('identify', { username });
-      usernameStore.set(username);
-      return username;
-    }},
-  );
-
-  const game = yield * accept.call(this,
-    { type: 'CreateGameForm:create', async * handler ({ name, settings }) {
-      return this.send('create', { name, settings });
-    }},
-    { type: 'JoinGameForm:join', async * handler ({ name }) {
-      return this.send('join', { name });
-    }},
-  );
-  gameStore.set(game);
-
-  screen.set('play');
+  yield * identify.call(this);
+  for (;;) {
+    try {
+      const game = yield * chooseGame.call(this);
+      yield * lobby.call(this, { game });
+    } catch (e) {
+      if (e instanceof Leave) {
+        gameStore.set(null);
+        continue;
+      }
+      throw e;
+    }
+  }
 }
 
 setRejectionHandler(rejection => {
+  console.log(rejection);
   rejectionStore.set(rejection);
 });
 

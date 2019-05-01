@@ -1,6 +1,7 @@
-export default async function * ready () {
+export default async function * ready (_, threadId) {
   if (!this.game) {
     throw new Error('Client is not part of a game');
   }
-  game.setReady(this, true);
+  this.game.setReady(this, true);
+  this.respond(threadId, 'update', this.game);
 }

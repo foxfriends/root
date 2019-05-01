@@ -1,10 +1,11 @@
 <script>
 import { fly } from 'svelte/transition';
-import { username } from '../store';
+import { username, game } from '../store';
 import logo from '../image/logo.png';
 import Loading from './component/Loading.svelte';
 import IdentificationForm from './IdentificationForm.svelte';
 import ChooseGameForm from './ChooseGameForm.svelte';
+import Lobby from './Lobby.svelte';
 
 export let client;
 </script>
@@ -33,8 +34,10 @@ export let client;
       <img src={logo} />
       {#if !$username}
         <IdentificationForm {client} />
-      {:else}
+      {:else if !$game}
         <ChooseGameForm {client} />
+      {:else}
+        <Lobby {client} />
       {/if}
     </div>
   {:else}

@@ -74,14 +74,6 @@ export async function * accept (...spec) {
     try {
       return yield * acceptor.accept(this, yield acceptor);
     } catch (e) {
-      if (e instanceof Error) {
-        // errors pass on
-        throw e;
-      }
-      if (e instanceof Abort) {
-        // events marked as abort should abort this acceptance
-        throw e;
-      }
       if (e instanceof Rejection) {
         if (e.remote) {
           // remote rejections need to be reported to the user
@@ -90,7 +82,9 @@ export async function * accept (...spec) {
           // local rejections need to be reported to the remote
           this.reject(e.threadId, e.message);
         }
+        continue;
       }
+      throw e;
     }
   }
 }

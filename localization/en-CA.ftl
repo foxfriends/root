@@ -13,7 +13,10 @@ join = Join
 game-name = Game name
 
 back = Back
+leave = Leave
 enter = Enter
+cancel = Cancel
+ready = Ready
 loading = Loading...
 connecting = Connecting...
 

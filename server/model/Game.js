@@ -5,6 +5,7 @@ import Faction from './Faction.js';
 import Rejection from './Rejection.js';
 
 class GameIsFull extends Rejection {
+  // TODO: threadId is not defined
   constructor(name) {
     super(threadId, {
       key: 'rejection-game-is-full',
@@ -118,5 +119,13 @@ export default class Game {
 
   get allReady() {
     return Object.values(this.players).every(player => player.ready);
+  }
+
+  toJSON() {
+    const object = { ...this };
+    delete object._clients;
+    object.isFull = this.isFull;
+    object.allReady = this.allReady;
+    return object;
   }
 }
