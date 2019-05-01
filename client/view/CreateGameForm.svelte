@@ -1,13 +1,15 @@
 <script>
 import { createEventDispatcher } from 'svelte';
+import Text from './component/Text.svelte';
 import Message from '../model/Message';
 import Faction from '../model/Faction';
 
 const dispatch = createEventDispatcher();
 
 let name = '';
-let factions = [Faction.Marquise, Faction.Eyrie, Faction.Alliance, Faction.Vagabond];
+let factions = [Faction.marquise, Faction.eyrie, Faction.alliance, Faction.vagabond];
 let assignment = 'auto';
+$: valid = name && factions.length >= 2;
 $: settings = { factions, assignment };
 
 export let client;
@@ -20,38 +22,40 @@ function create() {
 <button
   class='button back'
   on:click={() => dispatch('back')}>
-  Back
+  <Text text='back' />
 </button>
-<h1 class='heading'>Game name</h1>
+<h1 class='heading'><Text text='game-name' /></h1>
+<!-- TODO [l10n]: the placeholder is not localized -->
 <input
   class='input'
   placeholder='Name'
   autofocus
   bind:value={name} />
-<h1 class='heading'>Options</h1>
+<h1 class='heading'><Text text='options' /></h1>
 <div class='options'>
   <fieldset>
-    <legend>Available factions</legend>
-    {#each Object.values(Faction) as faction}
+    <legend><Text text='available-factions' /></legend>
+    {#each Object.entries(Faction) as faction}
       <label>
         <input
           type='checkbox'
           bind:group={factions}
-          value={faction} />
-        { faction }
+          value={faction[1]} />
+        <Text text={faction[0]} />
       </label>
     {/each}
   </fieldset>
   <fieldset>
-    <legend>Faction assignment</legend>
-    <label><input type='radio' bind:group={assignment} value='auto' /> Random</label>
-    <label><input type='radio' bind:group={assignment} value='choose' /> Choose</label>
+    <legend><Text text='faction-assignment' /></legend>
+    <label><input type='radio' bind:group={assignment} value='auto' /> <Text text='random' /></label>
+    <label><input type='radio' bind:group={assignment} value='choose' /> <Text text='choose' /></label>
   </fieldset>
 </div>
 <button
   class='button'
+  disabled={!valid}
   on:click={create}>
-  Create
+  <Text text='create' />
 </button>
 
 <style>
@@ -88,6 +92,12 @@ function create() {
 
 .button.back {
   align-self: flex-start;
+}
+
+.button:disabled {
+  cursor: default;
+  color: var(--color--text);
+  opacity: 0.6;
 }
 
 .input {

@@ -38,6 +38,6 @@ export let client;
       {/if}
     </div>
   {:else}
-    <Loading text='Connecting...' />
+    <Loading text='connecting' />
   {/if}
 </div>

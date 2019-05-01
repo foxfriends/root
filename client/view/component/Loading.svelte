@@ -1,10 +1,11 @@
 <script>
 import { fade } from 'svelte/transition';
+import Text from './Text.svelte';
 export let text;
 </script>
 
 <div class='loading' transition:fade='{{ duration: 200 }}'>
-  { text }
+  <Text {text} />
 </div>
 
 <style>

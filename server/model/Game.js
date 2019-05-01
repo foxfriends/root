@@ -24,7 +24,7 @@ class InvalidPlayer extends Rejection {
 
 export default class Game {
   constructor(name, {
-    factions = [Faction.Marquise, Faction.Eyrie, Faction.Alliance, Faction.Vagabond],
+    factions = [Faction.marquise, Faction.eyrie, Faction.alliance, Faction.vagabond],
     assignment = 'auto',
   } = {}) {
     /** Game name */

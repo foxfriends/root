@@ -1,5 +1,6 @@
 <script>
 import Box from './component/Box.svelte';
+import Text from './component/Text.svelte';
 import Message from '../model/Message';
 import { errorMessage } from '../store';
 
@@ -15,7 +16,8 @@ function submit() {
 
 <Box>
   <div class='flex'>
-    <h1 class='heading'>Please enter your name</h1>
+    <h1 class='heading'><Text text='please-enter-your-name' /></h1>
+    <!-- TODO [l10n]: the placeholder is not localized -->
     <input
       class='input'
       placeholder='Name'
@@ -26,7 +28,7 @@ function submit() {
       class='button'
       disabled={!name}
       on:click={submit}>
-      Enter
+      <Text text='enter' />
     </button>
   </div>
 </Box>

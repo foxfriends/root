@@ -1,5 +1,6 @@
 <script>
 import { createEventDispatcher } from 'svelte';
+import Text from './component/Text.svelte';
 import Message from '../model/Message';
 
 const dispatch = createEventDispatcher();
@@ -15,9 +16,10 @@ function join() {
 <button
   class='button back'
   on:click={() => dispatch('back')}>
-  Back
+  <Text text='back' />
 </button>
-<h1 class='heading'>Enter game name</h1>
+<h1 class='heading'><Text text='game-name' /></h1>
+<!-- TODO [l10n]: the placeholder is not localized -->
 <input
   class='input'
   placeholder='Name'
@@ -27,7 +29,7 @@ function join() {
 <button
   class='button'
   on:click={join}>
-  Join
+  <Text text='join' />
 </button>
 
 <style>
