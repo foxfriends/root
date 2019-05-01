@@ -63,6 +63,11 @@ class Acceptor {
   }
 }
 
+let rejectionHandler = rejection => console.error(rejection);
+export function setRejectionHandler(handler) {
+  rejectionHandler = handler || (rejection => console.error(rejection));
+}
+
 export async function * accept (...spec) {
   const acceptor = new Acceptor(spec);
   for (;;) {
@@ -77,9 +82,14 @@ export async function * accept (...spec) {
         // events marked as abort should abort this acceptance
         throw e;
       }
-      if (e instanceof Rejection && !e.remote) {
-        // rejections are expected. tell the client why, and then continue in the same phase
-        this.reject(e.threadId, e.message);
+      if (e instanceof Rejection) {
+        if (e.remote) {
+          // remote rejections need to be reported to the user
+          rejectionHandler(e);
+        } else {
+          // local rejections need to be reported to the remote
+          this.reject(e.threadId, e.message);
+        }
       }
     }
   }

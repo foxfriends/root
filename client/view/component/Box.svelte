@@ -1,4 +1,8 @@
-<div class='box'>
+<script>
+export let small = false;
+</script>
+
+<div class='box' class:small>
   <div class='content'>
     <slot />
   </div>
@@ -16,5 +20,10 @@
   border-image-slice: 55 fill;
   border-image-width: 55px;
   border-image-repeat: round;
+}
+
+.small {
+  border-width: 16px;
+  border-image-width: 16px;
 }
 </style>

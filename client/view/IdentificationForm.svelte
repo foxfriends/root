@@ -1,12 +1,15 @@
 <script>
 import Box from './component/Box.svelte';
 import Message from '../model/Message';
+import { errorMessage } from '../store';
 
 let name = '';
 export let client;
 
 function submit() {
-  client.notify(Message.direct('IdentificationForm:identify', { username: name }))
+  if (name) {
+    client.notify(Message.direct('IdentificationForm:identify', { username: name }))
+  }
 }
 </script>
 
@@ -21,11 +24,17 @@ function submit() {
       on:keypress={event => event.key === 'Enter' && submit()} />
     <button
       class='button'
+      disabled={!name}
       on:click={submit}>
       Enter
     </button>
   </div>
 </Box>
+{#if $errorMessage}
+  <Box small>
+    { $errorMessage }
+  </Box>
+{/if}
 
 <style>
 .flex {
@@ -64,5 +73,11 @@ function submit() {
 
 .button:hover {
   color: var(--color--accent__hover);
+}
+
+.button:disabled {
+  cursor: default;
+  color: var(--color--text);
+  opacity: 0.6;
 }
 </style>

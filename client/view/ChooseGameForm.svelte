@@ -2,6 +2,7 @@
 import Box from './component/Box.svelte';
 import CreateGameForm from './CreateGameForm.svelte';
 import JoinGameForm from './JoinGameForm.svelte';
+import { errorMessage } from '../store';
 
 let state = null;
 
@@ -28,6 +29,11 @@ export let client;
     {/if}
   </div>
 </Box>
+{#if $errorMessage}
+  <Box small>
+    { $errorMessage }
+  </Box>
+{/if}
 
 <style>
 .flex {

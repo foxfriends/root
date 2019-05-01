@@ -104,6 +104,7 @@ export default class Client {
       try {
         yield new Promise((resolve, reject) => this.watchers.push([resolve, reject]));
       } catch (e) {
+        console.log('here', e);
         if (e instanceof Closed) {
           break;
         } else {
