@@ -53,21 +53,29 @@ export default class Client {
 
   send(type, data, timeout = 10000) {
     const threadId = uuid();
-    return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        this.callbacks.delete(threadId);
-        reject(new Timeout);
-      }, timeout);
-      this.callbacks.set(threadId, [
+    let callbacks;
+    let timer;
+    const promise = new Promise((resolve, reject) => {
+      callbacks = [
         value => { this.callbacks.delete(threadId); clearTimeout(timer); resolve(value); },
         error => { this.callbacks.delete(threadId); clearTimeout(timer); reject(error); },
-      ]);
+      ];
       this.socket.send(JSON.stringify({
         threadId,
         type,
         data,
       }));
     });
+    return {
+      then: (...args) => {
+        timer = setTimeout(() => {
+          this.callbacks.delete(threadId);
+          reject(new Timeout);
+        }, timeout);
+        this.callbacks.set(threadId, callbacks);
+        return promise.then(...args)
+      }
+    };
   }
 
   respond(threadId, type, data) {

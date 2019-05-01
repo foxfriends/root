@@ -18,7 +18,7 @@ server
     const connection = await ctx.upgrade();
     const client = new Client(uuid(), connection);
     console.log(`New client ${client.id}`);
-    clients.set(client.clientId, client);
+    clients.set(client.id, client);
     await game(client);
     if (client.game) {
       if (client.game.started) {

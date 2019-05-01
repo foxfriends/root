@@ -1,11 +1,11 @@
 const Faction = {
-  marquise: 'Marquise',
-  eyrie: 'Eyrie',
-  alliance: 'Alliance',
-  vagabond: 'Vagabond',
-  vagabond2: 'Vagabond 2',
-  cult: 'Cult',
-  waterfolk: 'Waterfolk',
+  marquise: 'marquise',
+  eyrie: 'eyrie',
+  alliance: 'alliance',
+  vagabond: 'vagabond',
+  vagabond2: 'vagabond2',
+  cult: 'cult',
+  waterfolk: 'waterfolk',
 };
 
 export default Faction;

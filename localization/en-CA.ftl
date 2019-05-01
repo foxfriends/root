@@ -20,33 +20,36 @@ ready = Ready
 loading = Loading...
 connecting = Connecting...
 
-marquise = { $long ->
-  [true] Marquise de Cat
-  *[false] Marquise
+factions = Factions
+players = Players
+
+marquise = { $form ->
+  [long] Marquise de Cat
+  *[short] Marquise
 }
-eyrie = { $long ->
-  [true] Eyrie Dynasties
-  *[false] Eyrie
+eyrie = { $form ->
+  [long] Eyrie Dynasties
+  *[short] Eyrie
 }
-alliance = { $long ->
-  [true] Woodland Alliance
-  *[false] Alliance
+alliance = { $form ->
+  [long] Woodland Alliance
+  *[short] Alliance
 }
-vagabond = { $long ->
-  [true] Vagabond
-  *[false] Vagabond
+vagabond = { $form ->
+  [long] Vagabond
+  *[short] Vagabond
 }
-vagabond2 = { $long ->
-  [true] Second Vagabond
-  *[false] Vagabond 2
+vagabond2 = { $form ->
+  [long] Second Vagabond
+  *[short] Vagabond 2
 }
-cult = { $long ->
-  [true] Lizard Cult
-  *[false] Cult
+cult = { $form ->
+  [long] Lizard Cult
+  *[short] Cult
 }
-waterfolk = { $long ->
-  [true] Waterfolk Company
-  *[false] Waterfolk
+waterfolk = { $form ->
+  [long] Waterfolk Company
+  *[short] Waterfolk
 }
 
 rejection-game-already-exists = A game named { $name } already exists.

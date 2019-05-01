@@ -2,8 +2,9 @@
 import loc from '../../localization';
 
 export let text;
+export let params = {};
 
-$: translation = loc(text);
+$: translation = loc(text, params);
 </script>
 
 {#await translation then translated}

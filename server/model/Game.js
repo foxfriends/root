@@ -3,6 +3,7 @@ import clients from '../store/clients.js';
 import games from '../store/games.js';
 import Faction from './Faction.js';
 import Rejection from './Rejection.js';
+import Message from './Message.js';
 
 class GameIsFull extends Rejection {
   // TODO: threadId is not defined
@@ -109,7 +110,7 @@ export default class Game {
     if (!this.players[client.username]) {
       throw new InvalidPlayer(this.name, client.username);
     }
-    this.players[client.username].ready = true;
+    this.players[client.username].ready = ready;
     this.notify();
   }
 
@@ -118,7 +119,7 @@ export default class Game {
   }
 
   get allReady() {
-    return Object.values(this.players).every(player => player.ready);
+    return Object.values(this.players).every(player => player.ready) && this.isFull;
   }
 
   toJSON() {
