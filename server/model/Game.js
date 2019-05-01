@@ -6,19 +6,28 @@ import Rejection from './Rejection.js';
 
 class GameIsFull extends Rejection {
   constructor(name) {
-    super(`The game named ${name} is already full.`);
+    super(threadId, {
+      key: 'rejection-game-is-full',
+      params: { name },
+    });
   }
 }
 
 class PlayerAlreadyJoined extends Rejection {
   constructor(gameName, playerName) {
-    super(`The game named ${gameName} already has a player named ${playerName}.`);
+    super(threadId, {
+      key: 'rejection-player-already-joined',
+      params: { gameName, playerName },
+    });
   }
 }
 
 class InvalidPlayer extends Rejection {
   constructor(gameName, playerName) {
-    super(`The game named ${gameName} does not contain a player named ${playerName}.`);
+    super(threadId, {
+      key: 'rejection-invalid-player',
+      params: { gameName, playerName },
+    });
   }
 }
 

@@ -5,7 +5,10 @@ import Game from '../../model/Game.js';
 
 class GameAlreadyExists extends Rejection {
   constructor(threadId, name) {
-    super(threadId, `A game named ${name} already exists.`);
+    super(threadId, {
+      key: 'rejection-game-already-exists',
+      params: { name },
+    });
   }
 }
 

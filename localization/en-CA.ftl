@@ -45,3 +45,9 @@ waterfolk = { $long ->
   [true] Waterfolk Company
   *[false] Waterfolk
 }
+
+rejection-game-already-exists = A game named { $name } already exists.
+rejection-game-does-not-exist = No game named { $name } exists.
+rejection-game-is-full = The game named { $name } is already full.
+rejection-player-already-joined = The game named { $gameName } already has a player named { $playerName }.
+rejection-invalid-player = The game named { $gameName } does not contain a player named { $playerName }.

@@ -6,8 +6,11 @@ import unready from './unready.js';
 import leave, { Leave } from './leave.js';
 
 class GameDoesNotExist extends Rejection {
-  constructor(threadId, name) {
-    super(threadId, `A game named ${name} does not exist.`);
+  constructor(name) {
+    super(threadId, {
+      key: 'rejection-game-does-not-exist',
+      params: { name },
+    });
   }
 }
 
