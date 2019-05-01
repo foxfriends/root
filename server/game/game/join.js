@@ -4,6 +4,7 @@ import { accept } from '../../model/Acceptor.js';
 import ready from './ready.js';
 import unready from './unready.js';
 import leave, { Leave } from './leave.js';
+import start from '../play/start.js';
 
 class GameDoesNotExist extends Rejection {
   constructor(name) {
@@ -19,20 +20,17 @@ export default async function * join ({ name }, threadId) {
   if (!game) {
     throw new GameDoesNotExist(threadId, name);
   }
-  game.addPlayer(this);
+  game.addPlayer(this, threadId);
   this.game = game;
   this.respond(threadId, 'update', game);
-  while (!game.allReady) {
-    try {
+  if (typeof game.turn !== 'number') {
+    // if game is not yet started, enter lobby until everyone is ready
+    while (!game.allReady) {
       yield * accept.call(this, leave, ready, unready, 'gameUpdated');
       this.send('update', game);
-    } catch (e) {
-      if (e instanceof Leave) {
-        game.removePlayer(this);
-        delete this.game;
-      }
-      throw e;
     }
+    this.send('start');
   }
-  this.send('start');
+  // start the game
+  yield * start.call(this);
 }

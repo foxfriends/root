@@ -15,7 +15,7 @@ function submit() {
 
 <Box>
   <div class='flex'>
-    <h1 class='heading'><Text text='please-enter-your-name' /></h1>
+    <h1 class='heading'><Text text='please-enter-your-name' params={{ faction: 'marquise' }} /></h1>
     <!-- TODO [l10n]: the placeholder is not localized -->
     <input
       class='input'

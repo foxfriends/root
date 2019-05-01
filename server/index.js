@@ -21,7 +21,7 @@ server
     clients.set(client.id, client);
     await game(client);
     if (client.game) {
-      if (client.game.started) {
+      if (client.game.turn !== null) {
         client.game.removeClient(client);
       } else {
         client.game.removePlayer(client);

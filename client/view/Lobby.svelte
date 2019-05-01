@@ -28,18 +28,20 @@ function leave() {
       <Text text='leave' />
     </button>
     <h1 class='heading'>{$game.name}</h1>
-    <fieldset>
-      <legend><Text text='factions' /></legend>
-      {#each $game.factions as faction}
-        <div><Text text={faction} params={{ form: 'long' }} /></div>
-      {/each}
-    </fieldset>
-    <fieldset>
-      <legend><Text text='players' /></legend>
-      {#each $game.playerNames as name}
-        <div>{ name }: { $game.players[name].ready ? 'Ready' : 'Waiting' }</div>
-      {/each}
-    </fieldset>
+    <div class='horizontal'>
+      <fieldset>
+        <legend><Text text='factions' /></legend>
+        {#each $game.factions as faction}
+          <div><Text text={faction} params={{ form: 'long' }} /></div>
+        {/each}
+      </fieldset>
+      <fieldset>
+        <legend><Text text='players' /></legend>
+        {#each $game.playerNames as name}
+          <div>{ name }: { $game.players[name].ready ? 'Ready' : 'Waiting' }</div>
+        {/each}
+      </fieldset>
+    </div>
     <button
       class='button'
       on:click={() => ready = !ready}>
@@ -49,10 +51,13 @@ function leave() {
 </Box>
 
 <style>
-.flex {
+.flex, .horizontal {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+}
+
+.flex {
+  flex-direction: column;
 }
 
 .heading {

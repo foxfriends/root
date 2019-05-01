@@ -4,8 +4,21 @@ import enCA from '../../localization/en-CA.ftl';
 const bundle = fetch(enCA)
   .then(response => response.text())
   .then(src => {
-    const bundle = new FluentBundle('en-CA');
+    const bundle = new FluentBundle(['en-CA'], {
+      userIsolating: true,
+      functions: {
+        REF: ([key], params) => {
+          const message = bundle.getMessage(key);
+          if (!message) {
+            console.error(`\`ref\` lookup failed. Unknown key ${key}`);
+            return key;
+          }
+          return bundle.format(message, params);
+        },
+      },
+    });
     const errors = bundle.addMessages(src);
+    console.log(bundle);
     for (const error of errors) {
       console.error(error);
     }
@@ -19,5 +32,10 @@ export default async function loc (key, params) {
     console.error(`Unknown message ${key}`);
     return key;
   }
-  return b.format(message, params);
+  const errors = []
+  const result = b.format(message, params, errors);
+  for (const error of errors) {
+    console.error(error);
+  }
+  return result;
 }

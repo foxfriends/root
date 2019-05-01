@@ -27,7 +27,6 @@ async function * game () {
 }
 
 setRejectionHandler(rejection => {
-  console.log(rejection);
   rejectionStore.set(rejection);
 });
 

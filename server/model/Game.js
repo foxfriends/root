@@ -4,10 +4,10 @@ import games from '../store/games.js';
 import Faction from './Faction.js';
 import Rejection from './Rejection.js';
 import Message from './Message.js';
+import shuffle from '../util/shuffle.js';
 
 class GameIsFull extends Rejection {
-  // TODO: threadId is not defined
-  constructor(name) {
+  constructor(threadId, name) {
     super(threadId, {
       key: 'rejection-game-is-full',
       params: { name },
@@ -16,7 +16,7 @@ class GameIsFull extends Rejection {
 }
 
 class PlayerAlreadyJoined extends Rejection {
-  constructor(gameName, playerName) {
+  constructor(threadId, gameName, playerName) {
     super(threadId, {
       key: 'rejection-player-already-joined',
       params: { gameName, playerName },
@@ -25,11 +25,38 @@ class PlayerAlreadyJoined extends Rejection {
 }
 
 class InvalidPlayer extends Rejection {
-  constructor(gameName, playerName) {
+  constructor(threadId, gameName, playerName) {
     super(threadId, {
       key: 'rejection-invalid-player',
       params: { gameName, playerName },
     });
+  }
+}
+
+class GameAlreadyStarted extends Rejection {
+  constructor(threadId, gameName) {
+    super(threadId, {
+      key: 'rejection-game-already-started',
+      params: { gameName },
+    })
+  }
+}
+
+class IllegalFaction extends Rejection {
+  constructor(threadId, faction) {
+    super(threadId, {
+      key: 'rejection-illegal-faction',
+      params: { faction },
+    })
+  }
+}
+
+class FactionTaken extends Rejection {
+  constructor(threadId, faction, playerName) {
+    super(threadId, {
+      key: 'rejection-faction-taken',
+      params: { faction, playerName },
+    })
   }
 }
 
@@ -50,8 +77,8 @@ export default class Game {
     this.assignment = assignment;
     /** The actual player data for each named player */
     this.players = {};
-    /** Whether this game has begun yet or not */
-    this.started = false;
+    /** The current turn number, negative for setup, or null if not started */
+    this.turn = null;
   }
 
   get clients() {
@@ -66,30 +93,33 @@ export default class Game {
     }
   }
 
-  addPlayer(client) {
+  addPlayer(client, threadId) {
     if (this.isFull) {
-      throw new GameIsFull(this.name);
+      throw new GameIsFull(threadId, this.name);
     }
     if (this.playerNames.includes(client.username)) {
-      throw new PlayerAlreadyJoined(this.name, client.username);
+      throw new PlayerAlreadyJoined(threadId, this.name, client.username);
     }
     this.playerNames.push(client.username);
-    this.players[client.username] = new Player;
-    this.addClient(client);
+    this.players[client.username] = new Player(client.username);
+    this.addClient(client, threadId);
   }
 
-  addClient(client) {
+  addClient(client, threadId) {
     if (!this.players[client.username]) {
-      throw new InvalidPlayer(this.name, client.username);
+      throw new InvalidPlayer(threadId, this.name, client.username);
     }
     this._clients[client.username] = client.id;
     this.notify();
   }
 
-  removePlayer(client) {
+  removePlayer(client, threadId) {
+    if (this.turn !== null) {
+      throw new GameAlreadyStarted(threadId, this.name);
+    }
     const playerIndex = this.playerNames.indexOf(client.username);
     if (playerIndex === -1) {
-      throw new InvalidPlayer(this.name, client.username);
+      throw new InvalidPlayer(threadId, this.name, client.username);
     }
     this.removeClient(client);
     this.playerNames.splice(playerIndex, 1);
@@ -106,11 +136,42 @@ export default class Game {
     this.notify();
   }
 
-  setReady(client, ready) {
+  setReady(client, ready, threadId) {
     if (!this.players[client.username]) {
-      throw new InvalidPlayer(this.name, client.username);
+      throw new InvalidPlayer(threadId, this.name, client.username);
     }
     this.players[client.username].ready = ready;
+    // shuffle players for random turn order
+    if (this.allReady) {
+      this.playerNames = shuffle(this.playerNames);
+      // set the turn to negative for setup turn
+      this.turn = -this.factions.length;
+      if (this.assignment === 'auto') {
+        // shuffle factions for random assignment
+        const factions = shuffle(this.factions);
+        // assign factions
+        for (let i = 0; i < factions.length; ++i) {
+          this.players[this.playerNames[i]].faction = factions[i];
+        }
+      }
+    }
+    this.notify();
+  }
+
+  setFaction(client, faction, threadId) {
+    if (!this.players[client.username]) {
+      throw new InvalidPlayer(threadId, this.name, client.username);
+    }
+    if (!this.game.factions.includes(faction)) {
+      throw new IllegalFaction(threadId, faction);
+    }
+    const takenBy = Object
+      .values(this.game.players)
+      .find(player => player.faction === faction)
+    if (takenBy !== null) {
+      throw new FactionTaken(threadId, faction, player.username);
+    }
+    this.players[client.username].faction = faction;
     this.notify();
   }
 
@@ -127,6 +188,7 @@ export default class Game {
     delete object._clients;
     object.isFull = this.isFull;
     object.allReady = this.allReady;
+    object.factionsAssigned = this.factionsAssigned;
     return object;
   }
 }

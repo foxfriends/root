@@ -56,4 +56,7 @@ rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
 rejection-game-is-full = The game named { $name } is already full.
 rejection-player-already-joined = The game named { $gameName } already has a player named { $playerName }.
+rejection-game-already-started = The game { $gameName } has already started.
 rejection-invalid-player = The game named { $gameName } does not contain a player named { $playerName }.
+rejection-illegal-faction = The { REF($faction, form: "long") } is not part of this game.
+rejection-faction-taken = The { REF($faction, form: "long") } has already been taken by { $playerName }.
