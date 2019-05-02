@@ -4,7 +4,15 @@ import games from '../store/games.js';
 import Faction from './Faction.js';
 import Rejection from './Rejection.js';
 import Message from './Message.js';
+import Forest from './board/Forest.js';
+import GameMap from './GameMap.js';
 import shuffle from '../util/shuffle.js';
+
+class UnsupportedSettings extends Error {
+  constructor(settings) {
+    super(`The requested game settings are not supported: ${JSON.stringify(settings)}`);
+  }
+}
 
 class GameIsFull extends Rejection {
   constructor(threadId, name) {
@@ -64,6 +72,7 @@ export default class Game {
   constructor(name, {
     factions = [Faction.marquise, Faction.eyrie, Faction.alliance, Faction.vagabond],
     assignment = 'auto',
+    map = GameMap.forest,
   } = {}) {
     /** Game name */
     this.name = name;
@@ -73,12 +82,25 @@ export default class Game {
     this._clients = {};
     /** Enabled factions */
     this.factions = factions;
+    if (!this.factions.every(faction => faction in Faction)) {
+      throw new UnsupportedSettings({ factions, assignment, map });
+    }
     /** How players are to be assigned factions (auto or manual) */
     this.assignment = assignment;
     /** The actual player data for each named player */
     this.players = {};
     /** The current turn number, negative for setup, or null if not started */
     this.turn = null;
+    /** The state of the board */
+    switch (map) {
+      case GameMap.forest:
+        this.board = new Forest();
+        break;
+      case GameMap.winter:
+        throw new Error('unimplemented');
+      default:
+        throw new UnsupportedSettings({ factions, assignment, map });
+    }
   }
 
   get clients() {

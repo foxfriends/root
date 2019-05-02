@@ -52,14 +52,16 @@ function selection({ detail: { selection } }) {
 <style>
 .overlay {
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   box-sizing: border-box;
   display: flex;
   align-items: stretch;
   justify-content: stretch;
   background-color: rgba(0, 0, 0, 0.4);
   padding: 64px 128px;
-  width: 100%;
-  height: 100%;
 }
 
 .error {

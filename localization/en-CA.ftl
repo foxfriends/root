@@ -21,9 +21,13 @@ select = Select
 loading = Loading...
 connecting = Connecting...
 
-factions = Factions
 players = Players
 
+map = Map
+forest = Forest
+winter = Winter
+
+factions = Factions
 marquise = { $form ->
   [long] Marquise de Cat
   *[short] Marquise

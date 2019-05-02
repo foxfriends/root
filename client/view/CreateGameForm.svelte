@@ -2,6 +2,7 @@
 import { createEventDispatcher } from 'svelte';
 import Text from './component/Text.svelte';
 import Message from '../model/Message';
+import GameMap from '../model/GameMap';
 import Faction from '../model/Faction';
 
 const dispatch = createEventDispatcher();
@@ -9,8 +10,9 @@ const dispatch = createEventDispatcher();
 let name = '';
 let factions = [Faction.marquise, Faction.eyrie, Faction.alliance, Faction.vagabond];
 let assignment = 'auto';
+let map = 'forest';
 $: valid = name && factions.length >= 2;
-$: settings = { factions, assignment };
+$: settings = { factions, assignment, map };
 
 export let client;
 
@@ -35,21 +37,29 @@ function create() {
 <div class='options'>
   <fieldset>
     <legend><Text text='available-factions' /></legend>
-    {#each Object.entries(Faction) as faction}
+    {#each Object.values(Faction) as faction}
       <label>
         <input
           type='checkbox'
           bind:group={factions}
-          value={faction[1]} />
-        <Text text={faction[0]} params={{ form: 'short' }}/>
+          value={faction} />
+        <Text text={faction} params={{ form: 'short' }}/>
       </label>
     {/each}
   </fieldset>
-  <fieldset>
-    <legend><Text text='faction-assignment' /></legend>
-    <label><input type='radio' bind:group={assignment} value='auto' /> <Text text='random' /></label>
-    <label><input type='radio' bind:group={assignment} value='choose' /> <Text text='choose' /></label>
-  </fieldset>
+  <div class='flex'>
+    <fieldset>
+      <legend><Text text='faction-assignment' /></legend>
+      <label><input type='radio' bind:group={assignment} value='auto' /> <Text text='random' /></label>
+      <label><input type='radio' bind:group={assignment} value='choose' /> <Text text='choose' /></label>
+    </fieldset>
+    <fieldset>
+      <legend><Text text='map' /></legend>
+      {#each Object.values(GameMap) as gameMap}
+        <label><input type='radio' bind:group={map} value={gameMap} /> <Text text={gameMap} /></label>
+      {/each}
+    </fieldset>
+  </div>
 </div>
 <button
   class='button'
