@@ -56,6 +56,10 @@ waterfolk = { $form ->
   [long] Waterfolk Company
   *[short] Waterfolk
 }
+marquise_bot = { $form ->
+  [long] Mechanical Marquise
+  *[short] Mechanical Marquise
+}
 
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.

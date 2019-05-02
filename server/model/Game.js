@@ -207,9 +207,6 @@ export default class Game {
   toJSON() {
     const object = { ...this };
     delete object._clients;
-    object.isFull = this.isFull;
-    object.allReady = this.allReady;
-    object.factionsAssigned = this.factionsAssigned;
     return object;
   }
 }

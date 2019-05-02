@@ -43,7 +43,7 @@ function create() {
           type='checkbox'
           bind:group={factions}
           value={faction} />
-        <Text text={faction} params={{ form: 'short' }}/>
+        <Text text={faction} params={{ form: 'long' }}/>
       </label>
     {/each}
   </fieldset>
