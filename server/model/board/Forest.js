@@ -8,10 +8,10 @@ export default class Forest extends Board {
     super(
       'forest',
       [
-        new Clearing(547, 619, Suit.fox, [new Slot(430, 566)], true),
-        new Clearing(4213, 1044, Suit.mouse, [new Slot(4204, 966), new Slot(4312, 1180)], true),
-        new Clearing(4008, 3863, Suit.rabbit, [new Slot(3905, 3819)], true),
-        new Clearing(548, 3622, Suit.rabbit, [new Slot(721, 3594)], true),
+        new Clearing(547, 619, Suit.fox, [new Slot(430, 566)], true, 2),
+        new Clearing(4213, 1044, Suit.mouse, [new Slot(4204, 966), new Slot(4312, 1180)], true, 3),
+        new Clearing(4008, 3863, Suit.rabbit, [new Slot(3905, 3819)], true, 0),
+        new Clearing(548, 3622, Suit.rabbit, [new Slot(721, 3594)], true, 1),
         new Clearing(2635, 446, Suit.rabbit, [new Slot(2479, 340), new Slot(2739, 314)]),
         new Clearing(4364, 2336, Suit.fox, [new Slot(4187, 2370), new Slot(4398, 2146, true)]),
         new Clearing(2818, 3424, Suit.mouse, [new Slot(2798, 3230), new Slot(2636, 3478)]),

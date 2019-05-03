@@ -1,4 +1,5 @@
 import Faction from '../Faction.js';
+import { Item } from '../Item.js'
 
 export default class Vagabond {
   constructor(faction) {
@@ -17,6 +18,12 @@ export default class Vagabond {
       [Faction.riverfolk]: 1,
     };
     this.coalition = null;
+    this.ruinItems = [
+      new Item(Item.hammer, true),
+      new Item(Item.boot, true),
+      new Item(Item.sword, true),
+      new Item(Item.bag, true),
+    ];
     // common stuff
     this.hand = [];
     this.victoryPoints = 0;

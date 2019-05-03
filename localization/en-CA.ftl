@@ -61,6 +61,31 @@ marquise_bot = { $form ->
   *[short] Mechanical Marquise
 }
 
+marquise-keep = { $quantity ->
+  *[other] Keeps
+  [one] Keep
+}
+marquise-wood = { $quantity ->
+  *[other] Wood
+  [one] Wood
+}
+marquise-warrior = { $quantity ->
+  *[other] Warriors
+  [one] Warrior
+}
+marquise-workshop = { $quantity ->
+  *[other] Workshops
+  [one] Workshop
+}
+marquise-sawmill = { $quantity ->
+  *[other] Sawmills
+  [one] Sawmill
+}
+marquise-recruiter = { $quantity ->
+  *[other] Recruiters
+  [one] Recruiter
+}
+
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
 rejection-game-is-full = The game named { $name } is already full.
@@ -69,3 +94,7 @@ rejection-game-already-started = The game { $gameName } has already started.
 rejection-invalid-player = The game named { $gameName } does not contain a player named { $playerName }.
 rejection-illegal-faction = The { REF($faction, form: "long") } is not part of this game.
 rejection-faction-taken = The { REF($faction, form: "long") } has already been taken by { $playerName }.
+rejection-invalid-clearing-for-keep = The keep must go in a corner clearing.
+rejection-invalid-clearing-for-starting-building = Starting buildings must be at or adjacent to the keep.
+rejection-no-more-pieces = There are no more { REF($piece, quantity: 0) } to be placed.
+rejection-no-more-slots = There are no more slots for building in this clearing.

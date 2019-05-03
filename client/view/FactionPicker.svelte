@@ -97,7 +97,7 @@ function selection({ detail: { selection } }) {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.6);
   color: var(--color--text);
   font-family: var(--font-family--display);
   font-size: 20px;

@@ -88,7 +88,7 @@ export default class Game {
     /** Faction data for the factions above */
     this.factionData = factions
       .map(createFaction)
-      .reduce((faction, collection) => Object.assign(collection, { [faction.faction]: faction }), {});
+      .reduce((collection, faction) => Object.assign(collection, { [faction.faction]: faction }), {});
     /** How players are to be assigned factions (auto or manual) */
     this.assignment = assignment;
     /** The actual player data for each named player */
@@ -205,6 +205,11 @@ export default class Game {
       throw new FactionTaken(threadId, faction, takenBy.username);
     }
     this.players[client.username].faction = faction;
+    this.notify();
+  }
+
+  nextTurn() {
+    ++this.turn;
     this.notify();
   }
 
