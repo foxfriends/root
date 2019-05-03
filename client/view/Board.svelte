@@ -24,13 +24,25 @@ function setInitialViewport() {
   ({ naturalWidth: boardWidth, naturalHeight: boardHeight } = background);
 }
 
-function zoom({ deltaY }) {
+function zoom({ clientX, clientY, deltaY }) {
   // TODO: make this smoother
-  // TODO: try to keep the position under the mouse constant while zooming
-  if (deltaY < 0) {
+  const pointUnderCursor = {
+    x: (pan.x + clientX) / scale,
+    y: (pan.y + clientY) / scale,
+  };
+
+  if (deltaY < 0 && scale !== maxScale) {
     targetScale = scale + 0.1;
-  } else if (deltaY > 0) {
+    targetPan = {
+      x: (pointUnderCursor.x * Math.min(maxScale, targetScale)) - clientX,
+      y: (pointUnderCursor.y * Math.min(maxScale, targetScale)) - clientY,
+    };
+  } else if (deltaY > 0 && scale !== minScale) {
     targetScale = scale - 0.1;
+    targetPan = {
+      x: (pointUnderCursor.x * Math.max(minScale, targetScale)) - clientX,
+      y: (pointUnderCursor.y * Math.max(minScale, targetScale)) - clientY,
+    };
   }
 }
 
