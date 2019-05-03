@@ -5,13 +5,16 @@ import Text from './component/Text.svelte';
 import Picker from './component/Picker.svelte';
 import images from '../image/card-*-{front,back}.jpg';
 import Message from '../model/Message';
+import Faction from '../model/Faction';
 
 let flips = $game.factions.map(() => false);
-$: factions = $game.factions.map((name, i) => ({
-  flip: flips[i],
-  name,
-  player: Object.values($game.players).find(player => player.faction === name),
-}));
+$: factions = $game.factions
+  .filter(faction => faction !== Faction.marquise_bot) // computer players only
+  .map((name, i) => ({
+    flip: flips[i],
+    name,
+    player: Object.values($game.players).find(player => player.faction === name),
+  }));
 
 export let client;
 

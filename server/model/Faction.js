@@ -5,7 +5,7 @@ const Faction = {
   vagabond: 'vagabond',
   vagabond2: 'vagabond2',
   cult: 'cult',
-  waterfolk: 'waterfolk',
+  riverfolk: 'riverfolk',
   marquise_bot: 'marquise_bot',
 };
 

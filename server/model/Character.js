@@ -1,3 +1,5 @@
+
+
 const Character = {
   arbiter: 'arbiter',
   ranger: 'ranger',

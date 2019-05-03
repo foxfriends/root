@@ -11,7 +11,10 @@ let name = '';
 let factions = [Faction.marquise, Faction.eyrie, Faction.alliance, Faction.vagabond];
 let assignment = 'auto';
 let map = 'forest';
-$: valid = name && factions.length >= 2;
+$: valid = name
+  && factions.length >= 2
+  // marquise cannot fight their own bot
+  && !(factions.includes(Faction.marquise) && factions.includes(Faction.marquise_bot));
 $: settings = { factions, assignment, map };
 
 export let client;

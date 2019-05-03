@@ -2,11 +2,14 @@ import Player from './Player.js';
 import clients from '../store/clients.js';
 import games from '../store/games.js';
 import Faction from './Faction.js';
+import Cards from './Card.js';
+import Quests from './Quest.js';
 import Rejection from './Rejection.js';
 import Message from './Message.js';
 import Forest from './board/Forest.js';
 import GameMap from './GameMap.js';
 import shuffle from '../util/shuffle.js';
+import createFaction from './factionData/index.js';
 
 class UnsupportedSettings extends Error {
   constructor(settings) {
@@ -82,15 +85,24 @@ export default class Game {
     this._clients = {};
     /** Enabled factions */
     this.factions = factions;
-    if (!this.factions.every(faction => faction in Faction)) {
-      throw new UnsupportedSettings({ factions, assignment, map });
-    }
+    /** Faction data for the factions above */
+    this.factionData = factions
+      .map(createFaction)
+      .reduce((faction, collection) => Object.assign(collection, { [faction.faction]: faction }), {});
     /** How players are to be assigned factions (auto or manual) */
     this.assignment = assignment;
     /** The actual player data for each named player */
     this.players = {};
     /** The current turn number, negative for setup, or null if not started */
     this.turn = null;
+    /** The cards still in the deck */
+    this.cards = [...Cards];
+    /** The cards that have been discarded */
+    this.discards = [];
+    /** The unturned quests */
+    this.quests = [...Quests];
+    /** The active quests */
+    this.questsAvailable = []
     /** The state of the board */
     switch (map) {
       case GameMap.forest:
@@ -197,7 +209,7 @@ export default class Game {
   }
 
   get isFull() {
-    return this.playerNames.length === this.factions.length;
+    return this.playerNames.length === this.factions.filter(faction => faction !== Faction.marquise_bot).length;
   }
 
   get allReady() {
@@ -207,6 +219,8 @@ export default class Game {
   toJSON() {
     const object = { ...this };
     delete object._clients;
+    object.cards = this.cards.length;
+    object.quests = this.quests.length;
     return object;
   }
 }

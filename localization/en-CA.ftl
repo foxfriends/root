@@ -52,9 +52,9 @@ cult = { $form ->
   [long] Lizard Cult
   *[short] Cult
 }
-waterfolk = { $form ->
-  [long] Waterfolk Company
-  *[short] Waterfolk
+riverfolk = { $form ->
+  [long] Riverfolk Company
+  *[short] Riverfolk
 }
 marquise_bot = { $form ->
   [long] Mechanical Marquise
