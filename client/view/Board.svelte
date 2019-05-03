@@ -32,13 +32,13 @@ function zoom({ clientX, clientY, deltaY }) {
   };
 
   if (deltaY < 0 && scale !== maxScale) {
-    targetScale = scale + 0.1;
+    targetScale += 1 / ((2 - scale) ** 2) / 10;
     targetPan = {
       x: (pointUnderCursor.x * Math.min(maxScale, targetScale)) - clientX,
       y: (pointUnderCursor.y * Math.min(maxScale, targetScale)) - clientY,
     };
   } else if (deltaY > 0 && scale !== minScale) {
-    targetScale = scale - 0.1;
+    targetScale -= 1 / ((2 - scale) ** 2) / 10;
     targetPan = {
       x: (pointUnderCursor.x * Math.max(minScale, targetScale)) - clientX,
       y: (pointUnderCursor.y * Math.max(minScale, targetScale)) - clientY,
