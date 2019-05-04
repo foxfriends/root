@@ -3,6 +3,7 @@ import clients from '../store/clients.js';
 import games from '../store/games.js';
 import Faction from './Faction.js';
 import Cards from './Card.js';
+import Items from './Item.js';
 import Quests from './Quest.js';
 import Rejection from './Rejection.js';
 import Message from './Message.js';
@@ -101,6 +102,8 @@ export default class Game {
     this.discards = [];
     /** The unturned quests */
     this.quests = [...Quests];
+    /** The items ready for pickup */
+    this.items = [...Items];
     /** The active quests */
     this.questsAvailable = []
     /** The state of the board */

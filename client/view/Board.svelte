@@ -1,8 +1,10 @@
 <script>
 import { game, username } from '../store';
-import images from '../image/map-*.jpg';
+import mapImages from '../image/map-*.jpg';
+import tokenImages from '../image/token/token.*.png';
 import FactionPicker from './FactionPicker.svelte';
 import Clearing from './Clearing.svelte';
+import Token from './Token.svelte';
 
 let background;
 let boardWidth;
@@ -65,15 +67,22 @@ export let client;
     style={`transform: translate(-${pan.x}px, -${pan.y}px) scale(${scale});`}>
     <div
       class='board'
-      style={`background-image: url(${images[$game.board.name]})`}>
+      style={`background-image: url(${mapImages[$game.board.name]})`}>
       <img
         class='spacer'
-        src={images[$game.board.name]}
+        src={mapImages[$game.board.name]}
         on:load={setInitialViewport}
         bind:this={background} />
     </div>
     {#each $game.board.clearings as clearing}
       <Clearing {...clearing} />
+    {/each}
+    {#each $game.items as item, index}
+      <Token square
+        image={tokenImages[item.key]}
+        x={$game.board.itemSlots[item.name][$game.items.slice(0, index).filter(i => i.name === item.name).length].x}
+        y={$game.board.itemSlots[item.name][$game.items.slice(0, index).filter(i => i.name === item.name).length].y}
+        radius={31} />
     {/each}
   </div>
 </div>

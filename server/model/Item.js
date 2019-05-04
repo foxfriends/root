@@ -8,10 +8,22 @@ export class Item {
   static get boot() { return 'boot'; }
   static get hammer() { return 'hammer'; }
 
-  constructor(name, ruin = false, starting = false) {
+  constructor(name, isRuin = false, isStarting = false) {
     this.name = name;
-    this.ruin = ruin;
-    this.starting = starting;
+    this.isRuin = isRuin;
+    this.isStarting = isStarting;
+  }
+
+  get key() {
+    if (this.isRuin) {
+      return `item-ruin_${this.name}`;
+    }
+    // TODO: starting items do not have the separate image marked with S?
+    return `item-${this.name}`;
+  }
+
+  toJSON() {
+    return { ...this, key: this.key };
   }
 }
 
@@ -22,10 +34,8 @@ const Items = [
   new Item(Item.bag),
   new Item(Item.coin),
   new Item(Item.coin),
-  new Item(Item.torch),
-  new Item(Item.torch),
-  new Item(Item.knife),
-  new Item(Item.knife),
+  new Item(Item.sword),
+  new Item(Item.sword),
   new Item(Item.boot),
   new Item(Item.boot),
   new Item(Item.hammer),

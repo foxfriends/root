@@ -1,3 +1,5 @@
+import { Item } from '../Item.js';
+
 export default class Board {
   constructor(
     name,
@@ -9,6 +11,20 @@ export default class Board {
     this.clearings = clearings;
     this.paths = paths;
     this.rivers = rivers;
+
+    const x = 1088;
+    const dx = 175;
+    const y = [150, 320];
+
+    this.itemSlots = {
+      [Item.bag]: [{ x, y: y[0] }, { x, y: y[1] }],
+      [Item.boot]: [{ x: x + dx, y: y[0] }, { x: x + dx, y: y[1] }],
+      [Item.crossbow]: [{ x: x + 2 * dx, y: y[0] }],
+      [Item.hammer]: [{ x: x + 2 * dx, y: y[1] }],
+      [Item.sword]: [{ x: x + 3 * dx, y: y[0] }, { x: x + 3 * dx, y: y[1] }],
+      [Item.tea]: [{ x: x + 4 * dx, y: y[0] }, { x: x + 4 * dx, y: y[1] }],
+      [Item.coin]: [{ x: x + 5 * dx, y: y[0] }, { x: x + 5 * dx, y: y[1] }],
+    };
   }
 
   locate(piece) {

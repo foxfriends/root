@@ -1,5 +1,6 @@
 <script>
 import images from '../image/token/token.*.png';
+import Token from './Token.svelte';
 
 export let x;
 export let y;
@@ -18,25 +19,9 @@ function image(piece) {
 
 {#each buildings as building, i}
   {#if building !== null}
-    <div
-      class='building'
-      style={`background-image: url(${image(building)}); left: ${slots[i].x}px; top: ${slots[i].y}px;`} />
+    <Token square
+      image={image(building)}
+      x={slots[i].x}
+      y={slots[i].y} />
   {/if}
 {/each}
-
-<style>
-.building {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  user-select: none;
-  border-radius: 20px;
-  box-shadow:
-    0 1px 0 rgb(179, 174, 166),
-    0 5px 0 rgb(198, 185, 165),
-    0 6px 0 rgb(179, 174, 166),
-    2px 6px 2px rgba(0, 0, 0, 0.25);
-  width: 141px;
-  height: 141px;
-}
-</style>
