@@ -1,4 +1,11 @@
 import Rejection from '../Rejection.js';
+import Piece from '../Piece.js';
+
+class NoRuins extends Error {
+  constructor() {
+    super('There is no ruin in this clearing');
+  }
+}
 
 class NoMoreSlots extends Rejection {
   constructor(threadId) {
@@ -16,8 +23,9 @@ export default class Clearing {
     this.slots = slots;
     this.isCorner = isCorner;
     this.acrossCorner = acrossCorner;
-    this.buildings = slots.map(() => null);
+    this.buildings = slots.map(slot => slot.isRuin ? Piece.ruin : null);
     this.pieces = [];
+    this.ruinItems = [];
   }
 
   addBuilding(building, threadId) {
@@ -26,5 +34,12 @@ export default class Clearing {
       throw new NoMoreSlots(threadId);
     }
     this.buildings[emptySlot] = building;
+  }
+
+  addRuinItem(item) {
+    if (!this.buildings.includes(Piece.ruin)) {
+      throw new NoRuins();
+    }
+    this.ruinItems.push(item);
   }
 }

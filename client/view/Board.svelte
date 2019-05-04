@@ -2,6 +2,7 @@
 import { game, username } from '../store';
 import images from '../image/map-*.jpg';
 import FactionPicker from './FactionPicker.svelte';
+import Clearing from './Clearing.svelte';
 
 let background;
 let boardWidth;
@@ -9,7 +10,7 @@ let boardHeight;
 let windowWidth;
 let windowHeight;
 
-const maxScale = 0.8;
+const maxScale = 1;
 let targetScale = 0;
 $: minScale = Math.max(windowWidth / boardWidth, windowHeight / boardHeight);
 $: scale = Math.min(Math.max(minScale, targetScale), maxScale);
@@ -58,10 +59,10 @@ export let client;
 <div
   class='container'
   on:wheel={zoom}
-  on:mousemove={drag} >
+  on:mousemove={drag}>
   <div
     class='viewport'
-    style={`transform: translate(-${pan.x}px, -${pan.y}px) scale(${scale});`} >
+    style={`transform: translate(-${pan.x}px, -${pan.y}px) scale(${scale});`}>
     <div
       class='board'
       style={`background-image: url(${images[$game.board.name]})`}>
@@ -71,6 +72,9 @@ export let client;
         on:load={setInitialViewport}
         bind:this={background} />
     </div>
+    {#each $game.board.clearings as clearing}
+      <Clearing {...clearing} />
+    {/each}
   </div>
 </div>
 {#if $game.players[$username].faction === null}

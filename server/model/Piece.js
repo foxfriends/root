@@ -7,7 +7,15 @@ class Piece {
   }
 
   get key() {
-    return `${this.faction}-${this.name}`;
+    if (this.faction) {
+      return `${this.faction}-${this.name}`;
+    } else {
+      return this.name;
+    }
+  }
+
+  toJSON() {
+    return { ...this, key: this.key };
   }
 }
 
@@ -20,6 +28,7 @@ const Pieces = {
     workshop: new Piece(Faction.marquise, 'workshop'),
     recruiter: new Piece(Faction.marquise, 'recruiter'),
   },
+  ruin: new Piece(null, 'ruin'),
 }
 
 export default Pieces;
