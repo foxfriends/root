@@ -5,6 +5,7 @@ export const acceptor = writable(null);
 export const screen = writable('cover');
 export const username = writable(null);
 export const game = writable(null);
+export const prompts = writable([]);
 export const rejection = writable(null);
 export const errorMessage = derived(rejection, async (rejection, set) => {
   if (!rejection) {

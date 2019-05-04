@@ -5,6 +5,7 @@ import tokenImages from '../image/token/token.*.png';
 import FactionPicker from './FactionPicker.svelte';
 import Clearing from './Clearing.svelte';
 import Token from './Token.svelte';
+import Prompts from './Prompts.svelte';
 
 let background;
 let boardWidth;
@@ -84,6 +85,7 @@ export let client;
         y={$game.board.itemSlots[item.name][$game.items.slice(0, index).filter(i => i.name === item.name).length].y}
         radius={31} />
     {/each}
+    <Prompts {client} />
   </div>
 </div>
 {#if $game.players[$username].faction === null}

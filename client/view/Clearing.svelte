@@ -2,12 +2,7 @@
 import images from '../image/token/token.*.png';
 import Token from './Token.svelte';
 
-export let x;
-export let y;
-export let suit;
 export let slots;
-export let isCorner;
-export let acrossCorner;
 export let buildings;
 export let pieces;
 

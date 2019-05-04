@@ -20,15 +20,15 @@ class InvalidClearingForStartingBuilding extends Rejection {
 }
 
 async function * placeKeep({ clearing }, threadId) {
-  if (!game.board.clearings[clearing].isCorner) {
+  if (!this.game.board.clearings[clearing].isCorner) {
     throw new InvalidClearingForKeep(threadId);
   }
   this.game.factionData[Faction.marquise].placeKeep(this.game, clearing);
 }
 
 async function * placeSawmill({ clearing }, threadId) {
-  const keepClearing = game.board.locate(Piece[Faction.marquise].keep);
-  const distance = game.board.clearingDistance(clearing, keepClearing);
+  const keepClearing = this.game.board.locate(Piece[Faction.marquise].keep);
+  const distance = this.game.board.clearingDistance(clearing, keepClearing);
   if (distance > 1) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
@@ -36,8 +36,8 @@ async function * placeSawmill({ clearing }, threadId) {
 }
 
 async function * placeWorkshop({ clearing }, threadId) {
-  const keepClearing = game.board.locate(Piece[Faction.marquise].keep);
-  const distance = game.board.clearingDistance(clearing, keepClearing);
+  const keepClearing = this.game.board.locate(Piece[Faction.marquise].keep);
+  const distance = this.game.board.clearingDistance(clearing, keepClearing);
   if (distance > 1) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
@@ -45,8 +45,8 @@ async function * placeWorkshop({ clearing }, threadId) {
 }
 
 async function * placeRecruiter({ clearing }, threadId) {
-  const keepClearing = game.board.locate(Piece[Faction.marquise].keep);
-  const distance = game.board.clearingDistance(clearing, keepClearing);
+  const keepClearing = this.game.board.locate(Piece[Faction.marquise].keep);
+  const distance = this.game.board.clearingDistance(clearing, keepClearing);
   if (distance > 1) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
@@ -54,8 +54,16 @@ async function * placeRecruiter({ clearing }, threadId) {
 }
 
 export default async function * setupMarquise() {
-  yield * accept.call(this, placeKeep);
-  yield * accept.call(this, placeSawmill);
-  yield * accept.call(this, placeWorkshop);
-  yield * accept.call(this, placeRecruiter);
+  if (this.game.factionData[Faction.marquise][Piece[Faction.marquise].keep.name]) {
+    yield * accept.call(this, placeKeep);
+  }
+  if (this.game.factionData[Faction.marquise][Piece[Faction.marquise].sawmill.name] === 6) {
+    yield * accept.call(this, placeSawmill);
+  }
+  if (this.game.factionData[Faction.marquise][Piece[Faction.marquise].workshop.name] === 6) {
+    yield * accept.call(this, placeWorkshop);
+  }
+  if (this.game.factionData[Faction.marquise][Piece[Faction.marquise].recruiter.name] === 6) {
+    yield * accept.call(this, placeRecruiter);
+  }
 }

@@ -1,5 +1,4 @@
-import { setRejectionHandler, accept } from '../model/Acceptor';
-import Rejection from '../model/Rejection';
+import { setRejectionHandler } from '../model/Acceptor';
 import identify from './identify';
 import chooseGame from './chooseGame';
 import lobby, { Leave } from './lobby';
@@ -8,7 +7,6 @@ import {
   acceptor as acceptorStore,
   game as gameStore,
   rejection as rejectionStore,
-  screen,
 } from '../store';
 
 async function * game () {
@@ -40,6 +38,9 @@ export default async function (client) {
   let { done, value: acceptor } = await instance.next();
   acceptorStore.set(acceptor);
   for await (const message of client) {
+    if (message.type === 'update') {
+      gameStore.set(message.data);
+    }
     if (acceptor.accepts(message)) {
       rejectionStore.set(null);
       acceptorStore.set(null);
