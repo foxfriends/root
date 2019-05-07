@@ -12,6 +12,10 @@ class Card {
   get key() {
     return `${this.suit}-${this.name}`;
   }
+
+  toJSON() {
+    return { ...this, key: this.key };
+  }
 }
 
 const Cards = [

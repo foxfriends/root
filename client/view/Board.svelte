@@ -2,26 +2,23 @@
 import { game, username } from '../store';
 import mapImages from '../image/map-*.jpg';
 import tokenImages from '../image/token/token.*.png';
-import FactionPicker from './FactionPicker.svelte';
 import Clearing from './Clearing.svelte';
 import Token from './Token.svelte';
 import Prompts from './Prompts.svelte';
 
 let background;
-let boardWidth;
-let boardHeight;
-let windowWidth;
-let windowHeight;
+let boardWidth, boardHeight;
+export let tableWidth, tableHeight;
 
 const maxScale = 1;
 let targetScale = 0;
-$: minScale = Math.max(windowWidth / boardWidth, windowHeight / boardHeight);
+$: minScale = Math.max(tableWidth / boardWidth, tableHeight / boardHeight);
 $: scale = Math.min(Math.max(minScale, targetScale), maxScale);
 
 let targetPan = { x: 0, y: 0 };
 $: pan = {
-  x: Math.floor(Math.min(Math.max(0, targetPan.x), boardWidth * scale - windowWidth)),
-  y: Math.floor(Math.min(Math.max(0, targetPan.y), boardHeight * scale - windowHeight)),
+  x: Math.floor(Math.min(Math.max(0, targetPan.x), boardWidth * scale - tableWidth)),
+  y: Math.floor(Math.min(Math.max(0, targetPan.y), boardHeight * scale - tableHeight)),
 };
 
 function setInitialViewport() {
@@ -88,13 +85,6 @@ export let client;
     <Prompts {client} />
   </div>
 </div>
-{#if $game.players[$username].faction === null}
-  <FactionPicker {client} />
-{/if}
-
-<svelte:window
-  bind:innerWidth={windowWidth}
-  bind:innerHeight={windowHeight} />
 
 <style>
 .container {

@@ -18,6 +18,7 @@ enter = Enter
 cancel = Cancel
 ready = Ready
 select = Select
+empty = Empty
 loading = Loading...
 connecting = Connecting...
 

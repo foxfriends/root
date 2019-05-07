@@ -2,7 +2,7 @@
 import { screen } from './store';
 import Client from './model/Client';
 import Cover from './view/Cover.svelte';
-import Board from './view/Board.svelte';
+import Table from './view/Table.svelte';
 
 export let client;
 </script>
@@ -10,5 +10,5 @@ export let client;
 {#if $screen === 'cover'}
   <Cover {client}/>
 {:else if $screen === 'board'}
-  <Board {client}/>
+  <Table {client}/>
 {/if}
