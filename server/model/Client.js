@@ -19,7 +19,10 @@ export default class Client {
         if (message.type === 'reject' || message.type === 'error') {
           // notify direct response
           const [,callback] = this.callbacks.get(message.threadId) || [];
-          if (callback) { callback(message.type === 'reject' ? new Rejection(message.threadId, message.data, true) : new Error(message.data)); }
+          if (callback) {
+            console.log(`Response received (${message.threadId}): ${message.type}`);
+            callback(message.type === 'reject' ? new Rejection(message.threadId, message.data, true) : new Error(message.data));
+          }
           // notify watchers
           const { watchers } = this;
           this.watchers = [];
@@ -27,7 +30,10 @@ export default class Client {
         } else {
           // notify direct response
           const [callback] = this.callbacks.get(message.threadId) || [];
-          if (callback) { callback(message.data); }
+          if (callback) {
+            console.log(`Response received (${message.threadId}): ${message.type}`);
+            callback(message.data);
+          }
           // notify watchers
           const { watchers } = this;
           this.watchers = [];
@@ -69,6 +75,7 @@ export default class Client {
     return {
       then: (...args) => {
         timer = setTimeout(() => {
+          const [, reject] = this.callbacks.get(threadId);
           this.callbacks.delete(threadId);
           reject(new Timeout);
         }, timeout);
@@ -79,6 +86,7 @@ export default class Client {
   }
 
   respond(threadId, type, data) {
+    console.log(`Responding (${threadId}): ${type}`);
     this.socket.send(JSON.stringify({
       threadId,
       type: type || 'response',

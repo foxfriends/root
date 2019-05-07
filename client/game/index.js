@@ -38,9 +38,6 @@ export default async function (client) {
   let { done, value: acceptor } = await instance.next();
   acceptorStore.set(acceptor);
   for await (const message of client) {
-    if (message.type === 'update') {
-      gameStore.set(message.data);
-    }
     if (acceptor.accepts(message)) {
       rejectionStore.set(null);
       acceptorStore.set(null);

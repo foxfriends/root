@@ -24,6 +24,7 @@ async function * placeKeep({ clearing }, threadId) {
     throw new InvalidClearingForKeep(threadId);
   }
   this.game.factionData[Faction.marquise].placeKeep(this.game, clearing);
+  this.respond(threadId, 'update', this.game);
 }
 
 async function * placeSawmill({ clearing }, threadId) {
@@ -33,6 +34,7 @@ async function * placeSawmill({ clearing }, threadId) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
   this.game.factionData[Faction.marquise].placeBuilding(this.game, clearing, Piece[Faction.marquise].sawmill, threadId);
+  this.respond(threadId, 'update', this.game);
 }
 
 async function * placeWorkshop({ clearing }, threadId) {
@@ -42,6 +44,7 @@ async function * placeWorkshop({ clearing }, threadId) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
   this.game.factionData[Faction.marquise].placeBuilding(this.game, clearing, Piece[Faction.marquise].workshop, threadId);
+  this.respond(threadId, 'update', this.game);
 }
 
 async function * placeRecruiter({ clearing }, threadId) {
@@ -51,6 +54,7 @@ async function * placeRecruiter({ clearing }, threadId) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
   this.game.factionData[Faction.marquise].placeBuilding(this.game, clearing, Piece[Faction.marquise].recruiter, threadId);
+  this.respond(threadId, 'update', this.game);
 }
 
 export default async function * setupMarquise() {

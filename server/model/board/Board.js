@@ -40,7 +40,7 @@ export default class Board {
     while (current !== null && current !== end) {
       visited[current] = true;
       const neighbours = [];
-      for (const [f, t] of paths) {
+      for (const [f, t] of this.paths) {
         if (f === current || t === current) {
           const other = f === current ? t : f;
           if (!visited[other]) { neighbours.push(other); }

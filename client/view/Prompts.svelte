@@ -1,5 +1,5 @@
 <script>
-import { game, username, prompts } from '../store';
+import { game, username, prompts, acceptor } from '../store';
 import Message from '../model/Message';
 import ClearingPrompt from './ClearingPrompt.svelte';
 
@@ -10,12 +10,12 @@ function notify(clearing) {
 }
 </script>
 
-{#if $prompts}
+{#if $prompts && $acceptor}
   {#if $prompts.clearings}
-    {#each $prompts.clearings as prompted}
+    {#each $prompts.clearings as clearing}
       <ClearingPrompt
-        {...$game.board.clearings[prompted]}
-        on:click={() => notify(prompted)} />
+        {...clearing}
+        on:click={() => notify(clearing)} />
     {/each}
   {/if}
 {/if}

@@ -16,7 +16,8 @@ class NoMoreSlots extends Rejection {
 }
 
 export default class Clearing {
-  constructor(x, y, suit, slots = [], isCorner = false, acrossCorner = null) {
+  constructor(index, x, y, suit, slots = [], isCorner = false, acrossCorner = null) {
+    this.index = index;
     this.x = x;
     this.y = y;
     this.suit = suit;

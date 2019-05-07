@@ -28,6 +28,38 @@ const Pieces = {
     workshop: new Piece(Faction.marquise, 'workshop'),
     recruiter: new Piece(Faction.marquise, 'recruiter'),
   },
+  [Faction.eyrie]: {
+    roost: new Piece(Faction.eyrie, 'roost'),
+    warrior: new Piece(Faction.eyrie, 'warrior'),
+  },
+  [Faction.alliance]: {
+    sympathy: new Piece(Faction.alliance, 'sympathy'),
+    base_fox: new Piece(Faction.alliance, 'base_fox'),
+    base_rabbit: new Piece(Faction.alliance, 'base_rabbit'),
+    base_mouse: new Piece(Faction.alliance, 'base_mouse'),
+    warrior: new Piece(Faction.alliance, 'warrior'),
+  },
+  [Faction.vagabond]: {
+    warrior: new Piece(Faction.vagabond, 'warrior'),
+  },
+  [Faction.vagabond2]: {
+    warrior: new Piece(Faction.vagabond2, 'warrior'),
+  },
+  [Faction.cult]: {
+    warrior: new Piece(Faction.cult, 'warrior'),
+    garden_fox: new Piece(Faction.cult, 'garden_fox'),
+    garden_rabbit: new Piece(Faction.cult, 'garden_rabbit'),
+    garden_mouse: new Piece(Faction.cult, 'garden_mouse'),
+  },
+  [Faction.riverfolk]: {
+    warrior: new Piece(Faction.riverfolk, 'warrior'),
+    trade_post_fox: new Piece(Faction.riverfolk, 'trade_post_fox'),
+    trade_post_rabbit: new Piece(Faction.riverfolk, 'trade_post_rabbit'),
+    trade_post_mouse: new Piece(Faction.riverfolk, 'trade_post_mouse'),
+  },
+  [Faction.marquise_bot]: {
+    warrior: new Piece(Faction.marquise_bot, 'warrior'),
+  },
   ruin: new Piece(null, 'ruin'),
 }
 

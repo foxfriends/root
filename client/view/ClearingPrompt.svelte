@@ -3,7 +3,7 @@ export let x;
 export let y;
 </script>
 
-<div class='circle' style={`left: ${x}px; top: ${y}px`} on:click/>
+<div class='circle' style={`left: ${x}px; top: ${y}px`} on:click />
 
 <style>
 .circle {
