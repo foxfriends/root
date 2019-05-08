@@ -30,7 +30,7 @@ export let client;
 
 <div class='cover'>
   {#if client}
-    <div class='contents' transition:fly='{{ delay: 250, y: -100, duration: 2000 }}'>
+    <div class='contents' in:fly='{{ delay: 250, y: -100, duration: 2000 }}'>
       <img src={logo} />
       {#if !$username}
         <IdentificationForm {client} />

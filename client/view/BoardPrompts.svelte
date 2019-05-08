@@ -19,3 +19,12 @@ function notify(clearing) {
     {/each}
   {/if}
 {/if}
+
+<style>
+.text {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+</style>

@@ -4,7 +4,7 @@ import mapImages from '../image/map-*.jpg';
 import tokenImages from '../image/token/token.*.png';
 import Clearing from './Clearing.svelte';
 import Token from './Token.svelte';
-import Prompts from './Prompts.svelte';
+import BoardPrompts from './BoardPrompts.svelte';
 
 let background;
 let boardWidth, boardHeight;
@@ -82,7 +82,7 @@ export let client;
         y={$game.board.itemSlots[item.name][$game.items.slice(0, index).filter(i => i.name === item.name).length].y}
         radius={31} />
     {/each}
-    <Prompts {client} />
+    <BoardPrompts {client} />
   </div>
 </div>
 

@@ -10,6 +10,7 @@ export default async function * setupMarquise() {
   let keepClearing = locate.call(get(game).board, Piece[Faction.marquise].keep);
   if (!keepClearing) {
     prompts.set({
+      text: 'prompt-place-keep',
       clearings: get(game).board.clearings
         .filter(clearing => clearing.isCorner)
     });

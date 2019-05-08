@@ -3,6 +3,7 @@ import { game, username } from '../store';
 import Board from './Board.svelte';
 import PlayArea from './PlayArea.svelte';
 import FactionPicker from './FactionPicker.svelte';
+import TablePrompts from './TablePrompts.svelte';
 
 let windowWidth, windowHeight;
 $: boardHeight = windowHeight;
@@ -19,8 +20,10 @@ let expanded = false;
   <div class='play-area' class:expanded>
     <PlayArea tableWidth={boardWidth} tableHeight={boardHeight} {client} />
   </div>
+  <div class='prompts'>
+    <TablePrompts />
+  </div>
 </div>
-
 {#if $game.players[$username].faction === null}
   <FactionPicker {client} />
 {/if}
@@ -49,6 +52,7 @@ let expanded = false;
   left: 100%;
   top: 0;
   bottom: 0;
+  z-index: 1;
   width: calc(100% - 350px);
   transform: translateX(-350px);
   transition: transform 0.2s;
@@ -56,7 +60,14 @@ let expanded = false;
 }
 
 .play-area:hover, .play-area.expanded {
-  z-index: 1;
   transform: translateX(-100%);
+}
+
+.prompts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
 }
 </style>
