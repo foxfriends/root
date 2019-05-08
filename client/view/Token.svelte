@@ -3,22 +3,22 @@ export let image;
 export let x;
 export let y;
 export let radius = 20;
+export let scale = 1;
 export let square = false;
 export let round = false;
 </script>
 
 {#if square}
   <div class='token square'
-    style={`background-image: url(${image}); left: ${x}px; top: ${y}px; border-radius: ${radius}px`} />
+    style={`background-image: url(${image}); left: ${x}px; top: ${y}px; border-radius: ${radius}px; transform: translate(-50%, -50%) scale(${scale})`} />
 {:else if round}
   <div class='token round'
-    style={`background-image: url(${image}); left: ${x}px; top: ${y}px;`} />
+  style={`background-image: url(${image}); left: ${x}px; top: ${y}px; transform: translate(-50%, -50%) scale(${scale})`} />
 {/if}
 
 <style>
 .token {
   position: absolute;
-  transform: translate(-50%, -50%);
   pointer-events: none;
   user-select: none;
     box-shadow:

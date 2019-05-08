@@ -25,6 +25,10 @@ export default async function * setupMarquise() {
   const sawmillClearing = locate.call(get(game).board, Piece[Faction.marquise].sawmill);
   if (!sawmillClearing) {
     prompts.set({
+      text: {
+        key: 'prompt-place-building',
+        params: { building: 'marquise-sawmill' },
+      },
       clearings: borrow(game)(game => {
         return game.board.clearings
           .filter(clearing =>
@@ -46,6 +50,10 @@ export default async function * setupMarquise() {
   const workshopClearing = locate.call(get(game).board, Piece[Faction.marquise].workshop);
   if (!workshopClearing) {
     prompts.set({
+      text: {
+        key: 'prompt-place-building',
+        params: { building: 'marquise-workshop' },
+      },
       clearings: borrow(game)(game =>
         game.board.clearings
           .filter(clearing =>
@@ -67,6 +75,10 @@ export default async function * setupMarquise() {
   const recruiterClearing = locate.call(get(game).board, Piece[Faction.marquise].recruiter);
   if (!recruiterClearing) {
     prompts.set({
+      text: {
+        key: 'prompt-place-building',
+        params: { building: 'marquise-recruiter' },
+      },
       clearings: borrow(game)(game =>
         game.board.clearings
           .filter(clearing =>

@@ -4,12 +4,15 @@ import Faction from '../../model/Faction';
 import { game, username } from '../../store';
 import update from '../update';
 import setupMarquise from './marquise';
+import setupEyrie from './eyrie';
 
 async function * setupFaction(faction) {
   switch (faction) {
     case Faction.marquise:
       yield * setupMarquise.call(this);
       return;
+    case Faction.eyrie:
+      yield * setupEyrie.call(this);
     default:
       throw new Error('unimplemented');
   }

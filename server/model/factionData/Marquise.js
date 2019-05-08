@@ -44,6 +44,7 @@ export default class Marquise {
       throw new NoMorePieces(threadId, building);
     }
     game.board.clearings[clearing].addBuilding(building, threadId);
+    --this[building.name];
     game.notify();
   }
 }

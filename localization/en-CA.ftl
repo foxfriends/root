@@ -88,7 +88,7 @@ marquise-recruiter = { $quantity ->
 }
 
 prompt-place-keep = Place the keep in a corner clearing
-prompt-place-building = Place a { $building } near the keep
+prompt-place-building = Place a { REF($building, quantity: 1) } near the keep
 
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
