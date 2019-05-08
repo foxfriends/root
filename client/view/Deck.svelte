@@ -1,5 +1,5 @@
 <script>
-export let cardBack;
+export let cardImage;
 export let cardCount;
 
 const color = [
@@ -13,7 +13,7 @@ $: boxShadow = new Array(Math.floor(cardCount / 2)).fill(0)
 </script>
 
 {#if cardCount}
-  <div class='card' style={`background-image: url(${cardBack}); box-shadow: ${boxShadow}; transform: translateY(-${cardCount / 2}px)`} />
+  <div class='card' style={`background-image: url(${cardImage}); box-shadow: ${boxShadow}; transform: translateY(-${cardCount / 2}px)`} />
 {:else}
   <div class='card empty'>
     <Text text='empty' />

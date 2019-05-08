@@ -87,6 +87,11 @@ marquise-recruiter = { $quantity ->
   [one] Recruiter
 }
 
+eyrie-leader-despot = Despot
+eyrie-leader-charismatic = Charismatic
+eyrie-leader-commander = Commander
+eyrie-leader-builder = Builder
+
 prompt-place-keep = Place the keep in a corner clearing
 prompt-place-building = Place a { REF($building, quantity: 1) } near the keep
 
@@ -102,3 +107,4 @@ rejection-invalid-clearing-for-keep = The keep must go in a corner clearing.
 rejection-invalid-clearing-for-starting-building = Starting buildings must be at or adjacent to the keep.
 rejection-no-more-pieces = There are no more { REF($piece, quantity: 0) } to be placed.
 rejection-no-more-slots = There are no more slots for building in this clearing.
+rejection-leader-unavailable = The { REF($leader) } is currently unavailable.

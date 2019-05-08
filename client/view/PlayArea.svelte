@@ -19,7 +19,7 @@ export let client;
 <div class='table'>
   <div class='shared'>
     <div class='shared-deck'>
-      <Deck {cardBack} cardCount={$game.cards} />
+      <Deck cardImage={cardBack} cardCount={$game.cards} />
     </div>
     <div class='discards-deck'>
       <Pile cards={$game.discards.map(cardImage)} />
@@ -28,7 +28,7 @@ export let client;
   <div class='pager'>
     {#each $game.factions as faction, i}
       <div class='page' style={`transform: translateX(${i * 100}%)`}>
-        <FactionCard {faction} {client} />
+        <FactionCard faction={'eyrie'} {client} />
       </div>
     {/each}
   </div>
