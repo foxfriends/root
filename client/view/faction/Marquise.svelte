@@ -26,7 +26,6 @@ $: tile = { x: 2032 * scale, y: 754 * scale };
 
 <style>
 .board {
-  margin: 0 20px 20px 20px;
   position: relative;
   background-image: url('../../image/card-marquise-front.jpg');
   background-size: contain;

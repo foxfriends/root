@@ -1,4 +1,5 @@
 import Faction from '../Faction';
+import Game from '../Game';
 import { Card } from '../Card';
 import { Item } from '../Item';
 
@@ -33,5 +34,15 @@ export default class Alliance {
     this.victoryPoints = 0;
     this.craftedItems = [];
     this.dominance = null;
+  }
+
+  drawSupporter(game: Game, count: number = 1) {
+    const cards = game.takeCards(count);
+    this.supporters.push(...cards);
+    game.notify();
+  }
+
+  addSupporter(card: Card) {
+    this.supporters.push(card);
   }
 }

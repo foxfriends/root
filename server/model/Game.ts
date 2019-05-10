@@ -138,11 +138,11 @@ export default class Game {
     /** The current turn number, negative for setup, or null if not started */
     this.turn = null;
     /** The cards still in the deck */
-    this.cards = [...Cards];
+    this.cards = shuffle([...Cards]);
     /** The cards that have been discarded */
     this.discards = [];
     /** The unturned quests */
-    this.quests = [...Quests];
+    this.quests = shuffle([...Quests]);
     /** The items ready for pickup */
     this.items = [...Items];
     /** The active quests */
@@ -256,6 +256,26 @@ export default class Game {
 
   nextTurn() {
     ++this.turn!;
+    this.notify();
+  }
+
+  takeCards(count: number = 1): Card[] {
+    const drawn = this.cards.splice(0, count);
+    if (drawn.length !== count) {
+      this.cards = shuffle(this.discards);
+      this.discards = [];
+      return [...drawn, ...this.takeCards(count - drawn.length)];
+    }
+    return drawn;
+  }
+
+  drawCard(faction: keyof typeof Faction, count: number = 1) {
+    const factionData = this.factionData[faction];
+    if (factionData instanceof MarquiseBot) {
+      throw new Error('Mechanical Marquise cannot draw cards');
+    }
+    const cards = this.takeCards(count);
+    factionData.hand.push(...cards)
     this.notify();
   }
 

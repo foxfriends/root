@@ -3,8 +3,8 @@ import { accept } from '../../model/Acceptor';
 import Faction from '../../model/Faction';
 import { game, username } from '../../store';
 import update from '../update';
-import setupMarquise from './marquise';
 import setupEyrie from './eyrie';
+import setupMarquise from './marquise';
 import Client from '../../model/Client';
 
 async function * setupFaction(this: Client, faction: string) {
@@ -14,6 +14,12 @@ async function * setupFaction(this: Client, faction: string) {
       break;
     case Faction.eyrie:
       yield * setupEyrie.call(this);
+      break;
+    case Faction.alliance:
+      // they don't do anything
+      break;
+    case Faction.vagabond:
+    case Faction.vagabond2:
       break;
     default:
       throw new Error('unimplemented');
@@ -26,7 +32,6 @@ export default async function * setup (this: Client) {
     const g = get(game)!;
     const myFaction = g.players[get(username)!].faction;
     const currentFaction = g.factions[g.turn! + g.factions.length];
-    console.log(currentFaction);
     if (currentFaction === myFaction) {
       yield * setupFaction.call(this, currentFaction);
     } else {

@@ -8,6 +8,7 @@ import Deck from './Deck.svelte';
 import Pile from './Pile.svelte';
 
 let focusedPlayer = get(username);
+$: focusedIndex = $game.factions.indexOf($game.players[focusedPlayer].faction);
 
 function cardImage({ key }) {
   return cardImages[key];
@@ -26,9 +27,9 @@ export let client;
     </div>
   </div>
   <div class='pager'>
-    {#each $game.factions as faction, i}
-      <div class='page' style={`transform: translateX(${i * 100}%)`}>
-        <FactionCard faction={'eyrie'} {client} />
+    {#each $game.factions as faction, i (faction)}
+      <div class='page' style={`transform: translateX(${(i - focusedIndex) * 100}%); opacity: ${focusedIndex === i ? 1 : 0}`}>
+        <FactionCard {faction} {client} />
       </div>
     {/each}
   </div>
@@ -61,7 +62,10 @@ export let client;
 
 .page {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  transition: opacity 0.2s, transform 0.2s;
 }
 </style>

@@ -18,7 +18,9 @@ export let faction, client;
 
 <style>
 .play-area {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+  padding: 0 20px 20px 20px;
 }
 </style>

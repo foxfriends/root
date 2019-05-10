@@ -22,11 +22,9 @@ async function * game (this: Client) {
 export default async function (client: Client) {
   const instance = game.call(client);
   let { done, value: acceptor } = await instance.next();
-  console.log(acceptor.description());
   for await (const message of client) {
     if (acceptor.accepts(message)) {
       ({ done, value: acceptor } = await instance.next(message));
-      console.log(acceptor.description());
       if (done) { break; }
     }
   }

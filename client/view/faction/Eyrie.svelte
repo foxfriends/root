@@ -11,7 +11,7 @@ let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
 $: dx = 159 * scale;
 $: tile = { x: 2085 * scale, y: 806 * scale };
-$: card = { x: 1654 * scale, y: 972 * scale };
+$: card = { x: 1654 * scale, y: 976 * scale };
 </script>
 
 <div class='board' bind:clientWidth={width} bind:clientHeight={height}>
@@ -19,7 +19,7 @@ $: card = { x: 1654 * scale, y: 972 * scale };
     <Token square image={images[Piece[Faction.eyrie].roost.key]} x={tile.x - dx * i} y={tile.y} {scale} />
   {/each}
   {#if $game.factionData[Faction.eyrie].leader}
-    <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px) scale(${scale})`}>
+    <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
       <Deck cardImage={leaderImages[$game.factionData[Faction.eyrie].leader]} cardCount={1} />
     </div>
   {/if}
@@ -27,7 +27,6 @@ $: card = { x: 1654 * scale, y: 972 * scale };
 
 <style>
 .board {
-  margin: 0 20px 20px 20px;
   position: relative;
   background-image: url('../../image/card-eyrie-front.jpg');
   background-size: contain;
@@ -41,8 +40,6 @@ $: card = { x: 1654 * scale, y: 972 * scale };
   position: absolute;
   left: 0;
   top: 0;
-  width: 517px;
-  height: 702px;
   transform-origin: top left;
 }
 </style>

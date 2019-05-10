@@ -73,13 +73,15 @@ export async function * accept (this: Client, ...spec: Handler[]) {
   const acceptor = new Acceptor(spec);
   for (;;) {
     try {
-      return yield * acceptor.accept(this, yield acceptor);
+      return await (yield * acceptor.accept(this, yield acceptor));
     } catch (e) {
       if (e instanceof Rejection) {
         if (e.remote) {
+          console.warn('Rejected:', e)
           // remote rejections need to be reported to the user
           rejectionHandler(e);
         } else {
+          console.log('Rejecting:', e)
           // local rejections need to be reported to the remote
           this.reject(e.threadId, e.message);
         }

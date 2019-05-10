@@ -11,13 +11,13 @@ const color = [
   'rgb(182, 176, 150)'
 ];
 
-$: boxShadow = new Array(Math.floor(cardCount / 2)).fill(0)
+$: boxShadow = new Array(Math.ceil(cardCount / 2)).fill(0)
   .map((_, i) => `0 ${i + 1}px 0 ${color[i % 2]}`)
   .join(',');
 </script>
 
 {#if cardCount}
-  <div class='card' style={`background-image: url(${cards[card.length - 1]}); box-shadow: ${boxShadow}; transform: translateY(-${cardCount / 2}px)`} />
+  <div class='card' style={`background-image: url(${cards[card.length - 1]}); box-shadow: ${boxShadow}; transform: translateY(-${Math.ceil(cardCount / 2)}px)`} />
 {:else}
   <div class='card empty'>
     <Text text='empty' />
@@ -25,6 +25,7 @@ $: boxShadow = new Array(Math.floor(cardCount / 2)).fill(0)
 {/if}
 
 <style>
+/* dedup */
 .card {
   display: flex;
   align-items: center;

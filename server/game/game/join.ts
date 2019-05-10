@@ -31,7 +31,6 @@ export default async function * join (this: Client, { name }: { name: string }, 
   if (typeof game.turn !== 'number') {
     // if game is not yet started, enter lobby until everyone is ready
     while (!game.allReady) {
-      console.log(`${this.username}: ${game.allReady}`);
       yield * accept.call(this, leave, ready, unready, 'gameUpdated');
       this.send('update', game);
     }

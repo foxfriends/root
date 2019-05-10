@@ -45,8 +45,6 @@ export default async function (client: Client) {
       ({ done, value: acceptor } = await instance.next(message));
       if (done) { break; }
       acceptorStore.set(acceptor);
-    } else {
-      console.log(`skipping ${message.type}`);
     }
   }
 }

@@ -34,22 +34,25 @@ export default class Client {
         const message = new Message(data);
         if (message.type === 'reject' || message.type === 'error') {
           // notify direct response
+          const error = message.type === 'reject' ? new Rejection(message.threadId, message.data, true) : new Error(message.data);
           const [,callback]: OptionalCallbacks = this.callbacks.get(message.threadId) || [];
           if (callback) {
             console.log(`Response received (${message.threadId}): ${message.type}`);
-            callback(message.type === 'reject' ? new Rejection(message.threadId, message.data, true) : new Error(message.data));
+            callback(error);
+          } else {
+            // notify watchers
+            this.throw(error);
           }
-          // notify watchers
-          this.throw(message);
         } else {
           // notify direct response
           const [callback]: OptionalCallbacks = this.callbacks.get(message.threadId) || [];
           if (callback) {
             console.log(`Response received (${message.threadId}): ${message.type}`);
             callback(message.data);
+          } else {
+            // notify watchers
+            this.notify(message);
           }
-          // notify watchers
-          this.notify(message);
         }
       } catch (e) {
         console.error(data, e);
@@ -77,14 +80,15 @@ export default class Client {
       }));
     });
     return {
-      then: (handler: (msg: any) => void) => {
+      // don't care about these args, just pass to .then
+      then: async (...args: any[]) => {
         timer = setTimeout(() => {
           const [, reject] = this.callbacks.get(threadId)!;
           this.callbacks.delete(threadId);
           reject(new Timeout);
         }, timeout);
         this.callbacks.set(threadId, callbacks);
-        return promise.then(handler)
+        return promise.then(...args);
       }
     };
   }
