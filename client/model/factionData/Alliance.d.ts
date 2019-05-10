@@ -1,0 +1,1 @@
+../../../server/model/factionData/Alliance.d.ts

@@ -1,6 +1,6 @@
-const GameMap = {
-  forest: 'forest',
-  winter: 'winter',
+enum GameMap {
+  forest = 'forest',
+  winter = 'winter',
 };
 
 export default GameMap;

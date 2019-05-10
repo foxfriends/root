@@ -24,10 +24,16 @@ import Vagabond from './factionData/Vagabond';
 
 type Assignment = 'auto' | 'manual';
 export type Settings = {
-  factions?: string[],
+  factions?: Faction[],
   assignment?: Assignment,
-  map?: string,
+  map?: GameMap,
 };
+
+class PoorManualDexterity extends Error {
+  constructor() {
+    super('The Mechanical Marquise cannot draw cards');
+  }
+}
 
 class UnsupportedSettings extends Error {
   constructor(settings: Settings) {
@@ -72,7 +78,7 @@ class GameAlreadyStarted extends Rejection {
 }
 
 class IllegalFaction extends Rejection {
-  constructor(threadId: string, faction: string) {
+  constructor(threadId: string, faction: Faction) {
     super(threadId, {
       key: 'rejection-illegal-faction',
       params: { faction },
@@ -81,7 +87,7 @@ class IllegalFaction extends Rejection {
 }
 
 class FactionTaken extends Rejection {
-  constructor(threadId: string, faction: string, playerName: string) {
+  constructor(threadId: string, faction: Faction, playerName: string) {
     super(threadId, {
       key: 'rejection-faction-taken',
       params: { faction, playerName },
@@ -94,7 +100,7 @@ export default class Game {
   assignment: Assignment;
   _clients: { [id: string]: string };
   playerNames: string[];
-  factions: string[];
+  factions: Faction[];
   factionData: {
     marquise: Marquise,
     eyrie: Eyrie,
@@ -105,7 +111,7 @@ export default class Game {
     riverfolk: Riverfolk,
     marquise_bot: MarquiseBot,
   };
-  players: { [faction: string]: Player };
+  players: { [username: string]: Player };
   turn: number | null;
   cards: Card[];
   discards: Card[];
@@ -129,7 +135,7 @@ export default class Game {
     this.factions = factions;
     /** Faction data for the factions above */
     this.factionData = <any> factions // casting because this is cool
-      .map(createFaction)
+      .map(faction => createFaction(faction))
       .reduce((collection, faction) => Object.assign(collection, { [faction.faction]: faction }), {});
     /** How players are to be assigned factions (auto or manual) */
     this.assignment = assignment;
@@ -234,11 +240,22 @@ export default class Game {
           this.players[this.playerNames[i]].faction = factions[i];
         }
       }
+      for (const faction of this.factions) {
+        try {
+          this.drawCard(faction, 3);
+        } catch (e) {
+          if (e instanceof PoorManualDexterity) {
+            // this is expected
+            continue;
+          }
+          throw e;
+        }
+      }
     }
     this.notify();
   }
 
-  setFaction(client: Client, faction: string, threadId: string) {
+  setFaction(client: Client, faction: Faction, threadId: string) {
     if (!this.players[client.username]) {
       throw new InvalidPlayer(threadId, this.name, client.username);
     }
@@ -269,10 +286,10 @@ export default class Game {
     return drawn;
   }
 
-  drawCard(faction: keyof typeof Faction, count: number = 1) {
+  drawCard(faction: Faction, count: number = 1) {
     const factionData = this.factionData[faction];
     if (factionData instanceof MarquiseBot) {
-      throw new Error('Mechanical Marquise cannot draw cards');
+      throw new PoorManualDexterity;
     }
     const cards = this.takeCards(count);
     factionData.hand.push(...cards)
@@ -293,5 +310,16 @@ export default class Game {
     object.cards = this.cards.length;
     object.quests = this.quests.length;
     return object;
+  }
+
+  batchUpdates(handler: () => {}) {
+    const { notify } = this;
+    this.notify = () => {};
+    try {
+      handler();
+    } finally {
+      this.notify = notify;
+      this.notify();
+    }
   }
 }

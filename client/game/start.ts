@@ -1,5 +1,6 @@
 import { get } from 'svelte/store';
 import { accept } from '../model/Acceptor';
+import Faction from '../model/Faction';
 import Client from '../model/Client';
 import { game, username, screen } from '../store';
 import setup from './setup';
@@ -8,15 +9,15 @@ import update from './update';
 
 export default async function * start (this: Client) {
   screen.set('board');
-  while (!get(game).players[get(username)].faction) {
+  while (!get(game)!.players[get(username)!].faction) {
     yield * accept.call(this,
       update,
-      { type: 'FactionPicker:chooseFaction', async * handler ({ faction }) {
+      { type: 'FactionPicker:chooseFaction', async * handler ({ faction }: { faction: Faction }) {
         return this.send('chooseFaction', { faction });
       }},
     );
   }
-  if (get(game).turn < 0) {
+  if (get(game)!.turn! < 0) {
     yield * setup.call(this);
   }
   yield * play.call(this);

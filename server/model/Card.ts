@@ -2,7 +2,7 @@ import Suit from './Suit';
 
 export class Card {
   constructor(
-    public suit: string,
+    public suit: Suit,
     public cost: string[] | null,
     public name: string,
     public isDominance = false,

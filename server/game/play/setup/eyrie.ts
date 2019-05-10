@@ -1,5 +1,6 @@
 import { accept } from '../../../model/Acceptor';
 import Piece from '../../../model/Piece';
+import Leader from '../../../model/Leader';
 import Client from '../../../model/Client';
 
 async function * placeEyrieWarriors(this: Client, clearingIndex: number, threadId: string): AsyncIterableIterator<void> {
@@ -12,7 +13,7 @@ async function * eyrieClearing(this: Client, { clearing }: { clearing: number },
   yield * placeEyrieWarriors.call(this, clearing, threadId);
 }
 
-async function * chooseLeader(this: Client, { leader }: { leader: string }, threadId: string) {
+async function * chooseLeader(this: Client, { leader }: { leader: Leader }, threadId: string) {
   this.game.factionData.eyrie.setLeader(this.game, leader, threadId);
   const keepClearing = this.game.board.locate(Piece.marquise.keep);
   if (keepClearing) {

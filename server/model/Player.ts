@@ -1,6 +1,8 @@
+import Faction from './Faction';
+
 export default class Player {
   ready: boolean;
-  faction: string | null;
+  faction: Faction | null;
 
   constructor(public username: string) {
     this.ready = false;

@@ -1,6 +1,7 @@
 import Rejection from '../Rejection';
 import Pieces, { Piece } from '../Piece';
 import Slot from './Slot';
+import Suit from '../Suit';
 import { Item } from '../Item';
 
 class NoRuins extends Error {
@@ -26,7 +27,7 @@ export default class Clearing {
     public index: number,
     public x: number,
     public y: number,
-    public suit: string,
+    public suit: Suit,
     public slots: Slot[] = [],
     public isCorner = false,
     public acrossCorner: number | null = null,

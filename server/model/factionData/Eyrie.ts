@@ -1,4 +1,4 @@
-import Leaders from '../Leader';
+import Leader from '../Leader';
 import Faction from '../Faction';
 import Rejection from '../Rejection';
 import Piece from '../Piece';
@@ -8,7 +8,7 @@ import { Item } from '../Item';
 import { NoMorePieces } from './rejections';
 
 class LeaderUnavailable extends Rejection {
-  constructor(threadId: string, leader: string) {
+  constructor(threadId: string, leader: Leader) {
     super(threadId, {
       key: 'rejection-leader-unavailable',
       params: { leader: `eyrie-leader-${leader}` },
@@ -36,7 +36,7 @@ export default class Eyrie {
   public roost: number;
   public warrior: number;
   public leader: string | null;
-  public leaders: string[];
+  public leaders: Leader[];
   public hand: Card[];
   public victoryPoints: number;
   public dominance: Card | null;
@@ -54,7 +54,7 @@ export default class Eyrie {
     this.roost = 7;
     this.warrior = 20;
     this.leader = null;
-    this.leaders = Object.values(Leaders);
+    this.leaders = Object.values(Leader);
     // common stuff
     this.hand = [];
     this.victoryPoints = 0;
@@ -62,14 +62,14 @@ export default class Eyrie {
     this.craftedItems = [];
   }
 
-  setLeader(game: Game, leader: string, threadId: string) {
+  setLeader(game: Game, leader: Leader, threadId: string) {
     if (!this.leaders.includes(leader)) {
       throw new LeaderUnavailable(threadId, leader);
     }
     this.leader = leader;
     this.leaders.splice(this.leaders.indexOf(leader), 1);
     if (!this.leaders.length) {
-      this.leaders = Object.values(Leaders);
+      this.leaders = Object.values(Leader);
       // TODO: check if this includes the one that is currently in use!
     }
     game.notify();

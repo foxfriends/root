@@ -1,8 +1,8 @@
-const Leader = {
-  charismatic: 'charismatic',
-  despot: 'despot',
-  builder: 'builder',
-  commander: 'commander',
+enum Leader {
+  charismatic = 'charismatic',
+  despot = 'despot',
+  builder = 'builder',
+  commander = 'commander',
 };
 
 export default Leader;

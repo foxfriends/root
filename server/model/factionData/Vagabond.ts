@@ -1,8 +1,8 @@
+import Faction from '../Faction';
 import { Item } from '../Item'
 import { Card } from '../Card'
 
 export default class Vagabond {
-  faction: string;
   character: string | null;
   items: {
     refreshed: Item[],
@@ -21,8 +21,7 @@ export default class Vagabond {
   hand: Card[];
   victoryPoints: number;
 
-  constructor(faction: string) {
-    this.faction = faction;
+  constructor(public faction: Faction.vagabond | Faction.vagabond2) {
     this.character = null;
     this.items = {
       refreshed: [],

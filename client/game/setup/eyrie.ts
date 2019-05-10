@@ -2,6 +2,7 @@ import { get } from 'svelte/store';
 import { game, prompts } from '../../store';
 import { accept } from '../../model/Acceptor';
 import locate from '../../util/locate';
+import Leader from '../../model/Leader';
 import Piece from '../../model/Piece';
 import Leaders from '../../model/Leader';
 import Client from '../../model/Client';
@@ -19,7 +20,7 @@ export default async function * setupMarquise(this: Client) {
         : { available: false, image: back })
   });
   game.set(yield * accept.call(this,
-    { type: 'Prompts:card', async * handler ({ value }: { value: string }) {
+    { type: 'Prompts:card', async * handler ({ value }: { value: Leader }) {
       return this.send('chooseLeader', { leader: value });
     }},
   ));

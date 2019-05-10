@@ -7,7 +7,7 @@ import setupEyrie from './eyrie';
 import setupMarquise from './marquise';
 import Client from '../../model/Client';
 
-async function * setupFaction(this: Client, faction: string) {
+async function * setupFaction(this: Client, faction: Faction) {
   switch (faction) {
     case Faction.marquise:
       yield * setupMarquise.call(this);

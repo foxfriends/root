@@ -3,7 +3,7 @@ import { Item } from './Item';
 
 export class Quest {
   constructor(
-    public suit: string,
+    public suit: Suit,
     public name: string,
     public requirements: string[],
   ) {}
