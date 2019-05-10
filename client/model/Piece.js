@@ -1,1 +1,0 @@
-../../server/model/Piece.js

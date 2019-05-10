@@ -94,6 +94,7 @@ eyrie-leader-builder = Builder
 
 prompt-place-keep = Place the keep in a corner clearing
 prompt-place-building = Place a { REF($building, quantity: 1) } near the keep
+prompt-choose-leader = Choose your leader
 
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
@@ -105,6 +106,7 @@ rejection-illegal-faction = The { REF($faction, form: "long") } is not part of t
 rejection-faction-taken = The { REF($faction, form: "long") } has already been taken by { $playerName }.
 rejection-invalid-clearing-for-keep = The keep must go in a corner clearing.
 rejection-invalid-clearing-for-starting-building = Starting buildings must be at or adjacent to the keep.
-rejection-no-more-pieces = There are no more { REF($piece, quantity: 0) } to be placed.
 rejection-no-more-slots = There are no more slots for building in this clearing.
+rejection-no-more-pieces = You have no more { REF($piece, quantity: 0) }.
 rejection-leader-unavailable = The { REF($leader) } is currently unavailable.
+rejection-duplicate-roost = There is already a roost in this clearing.

@@ -21,7 +21,7 @@ let expanded = false;
     <PlayArea tableWidth={boardWidth} tableHeight={boardHeight} {client} />
   </div>
   <div class='prompts'>
-    <TablePrompts />
+    <TablePrompts {client} />
   </div>
 </div>
 {#if $game.players[$username].faction === null}

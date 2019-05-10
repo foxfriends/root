@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "parcel watch client/index.html --no-hmr --no-cache",
-    "serve": "node --experimental-modules server/index.js"
+    "serve": "tsc -p server; node server/index.js"
   },
   "repository": {
     "type": "git",
@@ -28,9 +28,17 @@
   },
   "homepage": "https://github.com/OinkIguana/root#readme",
   "devDependencies": {
+    "@types/fluent": "^0.11.0",
+    "@types/koa": "^2.0.48",
+    "@types/koa-compress": "^2.0.9",
+    "@types/koa-mount": "^3.0.1",
+    "@types/koa-static": "^4.0.1",
+    "@types/node": "^12.0.0",
+    "@types/uuid": "^3.4.4",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-svelte": "^3.0.0",
-    "svelte": "^3.1.0"
+    "svelte": "^3.1.0",
+    "typescript": "^3.4.5"
   },
   "dependencies": {
     "fluent": "^0.12.0",
@@ -39,6 +47,7 @@
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
     "koa-upgrade": "^1.0.1",
+    "tslib": "^1.9.3",
     "uuid": "^3.3.2"
   },
   "browserslist": [

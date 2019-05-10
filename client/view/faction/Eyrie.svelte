@@ -9,7 +9,7 @@ import Deck from '../Deck.svelte';
 
 let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
-$: dx = 174 * scale;
+$: dx = 159 * scale;
 $: tile = { x: 2085 * scale, y: 806 * scale };
 $: card = { x: 1654 * scale, y: 972 * scale };
 </script>
@@ -19,7 +19,7 @@ $: card = { x: 1654 * scale, y: 972 * scale };
     <Token square image={images[Piece[Faction.eyrie].roost.key]} x={tile.x - dx * i} y={tile.y} {scale} />
   {/each}
   {#if $game.factionData[Faction.eyrie].leader}
-    <div class='leaders' style={`transform: translate(${card.x}px, ${card.y}px) scale(${scale})`}>
+    <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px) scale(${scale})`}>
       <Deck cardImage={leaderImages[$game.factionData[Faction.eyrie].leader]} cardCount={1} />
     </div>
   {/if}
@@ -37,11 +37,12 @@ $: card = { x: 1654 * scale, y: 972 * scale };
   height: 100%;
 }
 
-.leaders {
+.leader {
   position: absolute;
   left: 0;
   top: 0;
   width: 517px;
   height: 702px;
+  transform-origin: top left;
 }
 </style>
