@@ -17,7 +17,7 @@ $: boxShadow = new Array(Math.ceil(cardCount / 2)).fill(0)
 </script>
 
 {#if cardCount}
-  <div class='card' style={`background-image: url(${cards[card.length - 1]}); box-shadow: ${boxShadow}; transform: translateY(-${Math.ceil(cardCount / 2)}px)`} />
+  <div class='card' style={`background-image: url(${cards[cards.length - 1]}); box-shadow: ${boxShadow}; transform: translateY(-${Math.ceil(cardCount / 2)}px)`} />
 {:else}
   <div class='card empty'>
     <Text text='empty' />

@@ -5,6 +5,7 @@ export default class ForestZone {
   public pieces: Piece[];
 
   constructor(
+    public index: number,
     public x: number,
     public y: number,
     public clearings: number[],

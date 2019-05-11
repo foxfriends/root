@@ -5,8 +5,12 @@ import ClearingPrompt from './ClearingPrompt.svelte';
 
 export let client;
 
-function notify(clearing) {
+function notifyClearing(clearing) {
   client.notify(Message.direct('Prompts:clearing', { clearing }));
+}
+
+function notifyForest(forest) {
+  client.notify(Message.direct('Prompts:forest', { forest }));
 }
 </script>
 
@@ -15,7 +19,14 @@ function notify(clearing) {
     {#each $prompts.clearings as clearing}
       <ClearingPrompt
         {...clearing}
-        on:click={() => notify(clearing)} />
+        on:click={() => notifyClearing(clearing)} />
+    {/each}
+  {/if}
+  {#if $prompts.forests}
+    {#each $prompts.forests as forest}
+      <ClearingPrompt
+        {...forest}
+        on:click={() => notifyForest(forest)} />
     {/each}
   {/if}
 {/if}
