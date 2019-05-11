@@ -1,6 +1,18 @@
 import Faction from '../Faction';
+import { Character } from '../Character';
+import Game from '../Game'
 import { Item } from '../Item'
 import { Card } from '../Card'
+import Rejection from '../Rejection';
+
+class CharacterAlreadyTaken extends Rejection {
+  constructor(threadId: string, character: Character) {
+    super(threadId, {
+      key: 'rejection-character-already-taken',
+      params: { character: `vagbond-character-${character.name}` },
+    })
+  }
+}
 
 export default class Vagabond {
   character: string | null;
@@ -45,5 +57,21 @@ export default class Vagabond {
     // common stuff
     this.hand = [];
     this.victoryPoints = 0;
+  }
+
+  setCharacter(game: Game, character: Character, threadId: string) {
+    const charactersTaken = [
+      game.factionData.vagabond && game.factionData.vagabond.character,
+      game.factionData.vagabond2 && game.factionData.vagabond2.character,
+    ];
+    if (this.character) {
+      throw new Error(`${this.faction} already has a character set`);
+    }
+    if (charactersTaken.includes(character.name)) {
+      throw new CharacterAlreadyTaken(threadId, character);
+    }
+    this.character = character.name;
+    this.items.refreshed.push(...character.startingItems);
+    game.notify();
   }
 }

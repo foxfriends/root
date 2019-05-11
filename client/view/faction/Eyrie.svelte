@@ -15,12 +15,12 @@ $: card = { x: 1654 * scale, y: 976 * scale };
 </script>
 
 <div class='board' bind:clientWidth={width} bind:clientHeight={height}>
-  {#each new Array($game.factionData[Faction.eyrie][Piece[Faction.eyrie].roost.name]).fill(0) as _, i}
-    <Token square image={images[Piece[Faction.eyrie].roost.key]} x={tile.x - dx * i} y={tile.y} {scale} />
+  {#each new Array($game.factionData.eyrie.roost).fill(0) as _, i}
+    <Token square image={images[Piece.eyrie.roost.key]} x={tile.x - dx * i} y={tile.y} {scale} />
   {/each}
-  {#if $game.factionData[Faction.eyrie].leader}
+  {#if $game.factionData.eyrie.leader}
     <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
-      <Deck cardImage={leaderImages[$game.factionData[Faction.eyrie].leader]} cardCount={1} />
+      <Deck cardImage={leaderImages[$game.factionData.eyrie.leader]} cardCount={1} />
     </div>
   {/if}
 </div>

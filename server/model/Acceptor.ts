@@ -12,7 +12,7 @@ class Unacceptable extends Error {
   }
 }
 
-type Handler = string | ((data: any, threadId: string) => any) | { type: string, handler: (data: any, threadId: string) => any }
+type Handler = string | ((this: Client, data: any, threadId: string) => any) | { type: string, handler: (this: Client, data: any, threadId: string) => any }
 
 const matches = ({ type }: Message) => (handler: Handler) => {
   if (typeof handler === 'string') {

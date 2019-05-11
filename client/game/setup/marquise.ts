@@ -5,7 +5,6 @@ import { accept } from '../../model/Acceptor';
 import locate from '../../util/locate';
 import Piece from '../../model/Piece';
 import Client from '../../model/Client';
-import Game from '../../model/Game';
 import Clearing from '../../model/board/Clearing';
 
 export default async function * setupMarquise(this: Client) {
@@ -31,7 +30,7 @@ export default async function * setupMarquise(this: Client) {
         key: 'prompt-place-building',
         params: { building: 'marquise-sawmill' },
       },
-      clearings: borrow<Game | null, Clearing[]>(game)((game): Clearing[] => game!.board.clearings
+      clearings: borrow(game)(game => game!.board.clearings
         .filter(clearing =>
           // can select the keep clearing
           clearing.index === keepClearing.index
@@ -55,7 +54,7 @@ export default async function * setupMarquise(this: Client) {
         key: 'prompt-place-building',
         params: { building: 'marquise-workshop' },
       },
-      clearings: borrow<Game | null, Clearing[]>(game)((game): Clearing[] => game!.board.clearings
+      clearings: borrow(game)(game => game!.board.clearings
         .filter(clearing =>
           // can select the keep clearing
           clearing.index === keepClearing.index
@@ -79,7 +78,7 @@ export default async function * setupMarquise(this: Client) {
         key: 'prompt-place-building',
         params: { building: 'marquise-recruiter' },
       },
-      clearings: borrow<Game | null, Clearing[]>(game)((game): Clearing[] => game!.board.clearings
+      clearings: borrow(game)(game => game!.board.clearings
         .filter(clearing =>
           // can select the keep clearing
           clearing.index === keepClearing.index

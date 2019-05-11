@@ -1,6 +1,7 @@
 import { Item } from '../Item';
 import { Piece } from '../Piece';
 import Clearing from './Clearing';
+import ForestZone from './ForestZone';
 
 export default class Board {
   itemSlots: {
@@ -12,6 +13,7 @@ export default class Board {
     public clearings: Clearing[],
     public paths: [number, number][],
     public rivers: [number, number][],
+    public forests: ForestZone[],
   ) {
     const x = 1088;
     const dx = 175;

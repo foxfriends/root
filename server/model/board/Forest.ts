@@ -1,7 +1,8 @@
-import Board from './Board.js';
-import Clearing from './Clearing.js';
-import Slot from './Slot.js';
-import Suit from '../Suit.js';
+import Board from './Board';
+import Clearing from './Clearing';
+import ForestZone from './ForestZone';
+import Slot from './Slot';
+import Suit from '../Suit';
 
 export default class Forest extends Board {
   constructor() {
@@ -32,6 +33,15 @@ export default class Forest extends Board {
         [10, 11],
       ],
       [ [4, 9], [9, 10], [10, 6], [6, 3] ],
+      [
+        new ForestZone(2303, 867, [0, 1, 4, 9]),
+        new ForestZone(1265, 1526, [0, 8, 9, 11]),
+        new ForestZone(3003, 1689, [1, 5, 9, 10, 11]),
+        new ForestZone(826, 2629, [3, 8, 11]),
+        new ForestZone(1653, 3342, [3, 6, 7, 11]),
+        new ForestZone(2763, 2862, [2, 6, 10, 11]),
+        new ForestZone(3865, 2812, [2, 5, 10]),
+      ],
     );
   }
 }

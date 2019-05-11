@@ -23,7 +23,7 @@ async function * placeKeep(this: Client, { clearing }: { clearing: number }, thr
   if (!this.game.board.clearings[clearing].isCorner) {
     throw new InvalidClearingForKeep(threadId);
   }
-  this.game.factionData.marquise.placeKeep(this.game, clearing);
+  this.game.factionData.marquise!.placeKeep(this.game, clearing);
   this.respond(threadId, 'update', this.game);
 }
 
@@ -33,7 +33,7 @@ async function * placeSawmill(this: Client, { clearing }: { clearing: number }, 
   if (distance > 1) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
-  this.game.factionData.marquise.placeBuilding(this.game, clearing, Piece.marquise.sawmill, threadId);
+  this.game.factionData.marquise!.placeBuilding(this.game, clearing, Piece.marquise.sawmill, threadId);
   this.respond(threadId, 'update', this.game);
 }
 
@@ -43,7 +43,7 @@ async function * placeWorkshop(this: Client, { clearing }: { clearing: number },
   if (distance > 1) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
-  this.game.factionData.marquise.placeBuilding(this.game, clearing, Piece.marquise.workshop, threadId);
+  this.game.factionData.marquise!.placeBuilding(this.game, clearing, Piece.marquise.workshop, threadId);
   this.respond(threadId, 'update', this.game);
 }
 
@@ -53,21 +53,21 @@ async function * placeRecruiter(this: Client, { clearing }: { clearing: number }
   if (distance > 1) {
     throw new InvalidClearingForStartingBuilding(threadId);
   }
-  this.game.factionData.marquise.placeBuilding(this.game, clearing, Piece.marquise.recruiter, threadId);
+  this.game.factionData.marquise!.placeBuilding(this.game, clearing, Piece.marquise.recruiter, threadId);
   this.respond(threadId, 'update', this.game);
 }
 
 export default async function * setupMarquise(this: Client) {
-  if (this.game.factionData.marquise.keep) {
+  if (this.game.factionData.marquise!.keep) {
     yield * accept.call(this, placeKeep);
   }
-  if (this.game.factionData.marquise.sawmill === 6) {
+  if (this.game.factionData.marquise!.sawmill === 6) {
     yield * accept.call(this, placeSawmill);
   }
-  if (this.game.factionData.marquise.workshop === 6) {
+  if (this.game.factionData.marquise!.workshop === 6) {
     yield * accept.call(this, placeWorkshop);
   }
-  if (this.game.factionData.marquise.recruiter === 6) {
+  if (this.game.factionData.marquise!.recruiter === 6) {
     yield * accept.call(this, placeRecruiter);
   }
 }

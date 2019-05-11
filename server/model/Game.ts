@@ -102,14 +102,14 @@ export default class Game {
   playerNames: string[];
   factions: Faction[];
   factionData: {
-    marquise: Marquise,
-    eyrie: Eyrie,
-    alliance: Alliance,
-    vagabond: Vagabond,
-    vagabond2: Vagabond,
-    cult: Cult,
-    riverfolk: Riverfolk,
-    marquise_bot: MarquiseBot,
+    marquise?: Marquise,
+    eyrie?: Eyrie,
+    alliance?: Alliance,
+    vagabond?: Vagabond,
+    vagabond2?: Vagabond,
+    cult?: Cult,
+    riverfolk?: Riverfolk,
+    marquise_bot?: MarquiseBot,
   };
   players: { [username: string]: Player };
   turn: number | null;
@@ -223,36 +223,37 @@ export default class Game {
   }
 
   setReady(client: Client, ready: boolean, threadId: string) {
-    if (!this.players[client.username]) {
-      throw new InvalidPlayer(threadId, this.name, client.username);
-    }
-    this.players[client.username].ready = ready;
-    // shuffle players for random turn order
-    if (this.allReady) {
-      this.playerNames = shuffle(this.playerNames);
-      // set the turn to negative for setup turn
-      this.turn = -this.factions.length;
-      if (this.assignment === 'auto') {
-        // shuffle factions for random assignment
-        const factions = shuffle(this.factions);
-        // assign factions
-        for (let i = 0; i < factions.length; ++i) {
-          this.players[this.playerNames[i]].faction = factions[i];
-        }
+    this.batchUpdates(() => {
+      if (!this.players[client.username]) {
+        throw new InvalidPlayer(threadId, this.name, client.username);
       }
-      for (const faction of this.factions) {
-        try {
-          this.drawCard(faction, 3);
-        } catch (e) {
-          if (e instanceof PoorManualDexterity) {
-            // this is expected
-            continue;
+      this.players[client.username].ready = ready;
+      // shuffle players for random turn order
+      if (this.allReady) {
+        this.playerNames = shuffle(this.playerNames);
+        // set the turn to negative for setup turn
+        this.turn = -this.factions.length;
+        if (this.assignment === 'auto') {
+          // shuffle factions for random assignment
+          const factions = shuffle(this.factions);
+          // assign factions
+          for (let i = 0; i < factions.length; ++i) {
+            this.players[this.playerNames[i]].faction = factions[i];
           }
-          throw e;
+        }
+        for (const faction of this.factions) {
+          try {
+            this.drawCard(faction, 3, threadId);
+          } catch (e) {
+            if (e instanceof PoorManualDexterity) {
+              // this is expected
+              continue;
+            }
+            throw e;
+          }
         }
       }
-    }
-    this.notify();
+    });
   }
 
   setFaction(client: Client, faction: Faction, threadId: string) {
@@ -286,8 +287,11 @@ export default class Game {
     return drawn;
   }
 
-  drawCard(faction: Faction, count: number = 1) {
+  drawCard(faction: Faction, count: number = 1, threadId: string) {
     const factionData = this.factionData[faction];
+    if (!factionData) {
+      throw new IllegalFaction(threadId, faction);
+    }
     if (factionData instanceof MarquiseBot) {
       throw new PoorManualDexterity;
     }
@@ -312,13 +316,12 @@ export default class Game {
     return object;
   }
 
-  batchUpdates(handler: () => {}) {
-    const { notify } = this;
+  batchUpdates(handler: () => any) {
     this.notify = () => {};
     try {
       handler();
     } finally {
-      this.notify = notify;
+      delete this.notify;
       this.notify();
     }
   }

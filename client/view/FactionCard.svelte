@@ -1,6 +1,7 @@
 <script>
 import Marquise from './faction/Marquise.svelte';
 import Eyrie from './faction/Eyrie.svelte';
+import Alliance from './faction/Alliance.svelte';
 import Faction from '../model/Faction';
 
 export let faction, client;
@@ -11,6 +12,8 @@ export let faction, client;
     <Marquise {client} />
   {:else if faction === Faction.eyrie}
     <Eyrie {client} />
+  {:else if faction === Faction.alliance}
+    <Alliance {client} />
   {:else}
     TODO: make this one
   {/if}

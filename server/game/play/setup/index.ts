@@ -4,6 +4,7 @@ import Client from '../../../model/Client';
 import setupAlliance from './alliance';
 import setupEyrie from './eyrie';
 import setupMarquise from './marquise';
+import setupVagabond from './vagabond';
 
 async function * setupFaction(this: Client, faction: string) {
   switch (faction) {
@@ -15,6 +16,10 @@ async function * setupFaction(this: Client, faction: string) {
       break;
     case Faction.alliance:
       yield * setupAlliance.call(this);
+      break;
+    case Faction.vagabond:
+    case Faction.vagabond2:
+      yield * setupVagabond.call(this, faction);
       break;
     default:
       throw new Error('unimplemented');

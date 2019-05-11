@@ -92,9 +92,18 @@ eyrie-leader-charismatic = Charismatic
 eyrie-leader-commander = Commander
 eyrie-leader-builder = Builder
 
+vagabond-character-arbiter = Arbiter
+vagabond-character-ranger = Ranger
+vagabond-character-scoundrel = Scoundrel
+vagabond-character-thief = Thief
+vagabond-character-tinker = Tinker
+vagabond-character-vagrant = Vagrant
+
 prompt-place-keep = Place the keep in a corner clearing
 prompt-place-building = Place a { REF($building, quantity: 1) } near the keep
 prompt-choose-leader = Choose your leader
+prompt-choose-character = Choose your character
+prompt-choose-forest = Choose a forest to start in
 
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
@@ -110,3 +119,4 @@ rejection-no-more-slots = There are no more slots for building in this clearing.
 rejection-no-more-pieces = You have no more { REF($piece, quantity: 0) }.
 rejection-leader-unavailable = The { REF($leader) } is currently unavailable.
 rejection-duplicate-roost = There is already a roost in this clearing.
+rejection-character-already-taken = The { REF($character) } is already taken.

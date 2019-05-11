@@ -1,6 +1,6 @@
 import { Item } from './Item';
 
-class Character {
+export class Character {
   constructor(
     public name: string,
     public startingItems: Item[]
