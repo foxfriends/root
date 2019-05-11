@@ -17,6 +17,10 @@ export class Piece {
   toJSON() {
     return { ...this, key: this.key };
   }
+
+  static equals(piece: Piece, other: Piece) {
+    return piece.key === other.key;
+  }
 }
 
 const Pieces = {

@@ -6,14 +6,34 @@ export let radius = 20;
 export let scale = 1;
 export let square = false;
 export let round = false;
+export let stack = 1;
+
+$: boxShadow = new Array(stack)
+  .fill(0)
+  .map((_, i) => `0 ${8 * i + 3}px 0 rgb(179, 174, 166), 0 ${8 * i + 7}px 0 rgb(198, 185, 165), 0 ${8 * i + 8}px 0 rgb(113, 107, 97)`)
+  .join(',');
+
 </script>
 
 {#if square}
   <div class='token square'
-    style={`background-image: url(${image}); left: ${x}px; top: ${y}px; border-radius: ${radius}px; transform: translate(-50%, -50%) translateY(-${8 * scale}px) scale(${scale})`} />
+    style={`
+      background-image: url(${image});
+      left: ${x}px;
+      top: ${y}px;
+      border-radius: ${radius}px;
+      transform: translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale});
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
+    `} />
 {:else if round}
   <div class='token round'
-  style={`background-image: url(${image}); left: ${x}px; top: ${y}px; transform: translate(-50%, -50%) translateY(-${8 * scale}px) scale(${scale})`} />
+    style={`
+      background-image: url(${image});
+      left: ${x}px;
+      top: ${y}px;
+      transform: translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale});
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
+    `} />
 {/if}
 
 <style>
@@ -21,11 +41,6 @@ export let round = false;
   position: absolute;
   pointer-events: none;
   user-select: none;
-  box-shadow:
-    0 0 0 2px rgba(0, 0, 0, 0.6) inset,
-    0 3px 0 rgb(179, 174, 166),
-    0 7px 0 rgb(198, 185, 165),
-    0 8px 0 rgb(113, 107, 97);
 }
 
 .square {

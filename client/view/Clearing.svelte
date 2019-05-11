@@ -1,10 +1,12 @@
 <script>
 import images from '../image/token/token.*.png';
 import Token from './Token.svelte';
+import Pieces, { Piece } from '../model/Piece';
 
 export let slots;
 export let buildings;
 export let pieces;
+export let ruinItems;
 
 function image(piece) {
   return images[piece.key];
@@ -17,6 +19,7 @@ function image(piece) {
     <Token square
       image={image(building)}
       x={slots[i].x}
-      y={slots[i].y} />
+      y={slots[i].y}
+      stack={Piece.equals(building, Pieces.ruin) ? ruinItems + 1 : 1} />
   {/if}
 {/each}

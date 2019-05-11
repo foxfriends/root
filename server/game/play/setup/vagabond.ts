@@ -1,4 +1,5 @@
 import { accept } from '../../../model/Acceptor';
+import shuffle from '../../../util/shuffle';
 import Client from '../../../model/Client';
 import Faction from '../../../model/Faction';
 import Characters from '../../../model/Character';
@@ -20,4 +21,11 @@ export default async function * setupVagabond(this: Client, faction: Faction.vag
       this.respond(threadId, 'update', this.game);
     } },
   );
+  const ruinItems = shuffle(this.game.factionData[faction]!.ruinItems);
+  this.game.factionData[faction]!.ruinItems = [];
+  for (const clearing of this.game.board.clearings) {
+    if (clearing.hasRuins) {
+      clearing.addRuinItem(ruinItems.shift()!);
+    }
+  }
 }

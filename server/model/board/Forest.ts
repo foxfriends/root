@@ -42,6 +42,7 @@ export default class Forest extends Board {
         new ForestZone(5, 2763, 2862, [2, 6, 10, 11]),
         new ForestZone(6, 3865, 2812, [2, 5, 10]),
       ],
+      { x: 192, y: 4229 },
     );
   }
 }

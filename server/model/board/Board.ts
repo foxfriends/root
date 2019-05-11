@@ -14,6 +14,7 @@ export default class Board {
     public paths: [number, number][],
     public rivers: [number, number][],
     public forests: ForestZone[],
+    public scoreTrack: { x: number, y: number },
   ) {
     const x = 1088;
     const dx = 175;

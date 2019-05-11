@@ -53,10 +53,22 @@ export default class Clearing {
     return this.buildings.includes(piece);
   }
 
+  get hasRuins() {
+    return this.hasBuilding(Pieces.ruin);
+  }
+
   addRuinItem(item: Item) {
     if (!this.buildings.includes(Pieces.ruin)) {
       throw new NoRuins();
     }
     this.ruinItems.push(item);
+  }
+
+  toJSON() {
+    return {
+      ...this,
+      hasRuins: this.hasRuins,
+      ruinItems: this.ruinItems.length,
+    };
   }
 }
