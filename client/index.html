@@ -7,5 +7,17 @@
     <link rel="stylesheet" href="index.css" />
     <script src="index.ts" defer></script>
   </head>
-  <body></body>
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style='position: absolute;top:-100%'>
+      <filter id="outline">
+        <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="1"></feMorphology>
+        <feFlood flood-color="#000000" flood-opacity="1" result="BLACK"></feFlood>
+        <feComposite in="BLACK" in2="DILATED" operator="in" result="OUTLINE"></feComposite>
+        <feMerge>
+          <feMergeNode in="OUTLINE" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </svg>
+  </body>
 </html>

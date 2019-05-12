@@ -75,6 +75,15 @@ export let client;
     {#each $game.board.clearings as clearing}
       <Clearing {...clearing} />
     {/each}
+    {#each $game.board.forests as forest}
+      <Clearing
+        x={forest.x}
+        y={forest.y}
+        slots={[]}
+        buildings={[]}
+        pieces={forest.pieces}
+        ruinItems={[]} />
+    {/each}
     <Items />
     <Scores />
     <BoardPrompts {client} />

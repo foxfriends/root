@@ -36,10 +36,10 @@ export default class Marquise {
   placeKeep(game: Game, clearing: number) {
     --this.keep;
     game.board.clearings[clearing].addPiece(Pieces.marquise.keep);
-    for (const clearing of game.board.clearings) {
-      if (clearing.acrossCorner !== clearing.index) {
+    for (const otherClearing of game.board.clearings) {
+      if (otherClearing.acrossCorner !== clearing) {
         --this.warrior;
-        clearing.addPiece(Pieces.marquise.warrior);
+        otherClearing.addPiece(Pieces.marquise.warrior);
       }
     }
     game.notify();

@@ -41,4 +41,5 @@ export default async function * setupVagabond(this: Client, faction: Faction.vag
       return this.send('chooseForest', { forest: forest.index });
     } },
   ));
+  prompts.set(null);
 }

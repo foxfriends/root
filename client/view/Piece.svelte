@@ -1,12 +1,13 @@
 <script>
 import Pieces from '../model/Piece';
+import tokenVector from '../image/token/token.*.svg';
 import tokenImages from '../image/token/token.*.png';
 import Token from './Token.svelte';
 
 export let piece;
 export let x, y;
 export let scale = 1;
-$: image = tokenImages[piece.key];
+$: image = tokenVector[piece.key] || tokenImages[piece.key];
 </script>
 
 {#if piece.shape === 'square'}
@@ -30,5 +31,6 @@ $: image = tokenImages[piece.key];
   pointer-events: none;
   user-select: none;
   transform-origin: center;
+  filter: url(#outline);
 }
 </style>
