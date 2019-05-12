@@ -11,11 +11,12 @@ export let slots;
 export let buildings;
 export let pieces;
 export let ruinItems;
+export let scale;
 
 function intersects(placement, forces) {
   return forces
-    .some(({ x, y, r }) => Math.abs(placement.x - x) < (placement.r + r) / 2
-                     && Math.abs(placement.y - y) < (placement.r + r) / 2
+    .some(({ x, y, r }) => Math.abs(placement.x - x) < placement.r + r
+                     && Math.abs(placement.y - y) < placement.r + r
     )
 }
 
@@ -51,11 +52,12 @@ function image(piece) {
   {#if building !== null}
     <Token square
       image={image(building)}
-      x={slots[i].x}
-      y={slots[i].y}
+      x={slots[i].x * scale}
+      y={slots[i].y * scale}
+      {scale}
       stack={PieceT.equals(building, Pieces.ruin) ? ruinItems + 1 : 1} />
   {/if}
 {/each}
 {#each arrangedPieces as { x, y, piece }}
-  <Piece {piece} {x} {y} />
+  <Piece {piece} x={x * scale} y={y * scale} {scale} />
 {/each}
