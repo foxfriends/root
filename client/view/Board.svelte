@@ -1,9 +1,8 @@
 <script>
 import { game, username } from '../store';
 import mapImages from '../image/map-*.jpg';
-import tokenImages from '../image/token/token.*.png';
 import Clearing from './Clearing.svelte';
-import Token from './Token.svelte';
+import Items from './Items.svelte';
 import BoardPrompts from './BoardPrompts.svelte';
 import Scores from './Scores.svelte';
 
@@ -76,13 +75,7 @@ export let client;
     {#each $game.board.clearings as clearing}
       <Clearing {...clearing} />
     {/each}
-    {#each $game.items as item, index}
-      <Token square
-        image={tokenImages[item.key]}
-        x={$game.board.itemSlots[item.name][$game.items.slice(0, index).filter(i => i.name === item.name).length].x}
-        y={$game.board.itemSlots[item.name][$game.items.slice(0, index).filter(i => i.name === item.name).length].y}
-        radius={31} />
-    {/each}
+    <Items />
     <Scores />
     <BoardPrompts {client} />
   </div>
