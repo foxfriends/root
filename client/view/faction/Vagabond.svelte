@@ -13,7 +13,7 @@ $: scale = Math.min(width / 2252, height / 1749);
 $: card = { x: 1643 * scale, y: 976 * scale };
 </script>
 
-<div class='board' bind:clientWidth={width} bind:clientHeight={height}>
+<div class={`board ${faction}`} bind:clientWidth={width} bind:clientHeight={height}>
   {#if $game.factionData[faction].character}
     <div class='character' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
       <Deck cardImage={characterImages[$game.factionData[faction].character]} cardCount={1} />
@@ -22,9 +22,16 @@ $: card = { x: 1643 * scale, y: 976 * scale };
 </div>
 
 <style>
+.vagabond {
+  background-image: url('../../image/card-vagabond-front.jpg');
+}
+
+.vagabond2 {
+  background-image: url('../../image/card-vagabond2-front.jpg');
+}
+
 .board {
   position: relative;
-  background-image: url('../../image/card-vagabond-front.jpg');
   background-size: contain;
   background-attachment: top left;
   background-repeat: no-repeat;

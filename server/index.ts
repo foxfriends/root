@@ -15,7 +15,7 @@ upgrade(server);
 
 server
   .use(mount('/play', async ctx => {
-    const connection = await ctx.upgrade();
+    const connection: WebSocket = await ctx.upgrade();
     const client = new Client(uuid(), connection);
     console.log(`New client ${client.id}`);
     clients.set(client.id, client);

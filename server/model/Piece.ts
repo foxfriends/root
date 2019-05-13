@@ -58,9 +58,9 @@ const Pieces = {
   },
   riverfolk: {
     warrior: new Piece(Faction.riverfolk, 'warrior', 'other'),
-    trade_post_fox: new Piece(Faction.riverfolk, 'trade_post_fox', 'square'),
-    trade_post_rabbit: new Piece(Faction.riverfolk, 'trade_post_rabbit', 'square'),
-    trade_post_mouse: new Piece(Faction.riverfolk, 'trade_post_mouse', 'square'),
+    trade_post_fox: new Piece(Faction.riverfolk, 'trade_post_fox', 'round'),
+    trade_post_rabbit: new Piece(Faction.riverfolk, 'trade_post_rabbit', 'round'),
+    trade_post_mouse: new Piece(Faction.riverfolk, 'trade_post_mouse', 'round'),
   },
   marquise_bot: {
     warrior: new Piece(Faction.marquise_bot, 'warrior', 'other'),

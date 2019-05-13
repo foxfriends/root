@@ -21,7 +21,7 @@ export default class Client {
   username!: string;
   game!: Game;
 
-  constructor(id: string, socket: any) {
+  constructor(id: string, socket: WebSocket) {
     this.id = id;
     this.socket = socket;
     this.callbacks = new Map();

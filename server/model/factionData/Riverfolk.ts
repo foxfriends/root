@@ -4,6 +4,9 @@ import { Item } from '../Item';
 
 export default class Riverfolk {
   warrior: number;
+  trade_post_fox: number;
+  trade_post_rabbit: number;
+  trade_post_mouse: number;
   funds: {
     payments: string[],
     funds: string[],
@@ -13,11 +16,6 @@ export default class Riverfolk {
       rabbit: string[],
       mouse: string[],
     }
-  };
-  tradePosts: {
-    fox: number,
-    rabbit: number,
-    mouse: number,
   };
   services: {
     handCard: number,
@@ -32,6 +30,9 @@ export default class Riverfolk {
   get faction() { return Faction.riverfolk; }
   constructor() {
     this.warrior = 15;
+    this.trade_post_fox = 3;
+    this.trade_post_rabbit = 3;
+    this.trade_post_mouse = 3;
     this.funds = {
       payments: [],
       funds: [],
@@ -41,11 +42,6 @@ export default class Riverfolk {
         rabbit: [],
         mouse: [],
       },
-    };
-    this.tradePosts = {
-      fox: 3,
-      rabbit: 3,
-      mouse: 3,
     };
     this.services = {
       handCard: 1,
