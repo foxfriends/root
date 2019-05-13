@@ -102,8 +102,11 @@ vagabond-character-vagrant = Vagrant
 prompt-place-keep = Place the keep in a corner clearing
 prompt-place-building = Place a { REF($building, quantity: 1) } near the keep
 prompt-choose-leader = Choose your leader
+prompt-choose-starting-clearing = Choose a corner clearing to start in
 prompt-choose-character = Choose your character
 prompt-choose-forest = Choose a forest to start in
+prompt-choose-rivers = Place warriors by the river
+prompt-set-prices = Set your service costs
 
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
@@ -120,3 +123,4 @@ rejection-no-more-pieces = You have no more { REF($piece, quantity: 0) }.
 rejection-leader-unavailable = The { REF($leader) } is currently unavailable.
 rejection-duplicate-roost = There is already a roost in this clearing.
 rejection-character-already-taken = The { REF($character) } is already taken.
+rejection-not-a-river = The clearing must contain a river.

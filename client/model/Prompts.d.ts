@@ -6,4 +6,5 @@ export type Prompts = {
   cards?: { image: string, value?: any, available?: boolean }[],
   clearings?: Clearing[],
   forests?: ForestZone[],
+  prices?: boolean,
 };

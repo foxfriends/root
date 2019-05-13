@@ -1,6 +1,15 @@
 import Faction from '../Faction';
+import Game from '../Game';
+import Piece from '../Piece'
 import { Card } from '../Card';
 import { Item } from '../Item';
+import { NoMorePieces } from './rejections';
+
+export type ServiceCosts = {
+  handCard: number,
+  riverboats: number,
+  mercenaries: number,
+};
 
 export default class Riverfolk {
   warrior: number;
@@ -17,11 +26,7 @@ export default class Riverfolk {
       mouse: string[],
     }
   };
-  services: {
-    handCard: number,
-    riverboats: number,
-    mercenaries: number,
-  };
+  services: ServiceCosts;
   hand: Card[];
   victoryPoints: number;
   dominance: Card | null;
@@ -53,5 +58,21 @@ export default class Riverfolk {
     this.victoryPoints = 0;
     this.dominance = null;
     this.craftedItems = [];
+  }
+
+  placeWarriors(game: Game, clearing: number, count = 1, threadId: string) {
+    if (this.warrior < count) {
+      throw new NoMorePieces(threadId, Piece.riverfolk.warrior);
+    }
+    for (let i = 0; i < count; ++i) {
+      game.board.clearings[clearing].addPiece(Piece.riverfolk.warrior);
+      --this.warrior;
+    }
+    game.notify();
+  }
+
+  setPrices(game: Game, prices: ServiceCosts) {
+    this.services = prices;
+    game.notify();
   }
 }

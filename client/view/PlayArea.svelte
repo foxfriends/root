@@ -38,14 +38,17 @@ export let client;
 <style>
 .table {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
   width: 100%;
 }
 
 .shared {
   display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
   flex-grow: 0;
+  padding: 20px;
 }
 
 .shared-deck, .discards-deck {
@@ -61,11 +64,13 @@ export let client;
 }
 
 .page {
+  box-sizing: border-box;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  padding: 20px;
   transition: opacity 0.2s, transform 0.2s;
 }
 </style>

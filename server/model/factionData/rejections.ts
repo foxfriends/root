@@ -6,6 +6,6 @@ export class NoMorePieces extends Rejection {
     super(threadId, {
       key: 'rejection-no-more-pieces',
       params: { piece: piece.key },
-    })
+    });
   }
 }

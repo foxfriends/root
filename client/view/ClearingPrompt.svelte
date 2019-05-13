@@ -4,15 +4,15 @@ export let y;
 export let scale;
 </script>
 
-<div class='circle' style={`left: ${x * scale}px; top: ${y * scale}px; transform: scale(${scale})`} on:click />
+<div class='circle' style={`left: ${x * scale}px; top: ${y * scale}px; transform: translate(-50%, -50%) scale(${scale})`} on:click />
 
 <style>
 .circle {
   position: absolute;
-  transform: translate(-50%, -50%);
-  border-radius: 100%;
   width: 650px;
   height: 650px;
+  border-radius: 100%;
+  transform-origin: center;
   background-image: radial-gradient(transparent 25%, rgba(255, 255, 255, 0.6) 75%, transparent 100%);
   cursor: pointer;
 }

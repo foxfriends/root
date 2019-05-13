@@ -17,7 +17,8 @@ export default class Client {
   callbacks: Map<String, Callbacks>;
   receivedMessages: Message[];
   watchers: Callbacks[];
-  // these are technically nullable, but *should* be set for any useful part of the game
+  // these are technically nullable, but *should* be set for any useful part of the game (though
+  // only when used on the server side)
   username!: string;
   game!: Game;
 

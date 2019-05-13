@@ -10,8 +10,8 @@ import Clearing from '../../model/board/Clearing';
 import leaderImages from '../../image/card/card-eyrie_leader-front.*.jpg';
 import back from '../../image/card/card-eyrie_leader-back.jpg';
 
-export default async function * setupMarquise(this: Client) {
-  if (!this.game.factionData.eyrie!.leader) {
+export default async function * setupEyrie(this: Client) {
+  if (!get(game)!.factionData.eyrie!.leader) {
     const availableLeaders = get(game)!.factionData.eyrie!.leaders;
     prompts.set({
       text: 'prompt-choose-leader',

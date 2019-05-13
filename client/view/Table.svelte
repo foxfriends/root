@@ -1,5 +1,5 @@
 <script>
-import { game, username } from '../store';
+import { game, username, prompts } from '../store';
 import Board from './Board.svelte';
 import PlayArea from './PlayArea.svelte';
 import FactionPicker from './FactionPicker.svelte';
@@ -10,7 +10,7 @@ $: boardHeight = windowHeight;
 $: boardWidth = windowWidth - 350;
 
 export let client;
-let expanded = false;
+$: expanded = $prompts && $prompts.prices;
 </script>
 
 <div class='table'>
