@@ -27,5 +27,9 @@ async function * chooseLeader(this: Client, { leader }: { leader: Leader }, thre
 }
 
 export default async function * setupEyrie(this: Client) {
-  yield * accept.call(this, chooseLeader);
+  if (!this.game.factionData.eyrie!.leader) {
+    yield * accept.call(this, chooseLeader);
+  } else {
+    yield * accept.call(this, eyrieClearing);
+  }
 }

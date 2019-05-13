@@ -11,19 +11,21 @@ import leaderImages from '../../image/card/card-eyrie_leader-front.*.jpg';
 import back from '../../image/card/card-eyrie_leader-back.jpg';
 
 export default async function * setupMarquise(this: Client) {
-  const availableLeaders = get(game)!.factionData.eyrie.leaders;
-  prompts.set({
-    text: 'prompt-choose-leader',
-    cards: Object.values(Leaders)
-      .map(leader => availableLeaders.includes(leader)
-        ? { value: leader, image: leaderImages[leader] }
-        : { available: false, image: back })
-  });
-  game.set(yield * accept.call(this,
-    { type: 'Prompts:card', async * handler ({ value }: { value: Leader }) {
-      return this.send('chooseLeader', { leader: value });
-    }},
-  ));
+  if (!this.game.factionData.eyrie!.leader) {
+    const availableLeaders = get(game)!.factionData.eyrie!.leaders;
+    prompts.set({
+      text: 'prompt-choose-leader',
+      cards: Object.values(Leaders)
+        .map(leader => availableLeaders.includes(leader)
+          ? { value: leader, image: leaderImages[leader] }
+          : { available: false, image: back })
+    });
+    game.set(yield * accept.call(this,
+      { type: 'Prompts:card', async * handler ({ value }: { value: Leader }) {
+        return this.send('chooseLeader', { leader: value });
+      }},
+    ));
+  }
   const keepClearing = locate.call(get(game)!.board, Piece.marquise.keep);
   if (!keepClearing) {
     prompts.set({
