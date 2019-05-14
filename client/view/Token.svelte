@@ -1,11 +1,12 @@
 <script>
 export let image;
-export let x;
-export let y;
+export let x = 0;
+export let y = 0;
 export let radius = 20;
 export let scale = 1;
 export let square = false;
 export let round = false;
+export let block = false;
 export let stack = 1;
 
 $: boxShadow = new Array(stack)
@@ -18,30 +19,40 @@ $: boxShadow = new Array(stack)
 {#if square}
   <div class='token square'
     style={`
+      position: ${block ? 'relative' : 'absolute'};
       background-image: url(${image});
       left: ${x}px;
       top: ${y}px;
       border-radius: ${radius}px;
-      transform: translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale});
+      transform: ${block
+        ? `translateY(-${8 * stack * scale}px) scale(${scale})`
+        : `translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale})`
+      };
       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
     `} />
 {:else if round}
   <div class='token round'
     style={`
+      position: ${block ? 'relative' : 'absolute'};
       background-image: url(${image});
       left: ${x}px;
       top: ${y}px;
-      transform: translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale});
+      transform: ${block
+        ? `translateY(-${8 * stack * scale}px) scale(${scale})`
+        : `translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale})`
+      };
       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
     `} />
 {/if}
 
 <style>
 .token {
-  position: absolute;
   pointer-events: none;
   user-select: none;
   transition: top 0.2s, left 0.2s;
+  transform-origin: center;
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 .square {

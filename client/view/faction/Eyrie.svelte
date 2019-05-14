@@ -9,15 +9,16 @@ import Deck from '../Deck.svelte';
 
 export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
-$: dx = 159 * scale;
-$: tile = { x: 2085 * scale, y: 806 * scale };
+$: tile = { x: 2085 * scale, y: 806 * scale, dx: 159 * scale };
 $: card = { x: 1654 * scale, y: 976 * scale };
+$: craftedItems = { x: 1531 * scale, y: 501 * scale };
+$: decree = { y: 133 * scale, recruit: 0, move: 567 * scale, battle: 1153 * scale, build: 1733 * scale };
 </script>
 
 <div class='container'>
   <div class='board' style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
     {#each new Array($game.factionData.eyrie.roost).fill(0) as _, i}
-      <Token square image={images[Piece.eyrie.roost.key]} x={tile.x - dx * i} y={tile.y} {scale} />
+      <Token square image={images[Piece.eyrie.roost.key]} x={tile.x - tile.dx * i} y={tile.y} {scale} />
     {/each}
     {#if $game.factionData.eyrie.leader}
       <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>

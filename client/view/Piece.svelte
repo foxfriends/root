@@ -7,13 +7,14 @@ import Token from './Token.svelte';
 export let piece;
 export let x, y;
 export let scale = 1;
+export let stack = 1;
 $: image = tokenVector[piece.key] || tokenImages[piece.key];
 </script>
 
 {#if piece.shape === 'square'}
-  <Token square {image} {x} {y} {scale} />
+  <Token square {image} {x} {y} {scale} {stack} />
 {:else if piece.shape === 'round'}
-  <Token round {image} {x} {y} {scale} />
+  <Token round {image} {x} {y} {scale} {stack} />
 {:else}
   <img
     class='meeple'

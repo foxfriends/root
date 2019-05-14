@@ -8,6 +8,10 @@ export class Item {
   static get boot() { return 'boot'; }
   static get hammer() { return 'hammer'; }
 
+  static equals(item: Item, other: Item) {
+    return item.key === other.key;
+  }
+
   constructor(
     public name: string,
     public isRuin = false,

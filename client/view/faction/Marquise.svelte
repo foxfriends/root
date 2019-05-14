@@ -1,28 +1,28 @@
 <script>
 import { game } from '../../store';
-import images from '../../image/token/token.*.png';
-import Piece from '../../model/Piece';
+import Pieces from '../../model/Piece';
 import Faction from '../../model/Faction';
-import Token from '../Token.svelte';
+import Piece from '../Piece.svelte';
 
 export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
-$: dx = 174 * scale;
-$: dy = 180 * scale;
-$: tile = { x: 2032 * scale, y: 754 * scale };
+$: tile = { x: 2032 * scale, y: 754 * scale, dx: 174 * scale, dy: 180 * scale };
+$: craftedItems = { x: 1600 * scale, y: 286 * scale };
+$: wood = { x: 1085, y: 1551 };
 </script>
 
 <div class='container'>
   <div class='board' style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
     {#each new Array($game.factionData.marquise.sawmill).fill(0) as _, i}
-      <Token square image={images[Piece.marquise.sawmill.key]} x={tile.x - dx * i} y={tile.y} {scale} />
+      <Piece piece={Piece.marquise.sawmill} x={tile.x - tile.dx * i} y={tile.y} {scale} />
     {/each}
     {#each new Array($game.factionData.marquise.workshop).fill(0) as _, i}
-      <Token square image={images[Piece.marquise.workshop.key]} x={tile.x - dx * i} y={tile.y + dy} {scale} />
+      <Piece image={Piece.marquise.workshop} x={tile.x - tile.dx * i} y={tile.y + tile.dy} {scale} />
     {/each}
     {#each new Array($game.factionData.marquise.recruiter).fill(0) as _, i}
-      <Token square image={images[Piece.marquise.recruiter.key]} x={tile.x - dx * i} y={tile.y + 2 * dy} {scale} />
+      <Piece image={Piece.marquise.recruiter} x={tile.x - tile.dx * i} y={tile.y + 2 * tile.dy} {scale} />
     {/each}
+    <Piece image={Piece.marquise.wood} x={tile.x - tile.dx * i} y={tile.y + 2 * tile.dy} {scale} stack={$game.factionData.marquise.wood} />
   </div>
 </div>
 
