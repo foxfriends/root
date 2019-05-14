@@ -13,6 +13,7 @@ join = Join
 game-name = Game name
 
 back = Back
+done = Done
 leave = Leave
 enter = Enter
 cancel = Cancel

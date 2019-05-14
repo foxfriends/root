@@ -32,5 +32,6 @@ $: image = tokenVector[piece.key] || tokenImages[piece.key];
   user-select: none;
   transform-origin: center;
   filter: url(#outline);
+  transition: top 0.2s, left 0.2s;
 }
 </style>

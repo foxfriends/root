@@ -62,19 +62,18 @@ export let client;
   on:mousemove={drag}>
   <div
     class='viewport'
-    style={`transform: translate(-${pan.x}px, -${pan.y}px);`}>
+    style={`transform: translate(-${pan.x}px, -${pan.y}px) scale(${scale})`}>
     <img
       class='board'
       src={mapImages[$game.board.name]}
-      style={`transform: scale(${scale})`}
       on:load={setInitialViewport}
       bind:this={background} />
     {#each $game.board.clearings as clearing}
-      <Clearing {...clearing} {scale} />
+      <Clearing {...clearing} scale={1} />
     {/each}
     {#each $game.board.forests as forest}
       <Clearing
-        {scale}
+        scale={1}
         x={forest.x}
         y={forest.y}
         slots={[]}
@@ -82,9 +81,9 @@ export let client;
         pieces={forest.pieces}
         ruinItems={[]} />
     {/each}
-    <Items {scale} />
-    <Scores {scale} />
-    <BoardPrompts {scale} {client} />
+    <Items scale={1} />
+    <Scores scale={1} />
+    <BoardPrompts scale={1} {client} />
   </div>
 </div>
 

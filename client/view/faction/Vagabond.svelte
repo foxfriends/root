@@ -8,20 +8,29 @@ import Deck from '../Deck.svelte';
 
 export let faction;
 
-let width, height;
+export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
 $: card = { x: 1643 * scale, y: 976 * scale };
 </script>
 
-<div class={`board ${faction}`} bind:clientWidth={width} bind:clientHeight={height}>
-  {#if $game.factionData[faction].character}
-    <div class='character' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
-      <Deck cardImage={characterImages[$game.factionData[faction].character]} cardCount={1} />
-    </div>
-  {/if}
+<div class='container'>
+  <div class={`board ${faction}`} style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
+    {#if $game.factionData[faction].character}
+      <div class='character' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
+        <Deck cardImage={characterImages[$game.factionData[faction].character]} cardCount={1} />
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style>
+.container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .vagabond {
   background-image: url('../../image/card-vagabond-front.jpg');
 }

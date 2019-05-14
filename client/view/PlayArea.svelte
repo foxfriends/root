@@ -15,6 +15,7 @@ function cardImage({ key }) {
   return cardImages[key];
 }
 
+let width, height;
 export let client;
 </script>
 
@@ -28,16 +29,20 @@ export let client;
     </div>
   </div>
   <div class='pager'>
-    <div class='pages'>
+    <div class='pages' bind:clientWidth={width} bind:clientHeight={height}>
       {#each $game.factions as faction, i (faction)}
         <div class='page' style={`transform: translateX(${(i - focusedIndex) * 100}%); opacity: ${focusedIndex === i ? 1 : 0}`}>
-          <FactionCard {faction} {client} />
+          <FactionCard {faction} {client} width={width - 40} height={height - 40} />
         </div>
       {/each}
     </div>
     <div class='previews'>
-      {#each $game.factions as faction, i}
-        <img class='preview' class:current={i === focusedIndex} src={factionImages[faction]} on:click={() => { focusedIndex = i; }}/>
+      {#each $game.playerNames as name}
+        <img
+          class='preview'
+          class:current={name === focusedPlayer}
+          src={factionImages[$game.players[name].faction]}
+          on:click={() => focusedPlayer = name} />
       {/each}
     </div>
   </div>

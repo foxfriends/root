@@ -6,20 +6,21 @@ import Vagabond from './faction/Vagabond.svelte';
 import Riverfolk from './faction/Riverfolk.svelte';
 import Faction from '../model/Faction';
 
+export let width, height;
 export let faction, client;
 </script>
 
 <div class='play-area'>
   {#if faction === Faction.marquise}
-    <Marquise {client} />
+    <Marquise {client} {width} {height} />
   {:else if faction === Faction.eyrie}
-    <Eyrie {client} />
+    <Eyrie {client} {width} {height} />
   {:else if faction === Faction.alliance}
-    <Alliance {client} />
+    <Alliance {client} {width} {height} />
   {:else if faction === Faction.vagabond || faction === Faction.vagabond2}
-    <Vagabond {client} {faction} />
+    <Vagabond {client} {faction} {width} {height} />
   {:else if faction === Faction.riverfolk}
-    <Riverfolk {client} />
+    <Riverfolk {client} {width} {height} />
   {:else}
     TODO: make this one
   {/if}

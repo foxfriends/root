@@ -7,25 +7,34 @@ import Faction from '../../model/Faction';
 import Token from '../Token.svelte';
 import Deck from '../Deck.svelte';
 
-let width, height;
+export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
 $: dx = 159 * scale;
 $: tile = { x: 2085 * scale, y: 806 * scale };
 $: card = { x: 1654 * scale, y: 976 * scale };
 </script>
 
-<div class='board' bind:clientWidth={width} bind:clientHeight={height}>
-  {#each new Array($game.factionData.eyrie.roost).fill(0) as _, i}
-    <Token square image={images[Piece.eyrie.roost.key]} x={tile.x - dx * i} y={tile.y} {scale} />
-  {/each}
-  {#if $game.factionData.eyrie.leader}
-    <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
-      <Deck cardImage={leaderImages[$game.factionData.eyrie.leader]} cardCount={1} />
-    </div>
-  {/if}
+<div class='container'>
+  <div class='board' style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
+    {#each new Array($game.factionData.eyrie.roost).fill(0) as _, i}
+      <Token square image={images[Piece.eyrie.roost.key]} x={tile.x - dx * i} y={tile.y} {scale} />
+    {/each}
+    {#if $game.factionData.eyrie.leader}
+      <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
+        <Deck cardImage={leaderImages[$game.factionData.eyrie.leader]} cardCount={1} />
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style>
+.container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .board {
   position: relative;
   background-image: url('../../image/card-eyrie-front.jpg');

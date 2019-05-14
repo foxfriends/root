@@ -41,6 +41,7 @@ $: boxShadow = new Array(stack)
   position: absolute;
   pointer-events: none;
   user-select: none;
+  transition: top 0.2s, left 0.2s;
 }
 
 .square {

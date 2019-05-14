@@ -26,7 +26,7 @@ export default async function * setupRiverfolk(this: Client) {
     prices: true,
   });
   game.set(yield * accept.call(this,
-    { type: 'Prompts:prices', async * handler ({ prices }: { prices: ServiceCosts }): AsyncIterableIterator<void> {
+    { type: 'Prompts:prices', async * handler (prices: ServiceCosts): AsyncIterableIterator<void> {
       return this.send('setPrices', prices);
     } },
   ));
