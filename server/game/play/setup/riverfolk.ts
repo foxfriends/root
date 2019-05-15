@@ -24,6 +24,7 @@ async function * setPrices(this: Client, { handCard, riverboats, mercenaries }: 
     throw new Error('Invalid service cost');
   }
   this.game.factionData.riverfolk!.setPrices(this.game, { handCard, riverboats, mercenaries });
+  this.game.factionData.riverfolk!.receivePayment(this.game, ...this.game.factionData.riverfolk!.takeWarrior(3, threadId))
   this.respond(threadId, 'update', this.game);
 }
 

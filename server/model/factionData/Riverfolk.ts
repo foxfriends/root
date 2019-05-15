@@ -1,6 +1,6 @@
 import Faction from '../Faction';
 import Game from '../Game';
-import Piece from '../Piece'
+import Pieces, { Piece } from '../Piece'
 import { Card } from '../Card';
 import { Item } from '../Item';
 import { NoMorePieces } from './rejections';
@@ -17,14 +17,14 @@ export default class Riverfolk {
   trade_post_rabbit: number;
   trade_post_mouse: number;
   funds: {
-    payments: string[],
-    funds: string[],
-    commitments: string[],
+    payments: Piece[],
+    funds: Piece[],
+    commitments: Piece[],
     crafted: {
-      fox: string[],
-      rabbit: string[],
-      mouse: string[],
-    }
+      fox: Piece[],
+      rabbit: Piece[],
+      mouse: Piece[],
+    },
   };
   services: ServiceCosts;
   hand: Card[];
@@ -62,17 +62,30 @@ export default class Riverfolk {
 
   placeWarriors(game: Game, clearing: number, count = 1, threadId: string) {
     if (this.warrior < count) {
-      throw new NoMorePieces(threadId, Piece.riverfolk.warrior);
+      throw new NoMorePieces(threadId, Pieces.riverfolk.warrior);
     }
     for (let i = 0; i < count; ++i) {
-      game.board.clearings[clearing].addPiece(Piece.riverfolk.warrior);
+      game.board.clearings[clearing].addPiece(Pieces.riverfolk.warrior);
       --this.warrior;
     }
     game.notify();
   }
 
+  takeWarrior(count: number, threadId: string): Piece[] {
+    if (this.warrior < count) {
+      throw new NoMorePieces(threadId, Pieces.riverfolk.warrior);
+    }
+    this.warrior -= count;
+    return new Array(count).fill(Pieces.riverfolk.warrior);
+  }
+
   setPrices(game: Game, prices: ServiceCosts) {
     this.services = prices;
+    game.notify();
+  }
+
+  receivePayment(game: Game, ...payment: Piece[]) {
+    this.funds.payments.push(...payment);
     game.notify();
   }
 }
