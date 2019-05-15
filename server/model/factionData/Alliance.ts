@@ -4,14 +4,12 @@ import { Card } from '../Card';
 import { Item } from '../Item';
 
 export default class Alliance {
-  bases: {
-    fox: boolean,
-    rabbit: boolean,
-    mouse: boolean,
-  };
-  sympathy: number;
-  supporters: Card[];
   warrior: number;
+  sympathy: number;
+  base_fox: boolean;
+  base_rabbit: boolean;
+  base_mouse: boolean;
+  supporters: Card[];
   officers: number;
   hand: Card[];
   victoryPoints: number;
@@ -20,11 +18,9 @@ export default class Alliance {
 
   get faction() { return Faction.alliance; }
   constructor() {
-    this.bases = {
-      fox: true,
-      rabbit: true,
-      mouse: true,
-    };
+    this.base_mouse = true;
+    this.base_fox = true;
+    this.base_rabbit = true;
     this.sympathy = 10;
     this.supporters = [];
     this.warrior = 10;

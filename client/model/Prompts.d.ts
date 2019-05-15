@@ -7,4 +7,5 @@ export type Prompts = {
   clearings?: Clearing[],
   forests?: ForestZone[],
   prices?: boolean,
+  outcast?: boolean,
 };

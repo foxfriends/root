@@ -108,6 +108,7 @@ prompt-choose-character = Choose your character
 prompt-choose-forest = Choose a forest to start in
 prompt-choose-rivers = Place warriors by the river
 prompt-set-prices = Set your service costs
+prompt-choose-first-outcast = Choose the first outcast
 
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
@@ -125,3 +126,4 @@ rejection-leader-unavailable = The { REF($leader) } is currently unavailable.
 rejection-duplicate-roost = There is already a roost in this clearing.
 rejection-character-already-taken = The { REF($character) } is already taken.
 rejection-not-a-river = The clearing must contain a river.
+rejection-invalid-start-clearing = You must start in a corner clearing.

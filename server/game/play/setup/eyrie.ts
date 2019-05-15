@@ -2,6 +2,7 @@ import { accept } from '../../../model/Acceptor';
 import Piece from '../../../model/Piece';
 import Leader from '../../../model/Leader';
 import Client from '../../../model/Client';
+import { InvalidStartClearing } from '../../../model/factionData/rejections';
 
 async function * placeEyrieWarriors(this: Client, clearingIndex: number, threadId: string): AsyncIterableIterator<void> {
   this.game.factionData.eyrie!.placeWarriors(this.game, clearingIndex, 6, threadId);
@@ -9,6 +10,9 @@ async function * placeEyrieWarriors(this: Client, clearingIndex: number, threadI
 }
 
 async function * eyrieClearing(this: Client, { clearing }: { clearing: number }, threadId: string) {
+  if (!this.game.board.clearings[clearing].isCorner) {
+    throw new InvalidStartClearing(threadId);
+  }
   yield * placeEyrieWarriors.call(this, clearing, threadId);
   this.respond(threadId, 'update', this.game);
 }

@@ -25,7 +25,7 @@ export let client;
       <Deck cardImage={cardBack} cardCount={$game.cards} />
     </div>
     <div class='discards-deck'>
-      <Pile cards={$game.discards.map(cardImage)} />
+      <Pile showEmpty cards={$game.discards.map(cardImage)} />
     </div>
   </div>
   <div class='pager'>

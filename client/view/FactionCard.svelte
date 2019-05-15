@@ -4,6 +4,7 @@ import Eyrie from './faction/Eyrie.svelte';
 import Alliance from './faction/Alliance.svelte';
 import Vagabond from './faction/Vagabond.svelte';
 import Riverfolk from './faction/Riverfolk.svelte';
+import Cult from './faction/Cult.svelte';
 import Faction from '../model/Faction';
 
 export let width, height;
@@ -21,8 +22,8 @@ export let faction, client;
     <Vagabond {client} {faction} {width} {height} />
   {:else if faction === Faction.riverfolk}
     <Riverfolk {client} {width} {height} />
-  {:else}
-    TODO: make this one
+  {:else if faction === Faction.cult}
+    <Cult {client} {width} {height} />
   {/if}
 </div>
 

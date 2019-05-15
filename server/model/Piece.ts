@@ -52,6 +52,8 @@ const Pieces = {
   },
   cult: {
     warrior: new Piece(Faction.cult, 'warrior', 'other'),
+    outcast: new Piece(Faction.cult, 'outcast', 'square'),
+    hated_outcast: new Piece(Faction.cult, 'hated_outcast', 'square'),
     garden_fox: new Piece(Faction.cult, 'garden_fox', 'square'),
     garden_rabbit: new Piece(Faction.cult, 'garden_rabbit', 'square'),
     garden_mouse: new Piece(Faction.cult, 'garden_mouse', 'square'),

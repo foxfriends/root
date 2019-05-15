@@ -10,7 +10,7 @@ $: boardHeight = windowHeight;
 $: boardWidth = windowWidth - 350;
 
 export let client;
-$: expanded = $prompts && $prompts.prices;
+$: expanded = $prompts && ($prompts.prices || $prompts.outcast);
 </script>
 
 <div class='table'>

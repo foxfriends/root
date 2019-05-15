@@ -33,7 +33,14 @@ export default class Board {
 
   locate(piece: Piece) {
     return this.clearings
-      .find(clearing => clearing.pieces.includes(piece));
+      .find(clearing => clearing.pieces.includes(piece)
+                     || clearing.buildings.includes(piece));
+  }
+
+  adjacentClearings(clearingIndex: number): Clearing[] {
+    return this.clearings
+      .filter(clearing => this.paths.some(path => path.includes(clearing.index) && path.includes(clearingIndex)))
+      .filter(clearing => clearing.index !== clearingIndex);
   }
 
   clearingDistance(start: number, end: number) {

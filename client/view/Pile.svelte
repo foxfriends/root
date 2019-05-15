@@ -3,6 +3,7 @@ import Text from './component/Text.svelte';
 
 // TODO: this one needs to allow opening up the list of cards
 export let cards;
+export let showEmpty = false;
 
 $: cardCount = cards.length;
 
@@ -18,7 +19,7 @@ $: boxShadow = new Array(Math.ceil(cardCount / 2)).fill(0)
 
 {#if cardCount}
   <div class='card' style={`background-image: url(${cards[cards.length - 1]}); box-shadow: ${boxShadow}; transform: translateY(-${Math.ceil(cardCount / 2)}px)`} />
-{:else}
+{:else if showEmpty}
   <div class='card empty'>
     <Text text='empty' />
   </div>
