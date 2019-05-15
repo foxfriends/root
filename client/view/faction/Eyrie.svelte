@@ -6,12 +6,13 @@ import Piece from '../../model/Piece';
 import Faction from '../../model/Faction';
 import Token from '../Token.svelte';
 import Deck from '../Deck.svelte';
+import CraftedItems from './CraftedItems.svelte';
 
 export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
 $: tile = { x: 2085 * scale, y: 806 * scale, dx: 159 * scale };
 $: card = { x: 1654 * scale, y: 976 * scale };
-$: craftedItems = { x: 1531 * scale, y: 501 * scale };
+$: craftedItems = { x: 1531 * scale, y: 501 * scale, width: 555 };
 $: decree = { y: 133 * scale, recruit: 0, move: 567 * scale, battle: 1153 * scale, build: 1733 * scale };
 </script>
 
@@ -25,6 +26,7 @@ $: decree = { y: 133 * scale, recruit: 0, move: 567 * scale, battle: 1153 * scal
         <Deck cardImage={leaderImages[$game.factionData.eyrie.leader]} cardCount={1} />
       </div>
     {/if}
+    <CraftedItems {...craftedItems} {scale} items={$game.factionData.eyrie.craftedItems} />
   </div>
 </div>
 

@@ -16,33 +16,35 @@ $: boxShadow = new Array(stack)
 
 </script>
 
-{#if square}
-  <div class='token square'
-    style={`
-      position: ${block ? 'relative' : 'absolute'};
-      background-image: url(${image});
-      left: ${x}px;
-      top: ${y}px;
-      border-radius: ${radius}px;
-      transform: ${block
-        ? `translateY(-${8 * stack * scale}px) scale(${scale})`
-        : `translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale})`
-      };
-      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
-    `} />
-{:else if round}
-  <div class='token round'
-    style={`
-      position: ${block ? 'relative' : 'absolute'};
-      background-image: url(${image});
-      left: ${x}px;
-      top: ${y}px;
-      transform: ${block
-        ? `translateY(-${8 * stack * scale}px) scale(${scale})`
-        : `translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale})`
-      };
-      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
-    `} />
+{#if stack > 0}
+  {#if square}
+    <div class='token square'
+      style={`
+        position: ${block ? 'relative' : 'absolute'};
+        background-image: url(${image});
+        left: ${x}px;
+        top: ${y}px;
+        border-radius: ${radius}px;
+        transform: ${block
+          ? `translateY(-${8 * stack * scale}px) scale(${scale})`
+          : `translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale})`
+        };
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
+      `} />
+  {:else if round}
+    <div class='token round'
+      style={`
+        position: ${block ? 'relative' : 'absolute'};
+        background-image: url(${image});
+        left: ${x}px;
+        top: ${y}px;
+        transform: ${block
+          ? `translateY(-${8 * stack * scale}px) scale(${scale})`
+          : `translate(-50%, -50%) translateY(-${8 * stack * scale}px) scale(${scale})`
+        };
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
+      `} />
+  {/if}
 {/if}
 
 <style>

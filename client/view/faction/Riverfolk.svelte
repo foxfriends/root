@@ -6,7 +6,7 @@ import Faction from '../../model/Faction';
 import Box from '../component/Box.svelte';
 import Text from '../component/Text.svelte';
 import Piece from '../Piece.svelte';
-
+import CraftedItems from './CraftedItems.svelte'
 export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
 $: payments = { x: 1020 * scale, y: 502 * scale, w: 514, h: 279 };
@@ -15,7 +15,7 @@ $: commitments = { x: 1020 * scale, y: 1400 * scale, w: 514, h: 277 };
 
 $: services = { x: 1800 * scale, y: 630 * scale, dx: 105 * scale, dy: 110 * scale };
 $: tradePosts = { x: 2093 * scale, y: 1280 * scale, dx: 165 * scale, dy: 160 * scale };
-$: craftedItems = { x: 1528 * scale, y: 280 * scale };
+$: craftedItems = { x: 1528 * scale, y: 280 * scale, width: 555 };
 
 export let client;
 
@@ -103,6 +103,7 @@ function notifyPrices() {
         ) translateY(-${24 * scale}px) scale(${scale}) translate(-50%, -50%)
       `} />
   </div>
+  <CraftedItems {...craftedItems} {scale} items={$game.factionData.riverfolk.craftedItems} />
 </div>
 
 <style>

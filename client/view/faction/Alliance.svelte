@@ -8,6 +8,7 @@ import Faction from '../../model/Faction';
 import Token from '../Token.svelte';
 import Deck from '../Deck.svelte';
 import Pile from '../Pile.svelte';
+import CraftedItems from './CraftedItems.svelte';
 
 let isMe = $game.players[$username].faction === Faction.alliance;
 export let width, height;
@@ -15,7 +16,7 @@ $: scale = Math.min(width / 2252, height / 1749);
 $: base = { x: 1301 * scale, y: 1053 * scale, dx: 154 * scale };
 $: sympathy = { x: 2096 * scale, y: 1462 * scale, dx: 153.5 * scale, dy: 71 * scale };
 $: card = { x: 66 * scale, y: 958 * scale };
-$: craftedItems = { x: 1528 * scale, y: 280 * scale };
+$: craftedItems = { x: 1528 * scale, y: 280 * scale, width: 555 };
 </script>
 
 <div class='container'>
@@ -43,6 +44,7 @@ $: craftedItems = { x: 1528 * scale, y: 280 * scale };
         {/if}
       </div>
     {/if}
+    <CraftedItems {...craftedItems} {scale} items={$game.factionData.alliance.craftedItems} />
   </div>
 </div>
 
