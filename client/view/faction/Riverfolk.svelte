@@ -56,24 +56,46 @@ function notifyPrices() {
     <div class='funds' style={`left: ${payments.x}px; top: ${payments.y}px; width: ${payments.w}px; height: ${payments.h}px; transform: scale(${scale})`}>
       {#each $game.factionData.riverfolk.funds.payments as piece}
         <div class='fund'>
-          <Piece block piece={piece} scale={0.88} />
+          <Piece block {piece} scale={0.88} />
         </div>
       {/each}
     </div>
     <div class='funds' style={`left: ${funds.x}px; top: ${funds.y}px; width: ${funds.w}px; height: ${funds.h}px; transform: scale(${scale})`}>
       {#each $game.factionData.riverfolk.funds.funds as piece}
         <div class='fund'>
-          <Piece block piece={piece} scale={0.88} />
+          <Piece block {piece} scale={0.88} />
         </div>
       {/each}
     </div>
     <div class='funds' style={`left: ${commitments.x}px; top: ${commitments.y}px; width: ${commitments.w}px; height: ${commitments.h}px; transform: scale(${scale})`}>
       {#each $game.factionData.riverfolk.funds.commitments as piece}
         <div class='fund'>
-          <Piece block piece={piece} scale={0.88} />
+          <Piece block {piece} scale={0.88} />
         </div>
       {/each}
     </div>
+
+    {#each $game.factionData.riverfolk.funds.crafted.fox as piece, i}
+      <Piece
+        {piece}
+        x={tradePosts.x - i * tradePosts.dx}
+        y={tradePosts.y}
+        scale={scale * 0.88} />
+    {/each}
+    {#each $game.factionData.riverfolk.funds.crafted.rabbit as piece, i}
+      <Piece
+        {piece}
+        x={tradePosts.x - i * tradePosts.dx}
+        y={tradePosts.y + tradePosts.dy}
+        scale={scale * 0.88} />
+    {/each}
+    {#each $game.factionData.riverfolk.funds.crafted.mouse as piece, i}
+      <Piece
+        {piece}
+        x={tradePosts.x - i * tradePosts.dx}
+        y={tradePosts.y + 2 * tradePosts.dy}
+        scale={scale * 0.88} />
+    {/each}
 
     {#if $prompts && $prompts.prices}
       {#each ['handCard', 'riverboats', 'mercenaries'] as service, y}
