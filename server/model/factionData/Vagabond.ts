@@ -31,6 +31,7 @@ export default class Vagabond {
   coalition: string | null;
   ruinItems: Item[];
   hand: Card[];
+  craftedEffects: Card[];
   victoryPoints: number;
 
   constructor(public faction: Faction.vagabond | Faction.vagabond2) {
@@ -56,6 +57,7 @@ export default class Vagabond {
     ];
     // common stuff
     this.hand = [];
+    this.craftedEffects = [];
     this.victoryPoints = 0;
   }
 

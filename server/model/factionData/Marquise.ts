@@ -16,6 +16,7 @@ export default class Marquise {
   hand: Card[];
   victoryPoints: number;
   dominance: Card | null;
+  craftedEffects: Card[];
   craftedItems: Item[];
 
   get faction() { return Faction.marquise; }
@@ -30,6 +31,7 @@ export default class Marquise {
     this.hand = [];
     this.victoryPoints = 0;
     this.dominance = null;
+    this.craftedEffects = [];
     this.craftedItems = [];
   }
 

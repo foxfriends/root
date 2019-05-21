@@ -32,15 +32,16 @@ type Decree = {
 }
 
 export default class Eyrie {
-  public decree: Decree;
-  public roost: number;
-  public warrior: number;
-  public leader: string | null;
-  public leaders: Leader[];
-  public hand: Card[];
-  public victoryPoints: number;
-  public dominance: Card | null;
-  public craftedItems: Item[];
+  decree: Decree;
+  roost: number;
+  warrior: number;
+  leader: string | null;
+  leaders: Leader[];
+  hand: Card[];
+  victoryPoints: number;
+  dominance: Card | null;
+  craftedItems: Item[];
+  craftedEffects: Card[];
 
   get faction() { return Faction.eyrie; }
   constructor() {
@@ -59,6 +60,7 @@ export default class Eyrie {
     this.hand = [];
     this.victoryPoints = 0;
     this.dominance = null;
+    this.craftedEffects = [];
     this.craftedItems = [];
   }
 

@@ -5,8 +5,10 @@
   "main": "server/index.js",
   "type": "module",
   "scripts": {
-    "start": "parcel watch client/index.html --no-hmr --no-cache",
-    "serve": "tsc -p server; node server/index.js"
+    "watch": "parcel watch client/index.html --no-hmr --no-cache",
+    "build": "tsc -p server",
+    "start": "parcel build client/index.html; tsc -p server; node server/index.js",
+    "serve": "node server/index.js"
   },
   "repository": {
     "type": "git",

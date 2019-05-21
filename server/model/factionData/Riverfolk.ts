@@ -30,6 +30,7 @@ export default class Riverfolk {
   hand: Card[];
   victoryPoints: number;
   dominance: Card | null;
+  craftedEffects: Card[];
   craftedItems: Item[];
 
   get faction() { return Faction.riverfolk; }
@@ -57,6 +58,7 @@ export default class Riverfolk {
     this.hand = [];
     this.victoryPoints = 0;
     this.dominance = null;
+    this.craftedEffects = [];
     this.craftedItems = [];
   }
 

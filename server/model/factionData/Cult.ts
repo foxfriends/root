@@ -18,6 +18,7 @@ export default class Cult {
   hand: Card[];
   victoryPoints: number;
   dominance: Card | null;
+  craftedEffects: Card[];
   craftedItems: Item[];
 
   get faction() { return Faction.cult; }
@@ -34,6 +35,7 @@ export default class Cult {
     this.hand = [];
     this.victoryPoints = 0;
     this.dominance = null;
+    this.craftedEffects = [];
     this.craftedItems = [];
   }
 

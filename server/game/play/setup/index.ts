@@ -8,7 +8,7 @@ import setupVagabond from './vagabond';
 import setupRiverfolk from './riverfolk';
 import setupCult from './cult';
 
-async function * setupFaction(this: Client, faction: string) {
+async function * setupFaction(this: Client, faction: Faction) {
   switch (faction) {
     case Faction.marquise:
       yield * setupMarquise.call(this);

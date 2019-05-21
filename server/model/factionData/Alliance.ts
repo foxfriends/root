@@ -14,6 +14,7 @@ export default class Alliance {
   hand: Card[];
   victoryPoints: number;
   craftedItems: Item[];
+  craftedEffects: Card[];
   dominance: Card | null;
 
   get faction() { return Faction.alliance; }
@@ -29,6 +30,7 @@ export default class Alliance {
     this.hand = [];
     this.victoryPoints = 0;
     this.craftedItems = [];
+    this.craftedEffects = [];
     this.dominance = null;
   }
 

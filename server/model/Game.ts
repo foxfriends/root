@@ -144,7 +144,10 @@ export default class Game {
     /** The current turn number, negative for setup, or null if not started */
     this.turn = null;
     /** The cards still in the deck */
-    this.cards = shuffle([...Cards]);
+    this.cards = shuffle(factions.includes(Faction.marquise_bot)
+      ? Cards.filter(card => !Card.isDominance(card))
+      : Cards.filter(card => !Card.isSpy(card))
+    );
     /** The cards that have been discarded */
     this.discards = [];
     /** The unturned quests */
