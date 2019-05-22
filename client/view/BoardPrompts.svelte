@@ -17,7 +17,7 @@ function notifyForest(forest) {
 
 {#if $prompts && $acceptor}
   {#if $prompts.clearings}
-    {#each $prompts.clearings as clearing}
+    {#each [...new Map($prompts.clearings.map(clearing => [clearing.index, clearing])).values()] as clearing}
       <ClearingPrompt
         {scale}
         {...clearing}
@@ -25,7 +25,7 @@ function notifyForest(forest) {
     {/each}
   {/if}
   {#if $prompts.forests}
-    {#each $prompts.forests as forest}
+    {#each [...new Map($prompts.forests.map(forest => [forest.index, forest])).values()] as forest}
       <ClearingPrompt
         {scale}
         {...forest}

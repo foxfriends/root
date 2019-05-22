@@ -3,12 +3,14 @@ import borrow from '../../util/borrow';
 import { game, username } from '../../store';
 import { accept } from '../../model/Acceptor';
 import update from '../update';
+import marquiseTurn from './marquise';
 import Client from '../../model/Client';
 import Faction from '../../model/Faction';
 
 async function * turn (this: Client, faction: Faction): AsyncIterableIterator<void> {
   switch (faction) {
     case Faction.marquise:
+      yield * marquiseTurn.call(this);
       break;
     case Faction.eyrie:
       break;

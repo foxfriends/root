@@ -31,10 +31,10 @@ export default class Board {
     };
   }
 
-  locate(piece: Piece) {
+  locate(piece: Piece): Clearing | undefined {
     return this.clearings
-      .find(clearing => clearing.pieces.includes(piece)
-                     || clearing.buildings.includes(piece));
+      .find(clearing => clearing.pieces.some(p => Piece.equals(p, piece))
+                     || clearing.buildings.some(p => !!p && Piece.equals(p, piece)));
   }
 
   adjacentClearings(clearingIndex: number): Clearing[] {

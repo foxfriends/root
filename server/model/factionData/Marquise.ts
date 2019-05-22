@@ -55,4 +55,17 @@ export default class Marquise {
     --(<number> this[<keyof Marquise> building.name]);
     game.notify();
   }
+
+  placeWood(game: Game, clearing: number, threadId: string | null) {
+    if (!this.wood) {
+      if (threadId) {
+        throw new NoMorePieces(threadId, Pieces.marquise.wood);
+      } else {
+        return;
+      }
+    }
+    game.board.clearings[clearing].addPiece(Pieces.marquise.wood);
+    --this.wood;
+    game.notify();
+  }
 }

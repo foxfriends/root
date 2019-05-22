@@ -11,6 +11,7 @@ import Rejection from './Rejection';
 import Message from './Message';
 import Forest from './board/Forest';
 import GameMap from './GameMap';
+import Time from './Time';
 import shuffle from '../util/shuffle';
 import createFaction from './factionData';
 
@@ -112,7 +113,11 @@ export default class Game {
     marquise_bot?: MarquiseBot,
   };
   players: { [username: string]: Player };
+
   turn: number | null;
+  time: Time;
+  phase: number;
+
   cards: Card[];
   discards: Card[];
   quests: Quest[];
@@ -143,6 +148,8 @@ export default class Game {
     this.players = {};
     /** The current turn number, negative for setup, or null if not started */
     this.turn = null;
+    this.time = Time.birdsong;
+    this.phase = 0;
     /** The cards still in the deck */
     this.cards = shuffle(factions.includes(Faction.marquise_bot)
       ? Cards.filter(card => !Card.isDominance(card))
@@ -277,6 +284,19 @@ export default class Game {
 
   nextTurn() {
     ++this.turn!;
+    this.time = Time.birdsong;
+    this.phase = 0;
+    this.notify();
+  }
+
+  nextTime(time: Time) {
+    this.time = time;
+    this.phase = 0;
+    this.notify();
+  }
+
+  nextPhase() {
+    ++this.phase;
     this.notify();
   }
 

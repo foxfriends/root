@@ -23,6 +23,10 @@ export default class Clearing {
   public pieces: Piece[];
   public ruinItems: Item[];
 
+  static hasBuilding(clearing: Clearing, piece: Piece) {
+    return clearing.buildings.some(p => !!p && Piece.equals(piece, p));
+  }
+
   constructor(
     public index: number,
     public x: number,
@@ -50,7 +54,7 @@ export default class Clearing {
   }
 
   hasBuilding(piece: Piece) {
-    return this.buildings.includes(piece);
+    return Clearing.hasBuilding(this, piece);
   }
 
   get hasRuins() {
@@ -59,7 +63,7 @@ export default class Clearing {
 
   addRuinItem(item: Item) {
     if (!this.buildings.includes(Pieces.ruin)) {
-      throw new NoRuins();
+      throw new NoRuins;
     }
     this.ruinItems.push(item);
   }
