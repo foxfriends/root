@@ -6,6 +6,7 @@ import marquiseTurn from './marquise';
 async function * turn (this: Client, faction: Faction): AsyncIterableIterator<void> {
   switch (faction) {
     case Faction.marquise:
+      yield * marquiseTurn.call(this);
       break;
     case Faction.eyrie:
       break;
@@ -28,7 +29,7 @@ export default async function * play (this: Client) {
     const currentPlayer = this.game.playerNames[this.game.turn! % this.game.playerNames.length];
     if (this.username === currentPlayer) {
       // TODO: take turn
-      turn.call(this, this.game.players[currentPlayer].faction!);
+      yield * turn.call(this, this.game.players[currentPlayer].faction!);
       this.game.nextTurn();
     } else {
       yield * accept.call(this, 'gameUpdated');

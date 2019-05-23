@@ -323,6 +323,11 @@ export default class Game {
     this.notify();
   }
 
+  discard(card: Card) {
+    this.discards.push(card);
+    this.notify();
+  }
+
   get isFull() {
     return this.playerNames.length === this.factions.filter(faction => faction !== Faction.marquise_bot).length;
   }

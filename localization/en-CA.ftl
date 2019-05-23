@@ -29,6 +29,11 @@ map = Map
 forest = Forest
 winter = Winter
 
+suit-fox = Fox
+suit-rabbit = Rabbit
+suit-mouse = Mouse
+suit-bird = Bird
+
 factions = Factions
 marquise = { $form ->
   [long] Marquise de Cat
@@ -129,3 +134,4 @@ rejection-character-already-taken = The { REF($character) } is already taken.
 rejection-not-a-river = The clearing must contain a river.
 rejection-invalid-start-clearing = You must start in a corner clearing.
 rejection-no-sawmill = There is no sawmill in that clearing.
+rejection-invalid-card-suit = You need to pick a { REF($suit) } card.
