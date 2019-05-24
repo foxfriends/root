@@ -5,6 +5,7 @@ import Client from '../../../model/Client';
 import Faction from '../../../model/Faction';
 import Suit from '../../../model/Suit';
 import { Card } from '../../../model/Card';
+import cardEffect from './cardEffect';
 
 export async function * birdsong (this: Client, faction: Faction): AsyncIterableIterator<void> {
   // TODO: check victory conditions
@@ -46,7 +47,7 @@ export async function * craft (this: Client, resources: Suit[], faction_: Factio
     if (!card || !card.cost || !subset(card.cost, resources)) {
       throw new CannotAffordCrafting(threadId, card);
     }
-    yield * card.effect(this, faction, threadId);
+    yield * cardEffect.call(this, card, faction, threadId);
     for (const suit of card.cost) {
       resources.splice(resources.indexOf(suit), 1);
     }

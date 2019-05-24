@@ -1,8 +1,4 @@
-import clients from '../store/clients';
 import Faction from './Faction';
-import Clearing from './board/Clearing';
-import Game from './Game';
-import Suit from './Suit';
 
 export class Piece {
   constructor(
@@ -21,44 +17,6 @@ export class Piece {
 
   toJSON() {
     return { ...this, key: this.key };
-  }
-
-  async * return(game: Game, clearing: Clearing, remover: Faction): AsyncIterableIterator<void> {
-    if (this.faction) {
-      if (Piece.equals(this, Pieces.riverfolk.trade_post_fox)
-       || Piece.equals(this, Pieces.riverfolk.trade_post_rabbit)
-       || Piece.equals(this, Pieces.riverfolk.trade_post_mouse)
-       || Piece.equals(this, Pieces.marquise.keep)
-      ) {
-        // these ones get discarded
-        return;
-      }
-      if (this.shape === 'round' || this.shape === 'square') {
-        // 1 point for destroying buildings and tokens
-        ++game.factionData[remover]!.victoryPoints;
-      }
-      // field hospitals
-      if (Piece.equals(this, Pieces.marquise.warrior)) {
-        if (game.factionData.marquise!.hand.some(card => card.suit === clearing.suit || card.suit === Suit.bird)) {
-          const keepClearing = game.board.locate(Pieces.marquise.keep);
-          if (keepClearing) {
-            const marquisePlayer = Object.values(game.players).find(player => player.faction === Faction.marquise)!;
-            // @ts-ignore
-            const { card: index } = await clients
-              .get(game._clients[marquisePlayer.username])!
-              .send('fieldHospital', { suit: clearing.suit });
-            const card = game.factionData.marquise!.hand[index];
-            if (card && (card.suit === clearing.suit || card.suit === Suit.bird)) {
-              keepClearing.addPiece(Pieces.marquise.warrior);
-              return;
-            }
-          }
-        }
-      }
-      // TODO: some special things for certain buildings
-      // some sketchy casting, but it was designed to work this way
-      ++(<number> (<any> game.factionData[this.faction]!)[this.name]);
-    }
   }
 
   static equals(piece: Piece, other: Piece) {

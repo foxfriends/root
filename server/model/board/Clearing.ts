@@ -47,10 +47,9 @@ export default class Clearing {
     this.pieces.push(piece);
   }
 
-  async * removePiece(game: Game, remover: Faction, index: number) {
+  removePiece(index: number) {
     const [piece] = this.pieces.splice(index, 1);
-    yield * piece.return(game, this, remover);
-    game.notify();
+    return piece;
   }
 
   addBuilding(building: Piece, threadId: string) {

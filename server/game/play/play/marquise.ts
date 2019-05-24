@@ -80,7 +80,7 @@ async function * marquiseDaylight (this: Client) {
     yield * daylight.call(this, Faction.marquise);
   // @ts-ignore: falls through
   case 1:
-    yield * craft.call(this, Faction.marquise);
+    yield * craft.call(this, [], Faction.marquise);
     // TODO: crafting
     /* falls through */
   case 2:
