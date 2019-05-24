@@ -62,6 +62,10 @@ export default class Riverfolk {
     this.craftedItems = [];
   }
 
+  addItem(item: Item) {
+    this.craftedItems.push(item);
+  }
+
   placeWarriors(game: Game, clearing: number, count = 1, threadId: string) {
     if (this.warrior < count) {
       throw new NoMorePieces(threadId, Pieces.riverfolk.warrior);

@@ -61,6 +61,10 @@ export default class Vagabond {
     this.victoryPoints = 0;
   }
 
+  addItem(item: Item) {
+    this.items.refreshed.push(item);
+  }
+
   setCharacter(game: Game, character: Character, threadId: string) {
     const charactersTaken = [
       game.factionData.vagabond && game.factionData.vagabond.character,

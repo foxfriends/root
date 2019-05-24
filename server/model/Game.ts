@@ -1,7 +1,7 @@
-import Player from './Player';
-import Client from './Client';
 import clients from '../store/clients';
 import games from '../store/games';
+import Player from './Player';
+import Client from './Client';
 import Faction from './Faction';
 import Board from './board/Board';
 import Cards, { Card } from './Card';
@@ -324,7 +324,11 @@ export default class Game {
   }
 
   discard(card: Card) {
-    this.discards.push(card);
+    if (this.factions.includes(Faction.cult)) {
+      this.factionData.cult!.lostSouls.push(card);
+    } else {
+      this.discards.push(card);
+    }
     this.notify();
   }
 

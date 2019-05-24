@@ -1,4 +1,41 @@
 import Suit from './Suit';
+import Client from './Client';
+import Faction from './Faction';
+import Leader from './Leader';
+import Rejection from './Rejection';
+import { Item } from './Item';
+
+class NotEnoughItems extends Rejection {
+  constructor(threadId: string, item: string) {
+    super(threadId, {
+      key: 'rejection-not-enough-items',
+      params: {
+        item: `item-${item}`,
+      },
+    });
+  }
+}
+
+class DuplicatePermanentEffect extends Rejection {
+  constructor(threadId: string, item: string) {
+    super(threadId, {
+      key: 'rejection-duplicate-permanent-effect',
+      params: {
+        card: `card-${item}`,
+      },
+    });
+  }
+}
+
+async function * favor (client: Client, faction: Faction, suit: Suit) {
+  for (const clearing of client.game.board.clearings.filter(clearing => clearing.suit === suit)) {
+    for (let i = clearing.pieces.length; i >= 0; --i) {
+      if (clearing.pieces[i].faction && clearing.pieces[i].faction !== faction) {
+        yield * clearing.removePiece(client.game, faction, i);
+      }
+    }
+  }
+}
 
 export class Card {
   static get ambush() { return 'ambush' }
@@ -40,9 +77,91 @@ export class Card {
 
   constructor(
     public suit: Suit,
-    public cost: string[] | null,
+    public cost: Suit[] | null,
     public name: string,
   ) {}
+
+  async * craftItem(client: Client, faction: Faction, itemName: string, points: number, threadId: string): AsyncIterableIterator<void> {
+    if (faction === Faction.marquise_bot) { throw new Error('unreachable'); }
+
+    const itemIndex = client.game.items.findIndex(item => item.name === itemName);
+    if (itemIndex === -1) {
+      throw new NotEnoughItems(threadId, Item.bag);
+    }
+    client.game.factionData[faction]!.victoryPoints += (faction === Faction.eyrie && client.game.factionData.eyrie!.leader !== Leader.builder)
+      ? 1
+      : points;
+    const [bag] = client.game.items.splice(itemIndex, 1);
+    client.game.factionData[faction]!.addItem(bag);
+    client.game.discard(this);
+  }
+
+  async * effect (client: Client, faction: Faction, threadId: string): AsyncIterableIterator<void> {
+    if (faction === Faction.marquise_bot) { throw new Error('unreachable'); }
+
+    switch (this.name) {
+    case Card.birdy_bindle:
+    case Card.gently_used_knapsack:
+    case Card.smugglers_trail:
+    case Card.mouse_in_a_sack:
+      yield * this.craftItem(client, faction, Item.bag, 1, threadId);
+      break;
+    case Card.woodland_runners:
+    case Card.travel_gear:
+    case Card.a_visit_to_friends:
+      yield * this.craftItem(client, faction, Item.boot, 1, threadId);
+      break;
+    case Card.arms_trader:
+    case Card.foxfolk_steel:
+    case Card.sword:
+      yield * this.craftItem(client, faction, Item.sword, 2, threadId);
+      break;
+    case Card.crossbow:
+      yield * this.craftItem(client, faction, Item.crossbow, 1, threadId);
+      break;
+    case Card.root_tea:
+      yield * this.craftItem(client, faction, Item.tea, 2, threadId);
+      break;
+    case Card.protection_racket:
+    case Card.bake_sale:
+    case Card.investments:
+      yield * this.craftItem(client, faction, Item.coin, 3, threadId);
+      break;
+    case Card.anvil:
+      yield * this.craftItem(client, faction, Item.hammer, 2, threadId);
+      break;
+    case Card.armorers:
+    case Card.sappers:
+    case Card.brutal_tactics:
+    case Card.stand_and_deliver:
+    case Card.tax_collector:
+    case Card.command_warren:
+    case Card.better_burrow_bank:
+    case Card.cobbler:
+    case Card.scouting_party:
+    case Card.codebreakers:
+      if (client.game.factionData[faction]!.craftedEffects.some(card => card.name === this.name)) {
+        throw new DuplicatePermanentEffect(threadId, this.name);
+      }
+      client.game.factionData[faction]!.craftedEffects.push(this);
+      client.game.notify();
+      break;
+    case Card.favor_of_the_foxes:
+      yield * favor(client, faction, Suit.fox);
+      break;
+    case Card.favor_of_the_rabbits:
+      yield * favor(client, faction, Suit.rabbit);
+      break;
+    case Card.favor_of_the_mice:
+      yield * favor(client, faction, Suit.mouse);
+      break;
+    case Card.royal_claim:
+      // TODO: this one
+      break;
+    default:
+      throw new Error('unimplemented');
+    }
+  }
 
   get key() {
     return `${this.suit}-${this.name}`;

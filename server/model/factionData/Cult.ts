@@ -39,6 +39,10 @@ export default class Cult {
     this.craftedItems = [];
   }
 
+  addItem(item: Item) {
+    this.craftedItems.push(item);
+  }
+
   setOutcast(game: Game, outcast: Suit, hated: boolean = false) {
     this.outcast = outcast;
     this.hated = hated;

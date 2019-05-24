@@ -64,6 +64,10 @@ export default class Eyrie {
     this.craftedItems = [];
   }
 
+  addItem(item: Item) {
+    this.craftedItems.push(item);
+  }
+
   setLeader(game: Game, leader: Leader, threadId: string) {
     if (!this.leaders.includes(leader)) {
       throw new LeaderUnavailable(threadId, leader);

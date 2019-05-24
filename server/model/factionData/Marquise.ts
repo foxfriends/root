@@ -35,6 +35,10 @@ export default class Marquise {
     this.craftedItems = [];
   }
 
+  addItem(item: Item) {
+    this.craftedItems.push(item);
+  }
+
   placeKeep(game: Game, clearing: number) {
     --this.keep;
     game.board.clearings[clearing].addPiece(Pieces.marquise.keep);

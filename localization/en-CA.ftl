@@ -105,6 +105,73 @@ vagabond-character-thief = Thief
 vagabond-character-tinker = Tinker
 vagabond-character-vagrant = Vagrant
 
+card-ambush = Ambush
+card-birdy_bindle = Birdy Bindle
+card-armorers = Armorers
+card-woodland_runners = Woodland Runners
+card-arms_trader = Arms Trader
+card-crossbow = Crossbow
+card-sappers = Sappers
+card-brutal_tactics = Brutal Tactics
+card-royal_claim = Royal Claim
+card-gently_used_knapsack = Gently Used Knapsack
+card-root_tea = Root Tea
+card-travel_gear = Travel Gear
+card-protection_racket = Protection Racket
+card-foxfolk_steel = Foxfolk Steel
+card-anvil = Anvil
+card-stand_and_deliver = Stand and Deliver
+card-tax_collector = Tax Collector
+card-favor_of_the_foxes = Favor of the Foxes
+card-smugglers_trail = Smugglers Trail
+card-a_visit_to_friends = A Visit To Friends
+card-bake_sale = Bake Sale
+card-command_warren = Command Warren
+card-better_burrow_bank = Better Burrow Bank
+card-cobbler = Cobbler
+card-favor_of_the_rabbits = Favor of the Rabbits
+card-mouse_in_a_sack = Mouse in a Sack
+card-investments = Investments
+card-sword = Sword
+card-scouting_party = Scouting Party
+card-codebreakers = Codebreakers
+card-favor_of_the_mice = Favor of the Mice
+card-dominance = Dominance
+card-spy = Spy
+
+item-tea = {
+  *[other] Teas
+  [one] Tea
+}
+item-bag = {
+  *[other] Bags
+  [one] Bag
+}
+item-coin = {
+  *[other] Coins
+  [one] Coin
+}
+item-sword = {
+  *[other] Swords
+  [one] Sword
+}
+item-crossbow = {
+  *[other] Crossbows
+  [one] Crossbow
+}
+item-torch = {
+  *[other] Torches
+  [one] Torch
+}
+item-boot = {
+  *[other] Boots
+  [one] Boot
+}
+item-hammer = {
+  *[other] Hammers
+  [one] Hammer
+}
+
 prompt-place-keep = Place the keep in a corner clearing
 prompt-place-building = Place a { REF($building, quantity: 1) } near the keep
 prompt-choose-leader = Choose your leader
@@ -135,3 +202,6 @@ rejection-not-a-river = The clearing must contain a river.
 rejection-invalid-start-clearing = You must start in a corner clearing.
 rejection-no-sawmill = There is no sawmill in that clearing.
 rejection-invalid-card-suit = You need to pick a { REF($suit) } card.
+rejection-cannot-afford-crafting = You cannot afford to craft { REF($card) }.
+rejection-not-enough-items = There are no { REF($item, quantity: 0) } left to craft.
+rejection-duplicate-permanent-effect = You have already crafted a { REF($item, quantity: 1) }.

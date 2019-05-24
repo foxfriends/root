@@ -6,9 +6,9 @@ import { Item } from '../Item';
 export default class Alliance {
   warrior: number;
   sympathy: number;
-  base_fox: boolean;
-  base_rabbit: boolean;
-  base_mouse: boolean;
+  base_fox: number;
+  base_rabbit: number;
+  base_mouse: number;
   supporters: Card[];
   officers: number;
   hand: Card[];
@@ -19,9 +19,9 @@ export default class Alliance {
 
   get faction() { return Faction.alliance; }
   constructor() {
-    this.base_mouse = true;
-    this.base_fox = true;
-    this.base_rabbit = true;
+    this.base_mouse = 1;
+    this.base_fox = 1;
+    this.base_rabbit = 1;
     this.sympathy = 10;
     this.supporters = [];
     this.warrior = 10;
@@ -32,6 +32,10 @@ export default class Alliance {
     this.craftedItems = [];
     this.craftedEffects = [];
     this.dominance = null;
+  }
+
+  addItem(item: Item) {
+    this.craftedItems.push(item);
   }
 
   drawSupporter(game: Game, count: number = 1) {

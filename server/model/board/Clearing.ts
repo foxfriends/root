@@ -2,6 +2,8 @@ import Rejection from '../Rejection';
 import Pieces, { Piece } from '../Piece';
 import Slot from './Slot';
 import Suit from '../Suit';
+import Game from '../Game';
+import Faction from '../Faction';
 import { Item } from '../Item';
 
 class NoRuins extends Error {
@@ -43,6 +45,12 @@ export default class Clearing {
 
   addPiece(piece: Piece) {
     this.pieces.push(piece);
+  }
+
+  async * removePiece(game: Game, remover: Faction, index: number) {
+    const [piece] = this.pieces.splice(index, 1);
+    yield * piece.return(game, this, remover);
+    game.notify();
   }
 
   addBuilding(building: Piece, threadId: string) {

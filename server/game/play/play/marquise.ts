@@ -7,7 +7,7 @@ import Clearing from '../../../model/board/Clearing';
 import Pieces, { Piece } from '../../../model/Piece';
 import { InvalidCardSuit } from './rejections';
 import { accept } from '../../../model/Acceptor';
-import { birdsong, daylight, evening } from './common';
+import { birdsong, daylight, evening, craft } from './common';
 
 class NoSawmill extends Rejection {
   constructor(threadId: string) {
@@ -80,6 +80,7 @@ async function * marquiseDaylight (this: Client) {
     yield * daylight.call(this, Faction.marquise);
   // @ts-ignore: falls through
   case 1:
+    yield * craft.call(this, Faction.marquise);
     // TODO: crafting
     /* falls through */
   case 2:
