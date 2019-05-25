@@ -25,6 +25,49 @@ export default class Clearing {
   public pieces: Piece[];
   public ruinItems: Item[];
 
+  static ruler(game: Game, faction: Faction, clearing: Clearing) {
+    const hasGarden = clearing.buildings.some(building => !!building && (
+      Piece.equals(building, Pieces.cult.garden_fox)
+      || Piece.equals(building, Pieces.cult.garden_mouse)
+      || Piece.equals(building, Pieces.cult.garden_rabbit)
+    ));
+    if (hasGarden) {
+      // gardens are instantly winning
+      return Faction.cult;
+    }
+
+    const scores: { [key in Faction]: number } = {
+      marquise: 0,
+      eyrie: 0,
+      alliance: 0,
+      riverfolk: 0,
+      cult: 0,
+      vagabond: 0,
+      vagabond2: 0,
+      marquise_bot: 0,
+    };
+    clearing
+      .pieces
+      .filter(piece => piece.name === 'warrior')
+      .map(piece => piece.faction)
+      .filter((faction): faction is Faction => faction !== null)
+      .filter(faction => faction !== Faction.vagabond && faction !== Faction.vagabond2)
+      .map(f => (game.services.mercenaries && f === Faction.riverfolk) ? faction : f)
+      .forEach(faction => scores[faction]++);
+    clearing
+      .buildings
+      .map(piece => piece && piece.faction)
+      .filter((faction): faction is Faction => faction !== null)
+      .forEach(faction => scores[faction]++);
+    const best = <[Faction, number]> Object.entries(scores)
+      .reduce((best, score) => score[1] > best[1] ? score : best);
+    if (best[1] === scores.eyrie && scores.eyrie > 0) {
+      return Faction.eyrie;
+    } else {
+      return best[0];
+    }
+  }
+
   static hasBuilding(clearing: Clearing, piece: Piece) {
     return clearing.buildings.some(p => !!p && Piece.equals(piece, p));
   }

@@ -1,3 +1,4 @@
+import Clearing from '../../../model/board/Clearing';
 import Faction from '../../../model/Faction';
 import Client from '../../../model/Client';
 import Suit from '../../../model/Suit';
@@ -29,17 +30,6 @@ class DuplicatePermanentEffect extends Rejection {
   }
 }
 
-async function * favor (this: Client, faction: Faction, suit: Suit): AsyncIterableIterator<void> {
-  for (const clearing of this.game.board.clearings.filter(clearing => clearing.suit === suit)) {
-    for (let i = clearing.pieces.length; i >= 0; --i) {
-      if (clearing.pieces[i].faction && clearing.pieces[i].faction !== faction) {
-        const piece = clearing.removePiece(i);
-        returnPiece.call(this, piece, clearing, faction);
-      }
-    }
-  }
-}
-
 async function * craftItem (this: Client, card: Card, faction: Faction, itemName: string, points: number, threadId: string): AsyncIterableIterator<void> {
   if (faction === Faction.marquise_bot) { throw new Error('unreachable'); }
 
@@ -55,6 +45,26 @@ async function * craftItem (this: Client, card: Card, faction: Faction, itemName
   const [bag] = this.game.items.splice(itemIndex, 1);
   this.game.factionData[faction]!.addItem(bag);
   this.game.discard(card);
+}
+
+async function * favor (this: Client, faction: Faction, suit: Suit): AsyncIterableIterator<void> {
+  for (const clearing of this.game.board.clearings.filter(clearing => clearing.suit === suit)) {
+    for (let i = clearing.pieces.length; i >= 0; --i) {
+      if (clearing.pieces[i].faction && clearing.pieces[i].faction !== faction) {
+        const piece = clearing.removePiece(i);
+        returnPiece.call(this, piece, clearing, faction);
+      }
+    }
+  }
+}
+
+// TODO: where does this get used?
+async function * royalClaim (this: Client, faction: Faction): AsyncIterableIterator<void> {
+  const count = this.game.board.clearings
+    .map(clearing => Clearing.ruler(this.game, faction, clearing))
+    .filter(ruler => ruler === faction)
+    .length;
+  this.game.factionData[faction]!.victoryPoints += count;
 }
 
 export default async function * cardEffect (this: Client, card: Card, faction: Faction, threadId: string): AsyncIterableIterator<void> {
@@ -101,6 +111,7 @@ export default async function * cardEffect (this: Client, card: Card, faction: F
     case Card.cobbler:
     case Card.scouting_party:
     case Card.codebreakers:
+    case Card.royal_claim:
       if (this.game.factionData[faction]!.craftedEffects.some(c => c.name === card.name)) {
         throw new DuplicatePermanentEffect(threadId, card.name);
       }
@@ -115,9 +126,6 @@ export default async function * cardEffect (this: Client, card: Card, faction: F
       break;
     case Card.favor_of_the_mice:
       yield * favor.call(this, faction, Suit.fox);
-      break;
-    case Card.royal_claim:
-      // TODO: this one
       break;
     default:
       throw new Error('unimplemented');

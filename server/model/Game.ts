@@ -117,6 +117,10 @@ export default class Game {
   turn: number | null;
   time: Time;
   phase: number;
+  services: {
+    riverboats: boolean,
+    mercenaries: boolean,
+  };
 
   cards: Card[];
   discards: Card[];
@@ -150,6 +154,8 @@ export default class Game {
     this.turn = null;
     this.time = Time.birdsong;
     this.phase = 0;
+    /** The Riverfolk services purchased by the current player **/
+    this.services = { riverboats: false, mercenaries: false };
     /** The cards still in the deck */
     this.cards = shuffle(factions.includes(Faction.marquise_bot)
       ? Cards.filter(card => !Card.isDominance(card))
@@ -286,6 +292,10 @@ export default class Game {
     ++this.turn!;
     this.time = Time.birdsong;
     this.phase = 0;
+    this.services = {
+      riverboats: false,
+      mercenaries: false,
+    };
     this.notify();
   }
 
