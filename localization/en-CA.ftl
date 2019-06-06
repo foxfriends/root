@@ -205,3 +205,5 @@ rejection-invalid-card-suit = You need to pick a { REF($suit) } card.
 rejection-cannot-afford-crafting = You cannot afford to craft { REF($card) }.
 rejection-not-enough-items = There are no { REF($item, quantity: 0) } left to craft.
 rejection-duplicate-permanent-effect = You have already crafted a { REF($item, quantity: 1) }.
+rejection-no-targets-for-battle = There are no targets to battle in that clearing.
+rejection-no-pieces-of-faction = There are no { REF($faction) } pieces in this clearing.

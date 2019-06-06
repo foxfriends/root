@@ -5,9 +5,9 @@ import Time from '../../../model/Time';
 import Suit from '../../../model/Suit';
 import Clearing from '../../../model/board/Clearing';
 import Pieces, { Piece } from '../../../model/Piece';
-import { InvalidCardSuit } from './rejections';
+import { InvalidCardSuit, NoTargetsForBattle, Cancel } from './rejections';
 import { accept } from '../../../model/Acceptor';
-import { birdsong, daylight, evening, craft } from './common';
+import { birdsong, daylight, evening, craft, battle as commonBattle, cancel } from './common';
 
 class NoSawmill extends Rejection {
   constructor(threadId: string) {
@@ -73,6 +73,39 @@ async function * marquiseBirdsong(this: Client) {
   }
 }
 
+async function * battle (this: Client): AsyncIterableIterator<void> {
+  const clearing: Clearing = yield * accept.call(this,
+    cancel,
+    async function * clearing (this: Client, { clearing: index }: { clearing: number }, threadId: string) {
+      const clearing = this.game.board.clearings[index];
+      if (clearing.pieces.some(piece => Piece.equals(piece, Pieces.marquise.warrior))
+        && clearing.pieces.some(piece => piece.faction !== Faction.marquise)
+      ) {
+        return clearing;
+      }
+      throw new NoTargetsForBattle(threadId);
+    },
+  );
+
+  yield * commonBattle.call(this, clearing, Faction.marquise);
+}
+
+async function * march (this: Client): AsyncIterableIterator<void> {
+
+}
+
+async function * recruit (this: Client): AsyncIterableIterator<void> {
+
+}
+
+async function * build (this: Client): AsyncIterableIterator<void> {
+
+}
+
+async function * overwork (this: Client): AsyncIterableIterator<void> {
+
+}
+
 async function * marquiseDaylight (this: Client) {
   switch (this.game.phase) {
   // @ts-ignore: falls through
@@ -87,7 +120,7 @@ async function * marquiseDaylight (this: Client) {
   default:
     let allowedActions = this.game.phase + 3;
     while (this.game.phase < allowedActions) {
-      // TODO: actions
+      yield * accept.call(this, battle, march, recruit, build, overwork, 'skip');
       this.game.nextPhase();
       if (this.game.phase === allowedActions && this.game.factionData.marquise!.hand.some(card => card.suit === Suit.bird)) {
         if (EXTRA_ACTION === (yield * accept.call(this, extraAction, 'done'))) {

@@ -80,9 +80,9 @@ export async function * accept (this: Client, ...spec: Handler[]) {
           console.warn('Rejected:', e)
           // remote rejections need to be reported to the user
           rejectionHandler(e);
-        } else {
+        } else if (e.threadId) {
           console.log('Rejecting:', e)
-          // local rejections need to be reported to the remote
+          // local rejections with threadId need to be reported to the remote
           this.reject(e.threadId, e.message);
         }
         continue;

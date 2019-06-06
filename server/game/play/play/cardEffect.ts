@@ -65,6 +65,7 @@ async function * royalClaim (this: Client, faction: Faction): AsyncIterableItera
     .filter(ruler => ruler === faction)
     .length;
   this.game.factionData[faction]!.victoryPoints += count;
+  this.game.notify();
 }
 
 export default async function * cardEffect (this: Client, card: Card, faction: Faction, threadId: string): AsyncIterableIterator<void> {
