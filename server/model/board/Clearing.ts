@@ -107,6 +107,12 @@ export default class Clearing {
     return Clearing.hasBuilding(this, piece);
   }
 
+  destroyBuilding(index: number) {
+    const building = this.buildings[index];
+    this.buildings[index] = null;
+    return building;
+  }
+
   get hasRuins() {
     return this.hasBuilding(Pieces.ruin);
   }

@@ -12,6 +12,7 @@ import Clearing from '../../../model/board/Clearing';
 import { Card } from '../../../model/Card';
 import { Cancel, NoPiecesOfFaction } from './rejections';
 import cardEffect from './cardEffect';
+import returnPiece from './returnPiece';
 
 export async function * birdsong (this: Client, faction: Faction): AsyncIterableIterator<void> {
   // TODO: check victory conditions
@@ -99,10 +100,22 @@ function strength(game: Game, clearing: Clearing, faction: Faction): number {
   return units;
 }
 
-async function * takeHits (this: Client, hits: number, clearing: Clearing, faction: Faction): AsyncIterableIterator<void> {
+async function * takeHits (this: Client, hits: number, clearing: Clearing, faction: Faction, fromFaction: Faction): AsyncIterableIterator<void> {
   TAKING_HITS: for (let i = 0; i < hits; ++i) {
     if (faction === Faction.vagabond || faction === Faction.vagabond2) {
-      // TODO: this is weird one
+      const items = [...this.game.factionData[faction]!.items.refreshed, ...this.game.factionData[faction]!.items.exhausted];
+      if (items.length <= hits - i) {
+        this.game.factionData[faction]!.destroyItem(0);
+      } else {
+        for (;;) {
+          const { damage: toDamage }: { damage: number } = await this.game.sendTo(faction, 'damage');
+          if (toDamage > items.length) {
+            continue;
+          }
+          this.game.factionData[faction]!.destroyItem(toDamage);
+          break;
+        }
+      }
     } else {
       const targets = [faction];
       if (this.game.services.mercenaries === faction && i % 2 === 0) {
@@ -112,12 +125,30 @@ async function * takeHits (this: Client, hits: number, clearing: Clearing, facti
         const warrior = clearing.pieces.findIndex(piece => Piece.equals(Pieces[target].warrior, piece));
         if (warrior !== -1) {
           // warrior always goes first
-          clearing.removePiece(warrior);
+          yield * returnPiece.call(this, clearing.removePiece(warrior), clearing, fromFaction);
           continue TAKING_HITS;
         }
       }
-      // TODO: No warriors, so pick buildings to destroy
+      const myBuildings = clearing.buildings
+        .map((building, i): [number, Piece | null] => [i, building])
+        .filter(([, building]) => building && building.faction === faction)
+        .map(([i]) => i);
+      if (myBuildings.length <= hits - i) {
+        yield * returnPiece.call(this, clearing.destroyBuilding(myBuildings[0])!, clearing, fromFaction);
+      }
+      for (;;) {
+        const { destroy: toDestroy }: { destroy: number } = await this.game.sendTo(faction, 'destroy', { clearing: clearing.index });
+        if (!clearing.buildings[toDestroy]) {
+          continue;
+        }
+        if (clearing.buildings[toDestroy]!.faction !== faction) {
+          continue;
+        }
+        yield * returnPiece.call(this, clearing.destroyBuilding(toDestroy)!, clearing, fromFaction);
+        break;
+      }
     }
+    this.game.notify();
   }
 }
 
@@ -159,7 +190,7 @@ export async function * battle (this: Client, clearing: Clearing, attacker: Fact
                 }
               }
             }
-            yield * takeHits.call(this, 2, clearing, attacker);
+            yield * takeHits.call(this, 2, clearing, attacker, defender);
             if (strength(this.game, clearing, attacker) === 0) {
               // battle ends if there are no more warriors left
               return;
@@ -199,8 +230,8 @@ export async function * battle (this: Client, clearing: Clearing, attacker: Fact
   if (defenderStrength === 0) {
     attack++;
   }
-  yield * takeHits.call(this, defend, clearing, attacker);
-  yield * takeHits.call(this, attack, clearing, defender);
+  yield * takeHits.call(this, defend, clearing, attacker, defender);
+  yield * takeHits.call(this, attack, clearing, defender, attacker);
 }
 
 export async function * cancel (this: Client): AsyncIterableIterator<void> {

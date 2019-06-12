@@ -65,6 +65,16 @@ export default class Vagabond {
     this.items.refreshed.push(item);
   }
 
+  destroyItem(index: number) {
+    if (index < this.items.refreshed.length) {
+      const [item] = this.items.refreshed.splice(index, 1);
+      this.items.damaged.push(item);
+    } else if (index - this.items.refreshed.length < this.items.exhausted.length) {
+      const [item] = this.items.exhausted.splice(index - this.items.refreshed.length, 1);
+      this.items.damaged.push(item);
+    }
+  }
+
   setCharacter(game: Game, character: Character, threadId: string) {
     const charactersTaken = [
       game.factionData.vagabond && game.factionData.vagabond.character,
