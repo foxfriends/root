@@ -55,6 +55,9 @@
   --color-vagabond2: #353132;
   --color-cult: #E2E019;
   --color-riverfolk: #5CBDAD;
+  --color-duchy: #EEC2A3;
+  --color-conspiracy: #5B2C87;
+  --color-conspiracy-secondary: #A76EAE;
 }
 
 :global(body),
