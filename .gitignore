@@ -1,5 +1,4 @@
 /node_modules/
 /dist/
-/.cache/
-/server/**/*.js
-/server/**/*.d.ts
+/.parcel-cache/
+/target/

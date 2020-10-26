@@ -1,1 +1,0 @@
-../../../server/model/factionData/Eyrie.d.ts

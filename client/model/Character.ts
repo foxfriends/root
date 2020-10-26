@@ -1,1 +1,0 @@
-../../server/model/Character.ts

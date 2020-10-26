@@ -2,17 +2,13 @@
   "name": "root",
   "version": "1.0.0",
   "description": "Play Root online with friends. Original board game by Cole Wehrle, with art by Kyle Ferrin",
-  "main": "server/index.js",
-  "type": "module",
   "scripts": {
-    "watch": "parcel watch client/index.html --no-hmr --no-cache",
-    "build": "tsc -p server",
-    "start": "parcel build client/index.html; tsc -p server; node server/index.js",
-    "serve": "node server/index.js"
+    "dev": "parcel watch app/index.html --no-hmr --no-cache",
+    "build": "parcel build app/index.html"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OinkIguana/root.git"
+    "url": "git+https://github.com/foxfriends/root.git"
   },
   "keywords": [
     "boardgame",
@@ -26,41 +22,28 @@
   "author": "Cameron Eldridge",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/OinkIguana/root/issues"
+    "url": "https://github.com/foxfriends/root/issues"
   },
-  "homepage": "https://github.com/OinkIguana/root#readme",
+  "homepage": "https://github.com/foxfriends/root#readme",
   "devDependencies": {
-    "@types/fluent": "^0.11.0",
-    "@types/koa": "^2.0.48",
-    "@types/koa-compress": "^2.0.9",
-    "@types/koa-mount": "^3.0.1",
-    "@types/koa-static": "^4.0.1",
-    "@types/node": "^12.0.0",
-    "@types/uuid": "^3.4.4",
-    "autoprefixer": "^9.5.1",
-    "parcel-bundler": "^1.12.3",
-    "parcel-plugin-svelte": "^3.0.0",
-    "svelte": "^3.1.0",
-    "typescript": "^3.4.5"
-  },
-  "dependencies": {
-    "fluent": "^0.12.0",
-    "koa": "^2.7.0",
-    "koa-compress": "^3.0.0",
-    "koa-mount": "^4.0.0",
-    "koa-static": "^5.0.0",
-    "koa-upgrade": "^1.0.1",
-    "prng": "0.0.1",
-    "tslib": "^1.9.3",
-    "uuid": "^3.3.2"
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-function-bind": "^7.12.1",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.1",
+    "@babel/plugin-proposal-private-methods": "^7.12.1",
+    "autoprefixer": "^10.0.1",
+    "parcel": "^2.0.0-beta.1",
+    "parcel-transformer-svelte": "^1.0.6",
+    "svelte": "^3.29.0",
+    "svelte-preprocess": "^4.5.2"
   },
   "browserslist": [
     "last 1 firefox version",
     "last 1 chrome version"
   ],
-  "svelte": {
-    "compilerOptions": {
-      "css": false
-    }
+  "dependencies": {
+    "rxjs": "^6.6.3",
+    "shades": "^2.1.0"
   }
 }
