@@ -1,6 +1,10 @@
+#[macro_use] extern crate lazy_static;
+
 use warp::Filter;
 
 mod game;
+pub mod room;
+
 use game::game;
 
 #[tokio::main]
