@@ -18,7 +18,7 @@ class Lens extends Observable {
   }
 
   set(value) {
-    source.next(set(...this.#lens)(value)(this.#source.getValue()));
+    this.#source.next(set(...this.#lens)(value)(this.#source.getValue()));
   }
 }
 

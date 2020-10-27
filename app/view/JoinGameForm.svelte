@@ -1,71 +1,58 @@
 <script>
-import { createEventDispatcher } from 'svelte';
-import Text from './component/Text.svelte';
-import Message from '../model/Message';
+  import { createEventDispatcher } from 'svelte';
+  import Box from './component/Box.svelte';
+  import Button from './component/Button.svelte';
+  import Text from './component/Text.svelte';
+  import { key } from '../util/event';
 
-const dispatch = createEventDispatcher();
+  let name = '';
 
-export let client;
-let name = '';
-
-function join() {
-  client.notify(Message.direct('JoinGameForm:join', { name }))
-}
+  const dispatch = createEventDispatcher();
+  const back = () => dispatch('back');
+  const next = () => name && dispatch('next', name);
 </script>
 
-<button
-  class='button back'
-  on:click={() => dispatch('back')}>
-  <Text text='back' />
-</button>
-<h1 class='heading'><Text text='game-name' /></h1>
-<!-- TODO [l10n]: the placeholder is not localized -->
-<input
-  class='input'
-  placeholder='Name'
-  autofocus
-  bind:value={name}
-  on:keypress={event => event.key === 'Enter' && join()} />
-<button
-  class='button'
-  on:click={join}>
-  <Text text='join' />
-</button>
+<Box>
+  <Button on:click={back}>
+    <Text text='back' />
+  </Button>
+  <h1 class='heading'><Text text='game-name' /></h1>
+  <!-- TODO [l10n]: the placeholder is not localized -->
+  <input
+    class='input'
+    placeholder='Name'
+    autofocus
+    bind:value={name}
+    on:keypress={key('Enter', next)} />
+  <Button disabled={!name} on:click={next}>
+    <Text text='join' />
+  </Button>
+</Box>
 
 <style>
-.heading {
-  font-family: var(--font-family--display);
-  font-size: 20px;
-  font-weight: 400;
-}
+  .flex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.input, .button {
-  box-sizing: border-box;
-  padding: 8px;
-  border: none;
-  background-color: transparent;
-}
+  .heading {
+    font-family: var(--font-family--display);
+    font-size: 20px;
+    font-weight: 400;
+  }
 
-.button {
-  align-self: flex-end;
-  cursor: pointer;
-  font-family: var(--font-family--display);
-  color: var(--color--accent);
-  font-size: 16px;
-}
+  .input, .button {
+    box-sizing: border-box;
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+  }
 
-.button:hover {
-  color: var(--color--accent__hover);
-}
-
-.button.back {
-  align-self: flex-start;
-}
-
-.input {
-  width: 100%;
-  border-bottom: 1px solid var(--color--accent);
-  font-family: var(--font-family--body);
-  font-size: 16px;
-}
+  .input {
+    width: 100%;
+    border-bottom: 1px solid var(--color--accent);
+    font-family: var(--font-family--body);
+    font-size: 16px;
+  }
 </style>

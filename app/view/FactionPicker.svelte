@@ -3,9 +3,9 @@ import { game, username, errorMessage } from '../store';
 import Box from './component/Box.svelte';
 import Text from './component/Text.svelte';
 import Picker from './component/Picker.svelte';
-import images from '../image/card-*-{front,back}.jpg';
-import Message from '../model/Message';
-import Faction from '../model/Faction';
+// import images from '../image/card-*-{front,back}.jpg';
+
+const images = {};
 
 let flips = $game.factions.map(() => false);
 $: factions = $game.factions
@@ -25,7 +25,7 @@ function selection({ detail: { selection } }) {
 
 <div class='overlay'>
   <Box grow>
-    <Picker let:current options={factions.length} on:select={selection}>
+    <Picker let:current={current} options={factions.length} on:select={selection}>
       {#each factions as faction, i}
         <div class='faction' class:taken={!!faction.player} class:current={current === i}>
           <div

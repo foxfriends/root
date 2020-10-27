@@ -1,5 +1,12 @@
 <script>
-export let text;
+  import loc from '../../util/localization';
+
+  export let text;
+  export let params = {};
+
+  $: translation = loc(text, params);
 </script>
 
-{text}
+{#await translation then translated}
+  {translated}
+{/await}
