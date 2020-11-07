@@ -61,7 +61,6 @@
     </div>
   </div>
   <Button
-    class='button'
     disabled={!valid}
     on:click={next}>
     <Text text='create' />
@@ -75,39 +74,11 @@
   font-weight: 400;
 }
 
-.input, .button {
+.input {
   box-sizing: border-box;
   padding: 8px;
   border: none;
   background-color: transparent;
-}
-
-.button {
-  align-self: flex-end;
-  cursor: pointer;
-  font-family: var(--font-family--display);
-  color: var(--color--accent);
-  font-size: 16px;
-}
-
-.button:hover {
-  color: var(--color--accent__hover);
-}
-
-.button.main {
-  font-size: 20px;
-  width: 100%;
-  height: 100px;
-}
-
-.button.back {
-  align-self: flex-start;
-}
-
-.button:disabled {
-  cursor: default;
-  color: var(--color--text);
-  opacity: 0.6;
 }
 
 .input {

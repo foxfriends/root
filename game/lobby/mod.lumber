@@ -2,19 +2,33 @@
 :- pub(perform/4).
 :- use(@core::list(contains/2, update/4)).
 
-actions(socket(name: Name, ..), state(players: Players, ..), ready) :-
-    contains(player(name: Name, ready: false, ..), Players).
+// Players can become/un-become ready at any time.
+actions({ name: Name, .. }, { players: Players, .. }, ready) :-
+    contains({ name: Name, ready: false, .. }, Players).
 
-actions(socket(name: Name, ..), state(players: Players, ..), unready) :-
-    contains(player(name: Name, ready: true, ..), Players).
+actions({ name: Name, .. }, { players: Players, .. }, unready) :-
+    contains({ name: Name, ready: true, .. }, Players).
 
-perform(socket(name: Name, ..), state(players: Players, ..State), ready, state(players: NewPlayers, ..State)) :-
+perform({ name: Name, .. }, { players: Players, ..State }, ready, { players: NewPlayers, ..State }) :-
     update(
         Players,
-        player(name: Name, ready: _, ..Player),
-        player(name: Name, ready: true, ..Player),
+        { name: Name, ready: _, ..Player },
+        { name: Name, ready: true, ..Player },
         NewPlayers,
     ).
 
-perform(socket(name: Name, ..), state(players: Players, ..State), unready, state(players: NewPlayers, ..State)) :-
-    update(Players, player(name: Name, ready: _, ..Player), player(name: Name, ready: false, ..Player), NewPlayers).
+perform({ name: Name, .. }, { players: Players, ..State }, unready, { players: NewPlayers, ..State }) :-
+    update(
+        Players, 
+        { name: Name, ready: _, ..Player },
+        { name: Name, ready: false, ..Player }, 
+        NewPlayers,
+    ).
+
+// Start the game when all players are ready.
+all_ready([]).
+all_ready([{ ready: true, .. }, ..Rest]) :- all_ready(Rest).
+
+actions({ name: Name, .. }, { owner: Name, players: Players, .. }, start) :-
+    all_ready(Players).
+perform(_, { state: lobby, ..State }, start, { state: setup, ..State }).

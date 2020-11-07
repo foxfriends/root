@@ -5,7 +5,10 @@
 :- pub(actions/3).
 :- pub(perform/4).
 
-:- inc(actions/3).
-:- inc(perform/4).
+actions(Socket, State, lobby(LobbyAction)) :-
+    @core::equal({ state: lobby, .. }, State),
+    lobby::actions(Socket, State, LobbyAction).
 
-actions(Socket, State, lobby(LobbyAction)) :- lobby::actions(Socket, State, LobbyAction).
+perform(Socket, State, lobby(LobbyAction), NewState) :-
+    @core::equal({ state: lobby, .. }, State),
+    lobby::perform(Socket, State, LobbyAction, NewState).
