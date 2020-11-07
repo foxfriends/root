@@ -1,0 +1,11 @@
+:- mod(state).
+:- mod(game).
+:- mod(lobby).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- inc(actions/3).
+:- inc(perform/4).
+
+actions(Socket, State, lobby(LobbyAction)) :- lobby::actions(Socket, State, LobbyAction).

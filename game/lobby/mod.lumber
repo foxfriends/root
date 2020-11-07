@@ -1,0 +1,20 @@
+:- pub(actions/3).
+:- pub(perform/4).
+:- use(@core::list(contains/2, update/4)).
+
+actions(socket(name: Name, ..), state(players: Players, ..), ready) :-
+    contains(player(name: Name, ready: false, ..), Players).
+
+actions(socket(name: Name, ..), state(players: Players, ..), unready) :-
+    contains(player(name: Name, ready: true, ..), Players).
+
+perform(socket(name: Name, ..), state(players: Players, ..State), ready, state(players: NewPlayers, ..State)) :-
+    update(
+        Players,
+        player(name: Name, ready: _, ..Player),
+        player(name: Name, ready: true, ..Player),
+        NewPlayers,
+    ).
+
+perform(socket(name: Name, ..), state(players: Players, ..State), unready, state(players: NewPlayers, ..State)) :-
+    update(Players, player(name: Name, ready: _, ..Player), player(name: Name, ready: false, ..Player), NewPlayers).
