@@ -20,5 +20,6 @@ async fn main() {
     let web = warp::fs::dir(dist_dir);
     let routes = game.or(web);
 
+    println!("Server started at http://localhost:{}", port);
     warp::serve(routes).run(([127, 0, 0, 1], port)).await;
 }

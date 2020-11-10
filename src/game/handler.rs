@@ -11,6 +11,9 @@ thread_local! {
         .unwrap();
 }
 
+/// Handles each message from a socket. The actual engine is written in Lumber, and messages
+/// are actions in the form of text-serialized Lumber structures, typically as output by the
+/// Lumber program.
 pub async fn handle(state: Arc<RwLock<SocketState>>, msg: String) {
     LUMBER.with(|lumber| {
         let command = format!("command(Socket, Game, {}, NewGame, Responses)", msg);

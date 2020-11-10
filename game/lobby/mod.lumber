@@ -5,7 +5,6 @@
 // Players can become/un-become ready at any time.
 actions({ name: Name, .. }, { players: Players, .. }, ready) :-
     contains({ name: Name, ready: false, .. }, Players).
-
 actions({ name: Name, .. }, { players: Players, .. }, unready) :-
     contains({ name: Name, ready: true, .. }, Players).
 
@@ -19,9 +18,9 @@ perform({ name: Name, .. }, { players: Players, ..State }, ready, { players: New
 
 perform({ name: Name, .. }, { players: Players, ..State }, unready, { players: NewPlayers, ..State }) :-
     update(
-        Players, 
+        Players,
         { name: Name, ready: _, ..Player },
-        { name: Name, ready: false, ..Player }, 
+        { name: Name, ready: false, ..Player },
         NewPlayers,
     ).
 
