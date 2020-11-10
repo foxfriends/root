@@ -2,4 +2,26 @@
 
 This is a digital port of the board game "Root" by Cole Wehrle, with art by Kyle Ferrin.
 
-Work in progress.
+> Work in progress.
+
+## Development
+
+This is a [NodeJS](https://nodejs.org/en/) and [Rust](https://rustup.rs/) project, so both must be installed.
+Though the server is written in Rust, the goal is to build the game logic using [Lumber](https://github.com/foxfriends/lumber).
+Lumber is very work in progress, so things are likely to change often.
+
+To compile the client code, use `npm`. We are using [Parcel V2](https://v2.parceljs.org/) for bundling, 
+and [Svelte](https://svelte.dev/) as the framework.
+
+```sh
+npm install # install dependencies
+npm run dev # run builder
+```
+
+To compile and start the server, use Cargo. Dependencies are installed automatically with Cargo.
+
+```sh
+cargo run
+```
+
+With both of those running, the app should be available on `localhost:3000`.
