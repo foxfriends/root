@@ -10,7 +10,7 @@ mod socket_state;
 use handler::handle;
 use socket_state::SocketState;
 
-pub async fn game(websocket: WebSocket) {
+pub async fn handler(websocket: WebSocket) {
     let (ws_tx, ws_rx) = websocket.split();
     let (tx, rx) = unbounded_channel::<String>();
     tokio::task::spawn(rx.map(Message::text).map(Ok).forward(ws_tx));

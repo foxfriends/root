@@ -24,4 +24,9 @@ impl SocketState {
             tx,
         }
     }
+
+    /// The room this socket is in, if any.
+    pub fn room(&self) -> Option<Room> {
+        self.room.clone()
+    }
 }

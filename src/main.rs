@@ -2,10 +2,11 @@
 
 use warp::Filter;
 
-mod game;
+pub mod game;
+mod handler;
 pub mod room;
 
-use game::game;
+use handler::handler;
 
 #[tokio::main]
 async fn main() {
@@ -16,7 +17,7 @@ async fn main() {
 
     let game = warp::path("game")
         .and(warp::ws())
-        .map(|ws: warp::ws::Ws| ws.on_upgrade(game));
+        .map(|ws: warp::ws::Ws| ws.on_upgrade(handler));
     let web = warp::fs::dir(dist_dir);
     let routes = game.or(web);
 
