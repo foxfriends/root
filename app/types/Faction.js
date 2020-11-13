@@ -9,4 +9,4 @@ export default {
   DUCHY: 'duchy',
   CONSPIRACY: 'conspiracy',
   MARQUISE_BOT: 'marquise_bot',
-}
+};

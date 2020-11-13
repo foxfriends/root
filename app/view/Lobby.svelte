@@ -1,17 +1,17 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import stores from '../stores';
-  import Box from './component/Box.svelte';
-  import Button from './component/Button.svelte';
-  import Text from './component/Text.svelte';
-  import _ from '../util/lens';
+import { createEventDispatcher } from 'svelte';
+import stores from '../stores';
+import Box from './component/Box.svelte';
+import Button from './component/Button.svelte';
+import Text from './component/Text.svelte';
+import _ from '../util/lens';
 
-  const dispatch = createEventDispatcher();
-  const back = () => dispatch('back');
-  const { state } = stores();
-  const lobby = _.lobby(state);
+const dispatch = createEventDispatcher();
+const back = () => dispatch('back');
+const { state } = stores();
+const lobby = _.lobby(state);
 
-  let ready = false;
+let ready = false;
 </script>
 
 <Box flex>
@@ -39,21 +39,14 @@
 </Box>
 
 <style>
-  .horizontal {
-    display: flex;
-    align-items: flex-start;
-  }
+.horizontal {
+  display: flex;
+  align-items: flex-start;
+}
 
-  .heading {
-    font-family: var(--font-family--display);
-    font-size: 20px;
-    font-weight: 400;
-  }
-
-  .input {
-    box-sizing: border-box;
-    padding: 8px;
-    border: none;
-    background-color: transparent;
-  }
+.heading {
+  font-family: var(--font-family--display);
+  font-size: 20px;
+  font-weight: 400;
+}
 </style>

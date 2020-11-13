@@ -14,7 +14,7 @@ const production = !process.env.ROLLUP_WATCH;
 
 // noinspection JSUnusedGlobalSymbols,JSValidateTypes
 export default {
-  input: 'app/index.ts',
+  input: 'app/index.js',
   output: {
     dir: 'dist/',
     format: 'iife',
