@@ -1,10 +1,10 @@
-#[macro_use] extern crate lazy_static;
+#[macro_use]
+extern crate lazy_static;
 
 use warp::Filter;
 
-pub mod game;
 mod handler;
-pub mod room;
+pub mod models;
 
 use handler::handler;
 
@@ -13,7 +13,10 @@ async fn main() {
     pretty_env_logger::init();
 
     let dist_dir = std::env::var("root_dist_dir").unwrap_or(String::from("dist"));
-    let port: u16 = std::env::var("root_port").ok().and_then(|s| s.parse().ok()).unwrap_or(3000);
+    let port: u16 = std::env::var("root_port")
+        .ok()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(3000);
 
     let game = warp::path("game")
         .and(warp::ws())

@@ -1,10 +1,12 @@
 use futures::{future::ready, StreamExt};
+use log::debug;
+use std::sync::Arc;
 use tokio::sync::mpsc::unbounded_channel;
 use tokio::sync::RwLock;
-use std::sync::Arc;
 use warp::ws::{Message, WebSocket};
 
 mod handler;
+mod room;
 mod socket_state;
 
 use handler::handle;
@@ -21,6 +23,21 @@ pub async fn handler(websocket: WebSocket) {
         .map(|msg| msg.to_str().map(|s| s.to_owned()))
         .take_while(|result| ready(result.is_ok()))
         .map(Result::unwrap)
-        .for_each(move |msg| handle(state.clone(), msg))
+        .for_each({
+            let state = state.clone();
+            move |msg| {
+                let state = state.clone();
+                async move {
+                    let st = state.read().await;
+                    match st.name() {
+                        Some(name) => debug!("{}({}): {}", st.id(), name, msg),
+                        None => debug!("{}: {}", st.id(), msg),
+                    };
+                    std::mem::drop(st);
+                    handle(state, msg).await
+                }
+            }
+        })
         .await;
+    state.write().await.leave_room().await;
 }
