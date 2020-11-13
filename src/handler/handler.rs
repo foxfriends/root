@@ -1,4 +1,5 @@
 use futures::{FutureExt, StreamExt};
+use log::error;
 use lumber::{Question, Lumber, Value};
 use super::SocketState;
 use tokio::sync::RwLock;
@@ -23,11 +24,19 @@ pub async fn handle(state: Arc<RwLock<SocketState>>, msg: String) {
         Some(game) => {
             LUMBER.with(|lumber| {
                 let command = format!("command(Socket, Game, {}, NewGame, Responses)", msg);
-                let question = Question::try_from(command.as_str()).unwrap()
-                    .with("Socket", Value::any(state))
-                    .with("Game", Value::serialize(&*game).unwrap());
-                for binding in lumber.ask(&question) {
-                    let answer = question.answer(&binding).unwrap();
+                let question = Question::try_from(command.as_str())
+                    .map(|question| question
+                        .with("Socket", Value::any(state))
+                        .with("Game", Value::serialize(&*game).unwrap()));
+                match question {
+                    Ok(question) => {
+                        for binding in lumber.ask(&question) {
+                            let answer = question.answer(&binding).unwrap();
+                        }
+                    }
+                    Err(error) => {
+                        error!("Invalid command `{}`\n{}", command, error);
+                    }
                 }
             });
         }
