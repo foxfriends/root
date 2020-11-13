@@ -4,12 +4,14 @@
   import Box from './component/Box.svelte';
   import Button from './component/Button.svelte';
   import Text from './component/Text.svelte';
-  import _ from '../util/lens';
 
   const dispatch = thunkify(createEventDispatcher());
 </script>
 
 <Box flex>
+  <Button on:click={dispatch('back', undefined)}>
+    <Text text='back' />
+  </Button>
   <div class='button'>
     <Button on:click={dispatch('next', 'create')}>
       <Text text='create-new-game' />

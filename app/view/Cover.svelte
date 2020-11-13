@@ -23,10 +23,15 @@
   }
 
   async function * chooseGame() {
-    yield * cond([
-      [equals('create'), createGame],
-      [equals('join'), joinGame],
-    ])(value(yield 'choose-game'));
+    try {
+      const next = value(yield 'choose-game');
+      yield * cond([
+        [equals('create'), createGame],
+        [equals('join'), joinGame],
+      ])(next);
+    } catch {
+      yield * cover();
+    }
   }
 
   async function * createGame() {
@@ -78,7 +83,7 @@
     </Dialog>
   {:else if state === 'choose-game'}
     <Dialog>
-      <ChooseGameForm on:next={next} />
+      <ChooseGameForm on:next={next} on:back={abort} />
     </Dialog>
   {:else if state === 'create-game'}
     <Dialog>
