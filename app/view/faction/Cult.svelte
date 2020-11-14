@@ -1,11 +1,7 @@
 <script>
-import { game, username, prompts } from '../../store';
-import tokenImages from '../../image/token/token.*.png';
-import cardImages from '../../image/card/card-shared-front.*.jpg';
-import cardBack from '../../image/card/card-shared-back.jpg';
+import { game, prompts } from '../../store';
 import Pieces from '../../model/Piece';
 import Message from '../../model/Message';
-import Faction from '../../model/Faction';
 import Suit from '../../model/Suit';
 import Piece from '../Piece.svelte';
 import Pile from '../Pile.svelte';

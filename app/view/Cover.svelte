@@ -1,8 +1,6 @@
 <script>
-import { fly } from 'svelte/transition';
-import { flip, cond, equals } from 'ramda';
+import { cond, equals } from 'ramda';
 import context from '../context';
-import logo from 'url:../image/logo.png';
 import Dialog from './component/Dialog.svelte';
 import IdentificationForm from './IdentificationForm.svelte';
 import ChooseGameForm from './ChooseGameForm.svelte';
@@ -15,8 +13,8 @@ import _ from '../util/lens';
 import value from '../util/event';
 
 const { state, socket } = context();
-const username = _.user.name(state);
-const lobby = _.lobby(state);
+const username = state::_.user.name();
+const lobby = state::_.lobby();
 
 async function * cover() {
   $username = value(yield 'identification');
@@ -83,9 +81,7 @@ async function * gameLobby(name, settings) {
 }
 </script>
 
-<div class='cover'>
-  <img src={logo} />
-</div>
+<div class='cover' />
 
 <Flow flow={cover} let:state let:next let:abort>
   {#if state === 'identification'}

@@ -32,7 +32,7 @@
 </script>
 
 <script>
-  import { fade, fly } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
 
   const containers = [];
   $: $dialogs.forEach((entry, i) => containers[i]?.appendChild(entry.element));

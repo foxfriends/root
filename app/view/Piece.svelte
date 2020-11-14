@@ -1,5 +1,4 @@
 <script>
-import Pieces from '../model/Piece';
 import tokenVector from '../image/token/token.*.svg';
 import tokenImages from '../image/token/token.*.png';
 import Token from './Token.svelte';
@@ -17,6 +16,7 @@ $: image = tokenVector[piece.key] || tokenImages[piece.key];
 {:else if piece.shape === 'round'}
   <Token round {block} {image} {x} {y} {scale} {stack} />
 {:else}
+  <!-- svelte-ignore a11y-missing-attribute -->
   <img
     class='meeple'
     src={image}

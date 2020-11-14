@@ -1,5 +1,5 @@
 import { fromEvent } from 'rxjs';
-import { filter, first, map, share, tap } from 'rxjs/operators';
+import { filter, first, map, tap } from 'rxjs/operators';
 import { prop, propEq, cond } from 'ramda';
 import * as uuid from 'uuid';
 

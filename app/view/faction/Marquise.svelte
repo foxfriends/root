@@ -1,7 +1,6 @@
 <script>
 import { game } from '../../store';
 import Pieces from '../../model/Piece';
-import Faction from '../../model/Faction';
 import Piece from '../Piece.svelte';
 import CraftedItems from './CraftedItems.svelte';
 

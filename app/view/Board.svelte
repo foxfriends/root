@@ -1,5 +1,5 @@
 <script>
-import { game, username } from '../store';
+import { game } from '../store';
 import mapImages from '../image/map-*.jpg';
 import Clearing from './Clearing.svelte';
 import Items from './Items.svelte';
@@ -63,6 +63,7 @@ export let client;
   <div
     class='viewport'
     style={`transform: translate(-${pan.x}px, -${pan.y}px) scale(${scale})`}>
+    <!-- svelte-ignore a11y-missing-attribute -->
     <img
       class='board'
       src={mapImages[$game.board.name]}

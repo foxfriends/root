@@ -17,10 +17,9 @@
 :global(:root) {
   --font-family--display: 'Luminari';
   --font-family--body: 'Baskerville';
-
   --color--text: black;
   --color--accent: #DF7F83;
-  --color--accent__hover: #c15943;
+  --color--accent__hover: #C15943;
   --color--background: #FBF7E7;
 }
 

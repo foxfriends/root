@@ -38,6 +38,7 @@ export let client;
     </div>
     <div class='previews'>
       {#each $game.playerNames as name}
+        <!-- svelte-ignore a11y-missing-attribute -->
         <img
           class='preview'
           class:current={name === focusedPlayer}
@@ -64,7 +65,8 @@ export let client;
   padding: 20px;
 }
 
-.shared-deck, .discards-deck {
+.shared-deck,
+.discards-deck {
   margin: 20px;
   width: 183px;
   height: 249px;

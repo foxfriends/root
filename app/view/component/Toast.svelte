@@ -29,7 +29,7 @@
 </script>
 
 <script>
-  import { fade, fly } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
   import Box from './Box.svelte';
 </script>
 
@@ -72,9 +72,9 @@
     font-size: 14pt;
 
     --Box--border-width: 24px;
-  }
 
-  .toast:hover {
-    opacity: 0.9;
+    &:hover {
+      opacity: 0.9;
+    }
   }
 </style>

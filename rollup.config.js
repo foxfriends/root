@@ -1,14 +1,11 @@
-/* eslint-disable */
 import svelte from 'rollup-plugin-svelte';
 import sveltePreprocess from 'svelte-preprocess';
 import livereload from 'rollup-plugin-livereload';
 import copy from 'rollup-plugin-copy';
-import eslint from '@rollup/plugin-eslint';
 import babel from '@rollup/plugin-babel';
 import url from '@rollup/plugin-url';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import serve from 'rollup-plugin-serve';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -21,25 +18,20 @@ export default {
     sourcemap: true,
   },
   watch: {
-    include: ['app/**', 'model/**'],
+    include: ['app/**'],
   },
 
   plugins: [
     // allows use node-style directory import (omitting /index part)
-    nodeResolve(),
-    commonjs(),
+    nodeResolve({ browser: true }),
 
     url({
       include: ['**/*.svg', '**/*.png', '**/*.jp(e)?g', '**/*.gif', '**/*.webp', '**/*.ftl'],
     }),
 
-    eslint({
-      include: ['app/**/*.js', 'app/**/*.ts', 'app/**/*.svelte'],
-    }),
-
     svelte({
       // Extract CSS into a single bundled file (recommended).
-      css: css => {
+      css(css) {
         css.write('index.css');
       },
 
@@ -52,47 +44,20 @@ export default {
 
       preprocess: sveltePreprocess({
         sourceMap: !production,
-        // postcss: {
-        //   plugins: [
-        //     require('postcss-import'),
-        //     require('stylelint'),
-        //   ],
-        // },
+        babel: true,
+        postcss: true,
       }),
     }),
 
-    // serves and updates files
-    !production && serve({
-      contentBase: 'dist',
-      port: 3000,
+    babel({
+      babelHelpers: 'bundled',
+      exclude: ['node_modules/**'],
     }),
+
+    commonjs(),
 
     // reloads page during serve after every code change
     !production && livereload(),
-
-    babel({
-      extensions: ['.js', '.mjs', '.html', '.svelte'],
-      babelHelpers: 'runtime',
-      exclude: ['node_modules/@babel/**'],
-      presets: [
-        ['@babel/preset-env', {
-          targets: {
-            esmodules: true,
-          },
-        }],
-      ],
-      plugins: [
-        '@babel/plugin-syntax-dynamic-import',
-        '@babel/plugin-proposal-class-properties',
-        '@babel/plugin-proposal-private-methods',
-        '@babel/plugin-proposal-function-bind',
-        '@babel/plugin-proposal-nullish-coalescing-operator',
-        '@babel/plugin-proposal-optional-chaining',
-        ['@babel/plugin-transform-runtime', {
-          useESModules: true,
-        }],
-      ],
-    }),
 
     // copying files to dist, because rollup doesn't do it by itself
     copy({

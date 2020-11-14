@@ -39,9 +39,6 @@ let name = '';
   padding: 8px;
   border: none;
   background-color: transparent;
-}
-
-.input {
   width: 100%;
   border-bottom: 1px solid var(--color--accent);
   font-family: var(--font-family--body);

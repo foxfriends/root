@@ -1,6 +1,7 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { get, set } from 'shades';
+import { last } from 'ramda';
 
 class Lens extends Observable {
   #lens;
@@ -24,11 +25,12 @@ class Lens extends Observable {
 
 function LensBuilder(lens = []) {
   return new Proxy(() => {}, {
-    get(target, prop, receiver) {
+    get(target, prop) {
       return LensBuilder([...lens, prop]);
     },
 
     apply(target, self, args) {
+      if (last(lens) == 'call') { lens.pop(); }
       const source = args[0] ?? self;
       return new Lens(source, lens);
     },

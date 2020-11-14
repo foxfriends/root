@@ -2,7 +2,6 @@
 import { game } from '../../store';
 import characterImages from '../../image/card/card-vagabond_character-front.*.jpg';
 import tokenImages from '../../image/token/token.*.png';
-import Faction from '../../model/Faction';
 import { Item } from '../../model/Item';
 import Token from '../Token.svelte';
 import Deck from '../Deck.svelte';
@@ -27,15 +26,15 @@ const tracked = [Item.tea, Item.bag, Item.coin];
 $: satchelItems = [
   ...$game.factionData[faction].items
     .refreshed
-    .filter(item => !tracked.includes(item.name))
-    .map(item => ({ state: 'refreshed', item })),
+    .filter((item) => !tracked.includes(item.name))
+    .map((item) => ({ state: 'refreshed', item })),
   ...$game.factionData[faction].items.exhausted
-    .map(item => ({ state: 'exhausted', item })),
+    .map((item) => ({ state: 'exhausted', item })),
 ];
 $: damagedItems = $game.factionData[faction].items.damaged;
-$: tea = $game.factionData[faction].items.refreshed.filter(item => item.name === Item.tea).length;
-$: coin = $game.factionData[faction].items.refreshed.filter(item => item.name === Item.coin).length;
-$: bag = $game.factionData[faction].items.refreshed.filter(item => item.name === Item.bag).length;
+$: tea = $game.factionData[faction].items.refreshed.filter((item) => item.name === Item.tea).length;
+$: coin = $game.factionData[faction].items.refreshed.filter((item) => item.name === Item.coin).length;
+$: bag = $game.factionData[faction].items.refreshed.filter((item) => item.name === Item.bag).length;
 $: relationshipFactions = Object
   .entries($game.factionData[faction].relations)
   .filter(([faction]) => faction in $game.factionData)
@@ -90,7 +89,7 @@ $: hostileFactions = Object.entries($game.factionData[faction].relations)
       {/each}
     </div>
     <div class='items damaged' style={`left: ${satchel.damaged.x}px; top: ${satchel.damaged.y}px; transform: scale(${scale * 0.88})`}>
-      {#each damagedItems as item}
+      {#each damagedItems as item, i}
         <div
           class='item exhausted'
           style={i === 0 ? '' : `margin-left: ${Math.min(5, (586 - (damagedItems.length * 146)) / (damagedItems.length - 1))}px;`}>
@@ -157,7 +156,8 @@ $: hostileFactions = Object.entries($game.factionData[faction].relations)
   transform-origin: top left;
 }
 
-.relationships, .items {
+.relationships,
+.items {
   box-sizing: border-box;
   position: absolute;
   display: flex;
@@ -178,7 +178,8 @@ $: hostileFactions = Object.entries($game.factionData[faction].relations)
   height: 163px;
 }
 
-.relationships.hostile , .items.damaged {
+.relationships.hostile,
+.items.damaged {
   flex-direction: row;
   padding-top: 0;
   padding-left: 20px;

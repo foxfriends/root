@@ -16,8 +16,8 @@ export let scale;
 function intersects(placement, forces) {
   return forces
     .some(({ x, y, r }) => Math.abs(placement.x - x) < placement.r + r
-                     && Math.abs(placement.y - y) < placement.r + r
-    )
+                     && Math.abs(placement.y - y) < placement.r + r,
+    );
 }
 
 $: arrangedPieces = ((pieces) => {
@@ -29,7 +29,7 @@ $: arrangedPieces = ((pieces) => {
     const rngForces = new Array(i).fill(0).map(() => ({ x: x + prng.rand(-325, 325), y: y + prng.rand(-325, 325), r: 0 }));
     const effectiveForces = [...forces, ...rngForces];
     const netForce = effectiveForces
-      .map(force => ({ x: x - force.x, y: y - force.y }))
+      .map((force) => ({ x: x - force.x, y: y - force.y }))
       .reduce(({ x: tx, y: ty }, { x, y }) => ({ x: tx + x, y: ty + y }), { x: 0, y: 0 });
     const forceMagnitude = Math.sqrt(netForce.x ** 2 + netForce.y ** 2);
     let placement = { x, y, r: 70 };

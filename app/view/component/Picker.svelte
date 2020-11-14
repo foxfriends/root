@@ -14,7 +14,7 @@ let current = 0;
     <button
       class='button'
       on:click={() => current = (current + options - 1) % options}>
-      <img src={arrow} width={55} />
+      <img src={arrow} width={55} alt='→' />
     </button>
     <div class='items'>
       <slot {current} />
@@ -22,7 +22,7 @@ let current = 0;
     <button
       class='button'
       on:click={() => current = (current + 1) % options}>
-      <img src={arrow} class='reverse' width={55} />
+      <img src={arrow} class='reverse' width={55} alt='←' />
     </button>
   </div>
   <button class='select' on:click={() => dispatch('select', { selection: current })}>
@@ -39,7 +39,8 @@ let current = 0;
   height: 100%;
 }
 
-.select, .button {
+.select,
+.button {
   background: none;
   border: none;
   padding: 16px;

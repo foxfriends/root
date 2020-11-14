@@ -2,11 +2,10 @@
 import { game, prompts } from '../../store';
 import Message from '../../model/Message';
 import Pieces from '../../model/Piece';
-import Faction from '../../model/Faction';
 import Box from '../component/Box.svelte';
 import Text from '../component/Text.svelte';
 import Piece from '../Piece.svelte';
-import CraftedItems from './CraftedItems.svelte'
+import CraftedItems from './CraftedItems.svelte';
 
 export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
@@ -164,7 +163,8 @@ function notifyPrices() {
   background-repeat: no-repeat;
 }
 
-.price-marker, .price-option {
+.price-marker,
+.price-option {
   position: absolute;
   top: 0;
   left: 0;
@@ -223,7 +223,8 @@ function notifyPrices() {
 .fund {
   margin: -50px 0 0 -50px;
 }
-.fund:first {
+
+.fund:first-child {
   margin: -50px 0 0 0;
 }
 </style>

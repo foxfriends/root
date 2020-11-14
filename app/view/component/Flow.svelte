@@ -1,5 +1,4 @@
 <script>
-  import { writable } from 'svelte/store';
   export let flow;
 
   class Abort extends Error {}
@@ -11,19 +10,15 @@
     async function* drive(...args) {
       const inner = await flow(...args);
       let step = inner.next();
-      try {
-        for (;;) {
-          const { value, done } = await step;
-          if (done) { return value; }
-          state = value;
-          try {
-            step = inner.next(yield);
-          } catch (error) {
-            step = inner.throw(error);
-          }
+      for (;;) {
+        const { value, done } = await step;
+        if (done) { return value; }
+        state = value;
+        try {
+          step = inner.next(yield);
+        } catch (error) {
+          step = inner.throw(error);
         }
-      } catch (error) {
-        throw error;
       }
     }
 

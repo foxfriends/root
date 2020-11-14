@@ -9,7 +9,7 @@ $: cardCount = cards.length;
 
 const color = [
   'rgb(148, 142, 118)',
-  'rgb(182, 176, 150)'
+  'rgb(182, 176, 150)',
 ];
 
 $: boxShadow = new Array(Math.ceil(cardCount / 2)).fill(0)

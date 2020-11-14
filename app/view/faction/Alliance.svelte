@@ -1,6 +1,5 @@
 <script>
 import { game, username } from '../../store';
-import tokenImages from '../../image/token/token.*.png';
 import cardImages from '../../image/card/card-shared-front.*.jpg';
 import cardBack from '../../image/card/card-shared-back.jpg';
 import Pieces from '../../model/Piece';
@@ -37,7 +36,7 @@ $: craftedItems = { x: 1528 * scale, y: 280 * scale, width: 555 };
     {#if $game.factionData.alliance.supporters.length}
       <div class='supporters' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
         {#if isMe}
-          <Pile cards={$game.factionData.alliance.supporters.map(card => cardImages[card.key])} />
+          <Pile cards={$game.factionData.alliance.supporters.map((card) => cardImages[card.key])} />
         {:else}
           <Deck
             cardImage={cardBack}
@@ -103,7 +102,8 @@ $: craftedItems = { x: 1528 * scale, y: 280 * scale, width: 555 };
 .officer {
   margin: -50px 0 0 -50px;
 }
-.officer:first {
+
+.officer:first-child {
   margin: -50px 0 0 0;
 }
 </style>

@@ -1,5 +1,5 @@
 <script>
-import { game, username, prompts, acceptor } from '../store';
+import { prompts, acceptor } from '../store';
 import Message from '../model/Message';
 import ClearingPrompt from './ClearingPrompt.svelte';
 
@@ -17,7 +17,7 @@ function notifyForest(forest) {
 
 {#if $prompts && $acceptor}
   {#if $prompts.clearings}
-    {#each [...new Map($prompts.clearings.map(clearing => [clearing.index, clearing])).values()] as clearing}
+    {#each [...new Map($prompts.clearings.map((clearing) => [clearing.index, clearing])).values()] as clearing}
       <ClearingPrompt
         {scale}
         {...clearing}
@@ -25,7 +25,7 @@ function notifyForest(forest) {
     {/each}
   {/if}
   {#if $prompts.forests}
-    {#each [...new Map($prompts.forests.map(forest => [forest.index, forest])).values()] as forest}
+    {#each [...new Map($prompts.forests.map((forest) => [forest.index, forest])).values()] as forest}
       <ClearingPrompt
         {scale}
         {...forest}
@@ -33,12 +33,3 @@ function notifyForest(forest) {
     {/each}
   {/if}
 {/if}
-
-<style>
-.text {
-  position: absolute;
-  top: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-</style>

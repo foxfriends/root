@@ -3,7 +3,6 @@ import { game } from '../../store';
 import leaderImages from '../../image/card/card-eyrie_leader-front.*.jpg';
 import images from '../../image/token/token.*.png';
 import Piece from '../../model/Piece';
-import Faction from '../../model/Faction';
 import Token from '../Token.svelte';
 import Deck from '../Deck.svelte';
 import CraftedItems from './CraftedItems.svelte';

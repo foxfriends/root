@@ -1,7 +1,7 @@
 <script>
-import { game, username, errorMessage } from '../store';
+import { game, errorMessage } from '../store';
 import Box from './component/Box.svelte';
-import Text from './component/Text.svelte';
+import Faction from '../types/Faction';
 import Picker from './component/Picker.svelte';
 // import images from '../image/card-*-{front,back}.jpg';
 
@@ -9,17 +9,17 @@ const images = {};
 
 let flips = $game.factions.map(() => false);
 $: factions = $game.factions
-  .filter(faction => faction !== Faction.marquise_bot) // computer players only
+  .filter((faction) => faction !== Faction.marquise_bot) // computer players only
   .map((name, i) => ({
     flip: flips[i],
     name,
-    player: Object.values($game.players).find(player => player.faction === name),
+    player: Object.values($game.players).find((player) => player.faction === name),
   }));
 
-export let client;
+// export let client;
 
-function selection({ detail: { selection } }) {
-  client.notify(Message.direct('FactionPicker:chooseFaction', { faction: $game.factions[selection] }));
+function selection(/*{ detail: { selection } }*/) {
+  // client.notify(Message.direct('FactionPicker:chooseFaction', { faction: $game.factions[selection] }));
 }
 </script>
 
@@ -36,8 +36,8 @@ function selection({ detail: { selection } }) {
               flips[i] = !flips[i];
               flips = [...flips];
             }} >
-            <div class='front' style='background-image: url({images[faction.name].front})' />
-            <div class='back' style='background-image: url({images[faction.name].back})' />
+            <div class='front' style='background-image: url({images[faction.name].front});' />
+            <div class='back' style='background-image: url({images[faction.name].back});' />
           </div>
         </div>
       {/each}
@@ -109,17 +109,11 @@ function selection({ detail: { selection } }) {
   pointer-events: none;
 }
 
-.heading {
-  text-align: center;
-  font-family: var(--font-family--display);
-}
-
 .card {
   cursor: pointer;
   position: relative;
   width: 100%;
   height: 100%;
-
   backface-visibility: visible;
   perspective-origin: center;
   transform-origin: center;
@@ -127,7 +121,8 @@ function selection({ detail: { selection } }) {
   transition: transform 0.5s;
 }
 
-.back, .front {
+.back,
+.front {
   backface-visibility: hidden;
   transform-style: preserve-3d;
   position: absolute;
@@ -141,5 +136,6 @@ function selection({ detail: { selection } }) {
   pointer-events: none;
 }
 
-.show-back, .back { transform: rotateY(180deg); }
+.show-back,
+.back { transform: rotateY(180deg); }
 </style>

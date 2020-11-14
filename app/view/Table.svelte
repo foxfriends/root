@@ -59,7 +59,8 @@ $: expanded = $prompts && ($prompts.prices || $prompts.outcast);
   background-color: blue;
 }
 
-.play-area:hover, .play-area.expanded {
+.play-area:hover,
+.play-area.expanded {
   transform: translateX(-100%);
 }
 
