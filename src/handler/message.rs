@@ -20,14 +20,17 @@ impl Message {
     /// Handles each message from a socket. The actual engine is written in Lumber, and messages
     /// are actions in the form of text-serialized Lumber structures, typically as output by the
     /// Lumber program.
-    pub async fn handle(state: Arc<RwLock<SocketState>>, msg: Message) -> Result<serde_json::Value, CommandError> {
+    pub async fn handle(
+        state: Arc<RwLock<SocketState>>,
+        msg: Message,
+    ) -> Result<serde_json::Value, CommandError> {
         let room = state.read().await.room();
         let result = match msg {
             Message::SetName(name) if room.is_none() => state
                 .write()
                 .await
                 .set_name(name)
-                .map(|out| serde_json::to_value(out).unwrap())
+                .map(|()| serde_json::Value::Null)
                 .map_err(CommandError::set_name),
             Message::JoinGame(name) if room.is_none() => state
                 .write()
@@ -43,45 +46,43 @@ impl Message {
                 .await
                 .map(|out| serde_json::to_value(out).unwrap())
                 .map_err(CommandError::create_game),
-            Message::Perform(cmd) if room.is_some() => {
-                room.unwrap()
-                    .with_game_mut(|game| {
-                        LUMBER.with(|lumber| {
-                            let command =
-                                format!("command(Socket, State, {}, NewState, Actions)", cmd);
-                            let question = Question::try_from(command.as_str()).map(|question| {
-                                question
-                                    .with("Socket", Value::any(state))
-                                    .with("NewState", Value::serialize(game).unwrap())
-                            });
-                            match question {
-                                Ok(question) => {
-                                    for binding in lumber.ask(&question) {
-                                        let mut answer = question.answer(&binding).unwrap();
-                                        let new_state = answer.remove("NewState").unwrap().unwrap();
-                                        *game = Value::deserialize(&new_state).unwrap();
-                                        let _actions: Vec<String> = answer
-                                            .remove("Actions")
-                                            .unwrap()
-                                            .unwrap()
-                                            .as_list()
-                                            .unwrap()
-                                            .iter()
-                                            .filter_map(|action| action.map(ToString::to_string))
-                                            .collect();
-                                        todo!("what to do with the actions?")
-                                    }
-                                }
-                                Err(error) => {
-                                    warn!("Invalid command `{}`\n{}", command, error);
+            Message::Perform(cmd) if room.is_some() => room
+                .unwrap()
+                .with_game_mut(|game| {
+                    LUMBER.with(|lumber| {
+                        let command = format!("command(Socket, State, {}, NewState, Actions)", cmd);
+                        let question = Question::try_from(command.as_str()).map(|question| {
+                            question
+                                .with("Socket", Value::any(state))
+                                .with("NewState", Value::serialize(game).unwrap())
+                        });
+                        match question {
+                            Ok(question) => {
+                                for binding in lumber.ask(&question) {
+                                    let mut answer = question.answer(&binding).unwrap();
+                                    let new_state = answer.remove("NewState").unwrap().unwrap();
+                                    *game = Value::deserialize(&new_state).unwrap();
+                                    let _actions: Vec<String> = answer
+                                        .remove("Actions")
+                                        .unwrap()
+                                        .unwrap()
+                                        .as_list()
+                                        .unwrap()
+                                        .iter()
+                                        .filter_map(|action| action.map(ToString::to_string))
+                                        .collect();
+                                    todo!("what to do with the actions?")
                                 }
                             }
-                        });
-                        Ok(())
-                    })
-                    .await
-                    .map(|out| serde_json::to_value(out).unwrap())
-            }
+                            Err(error) => {
+                                warn!("Invalid command `{}`\n{}", command, error);
+                            }
+                        }
+                    });
+                    Ok(())
+                })
+                .await
+                .map(|()| serde_json::Value::Null),
             _ => {
                 warn!("Unexpected message `{:?}`", msg);
                 return Err(CommandError::unexpected());
