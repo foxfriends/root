@@ -3,28 +3,27 @@
 
   const toasts = writable([]);
 
-  export class Entry {
-    constructor(text) { this.text = text; }
-    dismiss() { unshift(this); }
+  class Entry {
+    constructor(text) {
+      this.text = text;
+    }
+
+    dismiss() {
+      const newToasts = [...get(toasts)];
+      const index = newToasts.indexOf(this);
+      if (index !== -1) {
+        newToasts.splice(index, 1);
+      }
+      toasts.set(newToasts);
+    }
   }
 
-  export function unshift(entry) {
-    const newToasts = [...get(toasts)];
-    let index = -1;
-    if (entry) {
-      index = newToasts.indexOf(entry);
-    } else {
-      index = 0;
-    }
-    if (index !== -1) {
-      newToasts.splice(index, 1);
-    }
-    toasts.set(newToasts);
-  }
-
-  export function toast(text) {
+  export function toast(text, timer = 5000) {
     const entry = new Entry(text);
     toasts.set([...get(toasts), entry]);
+    if (timer) {
+      window.setTimeout(() => entry.dismiss(), timer);
+    }
     return entry;
   }
 </script>
@@ -41,7 +40,7 @@
         transition:fly={{ y: 30 }}
         class='toast'
         on:click={() => entry.dismiss()}>
-        <Box>
+        <Box small>
           {entry.text}
         </Box>
       </div>
@@ -56,6 +55,7 @@
     right: 0;
     top: 0;
     bottom: 0;
+    padding: 30px;
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
@@ -68,8 +68,10 @@
     z-index: 1;
     cursor: pointer;
     pointer-events: auto;
-    width: 400px;
     transition: opacity 0.2s;
+    font-size: 14pt;
+
+    --Box--border-width: 24px;
   }
 
   .toast:hover {
