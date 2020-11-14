@@ -1,5 +1,5 @@
 import { setContext, getContext } from 'svelte';
-import { BehaviorSubject } from 'rxjs';
+import StoreSubject from './StoreSubject';
 import Socket from './Socket';
 
 export default function context() {
@@ -10,12 +10,7 @@ export default function context() {
 }
 
 export function init() {
-  const state = new BehaviorSubject({
-    user: {},
-    lobby: {},
-    game: {},
-  });
-
+  const state = new StoreSubject(null);
   const socket = new Socket();
   setContext('@root/state', state);
   setContext('@root/socket', socket);

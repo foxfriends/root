@@ -1,7 +1,9 @@
+<script context="module">
+  export class Abort extends Error {}
+</script>
+
 <script>
   export let flow;
-
-  class Abort extends Error {}
 
   let state;
   let driver;

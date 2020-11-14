@@ -4,12 +4,10 @@ import context from '../context';
 import Box from './component/Box.svelte';
 import Button from './component/Button.svelte';
 import Text from './component/Text.svelte';
-import _ from '../util/lens';
 
 const dispatch = createEventDispatcher();
 const back = () => dispatch('back');
 const { state } = context();
-const lobby = _.lobby(state);
 
 let ready = false;
 </script>
@@ -18,17 +16,17 @@ let ready = false;
   <Button on:click={back}>
     <Text text='leave' />
   </Button>
-  <h1 class='heading'>{$lobby.name}</h1>
+  <h1 class='heading'>{$state.name}</h1>
   <div class='horizontal'>
     <fieldset>
       <legend><Text text='factions' /></legend>
-      {#each $lobby.factions as faction}
+      {#each $state.factions as faction}
         <div><Text text={faction} params={{ form: 'long' }} /></div>
       {/each}
     </fieldset>
     <fieldset>
       <legend><Text text='players' /></legend>
-      {#each $lobby.players as player (player.name)}
+      {#each $state.players as player (player.name)}
         <div>{player.name}: {player.ready ? 'Ready' : 'Waiting'}</div>
       {/each}
     </fieldset>

@@ -84,8 +84,8 @@ export default class Socket {
         filter(propEq('id', id)),
         tap((response) => console.log(`Received response ${id}`, response)),
         map(cond([
-          [propEq('status', 'Err'), ({ error }) => throw new CommandError(error)],
-          [propEq('status', 'Ok'), prop('data')],
+          [propEq('status', 'err'), ({ error }) => throw new CommandError(error)],
+          [propEq('status', 'ok'), prop('data')],
         ])),
         first(),
       )

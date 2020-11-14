@@ -24,7 +24,7 @@ struct Packet {
 }
 
 #[derive(serde::Serialize)]
-#[serde(rename = "lowercase")]
+#[serde(rename_all = "lowercase")]
 enum Status {
     Ok,
     Err,
@@ -67,12 +67,12 @@ pub async fn handler(websocket: WebSocket) {
                     };
                     match st.name() {
                         Some(name) => debug!(
-                            "{} ({}): {:#?}",
+                            "{} ({}): {:?}",
                             st.id().to_string().yellow(),
                             name.bright_yellow(),
-                            packet,
+                            packet.msg,
                         ),
-                        None => debug!("{}: {:#?}", st.id().to_string().yellow(), packet),
+                        None => debug!("{}: {:?}", st.id().to_string().yellow(), packet.msg),
                     };
                     std::mem::drop(st);
                     match Message::handle(state, packet.msg).await {

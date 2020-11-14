@@ -57,7 +57,8 @@ impl Room {
         let name = socket
             .name()
             .ok_or_else(|| "You must choose a name before entering a room.".to_owned())?;
-        match self.0.game.read().await.phase() {
+        let phase = self.0.game.read().await.phase();
+        match phase {
             Phase::Lobby => {
                 self.0.game.write().await.add_player(name.to_owned())?;
                 self.0
@@ -97,7 +98,11 @@ impl Room {
             .name()
             .ok_or_else(|| "You must have a name to have entered a room.".to_owned())?;
         if self.0.game.read().await.phase() == Phase::Lobby {
-            self.0.game.write().await.remove_player(name).unwrap();
+            let mut game = self.0.game.write().await;
+            game.remove_player(name).unwrap();
+            if game.players().is_empty() {
+                ROOMS.write().await.remove(game.name());
+            }
         }
         self.0.sockets.write().await.remove(name);
         Ok(())

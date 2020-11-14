@@ -7,18 +7,15 @@ import ChooseGameForm from './ChooseGameForm.svelte';
 import CreateGameForm from './CreateGameForm.svelte';
 import JoinGameForm from './JoinGameForm.svelte';
 import Lobby from './Lobby.svelte';
-import Flow from './component/Flow.svelte';
+import Flow, { Abort } from './component/Flow.svelte';
 import { toast } from './component/Toast.svelte';
-import _ from '../util/lens';
 import value from '../util/event';
 
 const { state, socket } = context();
-const username = state::_.user.name();
-const lobby = state::_.lobby();
 
 async function * cover() {
-  $username = value(yield 'identification');
-  await socket.setName($username);
+  const username = value(yield 'identification');
+  await socket.setName(username);
   yield* chooseGame();
 }
 
@@ -29,18 +26,33 @@ async function * chooseGame() {
       [equals('create'), createGame],
       [equals('join'), joinGame],
     ])(next);
-  } catch {
-    yield * cover();
+  } catch (error) {
+    if (error instanceof Abort) {
+      yield * cover();
+    } else {
+      console.error(error);
+    }
   }
 }
 
 async function * createGame() {
   try {
-    const { name, settings } = value(yield 'create-game');
-    await socket.createGame({ name, ...settings });
-    yield * gameLobby(name, settings);
-  } catch {
-    yield * chooseGame();
+    let game;
+    while (!game) {
+      const { name, settings } = value(yield 'create-game');
+      try {
+        game = await socket.createGame({ name, ...settings });
+      } catch (error) {
+        toast(error.message);
+      }
+    }
+    yield * gameLobby(game);
+  } catch (error) {
+    if (error instanceof Abort) {
+      yield * chooseGame();
+    } else {
+      console.error(error);
+    }
   }
 }
 
@@ -50,33 +62,31 @@ async function * joinGame() {
     while (!game) {
       const name = value(yield 'join-game');
       try {
-        game =await socket.joinGame(name);
+        game = await socket.joinGame(name);
       } catch (error) {
         toast(error.message);
       }
     }
     yield * gameLobby(game);
-  } catch {
-    yield * chooseGame();
+  } catch (error) {
+    if (error instanceof Abort) {
+      yield * chooseGame();
+    } else {
+      console.error(error);
+    }
   }
 }
 
-async function * gameLobby(name, settings) {
-  if (settings) {
-    $lobby = {
-      name,
-      ...settings,
-      players: [{ ...$state.user }],
-    };
-    // TODO: Create game
-  } else {
-    $lobby = { name };
-    // TODO: Join game
-  }
+async function * gameLobby(game) {
+  $state = game;
   try {
     yield 'lobby';
-  } catch {
-    yield * chooseGame();
+  } catch (error) {
+    if (error instanceof Abort) {
+      yield * chooseGame();
+    } else {
+      console.error(error);
+    }
   }
 }
 </script>

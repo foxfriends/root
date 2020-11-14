@@ -22,6 +22,10 @@ impl Game {
         }
     }
 
+    pub fn name(&self) -> &str {
+        self.name.as_str()
+    }
+
     pub fn phase(&self) -> Phase {
         self.phase
     }
