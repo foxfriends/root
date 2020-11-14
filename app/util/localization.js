@@ -1,9 +1,9 @@
 import { FluentBundle } from 'fluent';
-import enCA from 'url:../../localization/en-CA.ftl';
+import enCA from '../../localization/en-CA.ftl';
 
 const bundle = fetch(enCA)
-  .then(response => response.text())
-  .then(src => {
+  .then((response) => response.text())
+  .then((src) => {
     const bundle = new FluentBundle(['en-CA'], {
       useIsolating: true,
       functions: {
@@ -31,11 +31,10 @@ export default async function loc(key, params) {
     console.error(`Unknown message ${key}`);
     return key;
   }
-  const errors = []
+  const errors = [];
   const result = b.format(message, params, errors);
   for (const error of errors) {
     console.error(error);
   }
   return result;
 }
-

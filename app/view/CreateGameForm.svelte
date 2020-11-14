@@ -1,24 +1,24 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import Box from './component/Box.svelte';
-  import Button from './component/Button.svelte';
-  import Text from './component/Text.svelte';
-  import Faction from '../types/Faction';
-  import GameMap from '../types/GameMap';
+import { createEventDispatcher } from 'svelte';
+import Box from './component/Box.svelte';
+import Button from './component/Button.svelte';
+import Text from './component/Text.svelte';
+import Faction from '../types/Faction';
+import GameMap from '../types/GameMap';
 
-  let name = '';
-  let factions = [Faction.MARQUISE, Faction.EYRIE, Faction.ALLIANCE, Faction.VAGABOND];
-  let assignment = 'auto';
-  let map = 'forest';
-  $: valid = name
+let name = '';
+let factions = [Faction.MARQUISE, Faction.EYRIE, Faction.ALLIANCE, Faction.VAGABOND];
+let assignment = 'auto';
+let map = 'forest';
+$: valid = name
     && factions.length >= 2
     // marquise cannot fight their own bot
     && !(factions.includes(Faction.MARQUISE) && factions.includes(Faction.MARQUISE_BOT));
-  $: settings = { factions, assignment, map };
+$: settings = { factions, assignment, map };
 
-  const dispatch = createEventDispatcher();
-  const back = () => dispatch('back');
-  const next = () => name && dispatch('next', { name, settings });
+const dispatch = createEventDispatcher();
+const back = () => dispatch('back');
+const next = () => name && dispatch('next', { name, settings });
 </script>
 
 <Box flex>
@@ -27,11 +27,12 @@
   </Button>
   <h1 class='heading'><Text text='game-name' /></h1>
   <!-- TODO [l10n]: the placeholder is not localized -->
-  <input
-    class='input'
-    placeholder='Name'
-    autofocus
-    bind:value={name} />
+  <label>
+    <input
+      class='input'
+      placeholder='Name'
+      bind:value={name} />
+  </label>
   <h1 class='heading'><Text text='options' /></h1>
   <div class='options'>
     <fieldset>
