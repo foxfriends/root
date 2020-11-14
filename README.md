@@ -22,6 +22,10 @@ To compile and start the server, use Cargo. Dependencies are installed automatic
 
 ```sh
 cargo run
+# To run and print the logs:
+RUST_LOG=root=debug cargo run
+# If you have installed cargo-watch, watch just the Rust project:
+cargo watch -x run -w src -w game -w Cargo.toml -w Cargo.lock
 ```
 
 With both of those running, the app should be available on `localhost:3000`.

@@ -1,4 +1,5 @@
 #[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize)]
+#[serde(rename = "kebab-case")]
 pub enum Faction {
     Marquise,
     Eyrie,
@@ -9,5 +10,5 @@ pub enum Faction {
     Riverfolk,
     Duchy,
     Conspiracy,
-    MechanicalMarquise,
+    MarquiseBot,
 }

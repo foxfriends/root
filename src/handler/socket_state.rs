@@ -1,5 +1,5 @@
 use super::room::Room;
-use crate::models::GameConfig;
+use crate::models::{Game, GameConfig};
 use tokio::sync::mpsc::UnboundedSender;
 use uuid::Uuid;
 
@@ -33,7 +33,7 @@ impl SocketState {
 
     /// The name of this socket, if set.
     pub fn name(&self) -> Option<&str> {
-        self.name.as_ref().map(String::as_str)
+        self.name.as_deref()
     }
 
     /// The ID of this socket.
@@ -62,7 +62,7 @@ impl SocketState {
     }
 
     /// Joins a room, by name, if it exists.
-    pub async fn join_room(&mut self, name: String) -> Result<(), String> {
+    pub async fn join_room(&mut self, name: String) -> Result<Game, String> {
         if self.room.is_some() {
             return Err("You are already in a room. Leave that one first.".into());
         }
@@ -73,7 +73,7 @@ impl SocketState {
     }
 
     /// Creates and then joins a room.
-    pub async fn join_new_room(&mut self, config: GameConfig) -> Result<(), String> {
+    pub async fn join_new_room(&mut self, config: GameConfig) -> Result<Game, String> {
         if self.room.is_some() {
             return Err("You are already in a room. Leave that one first.".into());
         }
@@ -81,10 +81,11 @@ impl SocketState {
         self.join_room_inner(room).await
     }
 
-    async fn join_room_inner(&mut self, room: Room) -> Result<(), String> {
+    async fn join_room_inner(&mut self, room: Room) -> Result<Game, String> {
         room.join(&self).await?;
+        let game = room.game().await;
         self.room = Some(room);
-        Ok(())
+        Ok(game)
     }
 
     pub fn sender(&self) -> UnboundedSender<String> {

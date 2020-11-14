@@ -1,14 +1,16 @@
 <script>
-import { init } from './stores';
-import Cover from './view/Cover.svelte';
-import DialogRoot from './view/component/DialogRoot.svelte';
+  import Cover from './view/Cover.svelte';
+  import DialogRoot from './view/component/DialogRoot.svelte';
+  import ToastRoot from './view/component/Toast.svelte';
+  import { init } from './context';
 
-init();
+  init();
 </script>
 
 <div class='layout'>
   <Cover />
   <DialogRoot />
+  <ToastRoot />
 </div>
 
 <style>

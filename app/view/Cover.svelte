@@ -1,7 +1,8 @@
 <script>
-import { cond, equals } from 'ramda';
-import stores from '../stores/index';
-import logo from '../image/logo.png';
+import { fly } from 'svelte/transition';
+import { flip, cond, equals } from 'ramda';
+import context from '../context';
+import logo from 'url:../image/logo.png';
 import Dialog from './component/Dialog.svelte';
 import IdentificationForm from './IdentificationForm.svelte';
 import ChooseGameForm from './ChooseGameForm.svelte';
@@ -9,15 +10,17 @@ import CreateGameForm from './CreateGameForm.svelte';
 import JoinGameForm from './JoinGameForm.svelte';
 import Lobby from './Lobby.svelte';
 import Flow from './component/Flow.svelte';
+import { toast } from './component/Toast.svelte';
 import _ from '../util/lens';
 import value from '../util/event';
 
-const { state } = stores();
+const { state, socket } = context();
 const username = _.user.name(state);
 const lobby = _.lobby(state);
 
 async function * cover() {
   $username = value(yield 'identification');
+  await socket.setName($username);
   yield* chooseGame();
 }
 
@@ -36,6 +39,7 @@ async function * chooseGame() {
 async function * createGame() {
   try {
     const { name, settings } = value(yield 'create-game');
+    await socket.createGame({ name, ...settings });
     yield * gameLobby(name, settings);
   } catch {
     yield * chooseGame();
@@ -44,8 +48,16 @@ async function * createGame() {
 
 async function * joinGame() {
   try {
-    const name = value(yield 'join-game');
-    yield * gameLobby(name);
+    let game;
+    while (!game) {
+      const name = value(yield 'join-game');
+      try {
+        game =await socket.joinGame(name);
+      } catch (error) {
+        toast(error.message);
+      }
+    }
+    yield * gameLobby(game);
   } catch {
     yield * chooseGame();
   }

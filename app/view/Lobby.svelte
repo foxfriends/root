@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from 'svelte';
-import stores from '../stores';
+import context from '../context';
 import Box from './component/Box.svelte';
 import Button from './component/Button.svelte';
 import Text from './component/Text.svelte';
@@ -8,7 +8,7 @@ import _ from '../util/lens';
 
 const dispatch = createEventDispatcher();
 const back = () => dispatch('back');
-const { state } = stores();
+const { state } = context();
 const lobby = _.lobby(state);
 
 let ready = false;

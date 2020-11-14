@@ -38,11 +38,7 @@ impl Game {
         if self.phase != Phase::Lobby {
             return Err("Players cannot be changed once the game has started.".into());
         }
-        let is_existing_player = self
-            .players
-            .iter()
-            .find(|player| player.name() == name)
-            .is_some();
+        let is_existing_player = self.players.iter().any(|player| player.name() == name);
         if is_existing_player {
             return Err(format!(
                 "There is already a player named {} in this game.",

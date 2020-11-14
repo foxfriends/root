@@ -1,10 +1,9 @@
 <script>
   export let flex = false;
-  export let small = false;
   export let grow = false;
 </script>
 
-<div class='box' class:small class:grow>
+<div class='box' class:grow>
   <div class='content' class:flex>
     <slot />
   </div>
@@ -24,20 +23,17 @@
   }
 
   .box {
+    --border-width: var(--Box--border-width, 55px);
+
     display: inline-block;
-    border: 55px solid transparent;
+    border: var(--border-width) solid transparent;
     border-image-source: url('../../image/box.png');
     border-image-slice: 55 fill;
-    border-image-width: 55px;
+    border-image-width: var(--border-width);
     border-image-repeat: round;
   }
 
   .grow {
     flex-grow: 1;
-  }
-
-  .small {
-    border-width: 16px;
-    border-image-width: 16px;
   }
 </style>

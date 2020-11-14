@@ -73,7 +73,7 @@ conspiracy = { $form ->
   [long] Corvid Conspiracy
   *[short] Conspiracy
 }
-marquise_bot = { $form ->
+marquise-bot = { $form ->
   [long] Mechanical Marquise
   *[short] Mechanical Marquise
 }

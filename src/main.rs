@@ -12,7 +12,7 @@ use handler::handler;
 async fn main() {
     pretty_env_logger::init();
 
-    let dist_dir = std::env::var("root_dist_dir").unwrap_or(String::from("dist"));
+    let dist_dir = std::env::var("root_dist_dir").unwrap_or_else(|_| "dist".to_owned());
     let port: u16 = std::env::var("root_port")
         .ok()
         .and_then(|s| s.parse().ok())
