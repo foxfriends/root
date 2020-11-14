@@ -1,5 +1,5 @@
 name: Rust CI
-on: [push]
+on: push
 jobs:
   clippy:
     name: clippy
@@ -18,10 +18,9 @@ jobs:
         run: |
           rustup toolchain update --no-self-update nightly
           rustup default nightly
-          rustup component add clippy rustfmt
+          rustup component add clippy
       - name: Run clippy
         run: cargo clippy -- -D warnings
-
   rustfmt:
     name: rustfmt
     runs-on: ubuntu-latest
@@ -39,10 +38,9 @@ jobs:
         run: |
           rustup toolchain update --no-self-update nightly
           rustup default nightly
-          rustup component add clippy rustfmt
+          rustup component add rustfmt
       - name: Run rustfmt
         run: cargo fmt -- --check
-
   build:
     name: build
     runs-on: ubuntu-latest
@@ -60,11 +58,9 @@ jobs:
         run: |
           rustup toolchain update --no-self-update nightly
           rustup default nightly
-          rustup component add clippy rustfmt
       - name: Run build
         run: cargo build
-
-  build:
+  test:
     name: test
     runs-on: ubuntu-latest
     steps:
@@ -81,6 +77,5 @@ jobs:
         run: |
           rustup toolchain update --no-self-update nightly
           rustup default nightly
-          rustup component add clippy rustfmt
-      - name: Run build
+      - name: Run tests
         run: cargo test
