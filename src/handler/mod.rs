@@ -1,3 +1,4 @@
+use colored::*;
 use futures::{future::ready, StreamExt};
 use log::{debug, info, warn};
 use std::sync::Arc;
@@ -16,7 +17,7 @@ use command_error::CommandError;
 use message::Message;
 use socket_state::SocketState;
 
-#[derive(serde::Deserialize)]
+#[derive(Debug, serde::Deserialize)]
 struct Packet {
     id: Uuid,
     msg: Message,
@@ -65,8 +66,13 @@ pub async fn handler(websocket: WebSocket) {
                         }
                     };
                     match st.name() {
-                        Some(name) => debug!("{}({}): {:?}", st.id(), name, msg),
-                        None => debug!("{}: {:?}", st.id(), msg),
+                        Some(name) => debug!(
+                            "{} ({}): {:#?}",
+                            st.id().to_string().yellow(),
+                            name.bright_yellow(),
+                            packet,
+                        ),
+                        None => debug!("{}: {:#?}", st.id().to_string().yellow(), packet),
                     };
                     std::mem::drop(st);
                     match Message::handle(state, packet.msg).await {

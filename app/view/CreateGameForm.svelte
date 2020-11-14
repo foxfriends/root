@@ -8,7 +8,7 @@ import GameMap from '../types/GameMap';
 
 let name = '';
 let factions = [Faction.MARQUISE, Faction.EYRIE, Faction.ALLIANCE, Faction.VAGABOND];
-let assignment = 'auto';
+let assignment = 'random';
 let map = 'forest';
 $: valid = name
     && factions.length >= 2
@@ -50,7 +50,7 @@ const next = () => name && dispatch('next', { name, settings });
     <div class='flex'>
       <fieldset>
         <legend><Text text='faction-assignment' /></legend>
-        <label><input type='radio' bind:group={assignment} value='auto' /> <Text text='random' /></label>
+        <label><input type='radio' bind:group={assignment} value='random' /> <Text text='random' /></label>
         <label><input type='radio' bind:group={assignment} value='choose' /> <Text text='choose' /></label>
       </fieldset>
       <fieldset>

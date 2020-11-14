@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate lazy_static;
 
+use colored::*;
+use log::info;
 use warp::Filter;
 
 mod handler;
@@ -24,6 +26,9 @@ async fn main() {
     let web = warp::fs::dir(dist_dir);
     let routes = game.or(web);
 
-    println!("Server started at http://localhost:{}", port);
+    info!(
+        "Server started at {}",
+        format!("http://localhost:{}", port).cyan()
+    );
     warp::serve(routes).run(([127, 0, 0, 1], port)).await;
 }
