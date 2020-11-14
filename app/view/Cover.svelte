@@ -10,6 +10,7 @@
   import JoinGameForm from './JoinGameForm.svelte';
   import Lobby from './Lobby.svelte';
   import Flow from './component/Flow.svelte';
+  import { toast } from './component/Toast.svelte';
   import _ from '../util/lens';
   import value from '../util/event';
 
@@ -47,9 +48,16 @@
 
   async function * joinGame() {
     try {
-      const name = value(yield 'join-game');
-      await socket.joinGame(name);
-      yield * gameLobby(name);
+      let game;
+      while (!game) {
+        const name = value(yield 'join-game');
+        try {
+          game =await socket.joinGame(name);
+        } catch (error) {
+          toast(error.message);
+        }
+      }
+      yield * gameLobby(game);
     } catch {
       yield * chooseGame();
     }

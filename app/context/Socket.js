@@ -1,5 +1,5 @@
 import { fromEvent } from 'rxjs';
-import { filter, first, map, share } from 'rxjs/operators';
+import { filter, first, map, share, tap } from 'rxjs/operators';
 import { prop, propEq, cond } from 'ramda';
 import * as uuid from 'uuid';
 
@@ -46,13 +46,15 @@ export default class Socket extends WebSocket {
       .messages()
       .pipe(
         filter(propEq('id', id)),
+        tap((response) => console.log(`Received response ${id}`, response)),
         map(cond([
-          [propEq('status', 'ok'), ({ error }) => throw new CommandError(error)],
-          [propEq('status', 'err'), prop('data')],
+          [propEq('status', 'Err'), ({ error }) => throw new CommandError(error)],
+          [propEq('status', 'Ok'), prop('data')],
         ])),
         first(),
       )
       .toPromise();
+    console.log(`Sending message ${id}`, message);
     this.send(JSON.stringify({ id, msg: message }));
     return response;
   }

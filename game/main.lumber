@@ -2,8 +2,7 @@
 :- mod(game).
 :- mod(lobby).
 
-:- pub(actions/3).
-:- pub(perform/4).
+:- pub(command/5).
 
 actions(Socket, State, lobby(LobbyAction)) :-
     @core::equal({ state: lobby, .. }, State),
@@ -12,3 +11,7 @@ actions(Socket, State, lobby(LobbyAction)) :-
 perform(Socket, State, lobby(LobbyAction), NewState) :-
     @core::equal({ state: lobby, .. }, State),
     lobby::perform(Socket, State, LobbyAction, NewState).
+
+command(Socket, State, Command, NewState, Actions) :-
+    perform(Socket, State, Command, NewState),
+    Actions <- [Action <- actions(Socket, NewState, Action)].

@@ -30,11 +30,11 @@ enum Status {
 }
 
 #[derive(serde::Serialize)]
-struct Response<T> {
+struct Response {
     id: Uuid,
     status: Status,
     error: Option<CommandError>,
-    data: Option<T>,
+    data: serde_json::Value,
 }
 
 pub async fn handler(websocket: WebSocket) {
@@ -70,24 +70,24 @@ pub async fn handler(websocket: WebSocket) {
                     };
                     std::mem::drop(st);
                     match Message::handle(state, packet.msg).await {
-                        Ok(()) => sender
+                        Ok(value) => sender
                             .send(
-                                serde_json::to_string(&Response::<()> {
+                                serde_json::to_string(&Response {
                                     id: packet.id,
                                     status: Status::Ok,
                                     error: None,
-                                    data: None,
+                                    data: value,
                                 })
                                 .unwrap(),
                             )
                             .ok(),
                         Err(error) => sender
                             .send(
-                                serde_json::to_string(&Response::<()> {
+                                serde_json::to_string(&Response {
                                     id: packet.id,
                                     status: Status::Err,
                                     error: Some(error),
-                                    data: None,
+                                    data: serde_json::Value::Null,
                                 })
                                 .unwrap(),
                             )
