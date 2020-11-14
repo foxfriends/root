@@ -12,6 +12,8 @@ perform(Socket, State, lobby(LobbyAction), NewState) :-
     @core::equal({ state: lobby, .. }, State),
     lobby::perform(Socket, State, LobbyAction, NewState).
 
+perform(Socket, State, noop, State).
+
 command(Socket, State, Command, NewState, Actions) :-
     perform(Socket, State, Command, NewState),
     Actions <- [Action <- actions(Socket, NewState, Action)].
