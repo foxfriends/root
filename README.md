@@ -10,7 +10,7 @@ This is a [NodeJS](https://nodejs.org/en/) and [Rust](https://rustup.rs/) projec
 Though the server is written in Rust, the goal is to build the game logic using [Lumber](https://github.com/foxfriends/lumber).
 Lumber is very work in progress, so things are likely to change often.
 
-To compile the client code, use `npm`. We are using [Parcel V2](https://v2.parceljs.org/) for bundling, 
+To compile the client code, use `npm`. We are using [Rollup](https://rollupjs.org/) for bundling, 
 and [Svelte](https://svelte.dev/) as the framework.
 
 ```sh
