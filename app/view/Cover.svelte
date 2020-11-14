@@ -72,7 +72,7 @@ async function * gameLobby(name, settings) {
 </script>
 
 <div class='cover'>
-  <img src={logo} alt="root-cover" />
+  <img src={logo} />
 </div>
 
 <Flow flow={cover} let:state let:next let:abort>

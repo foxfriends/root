@@ -12,7 +12,6 @@ import serve from 'rollup-plugin-serve';
 
 const production = !process.env.ROLLUP_WATCH;
 
-// noinspection JSUnusedGlobalSymbols,JSValidateTypes
 export default {
   input: 'app/index.js',
   output: {
@@ -63,7 +62,7 @@ export default {
     }),
 
     // serves and updates files
-    serve({
+    !production && serve({
       contentBase: 'dist',
       port: 3000,
     }),

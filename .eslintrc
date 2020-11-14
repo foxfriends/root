@@ -26,7 +26,10 @@
     }
   ],
   "rules": {
-    "arrow-parens": "off",
+    "arrow-parens": [
+      1,
+      "always"
+    ],
     "brace-style": [
       "error",
       "1tbs",
@@ -59,7 +62,6 @@
     "newline-before-return": "off",
     "no-console": "off",
     "no-constant-condition": "off",
-    "no-dupe-class-members": "off",
     "no-multiple-empty-lines": [
       "error",
       {
@@ -68,8 +70,7 @@
       }
     ],
     "no-prototype-builtins": "off",
-    "no-unused-vars": "off",
-    "no-useless-catch": "off",
+    "no-unused-vars": "warn",
     "object-curly-spacing": [
       "error",
       "always"

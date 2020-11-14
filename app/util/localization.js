@@ -2,8 +2,8 @@ import { FluentBundle } from 'fluent';
 import enCA from '../../localization/en-CA.ftl';
 
 const bundle = fetch(enCA)
-  .then(response => response.text())
-  .then(src => {
+  .then((response) => response.text())
+  .then((src) => {
     const bundle = new FluentBundle(['en-CA'], {
       useIsolating: true,
       functions: {
