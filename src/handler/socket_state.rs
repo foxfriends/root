@@ -33,7 +33,7 @@ impl SocketState {
 
     /// The name of this socket, if set.
     pub fn name(&self) -> Option<&str> {
-        self.name.as_ref().map(String::as_str)
+        self.name.as_deref()
     }
 
     /// The ID of this socket.

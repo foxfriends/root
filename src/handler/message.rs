@@ -1,11 +1,11 @@
+use super::runtime::LUMBER;
 use super::{CommandError, SocketState};
+use crate::models::GameConfig;
 use log::warn;
 use lumber::{Question, Value};
 use std::convert::TryFrom;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use super::runtime::LUMBER;
-use crate::models::GameConfig;
 
 #[derive(Debug, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -44,7 +44,8 @@ impl Message {
                 room.unwrap()
                     .with_game(|game| {
                         LUMBER.with(|lumber| {
-                            let command = format!("command(Socket, Game, {}, NewGame, Responses)", cmd);
+                            let command =
+                                format!("command(Socket, Game, {}, NewGame, Responses)", cmd);
                             let question = Question::try_from(command.as_str()).map(|question| {
                                 question
                                     .with("Socket", Value::any(state))
@@ -53,7 +54,7 @@ impl Message {
                             match question {
                                 Ok(question) => {
                                     for binding in lumber.ask(&question) {
-                                        let answer = question.answer(&binding).unwrap();
+                                        let _answer = question.answer(&binding).unwrap();
                                     }
                                 }
                                 Err(error) => {

@@ -41,7 +41,7 @@ impl Room {
     }
 
     /// Get a reference to the Room by the given name.
-    pub async fn get(name: &String) -> Option<Self> {
+    pub async fn get(name: &str) -> Option<Self> {
         ROOMS.read().await.get(name).cloned()
     }
 
@@ -56,7 +56,7 @@ impl Room {
     pub async fn join(&self, socket: &SocketState) -> Result<(), String> {
         let name = socket
             .name()
-            .ok_or_else(|| format!("You must choose a name before entering a room."))?;
+            .ok_or_else(|| "You must choose a name before entering a room.".to_owned())?;
         match self.0.game.read().await.phase() {
             Phase::Lobby => {
                 self.0.game.write().await.add_player(name.to_owned())?;
@@ -95,7 +95,7 @@ impl Room {
     pub async fn leave(&self, socket: &SocketState) -> Result<(), String> {
         let name = socket
             .name()
-            .ok_or_else(|| format!("You must have a name to have entered a room."))?;
+            .ok_or_else(|| "You must have a name to have entered a room.".to_owned())?;
         if self.0.game.read().await.phase() == Phase::Lobby {
             self.0.game.write().await.remove_player(name).unwrap();
         }
@@ -105,6 +105,7 @@ impl Room {
 
     /// Broadcasts a message to the other sockets in this room. Any messages that fail to send
     /// are silently lost. Typically that will be because the client has already hung up.
+    #[allow(dead_code)]
     pub async fn send(&self, message: String) {
         let sockets = self.0.sockets.read().await;
         for socket in sockets.values() {
@@ -114,6 +115,7 @@ impl Room {
 
     /// Gets a specific socket, by name, from this room. If the player by that name is not
     /// currently connected, returns None.
+    #[allow(dead_code)]
     pub async fn socket(&self, name: &str) -> Option<UnboundedSender<String>> {
         self.0.sockets.read().await.get(name).cloned()
     }

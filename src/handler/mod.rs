@@ -1,5 +1,5 @@
 use futures::{future::ready, StreamExt};
-use log::{info, debug, warn};
+use log::{debug, info, warn};
 use std::sync::Arc;
 use tokio::sync::mpsc::unbounded_channel;
 use tokio::sync::RwLock;
@@ -7,14 +7,14 @@ use uuid::Uuid;
 use warp::ws::{self, WebSocket};
 
 mod command_error;
-mod runtime;
 mod message;
 mod room;
+mod runtime;
 mod socket_state;
 
 use command_error::CommandError;
-use socket_state::SocketState;
 use message::Message;
+use socket_state::SocketState;
 
 #[derive(serde::Deserialize)]
 struct Packet {
