@@ -1,7 +1,7 @@
 <script>
   import Cover from './view/Cover.svelte';
   import DialogRoot from './view/component/DialogRoot.svelte';
-  import { init } from './stores';
+  import { init } from './context';
 
   init();
 </script>

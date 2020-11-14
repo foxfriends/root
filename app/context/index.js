@@ -1,7 +1,8 @@
 import { setContext, getContext } from 'svelte';
 import { BehaviorSubject } from 'rxjs';
+import Socket from './Socket';
 
-export default function stores() {
+export default function context() {
   return {
     state: getContext('@root/state'),
     socket: getContext('@root/socket'),
@@ -15,7 +16,7 @@ export function init() {
     game: {},
   });
 
-  const socket = new WebSocket(`ws://${window.location.host}/game`);
+  const socket = new Socket();
   setContext('@root/state', state);
   setContext('@root/socket', socket);
 }

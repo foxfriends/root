@@ -1,7 +1,7 @@
 <script>
   import { fly } from 'svelte/transition';
   import { flip, cond, equals } from 'ramda';
-  import stores from '../stores';
+  import context from '../context';
   import logo from 'url:../image/logo.png';
   import Dialog from './component/Dialog.svelte';
   import IdentificationForm from './IdentificationForm.svelte';
@@ -13,12 +13,13 @@
   import _ from '../util/lens';
   import value from '../util/event';
 
-  const { state } = stores();
+  const { state, socket } = context();
   const username = _.user.name(state);
   const lobby = _.lobby(state);
 
   async function * cover() {
     $username = value(yield 'identification');
+    await socket.setName($username);
     yield* chooseGame();
   }
 
@@ -37,6 +38,7 @@
   async function * createGame() {
     try {
       const { name, settings } = value(yield 'create-game');
+      await socket.createGame({ name, ...settings });
       yield * gameLobby(name, settings);
     } catch {
       yield * chooseGame();
@@ -46,6 +48,7 @@
   async function * joinGame() {
     try {
       const name = value(yield 'join-game');
+      await socket.joinGame(name);
       yield * gameLobby(name);
     } catch {
       yield * chooseGame();

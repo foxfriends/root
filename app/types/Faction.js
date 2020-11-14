@@ -8,5 +8,5 @@ export default {
   RIVERFOLK: 'riverfolk',
   DUCHY: 'duchy',
   CONSPIRACY: 'conspiracy',
-  MARQUISE_BOT: 'marquise_bot',
+  MARQUISE_BOT: 'marquise-bot',
 }

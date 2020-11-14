@@ -22,6 +22,8 @@ To compile and start the server, use Cargo. Dependencies are installed automatic
 
 ```sh
 cargo run
+# To run and print the logs:
+RUST_LOG=root=debug cargo run
 ```
 
 With both of those running, the app should be available on `localhost:3000`.
