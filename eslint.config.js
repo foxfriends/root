@@ -27,6 +27,7 @@ module.exports = {
       processor: 'svelte3/svelte3',
       rules: {
         'no-multiple-empty-lines': 'off', // does not work properly
+        'no-unused-vars': 'warn', // has trouble with the $ variables
       },
     },
   ],
@@ -56,7 +57,7 @@ module.exports = {
       'maxEOF': 0
     }],
     'no-prototype-builtins': 'off',
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'error',
     'object-curly-spacing': ['error', 'always'],
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
