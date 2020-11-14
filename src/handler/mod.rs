@@ -4,21 +4,22 @@ use std::sync::Arc;
 use tokio::sync::mpsc::unbounded_channel;
 use tokio::sync::RwLock;
 use uuid::Uuid;
-use warp::ws::{Message, WebSocket};
+use warp::ws::{self, WebSocket};
 
 mod command_error;
-mod handler;
+mod runtime;
+mod message;
 mod room;
 mod socket_state;
 
 use command_error::CommandError;
-use handler::handle;
 use socket_state::SocketState;
+use message::Message;
 
 #[derive(serde::Deserialize)]
 struct Packet {
     id: Uuid,
-    msg: handler::Message,
+    msg: Message,
 }
 
 #[derive(serde::Serialize)]
@@ -39,7 +40,7 @@ struct Response<T> {
 pub async fn handler(websocket: WebSocket) {
     let (ws_tx, ws_rx) = websocket.split();
     let (tx, rx) = unbounded_channel::<String>();
-    tokio::task::spawn(rx.map(Message::text).map(Ok).forward(ws_tx));
+    tokio::task::spawn(rx.map(ws::Message::text).map(Ok).forward(ws_tx));
     let state = SocketState::new(tx);
     info!("Socket connected {}", state.id());
     let state = Arc::new(RwLock::new(state));
@@ -68,7 +69,7 @@ pub async fn handler(websocket: WebSocket) {
                         None => debug!("{}: {:?}", st.id(), msg),
                     };
                     std::mem::drop(st);
-                    match handle(state, packet.msg).await {
+                    match Message::handle(state, packet.msg).await {
                         Ok(()) => sender
                             .send(
                                 serde_json::to_string(&Response::<()> {
