@@ -4,39 +4,23 @@ use log::{debug, info, warn};
 use std::sync::Arc;
 use tokio::sync::mpsc::unbounded_channel;
 use tokio::sync::RwLock;
-use uuid::Uuid;
 use warp::ws::{self, WebSocket};
 
 mod command_error;
 mod message;
+mod packet;
+mod response;
 mod room;
 mod runtime;
 mod socket_state;
+mod status;
 
 use command_error::CommandError;
 use message::Message;
+use packet::Packet;
+use response::Response;
 use socket_state::SocketState;
-
-#[derive(Debug, serde::Deserialize)]
-struct Packet {
-    id: Uuid,
-    msg: Message,
-}
-
-#[derive(serde::Serialize)]
-#[serde(rename_all = "lowercase")]
-enum Status {
-    Ok,
-    Err,
-}
-
-#[derive(serde::Serialize)]
-struct Response {
-    id: Uuid,
-    status: Status,
-    error: Option<CommandError>,
-    data: serde_json::Value,
-}
+use status::Status;
 
 pub async fn handler(websocket: WebSocket) {
     let (ws_tx, ws_rx) = websocket.split();
