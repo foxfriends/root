@@ -11,10 +11,10 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn create(config: GameConfig) -> Self {
+    pub fn create(config: &GameConfig) -> Self {
         Game {
-            name: config.name,
-            factions: config.factions,
+            name: config.name.to_owned(),
+            factions: config.factions.clone(),
             assignment: config.assignment,
             map: config.map,
             players: vec![],

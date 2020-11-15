@@ -2,17 +2,16 @@
 :- mod(game).
 :- mod(lobby).
 
+:- pub(actions/3).
 :- pub(command/5).
 
 actions(Socket, State, lobby(LobbyAction)) :-
-    @core::equal({ state: lobby, .. }, State),
+    @core::equal({ phase: lobby, .. }, State),
     lobby::actions(Socket, State, LobbyAction).
 
 perform(Socket, State, lobby(LobbyAction), NewState) :-
-    @core::equal({ state: lobby, .. }, State),
+    @core::equal({ phase: lobby, .. }, State),
     lobby::perform(Socket, State, LobbyAction, NewState).
-
-perform(Socket, State, noop, State).
 
 command(Socket, State, Command, NewState, Actions) :-
     perform(Socket, State, Command, NewState),

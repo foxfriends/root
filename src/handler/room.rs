@@ -26,7 +26,7 @@ impl Room {
     /// # Errors
     ///
     /// Creating a new room will fail if the name is already in use.
-    pub async fn new(config: GameConfig) -> Result<Self, String> {
+    pub async fn new(config: &GameConfig) -> Result<Self, String> {
         let mut rooms = ROOMS.write().await;
         if rooms.contains_key(&config.name) {
             return Err(format!("A room named {} already exists.", config.name));

@@ -54,34 +54,14 @@ pub async fn handler(websocket: WebSocket) {
                             "{} ({}): {:?}",
                             st.id().to_string().yellow(),
                             name.bright_yellow(),
-                            packet.msg,
+                            packet.message(),
                         ),
-                        None => debug!("{}: {:?}", st.id().to_string().yellow(), packet.msg),
+                        None => debug!("{}: {:?}", st.id().to_string().yellow(), packet.message()),
                     };
                     std::mem::drop(st);
-                    match Message::handle(state, packet.msg).await {
-                        Ok(value) => sender
-                            .send(
-                                serde_json::to_string(&Response {
-                                    id: packet.id,
-                                    status: Status::Ok,
-                                    error: None,
-                                    data: value,
-                                })
-                                .unwrap(),
-                            )
-                            .ok(),
-                        Err(error) => sender
-                            .send(
-                                serde_json::to_string(&Response {
-                                    id: packet.id,
-                                    status: Status::Err,
-                                    error: Some(error),
-                                    data: serde_json::Value::Null,
-                                })
-                                .unwrap(),
-                            )
-                            .ok(),
+                    match Message::handle(state, packet.message()).await {
+                        Ok(value) => sender.send(packet.respond_ok(value).to_string()).ok(),
+                        Err(error) => sender.send(packet.respond_err(error).to_string()).ok(),
                     };
                 }
             }

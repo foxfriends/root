@@ -1,6 +1,6 @@
 :- pub(actions/3).
 :- pub(perform/4).
-:- use(@core::list(contains/2, update/4)).
+:- use(@core::list(contains/2, update/4, length/2)).
 
 // Players can become/un-become ready at any time.
 actions({ name: Name, .. }, { players: Players, .. }, ready) :-
@@ -28,6 +28,9 @@ perform({ name: Name, .. }, { players: Players, ..State }, unready, { players: N
 all_ready([]).
 all_ready([{ ready: true, .. }, ..Rest]) :- all_ready(Rest).
 
-actions({ name: Name, .. }, { owner: Name, players: Players, .. }, start) :-
+actions({ name: Name, .. }, { players: Players, factions: Factions, .. }, start) :-
+    [{ name: Name, .. }, ..] <- Players,
+    length(Players, N),
+    length(Factions, N),
     all_ready(Players).
-perform(_, { state: lobby, ..State }, start, { state: setup, ..State }).
+perform(_, { phase: lobby, ..State }, start, { phase: setup, ..State }).

@@ -46,11 +46,11 @@ impl SocketState {
     /// # Errors
     ///
     /// The name cannot be changed if the socket is already in a room.
-    pub fn set_name(&mut self, name: String) -> Result<(), String> {
+    pub fn set_name(&mut self, name: &str) -> Result<(), String> {
         if self.room.is_some() {
             return Err("You cannot change your name while in a room.".into());
         }
-        self.name = Some(name);
+        self.name = Some(name.to_owned());
         Ok(())
     }
 
@@ -62,18 +62,18 @@ impl SocketState {
     }
 
     /// Joins a room, by name, if it exists.
-    pub async fn join_room(&mut self, name: String) -> Result<Game, String> {
+    pub async fn join_room(&mut self, name: &str) -> Result<Game, String> {
         if self.room.is_some() {
             return Err("You are already in a room. Leave that one first.".into());
         }
-        let room = Room::get(&name)
+        let room = Room::get(name)
             .await
             .ok_or_else(|| format!("No room {} exists. Maybe you should make one?", name))?;
         self.join_room_inner(room).await
     }
 
     /// Creates and then joins a room.
-    pub async fn join_new_room(&mut self, config: GameConfig) -> Result<Game, String> {
+    pub async fn join_new_room(&mut self, config: &GameConfig) -> Result<Game, String> {
         if self.room.is_some() {
             return Err("You are already in a room. Leave that one first.".into());
         }

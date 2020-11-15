@@ -22,7 +22,7 @@ impl Message {
     /// Lumber program.
     pub async fn handle(
         state: Arc<RwLock<SocketState>>,
-        msg: Message,
+        msg: &Message,
     ) -> Result<serde_json::Value, CommandError> {
         let room = state.read().await.room();
         let result = match msg {
