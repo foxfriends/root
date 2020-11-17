@@ -1,22 +1,23 @@
-use super::{CommandError, Message, Response, Status};
+use super::{ClientCommand, Response, Socket, Status};
+use serde_json::Value;
 use uuid::Uuid;
 
 #[derive(Debug, serde::Deserialize)]
 pub struct Packet {
     id: Uuid,
-    msg: Message,
+    msg: ClientCommand,
 }
 
 impl Packet {
-    pub fn message(&self) -> &Message {
+    pub fn command(&self) -> &ClientCommand {
         &self.msg
     }
 
-    pub fn respond_ok(&self, value: serde_json::Value) -> Response {
-        Response::new(self.id, Status::Ok, value, None)
-    }
-
-    pub fn respond_err(&self, error: CommandError) -> Response {
-        Response::new(self.id, Status::Err, serde_json::Value::Null, Some(error))
+    pub async fn execute(self, socket: &Socket) -> Value {
+        let response = match self.msg.execute(socket).await {
+            Ok(value) => Response::new(self.id, Status::Ok, value, None),
+            Err(error) => Response::new(self.id, Status::Err, Value::Null, Some(error)),
+        };
+        serde_json::to_value(response).unwrap()
     }
 }

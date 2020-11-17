@@ -1,10 +1,13 @@
-use super::SocketState;
+use super::SocketHandle;
 use crate::models::{Game, GameConfig, Phase};
 use std::collections::HashMap;
 use std::sync::Arc;
-use tokio::sync::{mpsc::UnboundedSender, RwLock};
+use tokio::sync::RwLock;
 
 lazy_static! {
+    /// TODO: I think there are some races that can happen about adding/removing from this
+    /// global `ROOMS` list. Not all that important for now, but should be addressed
+    /// eventually...
     static ref ROOMS: RwLock<HashMap<String, Room>> = Default::default();
 }
 
@@ -16,7 +19,7 @@ lazy_static! {
 pub struct Room(Arc<RoomContent>);
 
 struct RoomContent {
-    sockets: RwLock<HashMap<String, UnboundedSender<String>>>,
+    sockets: RwLock<HashMap<String, SocketHandle>>,
     game: RwLock<Game>,
 }
 
@@ -26,7 +29,7 @@ impl Room {
     /// # Errors
     ///
     /// Creating a new room will fail if the name is already in use.
-    pub async fn new(config: &GameConfig) -> Result<Self, String> {
+    pub async fn new(config: GameConfig) -> Result<Self, String> {
         let mut rooms = ROOMS.write().await;
         if rooms.contains_key(&config.name) {
             return Err(format!("A room named {} already exists.", config.name));
@@ -53,27 +56,17 @@ impl Room {
     ///     *   the game has started, but one of the spaces is claimed for a
     ///         player with the socket's name, and that player is not already
     ///         connected.
-    pub async fn join(&self, socket: &SocketState) -> Result<(), String> {
-        let name = socket
-            .name()
-            .ok_or_else(|| "You must choose a name before entering a room.".to_owned())?;
-        let phase = self.0.game.read().await.phase();
-        match phase {
+    pub async fn join(&self, name: &str, handle: SocketHandle) -> Result<(), String> {
+        let mut game = self.0.game.write().await;
+        let mut sockets = self.0.sockets.write().await;
+        match game.phase() {
             Phase::Lobby => {
-                self.0.game.write().await.add_player(name.to_owned())?;
-                self.0
-                    .sockets
-                    .write()
-                    .await
-                    .insert(name.to_owned(), socket.sender());
+                game.add_player(name)?;
+                sockets.insert(name.to_owned(), handle);
                 Ok(())
             }
             _ => {
-                let is_valid_player = self
-                    .0
-                    .game
-                    .read()
-                    .await
+                let is_valid_player = game
                     .players()
                     .iter()
                     .find(|player| player.name() == name)
@@ -81,11 +74,10 @@ impl Room {
                 if is_valid_player {
                     return Err(format!("{} is not a player in this game.", name));
                 }
-                let mut sockets = self.0.sockets.write().await;
                 if sockets.contains_key(name) {
                     return Err(format!("{} is already in this room.", name));
                 }
-                sockets.insert(name.to_owned(), socket.sender());
+                sockets.insert(name.to_owned(), handle);
                 Ok(())
             }
         }
@@ -93,36 +85,16 @@ impl Room {
 
     /// Removes a socket from this room. If the game in the room has not yet started,
     /// this also removes the socket's player from the game.
-    pub async fn leave(&self, socket: &SocketState) -> Result<(), String> {
-        let name = socket
-            .name()
-            .ok_or_else(|| "You must have a name to have entered a room.".to_owned())?;
-        if self.0.game.read().await.phase() == Phase::Lobby {
-            let mut game = self.0.game.write().await;
+    pub async fn leave(&self, name: &str) {
+        let mut game = self.0.game.write().await;
+        let mut sockets = self.0.sockets.write().await;
+        if game.phase() == Phase::Lobby {
             game.remove_player(name).unwrap();
             if game.players().is_empty() {
                 ROOMS.write().await.remove(game.name());
             }
         }
-        self.0.sockets.write().await.remove(name);
-        Ok(())
-    }
-
-    /// Broadcasts a message to the other sockets in this room. Any messages that fail to send
-    /// are silently lost. Typically that will be because the client has already hung up.
-    #[allow(dead_code)]
-    pub async fn send(&self, message: String) {
-        let sockets = self.0.sockets.read().await;
-        for socket in sockets.values() {
-            socket.send(message.clone()).ok();
-        }
-    }
-
-    /// Gets a specific socket, by name, from this room. If the player by that name is not
-    /// currently connected, returns None.
-    #[allow(dead_code)]
-    pub async fn socket(&self, name: &str) -> Option<UnboundedSender<String>> {
-        self.0.sockets.read().await.get(name).cloned()
+        sockets.remove(name);
     }
 
     /// Allows access to the contained game object.

@@ -1,73 +1,58 @@
 use colored::*;
-use futures::{future::ready, StreamExt};
-use log::{debug, info, warn};
-use std::sync::Arc;
-use tokio::sync::mpsc::unbounded_channel;
-use tokio::sync::RwLock;
+use futures::StreamExt;
+use log::{debug, info};
 use warp::ws::{self, WebSocket};
 
+mod client_command;
 mod command_error;
 mod message;
 mod packet;
 mod response;
 mod room;
 mod runtime;
-mod socket_state;
+mod socket;
 mod status;
 
+use client_command::ClientCommand;
 use command_error::CommandError;
 use message::Message;
 use packet::Packet;
 use response::Response;
-use socket_state::SocketState;
+use room::Room;
+use socket::{Socket, SocketHandle};
 use status::Status;
 
 pub async fn handler(websocket: WebSocket) {
     let (ws_tx, ws_rx) = websocket.split();
-    let (tx, rx) = unbounded_channel::<String>();
-    tokio::task::spawn(rx.map(ws::Message::text).map(Ok).forward(ws_tx));
-    let state = SocketState::new(tx);
-    info!("Socket connected {}", state.id());
-    let state = Arc::new(RwLock::new(state));
+    let (socket, outputs) = Socket::new();
+    tokio::task::spawn(outputs.map(|value| value.to_string()).map(ws::Message::text).map(Ok).forward(ws_tx));
+    let id = socket.id().to_string()[..8].yellow();
+    info!("{}: connected", id);
     ws_rx
-        .take_while(|result| ready(result.is_ok()))
-        .map(Result::unwrap)
-        .map(|msg| msg.to_str().map(|s| s.to_owned()))
-        .take_while(|result| ready(result.is_ok()))
-        .map(Result::unwrap)
-        .for_each({
-            let state = state.clone();
-            move |msg| {
-                let state = state.clone();
-                async move {
-                    let st = state.read().await;
-                    let sender = st.sender();
-                    let packet = match serde_json::from_str::<Packet>(msg.as_str()) {
-                        Ok(packet) => packet,
-                        Err(error) => {
-                            warn!("Invalid packet received `{}`\n{}", msg, error);
-                            return;
-                        }
-                    };
-                    match st.name() {
-                        Some(name) => debug!(
-                            "{} ({}): {:?}",
-                            st.id().to_string().yellow(),
-                            name.bright_yellow(),
-                            packet.message(),
-                        ),
-                        None => debug!("{}: {:?}", st.id().to_string().yellow(), packet.message()),
-                    };
-                    std::mem::drop(st);
-                    match Message::handle(state, packet.message()).await {
-                        Ok(value) => sender.send(packet.respond_ok(value).to_string()).ok(),
-                        Err(error) => sender.send(packet.respond_err(error).to_string()).ok(),
-                    };
+        .filter_map(|msg| async { msg.ok() })
+        .filter_map(|msg| async move { serde_json::from_str::<Packet>(msg.to_str().ok()?).ok() })
+        .for_each({ let socket = socket.clone(); let id = &id; move |packet| {
+            let socket = socket.clone();
+            async move {
+                let name = socket.name().await;
+                match name {
+                    Some(name) => debug!(
+                        "{} ({}): {:?}",
+                        id,
+                        name.bright_yellow(),
+                        packet.command(),
+                    ),
+                    None => debug!(
+                        "{}: {:?}",
+                        id,
+                        packet.command()
+                    ),
                 }
+                let response = packet.execute(&socket).await;
+                socket.emit(response).ok();
             }
-        })
+        }})
         .await;
-    let mut state = state.write().await;
-    state.leave_room().await;
-    info!("Socket disconnected {}", state.id());
+    socket.leave_room().await;
+    info!("{}: connected", id);
 }

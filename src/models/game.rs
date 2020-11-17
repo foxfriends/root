@@ -11,10 +11,10 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn create(config: &GameConfig) -> Self {
+    pub fn create(config: GameConfig) -> Self {
         Game {
-            name: config.name.to_owned(),
-            factions: config.factions.clone(),
+            name: config.name,
+            factions: config.factions,
             assignment: config.assignment,
             map: config.map,
             players: vec![],
@@ -38,7 +38,7 @@ impl Game {
         self.factions.as_slice()
     }
 
-    pub fn add_player(&mut self, name: String) -> Result<(), String> {
+    pub fn add_player(&mut self, name: &str) -> Result<(), String> {
         if self.phase != Phase::Lobby {
             return Err("Players cannot be changed once the game has started.".into());
         }
@@ -52,7 +52,7 @@ impl Game {
         if self.players.len() == self.factions.len() {
             return Err("This game is already full.".into());
         }
-        self.players.push(Player::new(name));
+        self.players.push(Player::new(name.to_owned()));
         Ok(())
     }
 
