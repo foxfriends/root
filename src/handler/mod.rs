@@ -25,33 +25,37 @@ use status::Status;
 pub async fn handler(websocket: WebSocket) {
     let (ws_tx, ws_rx) = websocket.split();
     let (socket, outputs) = Socket::new();
-    tokio::task::spawn(outputs.map(|value| value.to_string()).map(ws::Message::text).map(Ok).forward(ws_tx));
+    tokio::task::spawn(
+        outputs
+            .map(|value| value.to_string())
+            .map(ws::Message::text)
+            .map(Ok)
+            .forward(ws_tx),
+    );
     let id = socket.id().to_string()[..8].yellow();
     info!("{}: connected", id);
     ws_rx
         .filter_map(|msg| async { msg.ok() })
         .filter_map(|msg| async move { serde_json::from_str::<Packet>(msg.to_str().ok()?).ok() })
-        .for_each({ let socket = socket.clone(); let id = &id; move |packet| {
+        .for_each({
             let socket = socket.clone();
-            async move {
-                let name = socket.name().await;
-                match name {
-                    Some(name) => debug!(
-                        "{} ({}): {:?}",
-                        id,
-                        name.bright_yellow(),
-                        packet.command(),
-                    ),
-                    None => debug!(
-                        "{}: {:?}",
-                        id,
-                        packet.command()
-                    ),
+            let id = &id;
+            move |packet| {
+                let socket = socket.clone();
+                async move {
+                    let name = socket.name().await;
+                    match name {
+                        Some(name) => {
+                            debug!("{} ({}): {:?}", id, name.bright_yellow(), packet.command(),)
+                        }
+                        None => debug!("{}: {:?}", id, packet.command()),
+                    }
+                    let response = packet.execute(&socket).await;
+                    socket.broadcast(Message::Update).await;
+                    socket.emit(response).ok();
                 }
-                let response = packet.execute(&socket).await;
-                socket.emit(response).ok();
             }
-        }})
+        })
         .await;
     socket.leave_room().await;
     info!("{}: connected", id);

@@ -1,4 +1,4 @@
-use super::SocketHandle;
+use super::{Message, SocketHandle};
 use crate::models::{Game, GameConfig, Phase};
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -111,5 +111,15 @@ impl Room {
     /// become outdated.
     pub async fn game(&self) -> Game {
         self.0.game.read().await.clone()
+    }
+
+    /// Sends a message to all sockets in this room, except the one that is sending the message.
+    pub async fn send(&self, sender: &str, message: Message) {
+        let sockets = self.0.sockets.read().await;
+        for (name, socket) in sockets.iter() {
+            if name != sender {
+                socket.send(message).ok();
+            }
+        }
     }
 }

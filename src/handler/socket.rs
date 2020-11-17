@@ -37,7 +37,7 @@ impl Socket {
     /// Create a new socket's state.
     pub fn new() -> (Self, UnboundedReceiver<serde_json::Value>) {
         let (to_client, outputs) = unbounded_channel::<serde_json::Value>();
-        let (to_handler, messages) = unbounded_channel::<Message>();
+        let (to_handler, _messages) = unbounded_channel::<Message>(); // TODO: use messages
         (
             Self {
                 id: Uuid::new_v4(),
@@ -57,11 +57,6 @@ impl Socket {
     /// Get the ID of this socket.
     pub fn id(&self) -> Uuid {
         self.id
-    }
-
-    /// Get the room this socket is in, if any.
-    pub async fn room(&self) -> Option<Room> {
-        self.state.read().await.room.clone()
     }
 
     /// Get the name of this socket (really, the user of this socket), if set.
@@ -135,7 +130,8 @@ impl Socket {
             Some(room) => {
                 room.with_game_mut(|game| {
                     LUMBER.with(|lumber| {
-                        let command = format!("command(Name, State, {}, NewState, Actions)", command);
+                        let command =
+                            format!("command(Name, State, {}, NewState, Actions)", command);
                         let question = Question::try_from(command.as_str()).map(|question| {
                             question
                                 .with("Name", Value::string(name))
@@ -173,25 +169,47 @@ impl Socket {
 }
 
 impl Socket {
+    /// Sends a message to all other sockets in the same room as this one
+    pub async fn broadcast(&self, message: Message) {
+        let state = self.state.read().await;
+        if let Some(room) = &state.room {
+            room.send(state.name.as_deref().unwrap(), message).await;
+        }
+    }
+
     /// Send a message to this socket.
-    pub fn send(&self, message: Message) -> Result<(), tokio::sync::mpsc::error::SendError<Message>> {
+    #[allow(dead_code)]
+    pub fn send(
+        &self,
+        message: Message,
+    ) -> Result<(), tokio::sync::mpsc::error::SendError<Message>> {
         self.handle.to_handler.send(message)
     }
 
     /// Send a message out the socket, to the client.
-    pub fn emit(&self, message: serde_json::Value) -> Result<(), tokio::sync::mpsc::error::SendError<serde_json::Value>> {
+    pub fn emit(
+        &self,
+        message: serde_json::Value,
+    ) -> Result<(), tokio::sync::mpsc::error::SendError<serde_json::Value>> {
         self.handle.to_client.send(message)
     }
 }
 
 impl SocketHandle {
     /// Send a message to this socket.
-    pub fn send(&self, message: Message) -> Result<(), tokio::sync::mpsc::error::SendError<Message>> {
+    pub fn send(
+        &self,
+        message: Message,
+    ) -> Result<(), tokio::sync::mpsc::error::SendError<Message>> {
         self.to_handler.send(message)
     }
 
     /// Send a message out the socket, to the client.
-    pub fn emit(&self, message: serde_json::Value) -> Result<(), tokio::sync::mpsc::error::SendError<serde_json::Value>> {
+    #[allow(dead_code)]
+    pub fn emit(
+        &self,
+        message: serde_json::Value,
+    ) -> Result<(), tokio::sync::mpsc::error::SendError<serde_json::Value>> {
         self.to_client.send(message)
     }
 }

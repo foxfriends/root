@@ -14,10 +14,6 @@ pub struct CommandError {
 }
 
 impl CommandError {
-    pub fn message(&self) -> &str {
-        self.message.as_str()
-    }
-
     pub fn unexpected() -> Self {
         Self {
             code: CommandErrorCode::UnexpectedCommand,
