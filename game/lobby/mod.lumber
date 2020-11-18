@@ -33,4 +33,4 @@ actions(Name, { players: Players, factions: Factions, .. }, start) :-
     length(Players, N),
     length(Factions, N),
     all_ready(Players).
-perform(_, { phase: lobby, ..State }, start, { phase: setup, ..State }).
+perform(_, { phase: "lobby", ..State }, start, { phase: "setup", ..State }).

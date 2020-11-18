@@ -1,5 +1,11 @@
 <script context="module">
-  export class Abort extends Error {}
+  export class Abort extends Error {
+    constructor(value) {
+      super();
+      this.name = 'Abort';
+      this.value = value;
+    }
+  }
 </script>
 
 <script>
@@ -19,7 +25,7 @@
         try {
           step = inner.next(yield);
         } catch (error) {
-          step = inner.throw(error);
+          step = inner.throw(new Abort(error));
         }
       }
     }
