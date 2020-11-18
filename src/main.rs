@@ -23,7 +23,7 @@ async fn main() {
     let game = warp::path("game")
         .and(warp::ws())
         .map(|ws: warp::ws::Ws| ws.on_upgrade(handler));
-    let web = warp::fs::dir(dist_dir);
+    let web = warp::fs::dir(dist_dir).with(warp::reply::with::header("Cache-Control", "no-cache"));
     let routes = game.or(web);
 
     info!(

@@ -1,5 +1,6 @@
 <script>
-import { cond, equals } from 'ramda';
+import { cond, equals, identity } from 'ramda';
+import { first } from 'rxjs/operators';
 import context from '../context';
 import Dialog from './component/Dialog.svelte';
 import IdentificationForm from './IdentificationForm.svelte';
@@ -37,16 +38,16 @@ async function * chooseGame() {
 
 async function * createGame() {
   try {
-    let game;
-    while (!game) {
+    for (;;) {
       const { name, settings } = value(yield 'create-game');
       try {
-        game = await socket.createGame({ name, ...settings });
+        await socket.createGame({ name, ...settings });
+        break;
       } catch (error) {
         toast(error.message);
       }
     }
-    yield * gameLobby(game);
+    yield * gameLobby();
   } catch (error) {
     if (error instanceof Abort) {
       yield * chooseGame();
@@ -58,16 +59,16 @@ async function * createGame() {
 
 async function * joinGame() {
   try {
-    let game;
-    while (!game) {
+    for (;;) {
       const name = value(yield 'join-game');
       try {
-        game = await socket.joinGame(name);
+        await socket.joinGame(name);
+        break;
       } catch (error) {
         toast(error.message);
       }
     }
-    yield * gameLobby(game);
+    yield * gameLobby();
   } catch (error) {
     if (error instanceof Abort) {
       yield * chooseGame();
@@ -77,12 +78,14 @@ async function * joinGame() {
   }
 }
 
-async function * gameLobby(game) {
-  $state = game;
+async function * gameLobby() {
   try {
+    await state.pipe(first(identity)).toPromise();
     yield 'lobby';
   } catch (error) {
     if (error instanceof Abort) {
+      socket.leaveGame();
+      $state = null;
       yield * chooseGame();
     } else {
       console.error(error);

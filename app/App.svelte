@@ -14,6 +14,8 @@
 </div>
 
 <style>
+@import './font/fonts.css';
+
 :global(:root) {
   --font-family--display: 'Luminari';
   --font-family--body: 'Baskerville';

@@ -1,2 +1,0 @@
-:- nat(state/2).
-:- pub(state/2).

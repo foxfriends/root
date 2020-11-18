@@ -3,12 +3,12 @@
 :- use(@core::list(contains/2, update/4, length/2)).
 
 // Players can become/un-become ready at any time.
-actions({ name: Name, .. }, { players: Players, .. }, ready) :-
+actions(Name, { players: Players, .. }, ready) :-
     contains({ name: Name, ready: false, .. }, Players).
-actions({ name: Name, .. }, { players: Players, .. }, unready) :-
+actions(Name, { players: Players, .. }, unready) :-
     contains({ name: Name, ready: true, .. }, Players).
 
-perform({ name: Name, .. }, { players: Players, ..State }, ready, { players: NewPlayers, ..State }) :-
+perform(Name, { players: Players, ..State }, ready, { players: NewPlayers, ..State }) :-
     update(
         Players,
         { name: Name, ready: _, ..Player },
@@ -16,7 +16,7 @@ perform({ name: Name, .. }, { players: Players, ..State }, ready, { players: New
         NewPlayers,
     ).
 
-perform({ name: Name, .. }, { players: Players, ..State }, unready, { players: NewPlayers, ..State }) :-
+perform(Name, { players: Players, ..State }, unready, { players: NewPlayers, ..State }) :-
     update(
         Players,
         { name: Name, ready: _, ..Player },
@@ -28,8 +28,8 @@ perform({ name: Name, .. }, { players: Players, ..State }, unready, { players: N
 all_ready([]).
 all_ready([{ ready: true, .. }, ..Rest]) :- all_ready(Rest).
 
-actions({ name: Name, .. }, { players: Players, factions: Factions, .. }, start) :-
-    [{ name: Name, .. }, ..] <- Players,
+actions(Name, { players: Players, factions: Factions, .. }, start) :-
+    [{ name: Name }, ..] <- Players,
     length(Players, N),
     length(Factions, N),
     all_ready(Players).

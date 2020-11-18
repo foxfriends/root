@@ -106,11 +106,13 @@ impl Room {
         cb(&mut *game)
     }
 
-    /// Creates a clone of the game being played in this room. Typically this is so it can be
-    /// sent to the client, it is not meant to be worked with in this form, as it can easily
-    /// become outdated.
-    pub async fn game(&self) -> Game {
-        self.0.game.read().await.clone()
+    /// Allows access to the contained game object.
+    pub async fn with_game<F, T>(&self, cb: F) -> T
+    where
+        F: FnOnce(&Game) -> T,
+    {
+        let game = self.0.game.read().await;
+        cb(&*game)
     }
 
     /// Sends a message to all sockets in this room, except the one that is sending the message.

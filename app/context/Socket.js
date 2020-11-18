@@ -1,6 +1,6 @@
 import { race, fromEvent } from 'rxjs';
 import { filter, first, map, tap } from 'rxjs/operators';
-import { cond, isNil, prop, propEq, propSatisfies } from 'ramda';
+import { compose, hasIn, not, prop, propEq, when } from 'ramda';
 import * as uuid from 'uuid';
 import { toast } from '../view/component/Toast.svelte';
 import wait from '../util/wait';
@@ -54,21 +54,23 @@ export default class Socket {
   }
 
   async setName(name) {
-    const result = await this.request({ setName: name });
+    await this.request({ setName: name });
     this.name = name;
-    return result;
   }
 
   async joinGame(name) {
-    const result = await this.request({ joinGame: name });
+    await this.request({ joinGame: name });
     this.room = name;
-    return result;
+  }
+
+  async leaveGame() {
+    await this.request({ leaveGame: {} });
+    this.room = undefined;
   }
 
   async createGame(config) {
-    const result = await this.request({ createGame: config });
+    await this.request({ createGame: config });
     this.room = config.name;
-    return result;
   }
 
   perform(action) {
@@ -78,16 +80,13 @@ export default class Socket {
   async request(message) {
     await this.#connected;
     const id = uuid.v4();
-    const response = this
-      .messages()
+    const response = fromEvent(this.#socket, 'message')
       .pipe(
-        filter(propEq('id', id)),
+        map(prop('data')),
+        map(JSON.parse),
+        first(propEq('id', id)),
         tap((response) => console.log(`Received response ${id}`, response)),
-        map(cond([
-          [propEq('status', 'err'), ({ error }) => throw new CommandError(error)],
-          [propEq('status', 'ok'), prop('data')],
-        ])),
-        first(),
+        map(when(propEq('status', 'err'), ({ error }) => throw new CommandError(error))),
       )
       .toPromise();
     console.log(`Sending message ${id}`, message);
@@ -97,9 +96,9 @@ export default class Socket {
 
   messages() {
     return fromEvent(this.#socket, 'message').pipe(
-      filter(propSatisfies(isNil, 'id')),
       map(prop('data')),
       map(JSON.parse),
+      filter(compose(not, hasIn('id'))),
     );
   }
 

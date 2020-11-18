@@ -1,4 +1,5 @@
 <script>
+import { F } from 'ramda';
 import { game, errorMessage } from '../store';
 import Box from './component/Box.svelte';
 import Faction from '../types/Faction';
@@ -7,7 +8,7 @@ import Picker from './component/Picker.svelte';
 
 const images = {};
 
-let flips = $game.factions.map(() => false);
+let flips = $game.factions.map(F);
 $: factions = $game.factions
   .filter((faction) => faction !== Faction.marquise_bot) // computer players only
   .map((name, i) => ({

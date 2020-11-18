@@ -5,3 +5,13 @@ thread_local! {
         .build_from_file("game/main.lumber")
         .unwrap();
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn lumber_program_should_compile() {
+        LUMBER.with(|_| {})
+    }
+}

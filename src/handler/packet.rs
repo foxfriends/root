@@ -1,5 +1,5 @@
-use super::{ClientCommand, Response, Socket, Status};
-use serde_json::Value;
+use super::{ClientCommand, Socket, Status};
+use serde_json::{json, Value};
 use uuid::Uuid;
 
 #[derive(Debug, serde::Deserialize)]
@@ -14,10 +14,9 @@ impl Packet {
     }
 
     pub async fn execute(self, socket: &Socket) -> Value {
-        let response = match self.msg.execute(socket).await {
-            Ok(value) => Response::new(self.id, Status::Ok, value, None),
-            Err(error) => Response::new(self.id, Status::Err, Value::Null, Some(error)),
-        };
-        serde_json::to_value(response).unwrap()
+        match self.msg.execute(socket).await {
+            Ok(()) => json!({ "id": self.id, "status": Status::Ok }),
+            Err(error) => json!({ "id": self.id, "status": Status::Err, "error": error }),
+        }
     }
 }

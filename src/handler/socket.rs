@@ -1,11 +1,15 @@
 use super::{runtime::LUMBER, Message, Room};
-use crate::models::{Game, GameConfig};
+use crate::models::GameConfig;
+use futures::StreamExt;
 use log::warn;
 use lumber::{Question, Value};
+use serde_json::json;
 use std::convert::TryFrom;
 use std::sync::Arc;
-use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
-use tokio::sync::RwLock;
+use tokio::sync::{
+    mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender},
+    RwLock,
+};
 use uuid::Uuid;
 
 /// The state of a single client's socket.
@@ -37,21 +41,63 @@ impl Socket {
     /// Create a new socket's state.
     pub fn new() -> (Self, UnboundedReceiver<serde_json::Value>) {
         let (to_client, outputs) = unbounded_channel::<serde_json::Value>();
-        let (to_handler, _messages) = unbounded_channel::<Message>(); // TODO: use messages
-        (
-            Self {
-                id: Uuid::new_v4(),
-                state: Arc::new(RwLock::new(SocketState {
-                    name: None,
-                    room: None,
-                })),
-                handle: SocketHandle {
-                    to_client,
-                    to_handler,
-                },
+        let (to_handler, messages) = unbounded_channel::<Message>();
+        let socket = Self {
+            id: Uuid::new_v4(),
+            state: Arc::new(RwLock::new(SocketState {
+                name: None,
+                room: None,
+            })),
+            handle: SocketHandle {
+                to_client,
+                to_handler,
             },
-            outputs,
-        )
+        };
+        tokio::task::spawn(messages.for_each({
+            let socket = socket.clone();
+            move |message| {
+                let socket = socket.clone();
+                async move {
+                    let state = socket.state.read().await;
+                    match message {
+                        Message::Update => {
+                            state
+                                .room
+                                .as_ref()
+                                .unwrap()
+                                .with_game(|game| {
+                                    LUMBER.with(|lumber| {
+                                        let question =
+                                            Question::try_from("actions(Name, State, Action)")
+                                                .unwrap()
+                                                .with(
+                                                    "Name",
+                                                    Value::string(state.name.as_ref().unwrap()),
+                                                )
+                                                .with("State", Value::serialize(game).unwrap());
+                                        let actions = lumber
+                                            .ask(&question)
+                                            .map(|binding| question.answer(&binding).unwrap())
+                                            .map(|mut answer| {
+                                                answer
+                                                    .remove("Action")
+                                                    .unwrap()
+                                                    .unwrap()
+                                                    .to_string()
+                                            })
+                                            .collect::<Vec<_>>();
+                                        socket
+                                            .emit(json!({ "game": game, "actions": actions }))
+                                            .ok();
+                                    })
+                                })
+                                .await
+                        }
+                    }
+                }
+            }
+        }));
+        (socket, outputs)
     }
 
     /// Get the ID of this socket.
@@ -93,7 +139,7 @@ impl Socket {
     }
 
     /// Joins a room, by name, if it exists.
-    pub async fn join_room(&self, name: String) -> Result<Game, String> {
+    pub async fn join_room(&self, name: String) -> Result<(), String> {
         let room = Room::get(&name)
             .await
             .ok_or_else(|| format!("No room {} exists. Maybe you should make one?", name))?;
@@ -101,12 +147,12 @@ impl Socket {
     }
 
     /// Creates and then joins a room.
-    pub async fn join_new_room(&self, config: GameConfig) -> Result<Game, String> {
+    pub async fn join_new_room(&self, config: GameConfig) -> Result<(), String> {
         let room = Room::new(config).await?;
         self.join_room_inner(room).await
     }
 
-    async fn join_room_inner(&self, room: Room) -> Result<Game, String> {
+    async fn join_room_inner(&self, room: Room) -> Result<(), String> {
         let mut state = self.state.write().await;
         if state.name.is_none() {
             return Err("You must set a name before entering a room.".into());
@@ -116,9 +162,9 @@ impl Socket {
         }
         room.join(state.name.as_deref().unwrap(), self.handle())
             .await?;
-        let game = room.game().await;
         state.room = Some(room);
-        Ok(game)
+        self.send(Message::Update).ok();
+        Ok(())
     }
 
     /// Perform a Lumber action sent by the client.
@@ -135,7 +181,7 @@ impl Socket {
                         let question = Question::try_from(command.as_str()).map(|question| {
                             question
                                 .with("Name", Value::string(name))
-                                .with("NewState", Value::serialize(game).unwrap())
+                                .with("State", Value::serialize(game).unwrap())
                         });
                         match question {
                             Ok(question) => {
@@ -143,7 +189,7 @@ impl Socket {
                                     let mut answer = question.answer(&binding).unwrap();
                                     let new_state = answer.remove("NewState").unwrap().unwrap();
                                     *game = Value::deserialize(&new_state).unwrap();
-                                    let _actions: Vec<String> = answer
+                                    let actions: Vec<String> = answer
                                         .remove("Actions")
                                         .unwrap()
                                         .unwrap()
@@ -152,7 +198,7 @@ impl Socket {
                                         .iter()
                                         .filter_map(|action| action.map(ToString::to_string))
                                         .collect();
-                                    todo!("what to do with the actions?")
+                                    self.emit(json!({ "game": game, "actions": actions })).ok();
                                 }
                             }
                             Err(error) => {
@@ -178,7 +224,6 @@ impl Socket {
     }
 
     /// Send a message to this socket.
-    #[allow(dead_code)]
     pub fn send(
         &self,
         message: Message,

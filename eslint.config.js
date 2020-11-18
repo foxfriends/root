@@ -9,6 +9,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
+    'plugin:ramda/recommended',
   ],
   env: {
     'es6': true,
@@ -16,6 +17,7 @@ module.exports = {
   },
   plugins: [
     'svelte3',
+    'ramda',
   ],
   ignorePatterns: [
     '**/*.ftl',
@@ -27,7 +29,9 @@ module.exports = {
       processor: 'svelte3/svelte3',
       rules: {
         'no-multiple-empty-lines': 'off', // does not work properly
-        'no-unused-vars': 'warn', // has trouble with the $ variables
+        'no-unused-vars': ['error', {
+          varsIgnorePattern: '^\\$', // assigning to stored vars is usually intentional
+        }],
       },
     },
   ],
@@ -66,7 +70,9 @@ module.exports = {
       'named': 'never',
       'asyncArrow': 'always'
     }],
-    'no-inner-declarations': 'off'
+    'no-inner-declarations': 'off',
+    'ramda/cond-simplification': 'off', // I don't agree, sometimes cond is more meaningfully correct?
+    'ramda/map-simplification': 'off', // it often gets confused with map from rxjs
   },
   settings: {
     'svelte3/ignore-styles': () => true,
