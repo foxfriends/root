@@ -3,34 +3,34 @@
 :- use(@core::list(contains/2, update/4, length/2)).
 
 // Players can become/un-become ready at any time.
-actions(Name, { players: Players, .. }, ready) :-
-    contains({ name: Name, ready: false, .. }, Players).
-actions(Name, { players: Players, .. }, unready) :-
-    contains({ name: Name, ready: true, .. }, Players).
+actions(Name, game { players: Players, .. }, ready) :-
+    contains(player { name: Name, ready: false, .. }, Players).
+actions(Name, game { players: Players, .. }, unready) :-
+    contains(player { name: Name, ready: true, .. }, Players).
 
-perform(Name, { players: Players, ..State }, ready, { players: NewPlayers, ..State }) :-
+perform(Name, game { players: Players, ..State }, ready, game { players: NewPlayers, ..State }) :-
     update(
         Players,
-        { name: Name, ready: _, ..Player },
-        { name: Name, ready: true, ..Player },
+        player { name: Name, ready: _, ..Player },
+        player { name: Name, ready: true, ..Player },
         NewPlayers,
     ).
 
-perform(Name, { players: Players, ..State }, unready, { players: NewPlayers, ..State }) :-
+perform(Name, game { players: Players, ..State }, unready, game { players: NewPlayers, ..State }) :-
     update(
         Players,
-        { name: Name, ready: _, ..Player },
-        { name: Name, ready: false, ..Player },
+        player { name: Name, ready: _, ..Player },
+        player { name: Name, ready: false, ..Player },
         NewPlayers,
     ).
 
 // Start the game when all players are ready.
 all_ready([]).
-all_ready([{ ready: true, .. }, ..Rest]) :- all_ready(Rest).
+all_ready([player { ready: true, .. }, ..Rest]) :- all_ready(Rest).
 
-actions(Name, { players: Players, factions: Factions, .. }, start) :-
-    [{ name: Name }, ..] <- Players,
+actions(Name, game { players: Players, factions: Factions, .. }, start) :-
+    [player { name: Name }, ..] <- Players,
     length(Players, N),
     length(Factions, N),
     all_ready(Players).
-perform(_, { phase: "lobby", ..State }, start, { phase: "setup", ..State }).
+perform(_, game { phase: phase(lobby), ..State }, start, game { phase: phase(setup), ..State }).

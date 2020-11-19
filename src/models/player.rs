@@ -1,4 +1,5 @@
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
+#[serde(rename = "player")]
 pub struct Player {
     name: String,
     ready: bool,

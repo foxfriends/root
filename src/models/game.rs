@@ -1,6 +1,7 @@
 use super::{Assignment, Faction, GameConfig, GameMap, Phase, Player};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
+#[serde(rename = "game")]
 pub struct Game {
     name: String,
     factions: Vec<Faction>,

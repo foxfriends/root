@@ -76,16 +76,12 @@ impl Socket {
                                                 )
                                                 .with(
                                                     "State",
-                                                    Value::serialize(
-                                                        &serde_json::to_value(game).unwrap(),
-                                                    )
-                                                    .unwrap(),
+                                                    Value::serialize(game).unwrap(),
                                                 );
                                         let actions = lumber
                                             .ask(&question)
                                             .map(|binding| question.answer(&binding).unwrap())
                                             .map(|mut answer| {
-                                                eprintln!("{:?}", answer);
                                                 answer
                                                     .remove("Action")
                                                     .unwrap()
@@ -188,7 +184,7 @@ impl Socket {
                         let question = Question::try_from(command.as_str()).map(|question| {
                             question.with("Name", Value::string(name)).with(
                                 "State",
-                                Value::serialize(&serde_json::to_value(&game).unwrap()).unwrap(),
+                                Value::serialize(&game).unwrap(),
                             )
                         });
                         match question {

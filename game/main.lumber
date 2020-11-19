@@ -5,11 +5,11 @@
 :- pub(command/5).
 
 actions(Name, State, lobby(LobbyAction)) :-
-    @core::equal({ phase: "lobby", .. }, State),
+    @core::equal(game { phase: phase(lobby), .. }, State),
     lobby::actions(Name, State, LobbyAction).
 
 perform(Name, State, lobby(LobbyAction), NewState) :-
-    @core::equal({ phase: "lobby", .. }, State),
+    @core::equal(game { phase: phase(lobby), .. }, State),
     lobby::perform(Name, State, LobbyAction, NewState).
 
 command(Name, State, Command, NewState, Actions) :-
