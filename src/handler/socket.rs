@@ -74,10 +74,7 @@ impl Socket {
                                                     "Name",
                                                     Value::string(state.name.as_ref().unwrap()),
                                                 )
-                                                .with(
-                                                    "State",
-                                                    Value::serialize(game).unwrap(),
-                                                );
+                                                .with("State", Value::serialize(game).unwrap());
                                         let actions = lumber
                                             .ask(&question)
                                             .map(|binding| question.answer(&binding).unwrap())
@@ -182,10 +179,9 @@ impl Socket {
                         let command =
                             format!("command(Name, State, {}, NewState, Actions)", command);
                         let question = Question::try_from(command.as_str()).map(|question| {
-                            question.with("Name", Value::string(name)).with(
-                                "State",
-                                Value::serialize(&game).unwrap(),
-                            )
+                            question
+                                .with("Name", Value::string(name))
+                                .with("State", Value::serialize(&game).unwrap())
                         });
                         match question {
                             Ok(question) => {
