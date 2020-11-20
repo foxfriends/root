@@ -3,6 +3,7 @@ import sveltePreprocess from 'svelte-preprocess';
 import livereload from 'rollup-plugin-livereload';
 import copy from 'rollup-plugin-copy';
 import babel from '@rollup/plugin-babel';
+import pegjs from 'rollup-plugin-pegjs';
 import url from '@rollup/plugin-url';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -28,6 +29,8 @@ export default {
     url({
       include: ['**/*.svg', '**/*.png', '**/*.jp(e)?g', '**/*.gif', '**/*.webp', '**/*.ftl'],
     }),
+
+    pegjs(),
 
     svelte({
       // Extract CSS into a single bundled file (recommended).

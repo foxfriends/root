@@ -1,8 +1,9 @@
 import { share, map } from 'rxjs/operators';
-import { prop } from 'ramda';
+import { map as rmap, prop } from 'ramda';
 import { setContext, getContext, onDestroy } from 'svelte';
 import StoreSubject from './StoreSubject';
 import Socket from './Socket';
+import { parse } from '../util/lumber';
 
 export default function context() {
   return {
@@ -19,7 +20,12 @@ export function init() {
 
   const messages = socket.messages().pipe(share());
   const updateState = messages.pipe(map(prop('game'))).subscribe(state);
-  const updateActions = messages.pipe(map(prop('actions'))).subscribe(actions);
+  const updateActions = messages
+    .pipe(
+      map(prop('actions')),
+      map(rmap(parse)),
+    )
+    .subscribe(actions);
 
   setContext('@root/state', state);
   setContext('@root/actions', actions);
