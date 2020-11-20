@@ -74,7 +74,7 @@ export default class Socket {
   }
 
   perform(action) {
-    return this.request(action);
+    return this.request({ perform: action });
   }
 
   async request(message) {

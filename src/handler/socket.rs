@@ -185,20 +185,29 @@ impl Socket {
                         });
                         match question {
                             Ok(question) => {
-                                for binding in lumber.ask(&question) {
-                                    let mut answer = question.answer(&binding).unwrap();
-                                    let new_state = answer.remove("NewState").unwrap().unwrap();
-                                    *game = Value::deserialize(&new_state).unwrap();
-                                    let actions: Vec<String> = answer
-                                        .remove("Actions")
-                                        .unwrap()
-                                        .unwrap()
-                                        .as_list()
-                                        .unwrap()
-                                        .iter()
-                                        .filter_map(|action| action.map(ToString::to_string))
-                                        .collect();
-                                    self.emit(json!({ "game": game, "actions": actions })).ok();
+                                let mut answers = lumber.ask(&question);
+                                match answers.next() {
+                                    Some(binding) => {
+                                        let mut answer = question.answer(&binding).unwrap();
+                                        let new_state = answer.remove("NewState").unwrap().unwrap();
+                                        *game = Value::deserialize(&new_state).unwrap();
+                                        let actions: Vec<String> = answer
+                                            .remove("Actions")
+                                            .unwrap()
+                                            .unwrap()
+                                            .as_list()
+                                            .unwrap()
+                                            .iter()
+                                            .filter_map(|action| action.map(ToString::to_string))
+                                            .collect();
+                                        self.emit(json!({ "game": game, "actions": actions })).ok();
+                                    }
+                                    None => {
+                                        warn!("Command could not be performed: `{}`", command);
+                                    }
+                                }
+                                if answers.next().is_some() {
+                                    warn!("Command was performed in multiple ways: `{}`", command);
                                 }
                             }
                             Err(error) => {

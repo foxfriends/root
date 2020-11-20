@@ -13,5 +13,5 @@ perform(Name, State, lobby(LobbyAction), NewState) :-
     lobby::perform(Name, State, LobbyAction, NewState).
 
 command(Name, State, Command, NewState, Actions) :-
-    perform(Name, State, Command, NewState),
+    perform(Name, State, Command, NewState) ->
     Actions <- [Action : actions(Name, NewState, Action)].

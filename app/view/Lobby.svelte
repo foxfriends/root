@@ -1,6 +1,7 @@
 <script>
 import { createEventDispatcher } from 'svelte';
 import context from '../context';
+import Action from './component/Action.svelte';
 import Box from './component/Box.svelte';
 import Button from './component/Button.svelte';
 import Text from './component/Text.svelte';
@@ -8,8 +9,6 @@ import Text from './component/Text.svelte';
 const dispatch = createEventDispatcher();
 const back = () => dispatch('back');
 const { state } = context();
-
-let ready = false;
 </script>
 
 <Box flex>
@@ -31,9 +30,16 @@ let ready = false;
       {/each}
     </fieldset>
   </div>
-  <Button on:click={() => ready = !ready}>
-    <Text text={ready ? 'cancel' : 'ready'} />
-  </Button>
+  <Action action='lobby(ready)' let:perform>
+    <Button on:click={perform}>
+      <Text text='ready' />
+    </Button>
+  </Action>
+  <Action action='lobby(unready)' let:perform>
+    <Button on:click={perform}>
+      <Text text='cancel' />
+    </Button>
+  </Action>
 </Box>
 
 <style>

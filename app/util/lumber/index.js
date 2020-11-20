@@ -1,21 +1,44 @@
-import { curry, flip, has, prop, zipWith } from 'ramda';
+import { curry, flip, has, prop, union, zipWith } from 'ramda';
 import ValueGrammar from './value.pegjs';
 
 export class Struct {
-    constructor(name, contents = undefined) {
-        this.name = name;
-        this.contents = contents;
-    }
+  constructor(name, contents = undefined) {
+    this.name = name;
+    this.contents = contents;
+  }
 
-    get isAtom() {
-        return this.contents === undefined;
-    }
+  get isAtom() {
+    return this.contents === undefined;
+  }
 }
 
 export class Variable {
-    constructor(name) {
-        this.name = name;
-    }
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class Value {
+  #source;
+
+  constructor(string) {
+    this.#source = string;
+    this.value = ValueGrammar.parse(this.#source);
+  }
+
+  toString() { return this.#source; }
+}
+
+class Binding {
+  #value;
+
+  constructor(value) {
+    this.#value = value;
+  }
+
+  toString() {
+    return this.#value.toString();
+  }
 }
 
 // These are referenced from the grammar, supplied through window because I don't know how else
@@ -23,13 +46,24 @@ export class Variable {
 window.Struct = Struct;
 window.Variable = Variable;
 
-export class UnificationError extends Error {}
+export const parse = (string) => {
+  try {
+    return new Value(string);
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
 
-export const parse = (string) => ValueGrammar.parse(string);
-export const extract = curry((string, value) => unify(parse(string), value));
+export const match = curry((string, value) => unify(parse(string), value));
+
 export const unify = curry((pattern, value) => {
-  console.log(pattern, value);
-  let binding = {};
+  if (!(pattern instanceof Value) || !(value instanceof Value)) {
+    throw new TypeError('Can only unify instances of class Value.');
+  }
+  let binding = new Binding(value);
+
+  class UnificationError extends Error {}
   function unifyInner(pattern, value) {
     if (pattern instanceof Variable) {
       binding[pattern.name] = value;
@@ -50,6 +84,11 @@ export const unify = curry((pattern, value) => {
       throw new UnificationError;
     }
   }
-  unifyInner(pattern, value);
-  return binding;
+
+  try {
+    unifyInner(pattern.value, value.value);
+    return binding;
+  } catch {
+    return null;
+  }
 });

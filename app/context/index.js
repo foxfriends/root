@@ -1,4 +1,4 @@
-import { share, map } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { map as rmap, prop } from 'ramda';
 import { setContext, getContext, onDestroy } from 'svelte';
 import StoreSubject from './StoreSubject';

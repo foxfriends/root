@@ -15,8 +15,8 @@ pattern
     / record
 
 literal
-    = pattern:$decimal { Number.parseFloat(pattern) }
-    / pattern:$integer { Number.parseInt(pattern, 10) }
+    = value:$decimal { return Number.parseFloat(value) }
+    / value:$integer { return Number.parseInt(value, 10) }
     / string
 
 decimal = integer "." integer
