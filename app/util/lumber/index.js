@@ -1,5 +1,6 @@
 import { curry, flip, has, prop, union, zipWith } from 'ramda';
 import ValueGrammar from './value.pegjs';
+import logger from '../logger';
 
 export class Struct {
   constructor(name, contents = undefined) {
@@ -50,7 +51,7 @@ export const parse = (string) => {
   try {
     return new Value(string);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 };
