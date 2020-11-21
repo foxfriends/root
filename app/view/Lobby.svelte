@@ -30,16 +30,23 @@ const { state } = context();
       {/each}
     </fieldset>
   </div>
-  <Action action='lobby(ready)' let:perform>
-    <Button on:click={perform}>
-      <Text text='ready' />
-    </Button>
-  </Action>
-  <Action action='lobby(unready)' let:perform>
-    <Button on:click={perform}>
-      <Text text='cancel' />
-    </Button>
-  </Action>
+  <div class='actions'>
+    <Action action='lobby(ready)' let:perform>
+      <Button on:click={perform}>
+        <Text text='ready' />
+      </Button>
+    </Action>
+    <Action action='lobby(unready)' let:perform>
+      <Button on:click={perform}>
+        <Text text='cancel' />
+      </Button>
+    </Action>
+    <Action action='lobby(start)' let:perform>
+      <Button on:click={perform}>
+        <Text text='start' />
+      </Button>
+    </Action>
+  </div>
 </Box>
 
 <style>

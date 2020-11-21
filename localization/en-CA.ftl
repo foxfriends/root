@@ -18,6 +18,7 @@ leave = Leave
 enter = Enter
 cancel = Cancel
 ready = Ready
+start = Start
 select = Select
 empty = Empty
 loading = Loading...
@@ -181,6 +182,8 @@ item-hammer = {
   *[other] Hammers
   [one] Hammer
 }
+
+toast-reconnecting = Connection to the server was lost. Attempting to reconnect...
 
 prompt-place-keep = Place the keep in a corner clearing
 prompt-place-building = Place a { REF($building, quantity: 1) } near the keep

@@ -29,7 +29,7 @@ all_ready([]).
 all_ready([player { ready: true, .. }, ..Rest]) :- all_ready(Rest).
 
 actions(Name, game { players: Players, factions: Factions, .. }, start) :-
-    [player { name: Name }, ..] <- Players,
+    [player { name: Name, .. }, ..] <- Players,
     length(Players, N),
     length(Factions, N),
     all_ready(Players).

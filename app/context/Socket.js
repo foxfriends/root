@@ -2,6 +2,7 @@ import { race, fromEvent } from 'rxjs';
 import { filter, first, map, tap } from 'rxjs/operators';
 import { compose, hasIn, not, prop, propEq, when } from 'ramda';
 import * as uuid from 'uuid';
+import { l } from '../util/localization';
 import { toast } from '../view/component/Toast.svelte';
 import wait from '../util/wait';
 
@@ -44,7 +45,7 @@ export default class Socket {
     this.#disconnected = fromEvent(this.#socket, 'close')
       .pipe(first())
       .subscribe(async () => {
-        const warning = toast('Connection to the server was lost. Attempting to reconnect...', false);
+        const warning = toast(await l`toast-reconnecting`(), false);
         await this.#connect();
         warning.dismiss();
       });

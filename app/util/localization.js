@@ -1,4 +1,5 @@
 import { FluentBundle } from 'fluent';
+import { zip } from 'ramda';
 import enCA from '../../localization/en-CA.ftl';
 
 const bundle = fetch(enCA)
@@ -37,4 +38,10 @@ export default async function loc(key, params) {
     console.error(error);
   }
   return result;
+}
+
+// Template tag compatible version of `loc`
+export function l(str, ...fmt) {
+  const key = zip(str, [...fmt, '']).flat().join('');
+  return (params) => loc(key, params);
 }
