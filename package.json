@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "rollup -cw",
     "build": "rollup -c",
-    "lint": "eslint .",
-    "stylelint": "stylelint 'app/**/*.{svelte,css}'"
+    "lint": "eslint app/ -c eslint.config.js",
+    "stylelint": "stylelint 'app/**/*.{svelte,css}'",
+    "server": "cargo run"
   },
   "repository": {
     "type": "git",
