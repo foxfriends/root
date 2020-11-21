@@ -1,0 +1,29 @@
+:- use(@core::list(update/4)).
+:- use(@core(false/0)).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+// TODO: move these functions to the standard library.
+in(T, [T, ..]).
+in(T, [_, ..R]) :- in(T, R).
+notin(_, []).
+notin(T, [T, ..]) :- false.
+notin(T, [_, ..R]) :- notin(T, R).
+
+// A player who has not yet chosen a faction may choose a faction that has not yet been chosen.
+actions(Name, game { players: Players, factions: Factions, .. }, choose(Faction)) :-
+    // Player must not have chosen a faction yet. Depends on foxfriends/lumber#12 to uncomment the `?`
+    in(player { name: Name, faction: /* ? */ _, .. }, Players),
+    // The faction must be one that is allowed in this game
+    in(Faction, Factions),
+    // The faction must not have been chosen already
+    notin(player { faction: faction(Faction), .. }, Players).
+
+perform(Name, game { players: Players, ..State }, choose(Faction), game { players: NewPlayers, ..State }) :-
+    update(
+        Players,
+        player { player: Name, faction: _, ..Player },
+        player { player: Name, faction: faction(Faction), ..Player },
+        NewPlayers,
+    ).
