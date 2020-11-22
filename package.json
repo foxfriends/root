@@ -7,7 +7,8 @@
     "build": "rollup -c",
     "lint": "eslint app/ -c eslint.config.js",
     "stylelint": "stylelint 'app/**/*.{svelte,css}'",
-    "server": "cargo run"
+    "server": "cargo run",
+    "server:watch": "cargo watch -x run -w src -w game -w Cargo.toml -w Cargo.lock"
   },
   "repository": {
     "type": "git",
