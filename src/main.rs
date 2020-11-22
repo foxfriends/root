@@ -3,6 +3,7 @@ extern crate lazy_static;
 
 use colored::*;
 use log::info;
+use sqlx::postgres::PgPoolOptions;
 use warp::Filter;
 
 mod handler;
@@ -12,6 +13,26 @@ use handler::handler;
 
 #[tokio::main]
 async fn main() {
+    dotenv::dotenv().unwrap();
+    let pgport =
+        std::env::var("PGPORT").expect("Environment variable `PGPORT` is required");
+    let pghost =
+        std::env::var("PGHOST").expect("Environment variable `PGHOST` is required");
+    let pguser =
+        std::env::var("root_pguser").expect("Environment variable `root_pguser` is required");
+    let pgpassword =
+        std::env::var("root_pgpassword").expect("Environment variable `root_pgpassword` is required");
+    let pgdatabase =
+        std::env::var("root_pgdatabase").expect("Environment variable `root_pgdatabase` is required");
+    let database_url = format!("postgres://{}:{}@{}:{}/{}", pguser, pgpassword, pghost, pgport, pgdatabase);
+    let pool = PgPoolOptions::new()
+        .connect(&database_url)
+        .await
+        .expect("Database connection failed.");
+    sqlx::migrate!("./database/migrations")
+        .run(&pool)
+        .await
+        .expect("Database migration failed.");
     pretty_env_logger::init();
 
     let dist_dir = std::env::var("root_dist_dir").unwrap_or_else(|_| "dist".to_owned());

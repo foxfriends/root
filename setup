@@ -1,0 +1,4 @@
+#! /bin/bash
+createuser -eL rootgame
+createuser -esP rootgame-admin -g rootgame
+createuser -eP rootgame-server -g rootgame
