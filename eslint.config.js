@@ -19,10 +19,6 @@ module.exports = {
     'svelte3',
     'ramda',
   ],
-  ignorePatterns: [
-    '**/*.ftl',
-    '*.config.js',
-  ],
   overrides: [
     {
       files: ['*.svelte'],
@@ -38,27 +34,27 @@ module.exports = {
   rules: {
     'arrow-parens': [1, 'always'],
     'brace-style': ['error', '1tbs', {
-      'allowSingleLine': true
+      'allowSingleLine': true,
     }],
     'comma-dangle': ['error', {
       'arrays': 'always-multiline',
       'objects': 'always-multiline',
       'imports': 'always-multiline',
       'exports': 'always-multiline',
-      'functions': 'always-multiline'
+      'functions': 'always-multiline',
     }],
     'curly': 'error',
     'eol-last': ['error', 'always'],
     'indent': ['error', 2, {
-      'SwitchCase': 1
+      'SwitchCase': 1,
     }],
     'newline-before-return': 'off',
-    'no-console': 'off',
+    'no-console': 'error',
     'no-constant-condition': 'off',
     'no-multiple-empty-lines': ['error', {
       'max': 1,
       'maxBOF': 0,
-      'maxEOF': 0
+      'maxEOF': 0,
     }],
     'no-prototype-builtins': 'off',
     'no-unused-vars': 'error',
@@ -68,7 +64,7 @@ module.exports = {
     'space-before-function-paren': ['error', {
       'anonymous': 'always',
       'named': 'never',
-      'asyncArrow': 'always'
+      'asyncArrow': 'always',
     }],
     'no-inner-declarations': 'off',
     'ramda/cond-simplification': 'off', // I don't agree, sometimes cond is more meaningfully correct?

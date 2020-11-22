@@ -1,6 +1,7 @@
 import { FluentBundle } from 'fluent';
 import { zip } from 'ramda';
 import enCA from '../../localization/en-CA.ftl';
+import logger from './logger';
 
 const bundle = fetch(enCA)
   .then((response) => response.text())
@@ -11,7 +12,7 @@ const bundle = fetch(enCA)
         REF: ([key], params) => {
           const message = bundle.getMessage(key);
           if (!message) {
-            console.error(`\`ref\` lookup failed. Unknown key ${key}`);
+            logger.error(`\`ref\` lookup failed. Unknown key ${key}`);
             return key;
           }
           return bundle.format(message, params);
@@ -20,7 +21,7 @@ const bundle = fetch(enCA)
     });
     const errors = bundle.addMessages(src);
     for (const error of errors) {
-      console.error(error);
+      logger.error(error);
     }
     return bundle;
   });
@@ -29,13 +30,13 @@ export default async function loc(key, params) {
   const b = await bundle;
   const message = b.getMessage(key);
   if (!message) {
-    console.error(`Unknown message ${key}`);
+    logger.error(`Unknown message ${key}`);
     return key;
   }
   const errors = [];
   const result = b.format(message, params, errors);
   for (const error of errors) {
-    console.error(error);
+    logger.error(error);
   }
   return result;
 }

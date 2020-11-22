@@ -11,6 +11,7 @@ import Lobby from './Lobby.svelte';
 import Flow, { Abort } from './component/Flow.svelte';
 import { toast } from './component/Toast.svelte';
 import value from '../util/event';
+import logger from '../util/logger';
 
 const { state, socket } = context();
 
@@ -31,7 +32,7 @@ async function * chooseGame() {
     if (error instanceof Abort) {
       yield * cover();
     } else {
-      console.error(error);
+      logger.error(error);
     }
   }
 }
@@ -52,7 +53,7 @@ async function * createGame() {
     if (error instanceof Abort) {
       yield * chooseGame();
     } else {
-      console.error(error);
+      logger.error(error);
     }
   }
 }
@@ -73,7 +74,7 @@ async function * joinGame() {
     if (error instanceof Abort) {
       yield * chooseGame();
     } else {
-      console.error(error);
+      logger.error(error);
     }
   }
 }
@@ -88,7 +89,7 @@ async function * gameLobby() {
       $state = null;
       yield * chooseGame();
     } else {
-      console.error(error);
+      logger.error(error);
     }
   }
 }

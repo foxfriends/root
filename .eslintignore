@@ -1,1 +1,4 @@
 .gitignore
+*.ftl
+*.config.js
+.eslintrc.js

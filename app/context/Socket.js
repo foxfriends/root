@@ -5,6 +5,7 @@ import * as uuid from 'uuid';
 import { l } from '../util/localization';
 import { toast } from '../view/component/Toast.svelte';
 import wait from '../util/wait';
+import logger from '../util/logger';
 
 export class CommandError extends Error {
   constructor({ code, message }) {
@@ -27,7 +28,7 @@ export default class Socket {
     this.#connect();
   }
 
-  async #connect(backoff) {
+  async #connect (backoff) {
     if (backoff) {
       await wait(backoff);
     }
@@ -39,7 +40,7 @@ export default class Socket {
       this.#connected = race(open, fail).toPromise();
       await this.#connected;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return this.#connect(Math.min(60000, (backoff || 500) * 2));
     }
     this.#disconnected = fromEvent(this.#socket, 'close')
@@ -49,7 +50,7 @@ export default class Socket {
         await this.#connect();
         warning.dismiss();
       });
-    this.#onerror = fromEvent(this.#socket, 'error').subscribe((error) => console.error(error));
+    this.#onerror = fromEvent(this.#socket, 'error').subscribe((error) => logger.error(error));
     if (this.name) { await this.setName(this.name); }
     if (this.room) { await this.joinGame(this.room); } // TODO: handle the returned game state
   }
@@ -86,11 +87,11 @@ export default class Socket {
         map(prop('data')),
         map(JSON.parse),
         first(propEq('id', id)),
-        tap((response) => console.log(`Received response ${id}`, response)),
+        tap((response) => logger.log(`Received response ${id}`, response)),
         map(when(propEq('status', 'err'), ({ error }) => throw new CommandError(error))),
       )
       .toPromise();
-    console.log(`Sending message ${id}`, message);
+    logger.log(`Sending message ${id}`, message);
     this.#socket.send(JSON.stringify({ id, msg: message }));
     return response;
   }
