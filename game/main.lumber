@@ -4,7 +4,7 @@
 :- pub(actions/3).
 :- pub(command/5).
 
-isPhase(Phase, game { phase: phase(Phase) }).
+isPhase(Phase, game { phase: phase(Phase), .. }).
 
 // NOTE: kind of a pain that this needs to be copy pasted so many times. Is this just how it's
 // designed, or can that be improved? I suspect higher-order predicates may do the trick here.
@@ -20,10 +20,10 @@ perform(Name, State, lobby(LobbyAction), NewState) :-
 
 // Choose Faction phase
 actions(Name, State, chooseFaction(ChooseFactionAction)) :-
-    isPhase(chooseFaction, State),
+    isPhase(choose_faction, State),
     chooseFaction::actions(Name, State, ChooseFactionAction).
 perform(Name, State, chooseFaction(ChooseFactionAction), NewState) :-
-    isPhase(chooseFaction, State),
+    isPhase(choose_faction, State),
     chooseFaction::perform(Name, State, ChooseFactionAction, NewState).
 
 // Public function for running commands and returning actions at the same time

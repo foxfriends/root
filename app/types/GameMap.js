@@ -1,5 +1,5 @@
 export default {
-  FOREST: 'forest',
+  AUTUMN: 'autumn',
   WINTER: 'winter',
   LAKE: 'lake',
   CAVES: 'caves',

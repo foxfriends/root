@@ -49,5 +49,5 @@ perform(
     game { phase: phase(lobby), assignment: assignment(choose), ..State },
     start,
     // NOTE: can `-` be a valid atom character?
-    game { phase: phase('choose-faction'), assignment: assignment(choose), ..State },
+    game { phase: phase(choose_faction), assignment: assignment(choose), ..State },
 ).

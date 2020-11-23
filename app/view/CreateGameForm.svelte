@@ -10,10 +10,7 @@ let name = '';
 let factions = [Faction.MARQUISE, Faction.EYRIE, Faction.ALLIANCE, Faction.VAGABOND];
 let assignment = 'random';
 let map = 'forest';
-$: valid = name
-    && factions.length >= 2
-    // marquise cannot fight their own bot
-    && !(factions.includes(Faction.MARQUISE) && factions.includes(Faction.MARQUISE_BOT));
+$: valid = name && factions.length >= 2;
 $: settings = { factions, assignment, map };
 
 const dispatch = createEventDispatcher();

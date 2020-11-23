@@ -29,10 +29,6 @@ async fn main() {
         .connect(&database_url)
         .await
         .expect("Database connection failed.");
-    sqlx::migrate!("./database/migrations")
-        .run(&pool)
-        .await
-        .expect("Database migration failed.");
     pretty_env_logger::init();
 
     let dist_dir = std::env::var("root_dist_dir").unwrap_or_else(|_| "dist".to_owned());

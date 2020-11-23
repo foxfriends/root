@@ -10,7 +10,6 @@ const images = {};
 
 let flips = $game.factions.map(F);
 $: factions = $game.factions
-  .filter((faction) => faction !== Faction.marquise_bot) // computer players only
   .map((name, i) => ({
     flip: flips[i],
     name,
