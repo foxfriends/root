@@ -6,18 +6,32 @@ CREATE TABLE games (
     created     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
-CREATE TABLE clearings (
+CREATE TABLE positions (
     game        VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
     id          SMALLINT NOT NULL,
+    PRIMARY KEY (game, id)
+);
+
+CREATE TABLE clearings (
+    game        VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
+    position    SMALLINT NOT NULL,
     suit        enum_suit NOT NULL CHECK (suit <> 'bird'),
     slots       SMALLINT NOT NULL,
-    PRIMARY KEY (game, id)
+    FOREIGN KEY (game, position) REFERENCES positions (game, id),
+    PRIMARY KEY (game, position)
+);
+
+CREATE TABLE forests (
+    game        VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
+    position    SMALLINT NOT NULL,
+    FOREIGN KEY (game, position) REFERENCES positions (game, id),
+    PRIMARY KEY (game, position)
 );
 
 CREATE TABLE lakes (
     game        VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
     clearing    SMALLINT NOT NULL,
-    FOREIGN KEY (game, clearing) REFERENCES clearings (game, id),
+    FOREIGN KEY (game, clearing) REFERENCES clearings (game, position),
     PRIMARY KEY (game, clearing)
 );
 
@@ -27,13 +41,15 @@ CREATE TABLE ferry (
     FOREIGN KEY (game, clearing) REFERENCES lakes (game, clearing)
 );
 
-CREATE TABLE paths (
-    game            VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
-    start_clearing  SMALLINT NOT NULL,
-    end_clearing    SMALLINT NOT NULL,
-    closed          BOOLEAN NOT NULL DEFAULT false,
-    CHECK (start_clearing < end_clearing),
-    PRIMARY KEY (game, start_clearing, end_clearing)
+CREATE TABLE connections (
+    game        VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
+    position_a  SMALLINT NOT NULL,
+    position_B  SMALLINT NOT NULL,
+    closed      BOOLEAN NOT NULL DEFAULT false,
+    CHECK (position_a < position_B),
+    FOREIGN KEY (game, position_a) REFERENCES positions (game, id),
+    FOREIGN KEY (game, position_B) REFERENCES positions (game, id),
+    PRIMARY KEY (game, position_a, position_B)
 );
 
 CREATE TABLE cards (
@@ -109,7 +125,7 @@ CREATE TABLE ruin_items (
     clearing    SMALLINT NOT NULL,
     item        SMALLINT NOT NULL,
     FOREIGN KEY (game, item) REFERENCES items (game, id),
-    FOREIGN KEY (game, clearing) REFERENCES clearings (game, id),
+    FOREIGN KEY (game, clearing) REFERENCES clearings (game, position),
     PRIMARY KEY (game, item)
 );
 
