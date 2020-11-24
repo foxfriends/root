@@ -1,4 +1,4 @@
-CREATE TYPE enum_game_phase AS ENUM ('lobby', 'choose_faction', 'setup', 'game', 'complete');
+CREATE TYPE enum_phase AS ENUM ('lobby', 'choose_faction', 'setup', 'birdsong', 'daylight', 'evening', 'complete');
 CREATE TYPE enum_assignment AS ENUM ('random', 'choose');
 CREATE TYPE enum_faction AS ENUM ('marquise', 'eyrie', 'alliance', 'vagabond', 'vagabond2', 'cult', 'riverfolk', 'duchy', 'conspiracy');
 CREATE TYPE enum_game_map AS ENUM ('autumn', 'winter', 'caves', 'lake');
@@ -13,3 +13,5 @@ CREATE TYPE enum_token AS ENUM ('sympathy', 'wood', 'keep', 'trade_post', 'plot'
 CREATE TYPE enum_plot AS ENUM ('bomb', 'snare', 'extortion', 'raid');
 CREATE TYPE enum_minister AS ENUM ('foremole', 'captain', 'marshal', 'banker', 'brigadier', 'mayor', 'earl_of_stone', 'baron_of_dirt', 'duchess_of_mud');
 CREATE TYPE enum_minister_rank AS ENUM ('squire', 'noble', 'lord');
+CREATE TYPE enum_action AS ENUM ('recruit', 'move', 'battle', 'build');
+CREATE TYPE enum_relationship AS ENUM ('hostile', 'indifferent', 'distant', 'close', 'allied');
