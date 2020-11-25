@@ -5,5 +5,8 @@ pub enum Phase {
     Lobby,
     ChooseFaction,
     Setup,
-    Game,
+    Birdsong,
+    Daylight,
+    Evening,
+    Completed,
 }
