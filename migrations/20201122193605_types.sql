@@ -9,8 +9,7 @@ CREATE TYPE enum_card AS ENUM ('ambush', 'birdy_bindle', 'armorers', 'woodland_r
 CREATE TYPE enum_eyrie_leader AS ENUM ('builder', 'charismatic', 'commander', 'despot');
 CREATE TYPE enum_item AS ENUM ('hammer', 'tea', 'dagger', 'bag', 'crossbow', 'torch', 'boot', 'coin');
 CREATE TYPE enum_building AS ENUM ('base', 'roost', 'sawmill', 'workshop', 'recruiter', 'garden', 'citadel', 'market');
-CREATE TYPE enum_token AS ENUM ('sympathy', 'wood', 'keep', 'trade_post', 'plot', 'tunnel');
-CREATE TYPE enum_plot AS ENUM ('bomb', 'snare', 'extortion', 'raid');
+CREATE TYPE enum_token AS ENUM ('sympathy', 'wood', 'keep', 'trade_post', 'bomb', 'snare', 'extortion', 'raid', 'tunnel');
 CREATE TYPE enum_minister AS ENUM ('foremole', 'captain', 'marshal', 'banker', 'brigadier', 'mayor', 'earl_of_stone', 'baron_of_dirt', 'duchess_of_mud');
 CREATE TYPE enum_minister_rank AS ENUM ('squire', 'noble', 'lord');
 CREATE TYPE enum_action AS ENUM ('recruit', 'move', 'battle', 'build');
