@@ -17,7 +17,7 @@ CREATE TABLE eyrie (
     game            VARCHAR(32) PRIMARY KEY REFERENCES games (name) ON DELETE CASCADE,
     faction         enum_faction NOT NULL GENERATED ALWAYS AS ('eyrie') STORED,
     used_leaders    enum_eyrie_leader[] NOT NULL DEFAULT ARRAY[]::enum_eyrie_leader[],
-    leader          enum_eyrie_leader NOT NULL CHECK (leader <> ALL(used_leaders)),
+    leader          enum_eyrie_leader CHECK (leader <> ALL(used_leaders)),
     FOREIGN KEY (game, faction) REFERENCES factions (game, faction)
 );
 

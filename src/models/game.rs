@@ -1,25 +1,94 @@
-use super::{Assignment, Faction, GameConfig, GameMap, Phase, Player};
+use super::*;
 
-#[derive(Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, Default, serde::Serialize, serde::Deserialize)]
 #[serde(rename = "game")]
 pub struct Game {
     name: String,
-    factions: Vec<Faction>,
     assignment: Assignment,
     map: GameMap,
-    players: Vec<Player>,
     phase: Phase,
+
+    // General game state
+    players: Vec<Player>,
+
+    // Board setup
+    positions: Vec<Position>,
+    forests: Vec<Forest>,
+    clearings: Vec<Clearing>,
+    water: Vec<Water>,
+    connections: Vec<Connection>,
+    rivers: Vec<River>,
+    ferry: Option<Ferry>,
+    tower: Option<Tower>,
+
+    factions: Vec<Faction>,
+
+    buildings: Vec<Building>,
+    built_buildings: Vec<BuiltBuilding>,
+
+    tokens: Vec<Token>,
+    placed_tokens: Vec<PlacedToken>,
+
+    cards: Vec<Card>,
+    discards: Vec<Discard>,
+    hand: Vec<Hand>,
+
+    items: Vec<Item>,
+    owned_items: Vec<OwnedItem>,
+    ruin_items: Vec<RuinItem>,
+
+    warriors: Vec<Warrior>,
+    placed_warriors: Vec<PlacedWarrior>,
+
+    // Faction specific details
+    marquise: Option<Marquise>,
+
+    eyrie: Option<Eyrie>,
+    eyrie_decree: Option<EyrieDecree>,
+
+    alliance: Option<Alliance>,
+    alliance_supporters: Vec<AllianceSupporter>,
+    officers: Vec<Officer>,
+
+    vagabond: Option<Vagabond>,
+    vagabond2: Option<Vagabond>,
+    vagabond_items: Vec<VagabondItem>,
+    vagabond_relationships: Vec<VagabondRelationship>,
+    quests: Vec<Quest>,
+    active_quests: Vec<ActiveQuest>,
+    completed_quests: Vec<CompletedQuest>,
+
+    cult: Option<Cult>,
+    acolytes: Vec<Acolyte>,
+    lost_souls: Vec<LostSoul>,
+
+    riverfolk: Option<Riverfolk>,
+    commitments: Vec<Commitment>,
+    funds: Vec<Fund>,
+    payments: Vec<Payment>,
+
+    duchy: Option<Duchy>,
+    burrow: Vec<Burrow>,
+    ministers: Vec<Minister>,
+
+    conspiracy: Option<Conspiracy>,
 }
 
 impl Game {
+    pub async fn load(name: &str) -> sqlx::Result<Self> {
+        todo!()
+    }
+
+    pub async fn save(&self) -> sqlx::Result<()> {
+        todo!()
+    }
+    
     pub fn create(config: GameConfig) -> Self {
         Game {
             name: config.name,
-            factions: config.factions,
             assignment: config.assignment,
             map: config.map,
-            players: vec![],
-            phase: Phase::Lobby,
+            ..Self::default()
         }
     }
 

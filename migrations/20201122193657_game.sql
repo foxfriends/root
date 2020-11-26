@@ -9,6 +9,6 @@ CREATE TABLE games (
 CREATE TABLE players (
     game        VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
     name        VARCHAR(32) NOT NULL,
-    ready       BOOLEAN DEFAULT false,
+    ready       BOOLEAN NOT NULL DEFAULT false,
     PRIMARY KEY (game, name)
 );

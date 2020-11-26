@@ -2,15 +2,14 @@ use super::FactionId;
 use sqlx::{postgres::PgConnection, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
-#[serde(rename = "faction")]
-pub struct Faction {
+#[serde(rename = "completed_quest")]
+pub struct CompletedQuest {
+    quest: i16,
     faction: FactionId,
-    player: Option<String>,
-    points: i16,
 }
 
-impl Faction {
+impl CompletedQuest {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT faction, player, points FROM factions WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, "SELECT quest, faction FROM completed_quests WHERE game = $1", game).fetch_all(conn).await
     }
 }

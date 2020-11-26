@@ -9,8 +9,10 @@ CREATE TABLE cards (
 CREATE TABLE hand (
     game        VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
     card        SMALLINT NOT NULL,
+    faction     enum_faction NOT NULL,
     PRIMARY KEY (game, card),
-    FOREIGN KEY (game, card) REFERENCES cards (game, id)
+    FOREIGN KEY (game, card) REFERENCES cards (game, id),
+    FOREIGN KEY (game, faction) REFERENCES factions (game, faction)
 );
 
 CREATE TABLE eyrie_decree (
