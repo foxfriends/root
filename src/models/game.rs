@@ -78,6 +78,7 @@ pub struct Game {
 }
 
 impl Game {
+    #[allow(clippy::eval_order_dependence)]
     pub async fn load(name: &str) -> sqlx::Result<Self> {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
         let game = query!(r#"SELECT assignment as "assignment: Assignment", map as "map: GameMap", phase as "phase: Phase" FROM games WHERE name = $1"#, name).fetch_one(&mut conn).await?;
