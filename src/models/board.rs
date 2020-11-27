@@ -31,7 +31,7 @@ impl Board {
     /// (4)--(9)---(8)------(3)
     /// ```
     fn autumn() -> Self {
-        let positions: Vec<Position> = (1..=19).map(|id| Position::new(id)).collect();
+        let positions: Vec<Position> = (1..=19).map(Position::new).collect();
         let clearings = vec![
             Clearing::new(&positions[0], Suit::Fox, 1),
             Clearing::new(&positions[1], Suit::Mouse, 1),

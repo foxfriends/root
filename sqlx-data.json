@@ -337,6 +337,33 @@
       ]
     }
   },
+  "1aea6c72249d51e18552b1fcc057612acaaa3370f5570844f33097d9cc6d32f2": {
+    "query": "INSERT INTO clearings (game, position, suit, slots) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          },
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "1da2a6535e7468e38670151f821150dff850cfc4f41c7412c4972b1ce6295a3a": {
     "query": "SELECT name, ready FROM players WHERE game = $1",
     "describe": {
@@ -956,6 +983,19 @@
         false,
         false
       ]
+    }
+  },
+  "6217828e454097cc407b7d71ad706f3240808beffca6f6923c1e71e54a93e0be": {
+    "query": "INSERT INTO positions (game, id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
     }
   },
   "7007e6c4eb9aa84fb911e39f0c73316a9dbf3f0c2d9a41b0726173796191d845": {

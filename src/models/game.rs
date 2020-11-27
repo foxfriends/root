@@ -145,7 +145,10 @@ impl Game {
     }
 
     pub fn create(config: GameConfig) -> Self {
-        let Board { positions, clearings } = Board::create(config.map);
+        let Board {
+            positions,
+            clearings,
+        } = Board::create(config.map);
         Game {
             name: config.name,
             assignment: config.assignment,
