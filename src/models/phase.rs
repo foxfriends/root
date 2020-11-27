@@ -1,9 +1,18 @@
-#[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize)]
-#[serde(rename = "phase")]
-#[serde(rename_all = "camelCase")]
+#[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize, sqlx::Type)]
+#[serde(rename = "phase", rename_all = "snake_case")]
+#[sqlx(rename = "enum_phase", rename_all = "snake_case")]
 pub enum Phase {
     Lobby,
     ChooseFaction,
     Setup,
-    Game,
+    Birdsong,
+    Daylight,
+    Evening,
+    Completed,
+}
+
+impl Default for Phase {
+    fn default() -> Self {
+        Self::Lobby
+    }
 }

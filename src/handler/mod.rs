@@ -44,7 +44,7 @@ pub async fn handler(websocket: WebSocket) {
                     let name = socket.name().await;
                     match name {
                         Some(name) => {
-                            debug!("{} ({}): {:?}", id, name.bright_yellow(), packet.command(),)
+                            debug!("{} ({}): {:?}", id, name.bright_yellow(), packet.command())
                         }
                         None => debug!("{}: {:?}", id, packet.command()),
                     }

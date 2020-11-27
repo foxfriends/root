@@ -1,0 +1,16 @@
+CREATE TYPE enum_phase AS ENUM ('lobby', 'choose_faction', 'setup', 'birdsong', 'daylight', 'evening', 'complete');
+CREATE TYPE enum_assignment AS ENUM ('random', 'choose');
+CREATE TYPE enum_faction AS ENUM ('marquise', 'eyrie', 'alliance', 'vagabond', 'vagabond2', 'cult', 'riverfolk', 'duchy', 'conspiracy');
+CREATE TYPE enum_game_map AS ENUM ('autumn', 'winter', 'caves', 'lake');
+CREATE TYPE enum_vagabond AS ENUM ('thief', 'ranger', 'tinker', 'vagrant', 'arbiter', 'scoundrel', 'adventurer', 'ronin', 'harrier');
+CREATE TYPE enum_suit AS ENUM ('mouse', 'fox', 'rabbit', 'bird');
+CREATE TYPE enum_quest AS ENUM ('errand', 'escort', 'expel_bandits', 'fend_off_a_bear', 'fundraising', 'give_a_speech', 'guard_duty', 'logistics_help', 'repair_a_shed');
+CREATE TYPE enum_card AS ENUM ('ambush', 'birdy_bindle', 'armorers', 'woodland_runners', 'arms_trader', 'crossbow', 'sappers', 'brutal_tactics', 'royal_claim', 'gently_used_knapsack', 'root_tea', 'travel_gear', 'protection_racket', 'foxfolk_steel', 'anvil', 'stand_and_deliver', 'tax_collector', 'favor_of_the_foxes', 'smugglers_trail', 'a_visit_to_friends', 'bake_sale', 'command_warren', 'better_burrow_bank', 'cobbler', 'favor_of_the_rabbits', 'mouse_in_a_sack', 'investments', 'sword', 'scouting_party', 'codebreakers', 'favor_of_the_mice', 'dominance', 'spy');
+CREATE TYPE enum_eyrie_leader AS ENUM ('builder', 'charismatic', 'commander', 'despot');
+CREATE TYPE enum_item AS ENUM ('hammer', 'tea', 'dagger', 'bag', 'crossbow', 'torch', 'boot', 'coin');
+CREATE TYPE enum_building AS ENUM ('base', 'roost', 'sawmill', 'workshop', 'recruiter', 'garden', 'citadel', 'market');
+CREATE TYPE enum_token AS ENUM ('sympathy', 'wood', 'keep', 'trade_post', 'bomb', 'snare', 'extortion', 'raid', 'tunnel');
+CREATE TYPE enum_minister AS ENUM ('foremole', 'captain', 'marshal', 'banker', 'brigadier', 'mayor', 'earl_of_stone', 'baron_of_dirt', 'duchess_of_mud');
+CREATE TYPE enum_minister_rank AS ENUM ('squire', 'noble', 'lord');
+CREATE TYPE enum_action AS ENUM ('recruit', 'move', 'battle', 'build');
+CREATE TYPE enum_relationship AS ENUM ('hostile', 'indifferent', 'distant', 'close', 'allied');

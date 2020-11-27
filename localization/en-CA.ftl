@@ -27,7 +27,7 @@ connecting = Connecting...
 players = Players
 
 map = Map
-forest = Forest
+autumn = Autumn
 winter = Winter
 lake = Lake
 caves = Caves
@@ -73,10 +73,6 @@ duchy = { $form ->
 conspiracy = { $form ->
   [long] Corvid Conspiracy
   *[short] Conspiracy
-}
-marquise-bot = { $form ->
-  [long] Mechanical Marquise
-  *[short] Mechanical Marquise
 }
 
 marquise-keep = { $quantity ->

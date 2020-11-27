@@ -12,18 +12,14 @@ notin(T, [T, ..]) :- false.
 notin(T, [_, ..R]) :- notin(T, R).
 
 // A player who has not yet chosen a faction may choose a faction that has not yet been chosen.
-actions(Name, game { players: Players, factions: Factions, .. }, choose(Faction)) :-
-    // Player must not have chosen a faction yet.
-    in(player { name: Name, faction: ?, .. }, Players),
-    // The faction must be one that is allowed in this game
-    in(Faction, Factions),
-    // The faction must not have been chosen already
-    notin(player { faction: faction(Faction), .. }, Players).
+actions(Name, game { factions: Factions, .. }, choose(Faction)) :-
+    notin(faction { player: Name, .. }, Factions),
+    in(faction { faction: faction(Faction), player: ?, .. }, Factions).
 
-perform(Name, game { players: Players, ..State }, choose(Faction), game { players: NewPlayers, ..State }) :-
+perform(Name, game { factions: Factions, ..State }, choose(Faction), game { factions: NewFactions, ..State }) :-
     update(
-        Players,
-        player { player: Name, faction: ?, ..Player },
-        player { player: Name, faction: faction(Faction), ..Player },
-        NewPlayers,
+        Factions,
+        faction { faction: faction(Faction), player: ?, ..Faction },
+        faction { faction: faction(Faction), player: Name, ..Faction },
+        NewFactions,
     ).

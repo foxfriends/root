@@ -3,6 +3,8 @@ extern crate lazy_static;
 
 use colored::*;
 use log::info;
+use sqlx::postgres::{PgPool, PgPoolOptions};
+use once_cell::sync::OnceCell;
 use warp::Filter;
 
 mod handler;
@@ -10,9 +12,20 @@ pub mod models;
 
 use handler::handler;
 
+static POOL: OnceCell<PgPool> = OnceCell::new();
+
 #[tokio::main]
 async fn main() {
+    dotenv::dotenv().unwrap();
     pretty_env_logger::init();
+
+    let database_url = std::env::var("root_database_url")
+        .expect("Environment variable `root_database_url` is required");
+    let pool = PgPoolOptions::new()
+        .connect(&database_url)
+        .await
+        .expect("Database connection failed.");
+    POOL.set(pool).unwrap();
 
     let dist_dir = std::env::var("root_dist_dir").unwrap_or_else(|_| "dist".to_owned());
     let port: u16 = std::env::var("root_port")
@@ -31,4 +44,5 @@ async fn main() {
         format!("http://localhost:{}", port).cyan()
     );
     warp::serve(routes).run(([127, 0, 0, 1], port)).await;
+    POOL.get().unwrap().close().await;
 }

@@ -8,7 +8,8 @@
     "lint": "eslint app/ -c eslint.config.js",
     "stylelint": "stylelint 'app/**/*.{svelte,css}'",
     "server": "cargo run",
-    "server:watch": "cargo watch -x run -w src -w game -w Cargo.toml -w Cargo.lock"
+    "server:watch": "cargo watch -x run -w src -w game -w Cargo.toml -w Cargo.lock",
+    "db:setup": "env $(grep -v '^#' .env | xargs) ./setup"
   },
   "repository": {
     "type": "git",

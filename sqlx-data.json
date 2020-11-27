@@ -1,0 +1,1873 @@
+{
+  "db": "PostgreSQL",
+  "0524589fd5d44ce598a7be478c811b572a5ff8b78909a733114620f588670fc1": {
+    "query": "SELECT id, building as \"building: _\", faction as \"faction: _\" FROM buildings WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "building: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_building",
+              "kind": {
+                "Enum": [
+                  "base",
+                  "roost",
+                  "sawmill",
+                  "workshop",
+                  "recruiter",
+                  "garden",
+                  "citadel",
+                  "market"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "06e034adb71128cb3bfea206876af51e10e6f0b6d33e9d3e0723354131aa95db": {
+    "query": "SELECT clearing FROM tower WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "clearing",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "13048d27eed244e2237352ae3547c5ae3e8ed64b5fcbf8b39c11dc0a63bd9b42": {
+    "query": "SELECT leader as \"leader: _\", used FROM eyrie_leaders WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "leader: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_eyrie_leader",
+              "kind": {
+                "Enum": [
+                  "builder",
+                  "charismatic",
+                  "commander",
+                  "despot"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "used",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "13c1c2b9eaa55a2864ef9214bf72ebf622fd1b6a651cead61f53e58e8018ef15": {
+    "query": "SELECT faction as \"faction: _\", vagabond as \"vagabond: _\", position FROM vagabond WHERE game = $1 AND faction = $2::enum_faction",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "vagabond: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_vagabond",
+              "kind": {
+                "Enum": [
+                  "thief",
+                  "ranger",
+                  "tinker",
+                  "vagrant",
+                  "arbiter",
+                  "scoundrel",
+                  "adventurer",
+                  "ronin",
+                  "harrier"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "position",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "14424868c08d82aed873d5d655eba6fd8226878563351a4457b7a581c6c61c1d": {
+    "query": "SELECT faction as \"faction: _\", lord_crown, noble_crown, squire_crown FROM duchy WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "lord_crown",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 2,
+          "name": "noble_crown",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 3,
+          "name": "squire_crown",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "1494491cb3ee299d27293ebf467b34b6fae0bcfc875826589d3104053d201c59": {
+    "query": "SELECT card FROM lost_souls WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "card",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "1616d407cfcb6d02383d40853e254403bdb8643a0442f3fa5edfc65ce8d79b9e": {
+    "query": "SELECT item, faction as \"faction: _\", exhausted, damaged FROM vagabond_items WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "item",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "exhausted",
+          "type_info": "Bool"
+        },
+        {
+          "ordinal": 3,
+          "name": "damaged",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "1da2a6535e7468e38670151f821150dff850cfc4f41c7412c4972b1ce6295a3a": {
+    "query": "SELECT name, ready FROM players WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "name",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 1,
+          "name": "ready",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "1febb5fc27d1550f579a8f648994f761ec49121d5142c23a8cdccfc7cc9926be": {
+    "query": "SELECT id, quest as \"quest: _\", suit as \"suit: _\" FROM quests WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "quest: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_quest",
+              "kind": {
+                "Enum": [
+                  "errand",
+                  "escort",
+                  "expel_bandits",
+                  "fend_off_a_bear",
+                  "fundraising",
+                  "give_a_speech",
+                  "guard_duty",
+                  "logistics_help",
+                  "repair_a_shed"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "suit: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "232e8ab6de8febad4cad1ca2facec2502f6067de69266748ee923b4d5144e45e": {
+    "query": "SELECT clearing FROM ferry WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "clearing",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "25f03eeb684617535f1453922fc4fc431ade08e0b86c67e122b689f8104dfe67": {
+    "query": "SELECT clearing, item FROM ruin_items WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "clearing",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "item",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "2824f4002c7e7cc2872ac1c9cfefc5158090148f7891e6529a0b038807f307e3": {
+    "query": "SELECT faction as \"faction: _\" FROM alliance WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "3e119aed3913de03003842dc059b389f8d24258a5cca5da0f5147f5a41ec758a": {
+    "query": "SELECT building, position FROM built_buildings WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "building",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "position",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "43550e3d5ea0bad2d9fac3196b9514d74943dbda07d24a68f12a3a81a38b7c82": {
+    "query": "SELECT item, faction as \"faction: _\" FROM owned_items WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "item",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "48e3fda22d759c83a05a242edda63ac5cc56626c5dbefffa41c93cb8210058af": {
+    "query": "SELECT id, faction as \"faction: _\" FROM warriors WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "4b088e4b9b81f2751e73459591c354737fb3998e4c3745118e6a20830ae62597": {
+    "query": "SELECT position, suit as \"suit: _\", slots FROM clearings WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "position",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "suit: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "slots",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "4c47de85f17a0445d18a4f58b88049d35e50f2b5861bbb779c40f9d22824d516": {
+    "query": "SELECT card, faction as \"faction: _\" FROM hand WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "card",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "50d52b9fce7885c51dc813e3210d13b06b97d2dd308f2f407a4672f3a67f0e2a": {
+    "query": "SELECT faction as \"faction: _\" FROM eyrie WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "50dc0dc77dd6ee8053a5b353e66170c47e753e86e7379107d82d8ea789324854": {
+    "query": "SELECT faction as \"faction: _\", outcast as \"outcast: _\", hated_outcast FROM cult WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "outcast: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "hated_outcast",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "52dc50fe8c292d5f7e18206de4b7fbbe688f2410eae54c3fb054498e9c10f2b4": {
+    "query": "SELECT position_a, position_b, closed FROM connections WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "position_a",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "position_b",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 2,
+          "name": "closed",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "5ba9dfb34a1999c8e8958a67abb358e1d12cadc479f5d5ca71b9dd5abfcbb8e4": {
+    "query": "SELECT vagabond as \"vagabond: _\", faction as \"faction: _\", relationship as \"relationship: _\" FROM vagabond_relationships WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "vagabond: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "relationship: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_relationship",
+              "kind": {
+                "Enum": [
+                  "hostile",
+                  "indifferent",
+                  "distant",
+                  "close",
+                  "allied"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "5f9e595467cdb814c2920570a9ea2aa571d6b7e7689404d39c6cb795ad514708": {
+    "query": "SELECT quest, faction as \"faction: _\" FROM completed_quests WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "quest",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "7007e6c4eb9aa84fb911e39f0c73316a9dbf3f0c2d9a41b0726173796191d845": {
+    "query": "SELECT warrior, position FROM placed_warriors WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "warrior",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "position",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "797fe30cf784c314a48cb95f37f8d0148362106a790ca3a00429a7ca1ef3746b": {
+    "query": "SELECT card, id, action as \"action: _\" FROM eyrie_decree WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "card",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 2,
+          "name": "action: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_action",
+              "kind": {
+                "Enum": [
+                  "recruit",
+                  "move",
+                  "battle",
+                  "build"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "7cd532a71a3a35411ddead923d42664693368a62281ab061f6a5a4b324908b0a": {
+    "query": "SELECT quest FROM active_quests WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "quest",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "7db62a8f373bdd7c6b93fd66e1e13430074a9d4b6250127efe3ec90eac00cdc0": {
+    "query": "SELECT assignment as \"assignment: Assignment\", map as \"map: GameMap\", phase as \"phase: Phase\" FROM games WHERE name = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "assignment: Assignment",
+          "type_info": {
+            "Custom": {
+              "name": "enum_assignment",
+              "kind": {
+                "Enum": [
+                  "random",
+                  "choose"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "map: GameMap",
+          "type_info": {
+            "Custom": {
+              "name": "enum_game_map",
+              "kind": {
+                "Enum": [
+                  "autumn",
+                  "winter",
+                  "caves",
+                  "lake"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "phase: Phase",
+          "type_info": {
+            "Custom": {
+              "name": "enum_phase",
+              "kind": {
+                "Enum": [
+                  "lobby",
+                  "choose_faction",
+                  "setup",
+                  "birdsong",
+                  "daylight",
+                  "evening",
+                  "complete"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "807e1f5cefdfa263e9220d28c81ae783e1a8fd50f667df4b04b66f69550c01c7": {
+    "query": "SELECT faction as \"faction: _\", player, points FROM factions WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "player",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 2,
+          "name": "points",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        true,
+        false
+      ]
+    }
+  },
+  "8fea9f079effacda3cc6ab00bd5b40f9a339f435743325ca278f10235a0bb62b": {
+    "query": "SELECT position FROM forests WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "position",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "901fc06fbb4f01523ae4842f3e72a4105c2bfcbfc576f74a59d2ea5b6cacd778": {
+    "query": "SELECT warrior FROM funds WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "warrior",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "9549d6c1ecdd1b73c46c7dd51b0b3c0666a2e82da59c73fa5a0ee26df70a7a4d": {
+    "query": "SELECT warrior, craft_suit as \"craft_suit: _\" FROM commitments WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "warrior",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "craft_suit: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        true
+      ]
+    }
+  },
+  "9f9c4a3509932777e127f81d34e85cd813dcb83fc90b00da1e7caab3b4242b26": {
+    "query": "SELECT faction as \"faction: _\" FROM marquise WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "af1bde11cd4ca25f55d38ac772a3a562e299005d556218cd3bcd1202c5abb15c": {
+    "query": "SELECT clearing FROM water WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "clearing",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "b1f01637c71b2bba9c56299f9bb4abd0b08173a5648622ee44fb749500c19328": {
+    "query": "SELECT token, position FROM placed_tokens WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "token",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "position",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "b47d15656bcc6d793e2a12e44f7644d8e92eb3ff32336ec3bb3203e7a66b601e": {
+    "query": "SELECT id FROM positions WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "b49136b0ebb1b11cf49396c1447afc75c41e700c04f48574a5072dd5b88327d1": {
+    "query": "SELECT minister as \"minister: _\", rank as \"rank: _\", swayed FROM ministers WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "minister: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_minister",
+              "kind": {
+                "Enum": [
+                  "foremole",
+                  "captain",
+                  "marshal",
+                  "banker",
+                  "brigadier",
+                  "mayor",
+                  "earl_of_stone",
+                  "baron_of_dirt",
+                  "duchess_of_mud"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "rank: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_minister_rank",
+              "kind": {
+                "Enum": [
+                  "squire",
+                  "noble",
+                  "lord"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "swayed",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "b6b465f1ac2ac17a19048abb3db1bd92cc14f52add990d1d107e2ca9eb153131": {
+    "query": "SELECT faction as \"faction: _\", hand_card, riverboats, mercenaries FROM riverfolk WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "hand_card",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 2,
+          "name": "riverboats",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 3,
+          "name": "mercenaries",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "bb864ad2730ef12c829c262327de92f329c031a4e722ff941676a5ba8da6c426": {
+    "query": "SELECT card FROM alliance_supporters WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "card",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "c1e1c69f84ed76a4f2c0fc4f52e7d3e8410ce579aebc5b8f5b9b963a84a2921d": {
+    "query": "SELECT warrior FROM officers WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "warrior",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "c45dd079220d7b96385cd2be4fe7752c3dfbeba098a1d947c17cf717c5414a6d": {
+    "query": "SELECT id, card as \"card: _\", suit as \"suit: _\" FROM cards WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "card: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_card",
+              "kind": {
+                "Enum": [
+                  "ambush",
+                  "birdy_bindle",
+                  "armorers",
+                  "woodland_runners",
+                  "arms_trader",
+                  "crossbow",
+                  "sappers",
+                  "brutal_tactics",
+                  "royal_claim",
+                  "gently_used_knapsack",
+                  "root_tea",
+                  "travel_gear",
+                  "protection_racket",
+                  "foxfolk_steel",
+                  "anvil",
+                  "stand_and_deliver",
+                  "tax_collector",
+                  "favor_of_the_foxes",
+                  "smugglers_trail",
+                  "a_visit_to_friends",
+                  "bake_sale",
+                  "command_warren",
+                  "better_burrow_bank",
+                  "cobbler",
+                  "favor_of_the_rabbits",
+                  "mouse_in_a_sack",
+                  "investments",
+                  "sword",
+                  "scouting_party",
+                  "codebreakers",
+                  "favor_of_the_mice",
+                  "dominance",
+                  "spy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "suit: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "c886546ef41c26cf8af7ce9ba0ed3020ff1cd9809ffee76afb406f03c8271f04": {
+    "query": "SELECT id, token as \"token: _\", faction as \"faction: _\" FROM tokens WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "token: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_token",
+              "kind": {
+                "Enum": [
+                  "sympathy",
+                  "wood",
+                  "keep",
+                  "trade_post",
+                  "bomb",
+                  "snare",
+                  "extortion",
+                  "raid",
+                  "tunnel"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "c8c158cc512a56bc44e150ad878299c43a46fb3af1b70406b3ab7dd0f10e1ddd": {
+    "query": "SELECT card FROM discards WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "card",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "cb43c941444b4218e20994e82c88d7b371cf545bea16384ae31437bde5b57ae1": {
+    "query": "SELECT warrior FROM acolytes WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "warrior",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "ccf6a5af693a5e0f7a5bb71012ca335a73ef1dda5c1e4590f1a8da0b2689c783": {
+    "query": "SELECT faction as \"faction: _\" FROM conspiracy WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "dbef95f19667ffcca6c5db400129a2c1fbf5b37d6991a2530f15a2993d6d6958": {
+    "query": "SELECT warrior FROM payments WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "warrior",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "e7c077bb80b9062da5ba81014b726ae0110b1bb95343f40b555ee58c25c461c0": {
+    "query": "SELECT position_a, position_b FROM rivers WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "position_a",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "position_b",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "e9a69fe5dec05804613d9e8f1fe71143f78c5c3799efbc326a31d94189e72777": {
+    "query": "SELECT id, item as \"item: _\" FROM items WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "item: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_item",
+              "kind": {
+                "Enum": [
+                  "hammer",
+                  "tea",
+                  "dagger",
+                  "bag",
+                  "crossbow",
+                  "torch",
+                  "boot",
+                  "coin"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
+  "eb25dcc642fdda178935ef8008468fe9f354f11cb8a05288ec943ee5d7ccadf6": {
+    "query": "SELECT warrior FROM burrow WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "warrior",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false
+      ]
+    }
+  },
+  "fc8f19eafa507021dc59d3d312669520e69f0c404c182567dbe604de71d76b8e": {
+    "query": "SELECT leader as \"leader: _\" FROM eyrie_current_leader WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "leader: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_eyrie_leader",
+              "kind": {
+                "Enum": [
+                  "builder",
+                  "charismatic",
+                  "commander",
+                  "despot"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        true
+      ]
+    }
+  }
+}
