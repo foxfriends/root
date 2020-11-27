@@ -149,6 +149,7 @@ impl Game {
             name: config.name,
             assignment: config.assignment,
             map: config.map,
+            factions: config.factions.iter().map(|faction| Faction::create(*faction)).collect(),
             ..Self::default()
         }
     }

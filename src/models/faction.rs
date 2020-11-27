@@ -13,4 +13,12 @@ impl Faction {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
         query_as!(Self, r#"SELECT faction as "faction: _", player, points FROM factions WHERE game = $1"#, game).fetch_all(conn).await
     }
+
+    pub fn create(faction: FactionId) -> Self {
+        Self {
+            faction,
+            player: None,
+            points: 0,
+        }
+    }
 }

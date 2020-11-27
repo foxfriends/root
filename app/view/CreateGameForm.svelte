@@ -9,7 +9,7 @@ import GameMap from '../types/GameMap';
 let name = '';
 let factions = [Faction.MARQUISE, Faction.EYRIE, Faction.ALLIANCE, Faction.VAGABOND];
 let assignment = 'random';
-let map = 'forest';
+let map = 'autumn';
 $: valid = name && factions.length >= 2;
 $: settings = { factions, assignment, map };
 

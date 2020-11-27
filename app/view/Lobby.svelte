@@ -20,7 +20,7 @@ const { state } = context();
     <fieldset>
       <legend><Text text='factions' /></legend>
       {#each $state.factions as faction}
-        <div><Text text={faction} params={{ form: 'long' }} /></div>
+        <div><Text text={faction.faction} params={{ form: 'long' }} /></div>
       {/each}
     </fieldset>
     <fieldset>
