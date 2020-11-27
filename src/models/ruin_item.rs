@@ -9,6 +9,12 @@ pub struct RuinItem {
 
 impl RuinItem {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT clearing, item FROM ruin_items WHERE game = $1", game).fetch_all(conn).await
+        query_as!(
+            Self,
+            "SELECT clearing, item FROM ruin_items WHERE game = $1",
+            game
+        )
+        .fetch_all(conn)
+        .await
     }
 }

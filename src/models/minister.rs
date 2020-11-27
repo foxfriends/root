@@ -1,4 +1,4 @@
-use super::{MinisterRank, MinisterId};
+use super::{MinisterId, MinisterRank};
 use sqlx::{postgres::PgConnection, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]

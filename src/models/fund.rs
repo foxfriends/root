@@ -8,6 +8,8 @@ pub struct Fund {
 
 impl Fund {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT warrior FROM funds WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, "SELECT warrior FROM funds WHERE game = $1", game)
+            .fetch_all(conn)
+            .await
     }
 }

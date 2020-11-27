@@ -1,4 +1,4 @@
-use super::{Suit, FactionId};
+use super::{FactionId, Suit};
 use sqlx::{postgres::PgConnection, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]

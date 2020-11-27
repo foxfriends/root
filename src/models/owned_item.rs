@@ -10,6 +10,12 @@ pub struct OwnedItem {
 
 impl OwnedItem {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, r#"SELECT item, faction as "faction: _" FROM owned_items WHERE game = $1"#, game).fetch_all(conn).await
+        query_as!(
+            Self,
+            r#"SELECT item, faction as "faction: _" FROM owned_items WHERE game = $1"#,
+            game
+        )
+        .fetch_all(conn)
+        .await
     }
 }

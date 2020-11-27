@@ -143,13 +143,20 @@ impl Game {
     pub async fn save(&self) -> sqlx::Result<()> {
         todo!()
     }
-    
+
     pub fn create(config: GameConfig) -> Self {
+        let Board { positions, clearings } = Board::create(config.map);
         Game {
             name: config.name,
             assignment: config.assignment,
             map: config.map,
-            factions: config.factions.iter().map(|faction| Faction::create(*faction)).collect(),
+            factions: config
+                .factions
+                .iter()
+                .map(|faction| Faction::create(*faction))
+                .collect(),
+            positions,
+            clearings,
             ..Self::default()
         }
     }

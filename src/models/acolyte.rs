@@ -8,6 +8,8 @@ pub struct Acolyte {
 
 impl Acolyte {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT warrior FROM acolytes WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, "SELECT warrior FROM acolytes WHERE game = $1", game)
+            .fetch_all(conn)
+            .await
     }
 }

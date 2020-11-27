@@ -10,6 +10,12 @@ pub struct EyrieLeader {
 
 impl EyrieLeader {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, r#"SELECT leader as "leader: _", used FROM eyrie_leaders WHERE game = $1"#, game).fetch_all(conn).await
+        query_as!(
+            Self,
+            r#"SELECT leader as "leader: _", used FROM eyrie_leaders WHERE game = $1"#,
+            game
+        )
+        .fetch_all(conn)
+        .await
     }
 }

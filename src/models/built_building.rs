@@ -9,6 +9,12 @@ pub struct BuiltBuilding {
 
 impl BuiltBuilding {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT building, position FROM built_buildings WHERE game = $1", game).fetch_all(conn).await
+        query_as!(
+            Self,
+            "SELECT building, position FROM built_buildings WHERE game = $1",
+            game
+        )
+        .fetch_all(conn)
+        .await
     }
 }

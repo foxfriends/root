@@ -3,8 +3,8 @@ extern crate lazy_static;
 
 use colored::*;
 use log::info;
-use sqlx::postgres::{PgPool, PgPoolOptions};
 use once_cell::sync::OnceCell;
+use sqlx::postgres::{PgPool, PgPoolOptions};
 use warp::Filter;
 
 mod handler;
