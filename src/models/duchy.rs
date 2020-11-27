@@ -12,6 +12,6 @@ pub struct Duchy {
 
 impl Duchy {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Option<Self>> {
-        query_as!(Self, "SELECT faction, lord_crown, noble_crown, squire_crown FROM duchy WHERE game = $1", game).fetch_optional(conn).await
+        query_as!(Self, r#"SELECT faction as "faction: _", lord_crown, noble_crown, squire_crown FROM duchy WHERE game = $1"#, game).fetch_optional(conn).await
     }
 }

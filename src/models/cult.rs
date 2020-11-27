@@ -11,6 +11,6 @@ pub struct Cult {
 
 impl Cult {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Option<Self>> {
-        query_as!(Self, "SELECT faction, outcast, hated_outcast FROM cult WHERE game = $1", game).fetch_optional(conn).await
+        query_as!(Self, r#"SELECT faction as "faction: _", outcast as "outcast: _", hated_outcast FROM cult WHERE game = $1"#, game).fetch_optional(conn).await
     }
 }

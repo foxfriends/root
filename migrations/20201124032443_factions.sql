@@ -16,9 +16,20 @@ CREATE TABLE marquise (
 CREATE TABLE eyrie (
     game            VARCHAR(32) PRIMARY KEY REFERENCES games (name) ON DELETE CASCADE,
     faction         enum_faction NOT NULL GENERATED ALWAYS AS ('eyrie') STORED,
-    used_leaders    enum_eyrie_leader[] NOT NULL DEFAULT ARRAY[]::enum_eyrie_leader[],
-    leader          enum_eyrie_leader CHECK (leader <> ALL(used_leaders)),
     FOREIGN KEY (game, faction) REFERENCES factions (game, faction)
+);
+
+CREATE TABLE eyrie_leaders (
+    game            VARCHAR(32) NOT NULL REFERENCES games (name) ON DELETE CASCADE,
+    leader          enum_eyrie_leader NOT NULL,
+    used            BOOLEAN NOT NULL DEFAULT false,
+    PRIMARY KEY (game, leader)
+);
+
+CREATE TABLE eyrie_current_leader (
+    game            VARCHAR(32) PRIMARY KEY REFERENCES games (name) ON DELETE CASCADE,
+    leader          enum_eyrie_leader,
+    FOREIGN KEY (game, leader) REFERENCES eyrie_leaders (game, leader)
 );
 
 CREATE TABLE alliance (

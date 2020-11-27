@@ -11,6 +11,6 @@ pub struct EyrieDecree {
 
 impl EyrieDecree {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT card, id, action FROM eyrie_decree WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT card, id, action as "action: _" FROM eyrie_decree WHERE game = $1"#, game).fetch_all(conn).await
     }
 }

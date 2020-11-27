@@ -11,6 +11,6 @@ pub struct Token {
 
 impl Token {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT id, token, faction FROM tokens WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT id, token as "token: _", faction as "faction: _" FROM tokens WHERE game = $1"#, game).fetch_all(conn).await
     }
 }

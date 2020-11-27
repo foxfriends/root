@@ -10,6 +10,6 @@ pub struct CompletedQuest {
 
 impl CompletedQuest {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT quest, faction FROM completed_quests WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT quest, faction as "faction: _" FROM completed_quests WHERE game = $1"#, game).fetch_all(conn).await
     }
 }

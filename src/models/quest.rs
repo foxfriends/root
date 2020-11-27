@@ -11,6 +11,6 @@ pub struct Quest {
 
 impl Quest {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT id, quest, suit FROM quests WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT id, quest as "quest: _", suit as "suit: _" FROM quests WHERE game = $1"#, game).fetch_all(conn).await
     }
 }

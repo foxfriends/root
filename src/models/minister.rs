@@ -11,6 +11,6 @@ pub struct Minister {
 
 impl Minister {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT minister, rank, swayed FROM ministers WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT minister as "minister: _", rank as "rank: _", swayed FROM ministers WHERE game = $1"#, game).fetch_all(conn).await
     }
 }

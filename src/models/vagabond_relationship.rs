@@ -11,6 +11,6 @@ pub struct VagabondRelationship {
 
 impl VagabondRelationship {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT vagabond, faction, relationship FROM vagabond_relationships WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT vagabond as "vagabond: _", faction as "faction: _", relationship as "relationship: _" FROM vagabond_relationships WHERE game = $1"#, game).fetch_all(conn).await
     }
 }

@@ -10,6 +10,6 @@ pub struct Hand {
 
 impl Hand {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT card, faction FROM hand WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT card, faction as "faction: _" FROM hand WHERE game = $1"#, game).fetch_all(conn).await
     }
 }

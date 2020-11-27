@@ -10,6 +10,6 @@ pub struct Commitment {
 
 impl Commitment {
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT warrior, craft_suit FROM commitments WHERE game = $1", game).fetch_all(conn).await
+        query_as!(Self, r#"SELECT warrior, craft_suit as "craft_suit: _" FROM commitments WHERE game = $1"#, game).fetch_all(conn).await
     }
 }
