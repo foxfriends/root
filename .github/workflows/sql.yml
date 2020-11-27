@@ -2,7 +2,7 @@ name: Database CI
 on: push
 jobs:
   migrate:
-    name: build
+    name: migrate
     runs-on: ubuntu-latest
     services:
       postgres:
