@@ -38,3 +38,5 @@ jobs:
           DATABASE_URL: postgres://rootgame:password123@localhost:5432/rootgame
       - name: Check sqlx-data.json
         run: cargo sqlx prepare --check
+        env:
+          DATABASE_URL: postgres://rootgame:password123@localhost:5432/rootgame
