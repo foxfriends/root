@@ -1088,8 +1088,57 @@
       ]
     }
   },
-  "7db62a8f373bdd7c6b93fd66e1e13430074a9d4b6250127efe3ec90eac00cdc0": {
-    "query": "SELECT assignment as \"assignment: Assignment\", map as \"map: GameMap\", phase as \"phase: Phase\" FROM games WHERE name = $1",
+  "807e1f5cefdfa263e9220d28c81ae783e1a8fd50f667df4b04b66f69550c01c7": {
+    "query": "SELECT faction as \"faction: _\", player, points FROM factions WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "player",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 2,
+          "name": "points",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        true,
+        false
+      ]
+    }
+  },
+  "81cba9ae3b4fd5f2d1035dcd29b1b14125a9d338e6165bdc6c68acc9e3206481": {
+    "query": "SELECT assignment as \"assignment: Assignment\", map as \"map: GameMap\", phase as \"phase: Phase\", deck as \"deck: Deck\" FROM games WHERE name = $1",
     "describe": {
       "columns": [
         {
@@ -1143,55 +1192,21 @@
               }
             }
           }
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false
-      ]
-    }
-  },
-  "807e1f5cefdfa263e9220d28c81ae783e1a8fd50f667df4b04b66f69550c01c7": {
-    "query": "SELECT faction as \"faction: _\", player, points FROM factions WHERE game = $1",
-    "describe": {
-      "columns": [
+        },
         {
-          "ordinal": 0,
-          "name": "faction: _",
+          "ordinal": 3,
+          "name": "deck: Deck",
           "type_info": {
             "Custom": {
-              "name": "enum_faction",
+              "name": "enum_deck",
               "kind": {
                 "Enum": [
-                  "marquise",
-                  "eyrie",
-                  "alliance",
-                  "vagabond",
-                  "vagabond2",
-                  "cult",
-                  "riverfolk",
-                  "duchy",
-                  "conspiracy"
+                  "standard",
+                  "exiles_and_partisans"
                 ]
               }
             }
           }
-        },
-        {
-          "ordinal": 1,
-          "name": "player",
-          "type_info": "Varchar"
-        },
-        {
-          "ordinal": 2,
-          "name": "points",
-          "type_info": "Int2"
         }
       ],
       "parameters": {
@@ -1201,7 +1216,8 @@
       },
       "nullable": [
         false,
-        true,
+        false,
+        false,
         false
       ]
     }

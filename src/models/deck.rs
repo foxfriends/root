@@ -1,5 +1,5 @@
 use super::*;
-use rand::{thread_rng, seq::SliceRandom};
+use rand::{seq::SliceRandom, thread_rng};
 
 /// Which shared deck to use. Currently, only standard is supported.
 #[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize, sqlx::Type)]
@@ -8,6 +8,12 @@ use rand::{thread_rng, seq::SliceRandom};
 pub enum Deck {
     Standard,
     ExilesAndPartisans,
+}
+
+impl Default for Deck {
+    fn default() -> Self {
+        Self::Standard
+    }
 }
 
 impl Deck {
