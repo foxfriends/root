@@ -1,0 +1,1 @@
+ALTER TABLE ruin_items ALTER COLUMN clearing DROP NOT NULL;

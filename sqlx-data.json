@@ -529,6 +529,20 @@
       ]
     }
   },
+  "2116e3e5574b89bbd3682d83bf52158e4eea893e4fee8b5c3e876acbbf6c77ca": {
+    "query": "INSERT INTO ruin_items (game, clearing, item) VALUES ($1, $2, $3) ON CONFLICT (game, item) DO UPDATE SET clearing = $2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "232e8ab6de8febad4cad1ca2facec2502f6067de69266748ee923b4d5144e45e": {
     "query": "SELECT clearing FROM ferry WHERE game = $1",
     "describe": {
@@ -570,7 +584,7 @@
         ]
       },
       "nullable": [
-        false,
+        true,
         false
       ]
     }
@@ -1768,6 +1782,36 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "a3e5771363d9dafaa672a5722719e3e5125647240ae0184ee1d3088c76718f44": {
+    "query": "INSERT INTO items (game, id, item) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_item",
+              "kind": {
+                "Enum": [
+                  "hammer",
+                  "tea",
+                  "dagger",
+                  "bag",
+                  "crossbow",
+                  "torch",
+                  "boot",
+                  "coin"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
     }
   },
   "a7629f53fa7cfe9734f6e2cc60348f6ec08dd2544cbbfa1e01858d45ffb343ed": {

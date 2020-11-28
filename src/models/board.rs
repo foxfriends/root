@@ -1,4 +1,5 @@
 use super::*;
+use rand::{seq::SliceRandom, thread_rng};
 
 /// The board component of a game.
 ///
@@ -6,12 +7,13 @@ use super::*;
 pub struct Board {
     pub positions: Vec<Position>,
     pub clearings: Vec<Clearing>,
+    pub ruin_items: Vec<RuinItem>,
 }
 
 impl Board {
-    pub fn create(map: GameMap) -> Self {
+    pub fn create(map: GameMap, items: &[Item]) -> Self {
         match map {
-            GameMap::Autumn => Self::autumn(),
+            GameMap::Autumn => Self::autumn(items),
             _ => todo!("Other maps will be implemented eventually"),
         }
     }
@@ -30,7 +32,7 @@ impl Board {
     ///  |/  [17]  \       \  /
     /// (4)--(9)---(8)------(3)
     /// ```
-    fn autumn() -> Self {
+    fn autumn(items: &[Item]) -> Self {
         let positions: Vec<Position> = (1..=19).map(Position::new).collect();
         let clearings = vec![
             Clearing::new(&positions[0], Suit::Fox, 1),
@@ -46,9 +48,18 @@ impl Board {
             Clearing::new(&positions[10], Suit::Fox, 2),
             Clearing::new(&positions[11], Suit::Mouse, 3),
         ];
+        let mut item_ids: Vec<_> = items.iter().map(Item::id).collect();
+        let mut rng = thread_rng();
+        item_ids.shuffle(&mut rng);
+        let ruin_items = item_ids
+            .into_iter()
+            .zip([5, 7, 11, 12].iter().copied().cycle())
+            .map(|(item, clearing)| RuinItem::new(clearing, item))
+            .collect();
         Self {
             positions,
             clearings,
+            ruin_items,
         }
     }
 }

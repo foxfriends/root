@@ -151,10 +151,6 @@ impl Game {
     }
 
     pub fn create(config: GameConfig) -> Self {
-        let Board {
-            positions,
-            clearings,
-        } = Board::create(config.map);
         let cards = Deck::Standard.create();
         let dominance = cards
             .iter()
@@ -182,6 +178,36 @@ impl Game {
             warriors,
             ..
         } = config.factions.iter().copied().collect();
+        let mut items = vec![
+            Item::new(1, ItemId::Boot),
+            Item::new(2, ItemId::Boot),
+            Item::new(3, ItemId::Bag),
+            Item::new(4, ItemId::Bag),
+            Item::new(5, ItemId::Crossbow),
+            Item::new(6, ItemId::Hammer),
+            Item::new(7, ItemId::Dagger),
+            Item::new(8, ItemId::Dagger),
+            Item::new(9, ItemId::Tea),
+            Item::new(10, ItemId::Tea),
+            Item::new(11, ItemId::Coin),
+            Item::new(12, ItemId::Coin),
+            Item::new(13, ItemId::Bag),
+            Item::new(14, ItemId::Boot),
+            Item::new(15, ItemId::Hammer),
+            Item::new(16, ItemId::Dagger),
+        ];
+        if vagabond.is_some() && vagabond2.is_some() {
+            items.push(Item::new(17, ItemId::Bag));
+            items.push(Item::new(18, ItemId::Boot));
+            items.push(Item::new(19, ItemId::Hammer));
+            items.push(Item::new(20, ItemId::Dagger));
+        }
+        let Board {
+            positions,
+            clearings,
+            ruin_items,
+        } = Board::create(config.map, &items[12..]);
+
         Game {
             name: config.name,
             assignment: config.assignment,
@@ -213,6 +239,8 @@ impl Game {
             buildings,
             tokens,
             warriors,
+            items,
+            ruin_items,
             ..Self::default()
         }
     }
