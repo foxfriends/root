@@ -1,15 +1,7 @@
-:- use(@core::list(update/4)).
-:- use(@core(false/0)).
+:- use(@core::list(update/4, in/2, notin/2)).
 
 :- pub(actions/3).
 :- pub(perform/4).
-
-// TODO: move these functions to the standard library.
-in(T, [T, ..]).
-in(T, [_, ..R]) :- in(T, R).
-notin(_, []).
-notin(T, [T, ..]) :- false.
-notin(T, [_, ..R]) :- notin(T, R).
 
 // A player who has not yet chosen a faction may choose a faction that has not yet been chosen.
 actions(Name, game { factions: Factions, .. }, choose(Faction)) :-
