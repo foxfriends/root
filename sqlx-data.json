@@ -557,6 +557,37 @@
       ]
     }
   },
+  "268a6db498693ddf2df86ab31f59e8f3a0144ca7b81e5f88ade0f44abdb0e9c8": {
+    "query": "INSERT INTO tokens (game, id, token) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_token",
+              "kind": {
+                "Enum": [
+                  "sympathy",
+                  "wood",
+                  "keep",
+                  "trade_post",
+                  "bomb",
+                  "snare",
+                  "extortion",
+                  "raid",
+                  "tunnel"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
+    }
+  },
   "2824f4002c7e7cc2872ac1c9cfefc5158090148f7891e6529a0b038807f307e3": {
     "query": "SELECT faction as \"faction: _\" FROM alliance WHERE game = $1",
     "describe": {
@@ -592,6 +623,32 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "3020dead2bf15f9508774f5774deb7de51fd727795acc71119c328052e9b0e2f": {
+    "query": "INSERT INTO eyrie_leaders (game, leader, used) VALUES ($1, $2, $3) ON CONFLICT (game, leader) DO UPDATE SET used = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_eyrie_leader",
+              "kind": {
+                "Enum": [
+                  "builder",
+                  "charismatic",
+                  "commander",
+                  "despot"
+                ]
+              }
+            }
+          },
+          "Bool"
+        ]
+      },
+      "nullable": []
     }
   },
   "3e119aed3913de03003842dc059b389f8d24258a5cca5da0f5147f5a41ec758a": {
@@ -891,6 +948,18 @@
       ]
     }
   },
+  "51956cf7d32608e19474104c360e987afd34b9cd9b5ca88eb295590ba5852710": {
+    "query": "INSERT INTO marquise (game) VALUES ($1) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "52dc50fe8c292d5f7e18206de4b7fbbe688f2410eae54c3fb054498e9c10f2b4": {
     "query": "SELECT position_a, position_b, closed FROM connections WHERE game = $1",
     "describe": {
@@ -1000,6 +1069,36 @@
         false,
         false
       ]
+    }
+  },
+  "5dc45e2a86ebff4c8d321ed7b67003d4518c3b6cec94aa4ac25633dd76c1bf17": {
+    "query": "INSERT INTO buildings (game, id, building) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_building",
+              "kind": {
+                "Enum": [
+                  "base",
+                  "roost",
+                  "sawmill",
+                  "workshop",
+                  "recruiter",
+                  "garden",
+                  "citadel",
+                  "market"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
     }
   },
   "5f9e595467cdb814c2920570a9ea2aa571d6b7e7689404d39c6cb795ad514708": {
@@ -1197,6 +1296,18 @@
       ]
     }
   },
+  "8096ced3ae6a598dbf6613faa8b785c53e98d1f13b9973009dc2f8c10e4ac8a1": {
+    "query": "INSERT INTO eyrie (game) VALUES ($1) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "81cba9ae3b4fd5f2d1035dcd29b1b14125a9d338e6165bdc6c68acc9e3206481": {
     "query": "SELECT assignment as \"assignment: Assignment\", map as \"map: GameMap\", phase as \"phase: Phase\", deck as \"deck: Deck\" FROM games WHERE name = $1",
     "describe": {
@@ -1324,6 +1435,37 @@
   },
   "9280a833cc04d0a481b5472a3d1668dd781f87c6ac08e95c5b7665bdd5b8036e": {
     "query": "INSERT INTO dominance (game, card, faction) VALUES ($1, $2, $3) ON CONFLICT (game, card) DO UPDATE SET faction = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "937ab850f542a90fcb639223243d87ac8f8e874f9ff8764e668263eafffc515b": {
+    "query": "INSERT INTO warriors (game, id, faction) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
     "describe": {
       "columns": [],
       "parameters": {
@@ -1514,6 +1656,31 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "af5accf47d7b2fca2c040376dfe3e54eb60ba72d89d0b6791d0c17689f446afb": {
+    "query": "INSERT INTO eyrie_current_leader (game, leader) VALUES ($1, $2) ON CONFLICT (game) DO UPDATE SET leader = $2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_eyrie_leader",
+              "kind": {
+                "Enum": [
+                  "builder",
+                  "charismatic",
+                  "commander",
+                  "despot"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
     }
   },
   "b1f01637c71b2bba9c56299f9bb4abd0b08173a5648622ee44fb749500c19328": {

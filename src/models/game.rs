@@ -162,6 +162,16 @@ impl Game {
             .map(Card::id)
             .map(Dominance::new)
             .collect();
+        let Factions {
+            marquise,
+            eyrie,
+            eyrie_leaders,
+            eyrie_current_leader,
+            buildings,
+            tokens,
+            warriors,
+            ..
+        } = config.factions.iter().copied().collect();
         Game {
             name: config.name,
             assignment: config.assignment,
@@ -176,6 +186,13 @@ impl Game {
             clearings,
             cards,
             dominance,
+            marquise,
+            eyrie,
+            eyrie_leaders,
+            eyrie_current_leader,
+            buildings,
+            tokens,
+            warriors,
             ..Self::default()
         }
     }
