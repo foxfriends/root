@@ -14,6 +14,14 @@ impl Card {
         Self { id, card, suit }
     }
 
+    pub fn id(&self) -> i16 {
+        self.id
+    }
+
+    pub fn card(&self) -> CardId {
+        self.card
+    }
+
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
         query_as!(
             Self,

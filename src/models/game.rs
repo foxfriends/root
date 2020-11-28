@@ -34,6 +34,7 @@ pub struct Game {
     cards: Vec<Card>,
     discards: Vec<Discard>,
     hand: Vec<Hand>,
+    dominance: Vec<Dominance>,
 
     items: Vec<Item>,
     owned_items: Vec<OwnedItem>,
@@ -61,6 +62,7 @@ pub struct Game {
     quests: Vec<Quest>,
     active_quests: Vec<ActiveQuest>,
     completed_quests: Vec<CompletedQuest>,
+    coalition: Vec<Coalition>,
 
     cult: Option<Cult>,
     acolytes: Vec<Acolyte>,
@@ -106,6 +108,7 @@ impl Game {
             cards: Card::load(name, &mut conn).await?,
             discards: Discard::load(name, &mut conn).await?,
             hand: Hand::load(name, &mut conn).await?,
+            dominance: Dominance::load(name, &mut conn).await?,
             items: Item::load(name, &mut conn).await?,
             owned_items: OwnedItem::load(name, &mut conn).await?,
             ruin_items: RuinItem::load(name, &mut conn).await?,
@@ -123,6 +126,7 @@ impl Game {
             vagabond2: Vagabond::load(name, FactionId::Vagabond2, &mut conn).await?,
             vagabond_items: VagabondItem::load(name, &mut conn).await?,
             vagabond_relationships: VagabondRelationship::load(name, &mut conn).await?,
+            coalition: Coalition::load(name, &mut conn).await?,
             quests: Quest::load(name, &mut conn).await?,
             active_quests: ActiveQuest::load(name, &mut conn).await?,
             completed_quests: CompletedQuest::load(name, &mut conn).await?,
@@ -151,6 +155,13 @@ impl Game {
             positions,
             clearings,
         } = Board::create(config.map);
+        let cards = Deck::Standard.create();
+        let dominance = cards
+            .iter()
+            .filter(|card| card.card() == CardId::Dominance)
+            .map(Card::id)
+            .map(Dominance::new)
+            .collect();
         Game {
             name: config.name,
             assignment: config.assignment,
@@ -163,7 +174,8 @@ impl Game {
                 .collect(),
             positions,
             clearings,
-            cards: Deck::Standard.create(),
+            cards,
+            dominance,
             ..Self::default()
         }
     }

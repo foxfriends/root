@@ -85,6 +85,66 @@
       ]
     }
   },
+  "0d0fabb1ca0d1bce82cb055247fac36c9f756efc2e4262ed5233df5ae9efef29": {
+    "query": "SELECT vagabond as \"vagabond: _\", faction as \"faction: _\" FROM coalition WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "vagabond: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false
+      ]
+    }
+  },
   "13048d27eed244e2237352ae3547c5ae3e8ed64b5fcbf8b39c11dc0a63bd9b42": {
     "query": "SELECT leader as \"leader: _\", used FROM eyrie_leaders WHERE game = $1",
     "describe": {
@@ -1262,6 +1322,37 @@
       ]
     }
   },
+  "9280a833cc04d0a481b5472a3d1668dd781f87c6ac08e95c5b7665bdd5b8036e": {
+    "query": "INSERT INTO dominance (game, card, faction) VALUES ($1, $2, $3) ON CONFLICT (game, card) DO UPDATE SET faction = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
+    }
+  },
   "9549d6c1ecdd1b73c46c7dd51b0b3c0666a2e82da59c73fa5a0ee26df70a7a4d": {
     "query": "SELECT warrior, craft_suit as \"craft_suit: _\" FROM commitments WHERE game = $1",
     "describe": {
@@ -1448,6 +1539,49 @@
       "nullable": [
         false,
         false
+      ]
+    }
+  },
+  "b2e86ae6c28cecddc1d1946032793a45bf79a7eab803f3e0884538c555373c85": {
+    "query": "SELECT card, faction as \"faction: _\" FROM dominance WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "card",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        true
       ]
     }
   },
