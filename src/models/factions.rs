@@ -25,7 +25,6 @@ pub struct Factions {
     pub riverfolk: Option<Riverfolk>,
 
     pub duchy: Option<Duchy>,
-    pub burrow: Vec<Burrow>,
     pub ministers: Vec<Minister>,
 
     pub conspiracy: Option<Conspiracy>,
@@ -44,6 +43,7 @@ impl Factions {
             FactionId::Vagabond | FactionId::Vagabond2 => self.add_vagabond(faction),
             FactionId::Cult => self.add_cult(),
             FactionId::Riverfolk => self.add_riverfolk(),
+            FactionId::Duchy => self.add_duchy(),
             _ => todo!(),
         }
     }
@@ -132,6 +132,15 @@ impl Factions {
         self.riverfolk = Some(Riverfolk::new());
         self.add_suited_token(TokenId::TradePost, 3);
         self.add_warriors(FactionId::Riverfolk, 15);
+    }
+
+    fn add_duchy(&mut self) {
+        self.duchy = Some(Duchy::new());
+        self.add_building(BuildingId::Market, 3);
+        self.add_building(BuildingId::Citadel, 3);
+        self.add_token(TokenId::Tunnel, 3);
+        self.add_warriors(FactionId::Duchy, 20);
+        self.ministers = MinisterId::all().map(Minister::new).collect();
     }
 
     fn finish_vagabonds(&mut self) {
