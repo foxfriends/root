@@ -21,8 +21,6 @@ pub struct Factions {
     pub quests: Vec<Quest>,
 
     pub cult: Option<Cult>,
-    pub acolytes: Vec<Acolyte>,
-    pub lost_souls: Vec<LostSoul>,
 
     pub riverfolk: Option<Riverfolk>,
     pub commitments: Vec<Commitment>,
@@ -47,6 +45,7 @@ impl Factions {
             FactionId::Eyrie => self.add_eyrie(),
             FactionId::Alliance => self.add_alliance(),
             FactionId::Vagabond | FactionId::Vagabond2 => self.add_vagabond(faction),
+            FactionId::Cult => self.add_cult(),
             _ => todo!(),
         }
     }
@@ -121,6 +120,14 @@ impl Factions {
 
     fn add_vagabond(&mut self, faction: FactionId) {
         self.vagabond = Some(Vagabond::new(faction));
+    }
+
+    fn add_cult(&mut self) {
+        self.cult = Some(Cult::new());
+        self.add_suited_building(BuildingId::Garden, Suit::Fox, 5);
+        self.add_suited_building(BuildingId::Garden, Suit::Mouse, 5);
+        self.add_suited_building(BuildingId::Garden, Suit::Rabbit, 5);
+        self.add_warriors(FactionId::Cult, 25);
     }
 
     fn finish_vagabonds(&mut self) {
