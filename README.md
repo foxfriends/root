@@ -7,9 +7,20 @@ This is a digital port of the board game "Root" by Cole Wehrle, with art by Kyle
 
 > Work in progress.
 
+The rules are implemented according to the Law of Root, Fourth Printing (July 1st, 2019).
+The following omissions will be addressed:
+*   [Underground Duchy setup rules](https://boardgamegeek.com/thread/2335654/article/33682756#33682756)
+
+The intention is to eventually support all expansions, though some parts may come later.
+The planned order of implementation is as follows:
+- [ ] All 8 factions, 9 vagabonds, autumn map, standard deck.
+- [ ] Exiles and Partisans deck.
+- [ ] Alternate maps (winter, mountain, lake).
+- [ ] Rootbotics.
+
 ## Development
 
-This is a [NodeJS][] (14) and [Rust][] (nightly) project, so both must be installed. 
+This is a [NodeJS][] (14) and [Rust][] (nightly) project, so both must be installed.
 [PostgreSQL][] (13) is also a dependency for the database.
 
 [NodeJS]: https://nodejs.org/en/
