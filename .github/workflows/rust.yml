@@ -14,13 +14,15 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Install Rust nightly
-        run: |
-          rustup toolchain update --no-self-update nightly
-          rustup default nightly
-          rustup component add clippy
-      - name: Run clippy
-        run: cargo clippy -- -D warnings
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          components: clippy
+      - name: Run cargo clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
   rustfmt:
     name: rustfmt
     runs-on: ubuntu-latest
@@ -34,13 +36,15 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Install Rust nightly
-        run: |
-          rustup toolchain update --no-self-update nightly
-          rustup default nightly
-          rustup component add rustfmt
-      - name: Run rustfmt
-        run: cargo fmt -- --check
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          components: rustfmt
+      - name: Run cargo fmt
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: -- --check
   build:
     name: build
     runs-on: ubuntu-latest
@@ -54,12 +58,12 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Install Rust nightly
-        run: |
-          rustup toolchain update --no-self-update nightly
-          rustup default nightly
-      - name: Run build
-        run: cargo build
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+      - name: Run cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
   test:
     name: test
     runs-on: ubuntu-latest
@@ -73,9 +77,9 @@ jobs:
             ~/.cargo/git
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Install Rust nightly
-        run: |
-          rustup toolchain update --no-self-update nightly
-          rustup default nightly
-      - name: Run tests
-        run: cargo test
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
