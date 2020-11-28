@@ -44,7 +44,7 @@ impl Factions {
             FactionId::Cult => self.add_cult(),
             FactionId::Riverfolk => self.add_riverfolk(),
             FactionId::Duchy => self.add_duchy(),
-            _ => todo!(),
+            FactionId::Conspiracy => self.add_conspiracy(),
         }
     }
 
@@ -141,6 +141,15 @@ impl Factions {
         self.add_token(TokenId::Tunnel, 3);
         self.add_warriors(FactionId::Duchy, 20);
         self.ministers = MinisterId::all().map(Minister::new).collect();
+    }
+
+    fn add_conspiracy(&mut self) {
+        self.conspiracy = Some(Conspiracy::new());
+        self.add_token(TokenId::Bomb, 2);
+        self.add_token(TokenId::Extortion, 2);
+        self.add_token(TokenId::Raid, 2);
+        self.add_token(TokenId::Snare, 2);
+        self.add_warriors(FactionId::Conspiracy, 15);
     }
 
     fn finish_vagabonds(&mut self) {

@@ -638,6 +638,18 @@
       "nullable": []
     }
   },
+  "3788775eed3241b4088906f5efe6f789ace498e7938a89cf602968b62c6ba421": {
+    "query": "INSERT INTO conspiracy (game) VALUES ($1) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "3e119aed3913de03003842dc059b389f8d24258a5cca5da0f5147f5a41ec758a": {
     "query": "SELECT building, position FROM built_buildings WHERE game = $1",
     "describe": {
@@ -705,6 +717,21 @@
         false,
         false
       ]
+    }
+  },
+  "45a710095e0afe5de9b776b4b7b77e1db5e881d42d05e2dd34786ae333cb1c76": {
+    "query": "\n            INSERT INTO riverfolk (game, hand_card, riverboats, mercenaries) VALUES ($1, $2, $3, $4)\n                ON CONFLICT (game) DO UPDATE SET hand_card = $2, riverboats = $3, mercenaries = $4\n            ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2",
+          "Int2"
+        ]
+      },
+      "nullable": []
     }
   },
   "4746be9170a3d636b01258b00f6995b0950cc9927d82159f2a1a9665e36188f2": {
@@ -991,7 +1018,7 @@
       },
       "nullable": [
         false,
-        false,
+        true,
         false
       ]
     }
@@ -1743,6 +1770,37 @@
       ]
     }
   },
+  "a7629f53fa7cfe9734f6e2cc60348f6ec08dd2544cbbfa1e01858d45ffb343ed": {
+    "query": "INSERT INTO ministers (game, minister, swayed) VALUES ($1, $2, $3) ON CONFLICT (game, minister) DO UPDATE SET swayed = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_minister",
+              "kind": {
+                "Enum": [
+                  "foremole",
+                  "captain",
+                  "marshal",
+                  "banker",
+                  "brigadier",
+                  "mayor",
+                  "earl_of_stone",
+                  "baron_of_dirt",
+                  "duchess_of_mud"
+                ]
+              }
+            }
+          },
+          "Bool"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "af1bde11cd4ca25f55d38ac772a3a562e299005d556218cd3bcd1202c5abb15c": {
     "query": "SELECT clearing FROM water WHERE game = $1",
     "describe": {
@@ -2446,6 +2504,47 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "f408ed6922ad6de9ba60532e2885bd3605fc44674a68c1809b4c80a04f196591": {
+    "query": "INSERT INTO cult (game, outcast, hated_outcast) VALUES ($1, $2, $3) ON CONFLICT (game) DO UPDATE SET outcast = $2, hated_outcast = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          },
+          "Bool"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "fc8041a0853b3ebcfddfe516cba77fbeb7b4f7c7366d84eb1cf3c3635b26c1a3": {
+    "query": "\n            INSERT INTO duchy (game, lord_crown, noble_crown, squire_crown) VALUES ($1, $2, $3, $4)\n                ON CONFLICT (game) DO UPDATE SET lord_crown = $2, noble_crown = $3, squire_crown = $4\n            ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2",
+          "Int2"
+        ]
+      },
+      "nullable": []
     }
   },
   "fc8f19eafa507021dc59d3d312669520e69f0c404c182567dbe604de71d76b8e": {

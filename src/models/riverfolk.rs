@@ -1,3 +1,4 @@
+#![allow(clippy::new_without_default)]
 use super::FactionId;
 use sqlx::{postgres::PgConnection, query, query_as};
 
