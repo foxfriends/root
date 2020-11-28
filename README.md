@@ -9,8 +9,8 @@ This is a digital port of the board game "Root" by Cole Wehrle, with art by Kyle
 
 ## Development
 
-This is a [NodeJS][] and [Rust][] project, so both must be installed. [PostgreSQL][] is
-also a dependency for the database.
+This is a [NodeJS][] (14) and [Rust][] (nightly) project, so both must be installed. 
+[PostgreSQL][] (13) is also a dependency for the database.
 
 [NodeJS]: https://nodejs.org/en/
 [Rust]: https://rustup.rs/

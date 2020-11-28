@@ -11,6 +11,9 @@
     "server:watch": "cargo watch -x run -w src -w game -w Cargo.toml -w Cargo.lock",
     "db:setup": "env $(grep -v '^#' .env | xargs) ./setup"
   },
+  "engines": {
+    "node": "^14.11.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/foxfriends/root.git"
