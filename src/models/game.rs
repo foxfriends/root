@@ -8,6 +8,7 @@ pub struct Game {
     assignment: Assignment,
     map: GameMap,
     phase: Phase,
+    deck: Deck,
 
     // General game state
     players: Vec<Player>,
@@ -81,12 +82,13 @@ impl Game {
     #[allow(clippy::eval_order_dependence)]
     pub async fn load(name: &str) -> sqlx::Result<Self> {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
-        let game = query!(r#"SELECT assignment as "assignment: Assignment", map as "map: GameMap", phase as "phase: Phase" FROM games WHERE name = $1"#, name).fetch_one(&mut conn).await?;
+        let game = query!(r#"SELECT assignment as "assignment: Assignment", map as "map: GameMap", phase as "phase: Phase", deck as "deck: Deck" FROM games WHERE name = $1"#, name).fetch_one(&mut conn).await?;
         let game = Self {
             name: name.to_owned(),
             assignment: game.assignment,
             map: game.map,
             phase: game.phase,
+            deck: game.deck,
             players: Player::load(name, &mut conn).await?,
             positions: Position::load(name, &mut conn).await?,
             forests: Forest::load(name, &mut conn).await?,
@@ -153,6 +155,7 @@ impl Game {
             name: config.name,
             assignment: config.assignment,
             map: config.map,
+            deck: Deck::Standard,
             factions: config
                 .factions
                 .iter()
@@ -160,6 +163,7 @@ impl Game {
                 .collect(),
             positions,
             clearings,
+            cards: Deck::Standard.create(),
             ..Self::default()
         }
     }

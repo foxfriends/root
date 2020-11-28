@@ -1518,6 +1518,7 @@ dependencies = [
  "lumber",
  "once_cell",
  "pretty_env_logger",
+ "rand 0.7.3",
  "serde",
  "serde_json",
  "sqlx",

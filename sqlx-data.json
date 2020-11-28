@@ -1284,6 +1284,74 @@
       ]
     }
   },
+  "9c8cf2ef3407fadcf3d1ba186db554e0806002ade7401ccb28c7c4ad9093ed38": {
+    "query": "INSERT INTO cards (game, id, card, suit) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_card",
+              "kind": {
+                "Enum": [
+                  "ambush",
+                  "birdy_bindle",
+                  "armorers",
+                  "woodland_runners",
+                  "arms_trader",
+                  "crossbow",
+                  "sappers",
+                  "brutal_tactics",
+                  "royal_claim",
+                  "gently_used_knapsack",
+                  "root_tea",
+                  "travel_gear",
+                  "protection_racket",
+                  "foxfolk_steel",
+                  "anvil",
+                  "stand_and_deliver",
+                  "tax_collector",
+                  "favor_of_the_foxes",
+                  "smugglers_trail",
+                  "a_visit_to_friends",
+                  "bake_sale",
+                  "command_warren",
+                  "better_burrow_bank",
+                  "cobbler",
+                  "favor_of_the_rabbits",
+                  "mouse_in_a_sack",
+                  "investments",
+                  "sword",
+                  "scouting_party",
+                  "codebreakers",
+                  "favor_of_the_mice",
+                  "dominance",
+                  "spy"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
+    }
+  },
   "9f9c4a3509932777e127f81d34e85cd813dcb83fc90b00da1e7caab3b4242b26": {
     "query": "SELECT faction as \"faction: _\" FROM marquise WHERE game = $1",
     "describe": {
