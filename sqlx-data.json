@@ -1,70 +1,5 @@
 {
   "db": "PostgreSQL",
-  "0524589fd5d44ce598a7be478c811b572a5ff8b78909a733114620f588670fc1": {
-    "query": "SELECT id, building as \"building: _\", faction as \"faction: _\" FROM buildings WHERE game = $1",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Int2"
-        },
-        {
-          "ordinal": 1,
-          "name": "building: _",
-          "type_info": {
-            "Custom": {
-              "name": "enum_building",
-              "kind": {
-                "Enum": [
-                  "base",
-                  "roost",
-                  "sawmill",
-                  "workshop",
-                  "recruiter",
-                  "garden",
-                  "citadel",
-                  "market"
-                ]
-              }
-            }
-          }
-        },
-        {
-          "ordinal": 2,
-          "name": "faction: _",
-          "type_info": {
-            "Custom": {
-              "name": "enum_faction",
-              "kind": {
-                "Enum": [
-                  "marquise",
-                  "eyrie",
-                  "alliance",
-                  "vagabond",
-                  "vagabond2",
-                  "cult",
-                  "riverfolk",
-                  "duchy",
-                  "conspiracy"
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false
-      ]
-    }
-  },
   "06e034adb71128cb3bfea206876af51e10e6f0b6d33e9d3e0723354131aa95db": {
     "query": "SELECT clearing FROM tower WHERE game = $1",
     "describe": {
@@ -142,6 +77,89 @@
       "nullable": [
         false,
         false
+      ]
+    }
+  },
+  "12eba4ea501952ac07608a1f666ec6ecde847f9ca535b74c67edff6d73cd72e0": {
+    "query": "SELECT id, building as \"building: _\", faction as \"faction: _\", suit as \"suit: _\" FROM buildings WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "building: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_building",
+              "kind": {
+                "Enum": [
+                  "base",
+                  "roost",
+                  "sawmill",
+                  "workshop",
+                  "recruiter",
+                  "garden",
+                  "citadel",
+                  "market"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 3,
+          "name": "suit: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true
       ]
     }
   },
@@ -262,8 +280,8 @@
       },
       "nullable": [
         false,
-        false,
-        false
+        true,
+        true
       ]
     }
   },
@@ -557,37 +575,6 @@
       ]
     }
   },
-  "268a6db498693ddf2df86ab31f59e8f3a0144ca7b81e5f88ade0f44abdb0e9c8": {
-    "query": "INSERT INTO tokens (game, id, token) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Varchar",
-          "Int2",
-          {
-            "Custom": {
-              "name": "enum_token",
-              "kind": {
-                "Enum": [
-                  "sympathy",
-                  "wood",
-                  "keep",
-                  "trade_post",
-                  "bomb",
-                  "snare",
-                  "extortion",
-                  "raid",
-                  "tunnel"
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "nullable": []
-    }
-  },
   "2824f4002c7e7cc2872ac1c9cfefc5158090148f7891e6529a0b038807f307e3": {
     "query": "SELECT faction as \"faction: _\" FROM alliance WHERE game = $1",
     "describe": {
@@ -720,6 +707,18 @@
       ]
     }
   },
+  "4746be9170a3d636b01258b00f6995b0950cc9927d82159f2a1a9665e36188f2": {
+    "query": "INSERT INTO alliance (game) VALUES ($1) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "48e3fda22d759c83a05a242edda63ac5cc56626c5dbefffa41c93cb8210058af": {
     "query": "SELECT id, faction as \"faction: _\" FROM warriors WHERE game = $1",
     "describe": {
@@ -848,6 +847,55 @@
         false,
         false
       ]
+    }
+  },
+  "4ea7e17939c1c42ca8230d50837ad917c8f6188a0345d07e90b118b7a4074f21": {
+    "query": "INSERT INTO vagabond (game, faction, vagabond, position) VALUES ($1, $2, $3, $4) ON CONFLICT (game, faction) DO UPDATE SET vagabond = $3, position = $4",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_vagabond",
+              "kind": {
+                "Enum": [
+                  "thief",
+                  "ranger",
+                  "tinker",
+                  "vagrant",
+                  "arbiter",
+                  "scoundrel",
+                  "adventurer",
+                  "ronin",
+                  "harrier"
+                ]
+              }
+            }
+          },
+          "Int2"
+        ]
+      },
+      "nullable": []
     }
   },
   "50d52b9fce7885c51dc813e3210d13b06b97d2dd308f2f407a4672f3a67f0e2a": {
@@ -1071,36 +1119,6 @@
       ]
     }
   },
-  "5dc45e2a86ebff4c8d321ed7b67003d4518c3b6cec94aa4ac25633dd76c1bf17": {
-    "query": "INSERT INTO buildings (game, id, building) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Varchar",
-          "Int2",
-          {
-            "Custom": {
-              "name": "enum_building",
-              "kind": {
-                "Enum": [
-                  "base",
-                  "roost",
-                  "sawmill",
-                  "workshop",
-                  "recruiter",
-                  "garden",
-                  "citadel",
-                  "market"
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "nullable": []
-    }
-  },
   "5f9e595467cdb814c2920570a9ea2aa571d6b7e7689404d39c6cb795ad514708": {
     "query": "SELECT quest, faction as \"faction: _\" FROM completed_quests WHERE game = $1",
     "describe": {
@@ -1142,6 +1160,49 @@
         false,
         false
       ]
+    }
+  },
+  "61ed44257b9d01c2a1f5f58436ed060b8fcd0227b5f6159889c8e93d02e0dcb6": {
+    "query": "INSERT INTO buildings (game, id, building, suit) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_building",
+              "kind": {
+                "Enum": [
+                  "base",
+                  "roost",
+                  "sawmill",
+                  "workshop",
+                  "recruiter",
+                  "garden",
+                  "citadel",
+                  "market"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
     }
   },
   "6217828e454097cc407b7d71ad706f3240808beffca6f6923c1e71e54a93e0be": {
@@ -1221,7 +1282,7 @@
         ]
       },
       "nullable": [
-        false,
+        true,
         false,
         false
       ]
@@ -1391,6 +1452,50 @@
         false,
         false
       ]
+    }
+  },
+  "896c7b9063fe1020b68cc1451295eb711178572f614e4e25f38e7274f0d74952": {
+    "query": "INSERT INTO quests (game, id, quest, suit) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_quest",
+              "kind": {
+                "Enum": [
+                  "errand",
+                  "escort",
+                  "expel_bandits",
+                  "fend_off_a_bear",
+                  "fundraising",
+                  "give_a_speech",
+                  "guard_duty",
+                  "logistics_help",
+                  "repair_a_shed"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
     }
   },
   "8fea9f079effacda3cc6ab00bd5b40f9a339f435743325ca278f10235a0bb62b": {
@@ -2012,41 +2117,14 @@
       ]
     }
   },
-  "c886546ef41c26cf8af7ce9ba0ed3020ff1cd9809ffee76afb406f03c8271f04": {
-    "query": "SELECT id, token as \"token: _\", faction as \"faction: _\" FROM tokens WHERE game = $1",
+  "c592b8bdc6d5888ff18a97c6ea374b7c388286de6a856bf377cada1d49934892": {
+    "query": "INSERT INTO vagabond_relationships (game, vagabond, faction, relationship) VALUES ($1, $2, $3, $4) ON CONFLICT (game, vagabond, faction) DO UPDATE SET relationship = $4",
     "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "id",
-          "type_info": "Int2"
-        },
-        {
-          "ordinal": 1,
-          "name": "token: _",
-          "type_info": {
-            "Custom": {
-              "name": "enum_token",
-              "kind": {
-                "Enum": [
-                  "sympathy",
-                  "wood",
-                  "keep",
-                  "trade_post",
-                  "bomb",
-                  "snare",
-                  "extortion",
-                  "raid",
-                  "tunnel"
-                ]
-              }
-            }
-          }
-        },
-        {
-          "ordinal": 2,
-          "name": "faction: _",
-          "type_info": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
             "Custom": {
               "name": "enum_faction",
               "kind": {
@@ -2063,19 +2141,42 @@
                 ]
               }
             }
+          },
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_relationship",
+              "kind": {
+                "Enum": [
+                  "hostile",
+                  "indifferent",
+                  "distant",
+                  "close",
+                  "allied"
+                ]
+              }
+            }
           }
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
         ]
       },
-      "nullable": [
-        false,
-        false,
-        false
-      ]
+      "nullable": []
     }
   },
   "c8c158cc512a56bc44e150ad878299c43a46fb3af1b70406b3ab7dd0f10e1ddd": {
@@ -2172,6 +2273,90 @@
       },
       "nullable": [
         false
+      ]
+    }
+  },
+  "e531b87894ac9f9a48dfa4ded4547b75abedce67a9a6b200e82c9257e39d0635": {
+    "query": "SELECT id, token as \"token: _\", faction as \"faction: _\", suit as \"suit: _\" FROM tokens WHERE game = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "token: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_token",
+              "kind": {
+                "Enum": [
+                  "sympathy",
+                  "wood",
+                  "keep",
+                  "trade_post",
+                  "bomb",
+                  "snare",
+                  "extortion",
+                  "raid",
+                  "tunnel"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "faction: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 3,
+          "name": "suit: _",
+          "type_info": {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true
       ]
     }
   },
@@ -2293,6 +2478,77 @@
       "nullable": [
         true
       ]
+    }
+  },
+  "fcdfdc56a206721640de1679f500a4cf8c0a6f9e7f072842d98fc2c3b5925f17": {
+    "query": "INSERT INTO tokens (game, id, token, suit) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_token",
+              "kind": {
+                "Enum": [
+                  "sympathy",
+                  "wood",
+                  "keep",
+                  "trade_post",
+                  "bomb",
+                  "snare",
+                  "extortion",
+                  "raid",
+                  "tunnel"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "fe4a0e15b23ede0425040d4e4cf7d2fce991668ecffd3bfc5702a3ad76b0a05e": {
+    "query": "INSERT INTO eyrie_decree (game, card, id, action) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_action",
+              "kind": {
+                "Enum": [
+                  "recruit",
+                  "move",
+                  "battle",
+                  "build"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
     }
   }
 }
