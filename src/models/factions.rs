@@ -23,9 +23,6 @@ pub struct Factions {
     pub cult: Option<Cult>,
 
     pub riverfolk: Option<Riverfolk>,
-    pub commitments: Vec<Commitment>,
-    pub funds: Vec<Fund>,
-    pub payments: Vec<Payment>,
 
     pub duchy: Option<Duchy>,
     pub burrow: Vec<Burrow>,
@@ -46,6 +43,7 @@ impl Factions {
             FactionId::Alliance => self.add_alliance(),
             FactionId::Vagabond | FactionId::Vagabond2 => self.add_vagabond(faction),
             FactionId::Cult => self.add_cult(),
+            FactionId::Riverfolk => self.add_riverfolk(),
             _ => todo!(),
         }
     }
@@ -60,13 +58,15 @@ impl Factions {
         }
     }
 
-    fn add_suited_building(&mut self, building: BuildingId, suit: Suit, n: usize) {
-        for _ in 0..n {
-            self.buildings.push(Building::new(
-                self.buildings.len() as i16 + 1,
-                building,
-                Some(suit),
-            ));
+    fn add_suited_building(&mut self, building: BuildingId, n: usize) {
+        for suit in &[Suit::Fox, Suit::Mouse, Suit::Rabbit] {
+            for _ in 0..n {
+                self.buildings.push(Building::new(
+                    self.buildings.len() as i16 + 1,
+                    building,
+                    Some(*suit),
+                ));
+            }
         }
     }
 
@@ -77,10 +77,12 @@ impl Factions {
         }
     }
 
-    fn add_suited_token(&mut self, token: TokenId, suit: Suit, n: usize) {
-        for _ in 0..n {
-            self.tokens
-                .push(Token::new(self.tokens.len() as i16 + 1, token, Some(suit)));
+    fn add_suited_token(&mut self, token: TokenId, n: usize) {
+        for suit in &[Suit::Fox, Suit::Mouse, Suit::Rabbit] {
+            for _ in 0..n {
+                self.tokens
+                    .push(Token::new(self.tokens.len() as i16 + 1, token, Some(*suit)));
+            }
         }
     }
 
@@ -111,9 +113,7 @@ impl Factions {
 
     fn add_alliance(&mut self) {
         self.alliance = Some(Alliance::new());
-        self.add_suited_building(BuildingId::Base, Suit::Fox, 1);
-        self.add_suited_building(BuildingId::Base, Suit::Mouse, 1);
-        self.add_suited_building(BuildingId::Base, Suit::Rabbit, 1);
+        self.add_suited_building(BuildingId::Base, 1);
         self.add_token(TokenId::Sympathy, 10);
         self.add_warriors(FactionId::Alliance, 10);
     }
@@ -124,10 +124,14 @@ impl Factions {
 
     fn add_cult(&mut self) {
         self.cult = Some(Cult::new());
-        self.add_suited_building(BuildingId::Garden, Suit::Fox, 5);
-        self.add_suited_building(BuildingId::Garden, Suit::Mouse, 5);
-        self.add_suited_building(BuildingId::Garden, Suit::Rabbit, 5);
+        self.add_suited_building(BuildingId::Garden, 5);
         self.add_warriors(FactionId::Cult, 25);
+    }
+
+    fn add_riverfolk(&mut self) {
+        self.riverfolk = Some(Riverfolk::new());
+        self.add_suited_token(TokenId::TradePost, 3);
+        self.add_warriors(FactionId::Riverfolk, 15);
     }
 
     fn finish_vagabonds(&mut self) {
