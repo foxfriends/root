@@ -2,6 +2,7 @@
 
 ![Javscript CI](https://github.com/foxfriends/root/workflows/Javscript%20CI/badge.svg)
 ![Rust CI](https://github.com/foxfriends/root/workflows/Rust%20CI/badge.svg)
+![Database CI](https://github.com/foxfriends/root/workflows/Database%20CI/badge.svg)
 
 This is a digital port of the board game "Root" by Cole Wehrle, with art by Kyle Ferrin.
 
