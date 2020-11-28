@@ -1,7 +1,7 @@
 use super::{CommandError, Socket};
 use crate::models::GameConfig;
 
-#[derive(Debug, serde::Deserialize)]
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum ClientCommand {
     SetName(String),

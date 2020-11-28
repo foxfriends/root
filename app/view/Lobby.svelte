@@ -1,14 +1,27 @@
 <script>
-import { createEventDispatcher } from 'svelte';
+import { complement, equals, identity, prop } from 'ramda';
+import { map, filter, first } from 'rxjs/operators';
+import { createEventDispatcher, onMount } from 'svelte';
 import context from '../context';
 import Action from './component/Action.svelte';
 import Box from './component/Box.svelte';
 import Button from './component/Button.svelte';
 import Text from './component/Text.svelte';
+import Phase from '../types/Phase';
 
 const dispatch = createEventDispatcher();
+const next = () => dispatch('next');
 const back = () => dispatch('back');
 const { state } = context();
+
+onMount(() => state
+  .pipe(
+    filter(identity),
+    map(prop('phase')),
+    first(complement(equals(Phase.LOBBY))),
+  )
+  .subscribe(next));
+
 </script>
 
 <Box flex>

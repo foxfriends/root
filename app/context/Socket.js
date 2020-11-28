@@ -66,7 +66,7 @@ export default class Socket {
   }
 
   async leaveGame() {
-    await this.request({ leaveGame: {} });
+    await this.request("leaveGame");
     this.room = undefined;
   }
 

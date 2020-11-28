@@ -1,14 +1,24 @@
 <script>
+  import Flow from './view/component/Flow.svelte';
   import Cover from './view/Cover.svelte';
   import DialogRoot from './view/component/DialogRoot.svelte';
   import ToastRoot from './view/component/Toast.svelte';
   import { init } from './context';
 
   init();
+
+  async function * app() {
+    yield 'cover';
+    console.log('Game is started!');
+  }
 </script>
 
 <div class='layout'>
-  <Cover />
+  <Flow flow={app} let:state let:next let:abort>
+    {#if state === 'cover'}
+      <Cover on:next={next} />
+    {/if}
+  </Flow>
   <DialogRoot />
   <ToastRoot />
 </div>

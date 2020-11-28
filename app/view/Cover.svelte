@@ -1,6 +1,7 @@
 <script>
 import { cond, equals, identity } from 'ramda';
 import { first } from 'rxjs/operators';
+import { tick, createEventDispatcher } from 'svelte';
 import context from '../context';
 import Dialog from './component/Dialog.svelte';
 import IdentificationForm from './IdentificationForm.svelte';
@@ -14,6 +15,8 @@ import value from '../util/event';
 import logger from '../util/logger';
 
 const { state, socket } = context();
+const dispatch = createEventDispatcher();
+const next = () => dispatch('next');
 
 async function * cover() {
   const username = value(yield 'identification');
@@ -42,6 +45,7 @@ async function * createGame() {
     for (;;) {
       const { name, settings } = value(yield 'create-game');
       try {
+        $state = null;
         await socket.createGame({ name, ...settings });
         break;
       } catch (error) {
@@ -63,6 +67,7 @@ async function * joinGame() {
     for (;;) {
       const name = value(yield 'join-game');
       try {
+        $state = null;
         await socket.joinGame(name);
         break;
       } catch (error) {
@@ -81,17 +86,20 @@ async function * joinGame() {
 
 async function * gameLobby() {
   try {
-    await state.pipe(first(identity)).toPromise();
-    yield 'lobby';
+    const { phase } = await state.pipe(first(identity)).toPromise();
+    if (phase === 'lobby') {
+      yield 'lobby';
+    }
   } catch (error) {
     if (error instanceof Abort) {
-      socket.leaveGame();
-      $state = null;
+      await socket.leaveGame();
       yield * chooseGame();
     } else {
       logger.error(error);
     }
+    return;
   }
+  next();
 }
 </script>
 

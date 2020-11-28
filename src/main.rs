@@ -25,6 +25,7 @@ async fn main() {
         .connect(&database_url)
         .await
         .expect("Database connection failed.");
+
     POOL.set(pool).unwrap();
 
     let dist_dir = std::env::var("root_dist_dir").unwrap_or_else(|_| "dist".to_owned());

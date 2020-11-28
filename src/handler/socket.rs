@@ -135,6 +135,9 @@ impl Socket {
         let mut state = self.state.write().await;
         if let Some(room) = state.room.take() {
             room.leave(state.name.as_deref().unwrap()).await;
+            // We have to tell the room to update explicitly, as we are no longer part of it so
+            // it will not be done automatically after the request.
+            room.send(state.name.as_deref().unwrap(), Message::Update).await;
         }
     }
 
