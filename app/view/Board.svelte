@@ -1,12 +1,9 @@
 <script>
-import { game } from '../store';
-import mapImages from '../image/map-*.jpg';
-import Clearing from './Clearing.svelte';
-import Items from './Items.svelte';
-import BoardPrompts from './BoardPrompts.svelte';
-import Scores from './Scores.svelte';
+import context from '../context';
+import IMG_MAP_AUTUMN from '../image/map-autumn.jpg';
 
-let background;
+const { state } = context();
+
 let boardWidth, boardHeight;
 export let tableWidth, tableHeight;
 
@@ -21,8 +18,8 @@ $: pan = {
   y: Math.floor(Math.min(Math.max(0, targetPan.y), boardHeight * scale - tableHeight)),
 };
 
-function setInitialViewport() {
-  ({ naturalWidth: boardWidth, naturalHeight: boardHeight } = background);
+function setInitialViewport(event) {
+  ({ naturalWidth: boardWidth, naturalHeight: boardHeight } = event.target);
 }
 
 function zoom({ clientX, clientY, deltaY }) {
@@ -52,8 +49,6 @@ function drag({ buttons, movementX, movementY }) {
     targetPan = { x: pan.x - movementX, y: pan.y - movementY };
   }
 }
-
-export let client;
 </script>
 
 <div
@@ -62,29 +57,12 @@ export let client;
   on:mousemove={drag}>
   <div
     class='viewport'
-    style={`transform: translate(-${pan.x}px, -${pan.y}px) scale(${scale})`}>
+    style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale})'>
     <!-- svelte-ignore a11y-missing-attribute -->
     <img
       class='board'
-      src={mapImages[$game.board.name]}
-      on:load={setInitialViewport}
-      bind:this={background} />
-    {#each $game.board.clearings as clearing}
-      <Clearing {...clearing} scale={1} />
-    {/each}
-    {#each $game.board.forests as forest}
-      <Clearing
-        scale={1}
-        x={forest.x}
-        y={forest.y}
-        slots={[]}
-        buildings={[]}
-        pieces={forest.pieces}
-        ruinItems={[]} />
-    {/each}
-    <Items scale={1} />
-    <Scores scale={1} />
-    <BoardPrompts scale={1} {client} />
+      src={IMG_MAP_AUTUMN}
+      on:load={setInitialViewport} />
   </div>
 </div>
 

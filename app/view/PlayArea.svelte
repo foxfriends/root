@@ -1,6 +1,5 @@
 <script>
 import { get } from 'svelte/store';
-import { game, username } from '../store';
 import cardBack from '../image/card/card-shared-back.jpg';
 import cardImages from '../image/card/card-shared-front.*.jpg';
 import factionImages from '../image/card-*-front.jpg';

@@ -1,6 +1,7 @@
 <script>
-  import Flow from './view/component/Flow.svelte';
+  import Flow, { Abort } from './view/component/Flow.svelte';
   import Cover from './view/Cover.svelte';
+  import Table from './view/Table.svelte';
   import DialogRoot from './view/component/DialogRoot.svelte';
   import ToastRoot from './view/component/Toast.svelte';
   import { init } from './context';
@@ -8,8 +9,18 @@
   init();
 
   async function * app() {
-    yield 'cover';
-    console.log('Game is started!');
+    for (;;) {
+      try {
+        yield 'cover';
+        yield 'game';
+      } catch (error) {
+        if (error instanceof Abort) {
+          continue;
+        }
+        // This would be an actual error, so let's just crash...
+        throw error;
+      }
+    }
   }
 </script>
 
@@ -17,6 +28,8 @@
   <Flow flow={app} let:state let:next let:abort>
     {#if state === 'cover'}
       <Cover on:next={next} />
+    {:else}
+      <Table on:leave={abort} />
     {/if}
   </Flow>
   <DialogRoot />

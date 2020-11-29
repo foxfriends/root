@@ -1,32 +1,22 @@
 <script>
-import { game, username, prompts } from '../store';
 import Board from './Board.svelte';
-import PlayArea from './PlayArea.svelte';
-import FactionPicker from './FactionPicker.svelte';
-import TablePrompts from './TablePrompts.svelte';
+// import PlayArea from './PlayArea.svelte';
 
 let windowWidth, windowHeight;
 $: boardHeight = windowHeight;
 $: boardWidth = windowWidth - 350;
 
-export let client;
-$: expanded = $prompts && ($prompts.prices || $prompts.outcast);
+$: expanded = false; // why would this expand?
 </script>
 
 <div class='table'>
-  <div class='board' style={`width: ${boardWidth}px`}>
-    <Board tableWidth={boardWidth} tableHeight={boardHeight} {client} />
+  <div class='board' style='width: {boardWidth}px'>
+    <Board tableWidth={boardWidth} tableHeight={boardHeight} />
   </div>
   <div class='play-area' class:expanded>
-    <PlayArea tableWidth={boardWidth} tableHeight={boardHeight} {client} />
-  </div>
-  <div class='prompts'>
-    <TablePrompts {client} />
+    <!-- PlayArea tableWidth={boardWidth} tableHeight={boardHeight} {client} /-->
   </div>
 </div>
-{#if $game.players[$username].faction === null}
-  <FactionPicker {client} />
-{/if}
 
 <svelte:window
   bind:innerWidth={windowWidth}
@@ -37,6 +27,7 @@ $: expanded = $prompts && ($prompts.prices || $prompts.outcast);
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .board {
@@ -62,13 +53,5 @@ $: expanded = $prompts && ($prompts.prices || $prompts.outcast);
 .play-area:hover,
 .play-area.expanded {
   transform: translateX(-100%);
-}
-
-.prompts {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
 }
 </style>
