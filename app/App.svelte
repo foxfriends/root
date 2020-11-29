@@ -12,7 +12,7 @@
     for (;;) {
       try {
         yield 'cover';
-        yield 'game';
+        yield 'table';
       } catch (error) {
         if (error instanceof Abort) {
           continue;
@@ -28,7 +28,7 @@
   <Flow flow={app} let:state let:next let:abort>
     {#if state === 'cover'}
       <Cover on:next={next} />
-    {:else}
+    {:else if state === 'table'}
       <Table on:leave={abort} />
     {/if}
   </Flow>

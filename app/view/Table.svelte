@@ -1,5 +1,6 @@
 <script>
 import Board from './Board.svelte';
+import FactionPicker from './FactionPicker.svelte';
 // import PlayArea from './PlayArea.svelte';
 
 let windowWidth, windowHeight;
@@ -17,6 +18,8 @@ $: expanded = false; // why would this expand?
     <!-- PlayArea tableWidth={boardWidth} tableHeight={boardHeight} {client} /-->
   </div>
 </div>
+
+<FactionPicker />
 
 <svelte:window
   bind:innerWidth={windowWidth}
@@ -43,7 +46,6 @@ $: expanded = false; // why would this expand?
   left: 100%;
   top: 0;
   bottom: 0;
-  z-index: 1;
   width: calc(100% - 350px);
   transform: translateX(-350px);
   transition: transform 0.2s;

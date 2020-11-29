@@ -1,90 +1,93 @@
 <script>
 import { F } from 'ramda';
-import { game, errorMessage } from '../store';
-import Box from './component/Box.svelte';
-import Faction from '../types/Faction';
+import context from '../context';
+import Action from './component/Action.svelte';
+import Dialog from './component/Dialog.svelte';
 import Picker from './component/Picker.svelte';
-// import images from '../image/card-*-{front,back}.jpg';
+import Button from './component/Button.svelte';
+import Box from './component/Box.svelte';
+import Text from './component/Text.svelte';
+import Faction from '../types/Faction';
 
-const images = {};
+// TODO: locate the images for the moles and crows.
+import IMG_CARD_ALLIANCE_FRONT from '../image/card-alliance-front.jpg';
+import IMG_CARD_ALLIANCE_BACK from '../image/card-alliance-back.jpg';
+import IMG_CARD_CULT_FRONT from '../image/card-cult-front.jpg';
+import IMG_CARD_CULT_BACK from '../image/card-cult-back.jpg';
+import IMG_CARD_EYRIE_FRONT from '../image/card-eyrie-front.jpg';
+import IMG_CARD_EYRIE_BACK from '../image/card-eyrie-back.jpg';
+import IMG_CARD_MARQUISE_FRONT from '../image/card-marquise-front.jpg';
+import IMG_CARD_MARQUISE_BACK from '../image/card-marquise-back.jpg';
+import IMG_CARD_RIVERFOLK_FRONT from '../image/card-riverfolk-front.jpg';
+import IMG_CARD_RIVERFOLK_BACK from '../image/card-riverfolk-back.jpg';
+import IMG_CARD_VAGABOND_FRONT from '../image/card-vagabond-front.jpg';
+import IMG_CARD_VAGABOND_BACK from '../image/card-vagabond-back.jpg';
+import IMG_CARD_VAGABOND2_FRONT from '../image/card-vagabond2-front.jpg';
+import IMG_CARD_VAGABOND2_BACK from '../image/card-vagabond2-back.jpg';
 
-let flips = $game.factions.map(F);
-$: factions = $game.factions
-  .map((name, i) => ({
-    flip: flips[i],
-    name,
-    player: Object.values($game.players).find((player) => player.faction === name),
-  }));
+const images = {
+  [Faction.MARQUISE]: { front: IMG_CARD_MARQUISE_FRONT, back: IMG_CARD_MARQUISE_BACK },
+  [Faction.EYRIE]: { front: IMG_CARD_EYRIE_FRONT, back: IMG_CARD_EYRIE_BACK },
+  [Faction.ALLIANCE]: { front: IMG_CARD_ALLIANCE_FRONT, back: IMG_CARD_ALLIANCE_BACK },
+  [Faction.VAGABOND]: { front: IMG_CARD_VAGABOND_FRONT, back: IMG_CARD_VAGABOND_BACK },
+  [Faction.VAGABOND2]: { front: IMG_CARD_VAGABOND2_FRONT, back: IMG_CARD_VAGABOND2_BACK },
+  [Faction.RIVERFOLK]: { front: IMG_CARD_RIVERFOLK_FRONT, back: IMG_CARD_RIVERFOLK_BACK },
+  [Faction.CULT]: { front: IMG_CARD_CULT_FRONT, back: IMG_CARD_CULT_BACK },
+  // TODO: these two are just using the wrong image for now
+  [Faction.DUCHY]: { front: IMG_CARD_CULT_FRONT, back: IMG_CARD_CULT_BACK },
+  [Faction.CONSPIRACY]: { front: IMG_CARD_CULT_FRONT, back: IMG_CARD_CULT_BACK },
+};
 
-// export let client;
+const { state } = context();
 
-function selection(/*{ detail: { selection } }*/) {
-  // client.notify(Message.direct('FactionPicker:chooseFaction', { faction: $game.factions[selection] }));
-}
+let flipped = {};
+$: console.log(flipped);
 </script>
 
-<div class='overlay'>
-  <Box grow>
-    <Picker let:current={current} options={factions.length} on:select={selection}>
-      {#each factions as faction, i}
-        <div class='faction' class:taken={!!faction.player} class:current={current === i}>
-          <div
-            class='card'
-            class:show-front={!faction.flip}
-            class:show-back={faction.flip}
-            on:click={() => {
-              flips[i] = !flips[i];
-              flips = [...flips];
-            }} >
-            <div class='front' style='background-image: url({images[faction.name].front});' />
-            <div class='back' style='background-image: url({images[faction.name].back});' />
+<Dialog backed>
+  <Box>
+    <div class='content'>
+      <Picker options={$state.factions}>
+        <div slot='option' let:isCurrent let:option={faction} class='option'  class:current={isCurrent}>
+          <div class='faction' class:taken={!!faction.player}>
+            <div
+              class='card'
+              class:show-back={!!flipped[faction.faction]}
+              on:click={() => { flipped[faction.faction] = !flipped[faction.faction]; }}>
+              <div class='front' style='background-image: url({images[faction.faction].front});' />
+              <div class='back' style='background-image: url({images[faction.faction].back});' />
+            </div>
           </div>
         </div>
-      {/each}
-    </Picker>
-  </Box>
-  {#if $errorMessage}
-    <div class='error'>
-      <Box small>
-        { $errorMessage }
-      </Box>
+        <div slot='select' let:current>
+          <Action action='chooseFaction(choose({current.faction}))' let:perform>
+            <Button on:click={perform}>
+              <Text text='select' />
+            </Button>
+          </Action>
+        </div>
+      </Picker>
     </div>
-  {/if}
-</div>
+  </Box>
+</Dialog>
 
 <style>
-.overlay {
-  position: absolute;
-  z-index: 5;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  box-sizing: border-box;
-  display: flex;
-  align-items: stretch;
-  justify-content: stretch;
-  background-color: rgba(0, 0, 0, 0.4);
-  padding: 64px 128px;
+.content {
+  width: 80vw;
+  height: 80vh;
 }
 
-.error {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  height: 128px;
-}
-
-.faction {
+.option {
   position: absolute;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   perspective: 2000px;
+}
+
+.faction {
+  width: 100%;
+  height: 100%;
 }
 
 .faction.taken::after {
@@ -104,9 +107,8 @@ function selection(/*{ detail: { selection } }*/) {
   font-size: 20px;
 }
 
-.faction:not(.current) {
-  opacity: 0;
-  pointer-events: none;
+.option:not(.current) {
+  display: none;
 }
 
 .card {

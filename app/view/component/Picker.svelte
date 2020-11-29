@@ -1,9 +1,7 @@
 <script>
 import { createEventDispatcher } from 'svelte';
-import Text from './Text.svelte';
-import arrow from '../../image/arrow.svg';
-
-const dispatch = createEventDispatcher();
+import Button from './Button.svelte';
+import IMG_ARROW from '../../image/arrow.svg';
 
 export let options;
 let current = 0;
@@ -11,23 +9,21 @@ let current = 0;
 
 <div class='picker'>
   <div class='content'>
-    <button
-      class='button'
-      on:click={() => current = (current + options - 1) % options}>
-      <img src={arrow} width={55} alt='→' />
-    </button>
+    <Button on:click={() => current = (current + options.length - 1) % options.length}>
+      <img src={IMG_ARROW} width={55} alt='→' />
+    </Button>
     <div class='items'>
-      <slot {current} />
+      {#each options as option, i}
+        <slot {option} isCurrent={current === i} name='option' />
+      {/each}
     </div>
-    <button
-      class='button'
-      on:click={() => current = (current + 1) % options}>
-      <img src={arrow} class='reverse' width={55} alt='←' />
-    </button>
+    <Button on:click={() => current = (current + 1) % options.length}>
+      <img src={IMG_ARROW} class='reverse' width={55} alt='←' />
+    </Button>
   </div>
-  <button class='select' on:click={() => dispatch('select', { selection: current })}>
-    <Text text='select' />
-  </button>
+  <div class='select'>
+    <slot name='select' current={options[current]} />
+  </div>
 </div>
 
 <style>
@@ -39,33 +35,16 @@ let current = 0;
   height: 100%;
 }
 
-.select,
-.button {
-  background: none;
-  border: none;
-  padding: 16px;
-  font-family: var(--font-family--display);
-  font-size: 20px;
-  color: var(--color--accent);
-  cursor: pointer;
-}
-
-.button {
-  margin: 0 8px;
-}
-
-.button:hover {
-  opacity: 0.5;
-}
-
-.select:hover {
-  color: var(--color--accent__hover);
+.select {
+  flex-basis: 50px;
 }
 
 .content {
   position: relative;
   height: 100%;
   width: 100%;
+  flex-basis: 0;
+  flex-grow: 1;
   display: flex;
   align-items: center;
 }

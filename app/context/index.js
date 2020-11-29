@@ -4,6 +4,7 @@ import { setContext, getContext, onDestroy } from 'svelte';
 import StoreSubject from './StoreSubject';
 import Socket from './Socket';
 import { parse } from '../util/lumber';
+import logger from '../util/logger';
 
 export default function context() {
   return {
@@ -26,6 +27,9 @@ export function init() {
       map(rmap(parse)),
     )
     .subscribe(actions);
+
+  $: state.subscribe(::logger.log);
+  $: actions.subscribe(::logger.log);
 
   setContext('@root/state', state);
   setContext('@root/actions', actions);

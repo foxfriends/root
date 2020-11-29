@@ -4,9 +4,10 @@
   const dialogs = writable([]);
 
   export class Entry {
-    constructor(element, dispatch) {
+    constructor(element, dispatch, backed) {
       this.element = element;
       this.dispatch = dispatch;
+      this.backed = backed;
     }
 
     remove() { this.dispatch('remove'); }
@@ -32,6 +33,7 @@
 </script>
 
 <script>
+  import { last } from 'ramda';
   import { fly } from 'svelte/transition';
 
   const containers = [];
@@ -40,6 +42,9 @@
 
 {#if $dialogs.length}
   <div class='container'>
+    {#if last($dialogs).backed}
+      <div class='backing' />
+    {/if}
     {#each $dialogs as entry, i}
       <div
         transition:fly={{ y: 50 }}
@@ -61,6 +66,15 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+  }
+
+  .backing {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.35);
   }
 
   .dialog {

@@ -7,8 +7,10 @@
   let container;
   let entry;
 
+  export let backed = false;
+
   onMount(() => {
-    entry = new Entry(container, dispatch);
+    entry = new Entry(container, dispatch, backed);
     push(entry);
     return () => pop(entry);
   });
