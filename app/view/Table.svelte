@@ -11,7 +11,7 @@ $: expanded = false; // why would this expand?
 </script>
 
 <div class='table'>
-  <div class='board' style='width: {boardWidth}px'>
+  <div class='board' style='width: {boardWidth}px;'>
     <Board tableWidth={boardWidth} tableHeight={boardHeight} />
   </div>
   <div class='play-area' class:expanded>

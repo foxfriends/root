@@ -54,7 +54,7 @@ function drag({ buttons, movementX, movementY }) {
   on:mousemove={drag}>
   <div
     class='viewport'
-    style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale})'>
+    style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale});'>
     <!-- svelte-ignore a11y-missing-attribute -->
     <img
       class='board'
