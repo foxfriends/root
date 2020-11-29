@@ -11,7 +11,7 @@ actions(Name, game { factions: Factions, .. }, choose(Faction)) :-
 perform(Name, game { factions: Factions, ..State }, choose(Faction), game { factions: NewFactions, ..State }) :-
     update(
         Factions,
-        faction { faction: faction(Faction), player: ?, ..Faction },
-        faction { faction: faction(Faction), player: Name, ..Faction },
+        faction { faction: faction(Faction), player: ?, ..Rest },
+        faction { faction: faction(Faction), player: Name, ..Rest },
         NewFactions,
     ).
