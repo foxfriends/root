@@ -1,5 +1,4 @@
 <script>
-import { createEventDispatcher } from 'svelte';
 import Button from './Button.svelte';
 import IMG_ARROW from '../../image/arrow.svg';
 

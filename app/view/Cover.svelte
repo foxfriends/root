@@ -1,7 +1,7 @@
 <script>
 import { cond, equals, identity } from 'ramda';
 import { first } from 'rxjs/operators';
-import { tick, createEventDispatcher } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 import context from '../context';
 import Dialog from './component/Dialog.svelte';
 import IdentificationForm from './IdentificationForm.svelte';

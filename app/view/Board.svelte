@@ -1,8 +1,5 @@
 <script>
-import context from '../context';
 import IMG_MAP_AUTUMN from '../image/map-autumn.jpg';
-
-const { state } = context();
 
 let boardWidth, boardHeight;
 export let tableWidth, tableHeight;

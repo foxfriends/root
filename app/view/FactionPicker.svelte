@@ -1,5 +1,4 @@
 <script>
-import { F } from 'ramda';
 import context from '../context';
 import Action from './component/Action.svelte';
 import Dialog from './component/Dialog.svelte';
@@ -41,7 +40,6 @@ const images = {
 const { state } = context();
 
 let flipped = {};
-$: console.log(flipped);
 </script>
 
 <Dialog backed>

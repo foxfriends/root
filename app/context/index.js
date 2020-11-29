@@ -28,8 +28,8 @@ export function init() {
     )
     .subscribe(actions);
 
-  $: state.subscribe(::logger.log);
-  $: actions.subscribe(::logger.log);
+  const logState = state.subscribe(::logger.log);
+  const logActions = actions.subscribe(::logger.log);
 
   setContext('@root/state', state);
   setContext('@root/actions', actions);
@@ -38,5 +38,7 @@ export function init() {
   onDestroy(() => {
     updateState.unsubscribe();
     updateActions.unsubscribe();
+    logState.unsubscribe();
+    logActions.unsubscribe();
   });
 }

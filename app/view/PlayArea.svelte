@@ -1,5 +1,4 @@
 <script>
-import { get } from 'svelte/store';
 import cardBack from '../image/card/card-shared-back.jpg';
 import cardImages from '../image/card/card-shared-front.*.jpg';
 import factionImages from '../image/card-*-front.jpg';
@@ -7,8 +6,11 @@ import FactionCard from './FactionCard.svelte';
 import Deck from './Deck.svelte';
 import Pile from './Pile.svelte';
 
-let focusedPlayer = get(username);
-$: focusedIndex = $game.factions.indexOf($game.players[focusedPlayer].faction);
+// let focusedPlayer = get(username);
+// $: focusedIndex = $game.factions.indexOf($game.players[focusedPlayer].faction);
+let focusedPlayer = '';
+let focusedIndex = 0;
+let game = {};
 
 function cardImage({ key }) {
   return cardImages[key];
