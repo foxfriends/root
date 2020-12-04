@@ -5,7 +5,7 @@
 
 // A player who has not yet chosen a faction may choose a faction that has not yet been chosen.
 actions(Name, game { factions: Factions, .. }, choose(Faction)) :-
-    notin(faction { player: Name, .. }, Factions),
+    notin(faction { player: !Name, .. }, Factions),
     in(faction { faction: faction(Faction), player: ?, .. }, Factions).
 
 perform(Name, game { factions: Factions, ..State }, choose(Faction), game { factions: NewFactions, ..State }) :-

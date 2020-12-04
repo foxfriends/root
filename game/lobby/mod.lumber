@@ -1,13 +1,13 @@
-:- use(@core::list(contains/2, update/4, length/2)).
+:- use(@core::list(in/2, update/4, length/2)).
 
 :- pub(actions/3).
 :- pub(perform/4).
 
 // Players can become/un-become ready at any time.
 actions(Name, game { players: Players, .. }, ready) :-
-    contains(player { name: Name, ready: false, .. }, Players).
+    in(player { name: Name, ready: false, .. }, Players).
 actions(Name, game { players: Players, .. }, unready) :-
-    contains(player { name: Name, ready: true, .. }, Players).
+    in(player { name: Name, ready: true, .. }, Players).
 
 perform(Name, game { players: Players, ..State }, ready, game { players: NewPlayers, ..State }) :-
     update(
