@@ -8,10 +8,14 @@ actions(Name, game { factions: Factions, .. }, choose(Faction)) :-
     notin(faction { player: !Name, .. }, Factions),
     in(faction { faction: faction(Faction), player: ?, .. }, Factions).
 
-perform(Name, game { factions: Factions, ..State }, choose(Faction), game { factions: NewFactions, ..State }) :-
+allChosen([]).
+allChosen([faction { player: !, .. }, ..Factions]) :- allChosen(Factions).
+
+perform(Name, game { factions: Factions, phase: phase(chooseFaction), ..State }, choose(Faction), game { factions: NewFactions, phase: phase(Phase), ..State }) :-
     update(
         Factions,
         faction { faction: faction(Faction), player: ?, ..Rest },
         faction { faction: faction(Faction), player: Name, ..Rest },
         NewFactions,
-    ).
+    ),
+    (allChosen(NewFactions) ->> Phase <- setup; Phase <- chooseFaction).
