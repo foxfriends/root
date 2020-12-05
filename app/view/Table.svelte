@@ -1,7 +1,11 @@
 <script>
+import context from '../context';
 import Board from './Board.svelte';
 import FactionPicker from './FactionPicker.svelte';
+import Phase from '../types/Phase';
 // import PlayArea from './PlayArea.svelte';
+
+const { state } = context();
 
 let windowWidth, windowHeight;
 $: boardHeight = windowHeight;
@@ -19,7 +23,9 @@ $: expanded = false; // why would this expand?
   </div>
 </div>
 
-<FactionPicker />
+{#if $state.phase === Phase.CHOOSE_FACTION}
+  <FactionPicker />
+{/if}
 
 <svelte:window
   bind:innerWidth={windowWidth}
