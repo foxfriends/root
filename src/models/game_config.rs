@@ -1,4 +1,4 @@
-use super::{Assignment, FactionId, GameMap};
+use super::{Assignment, Deck, FactionId, GameMap};
 
 #[derive(Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize)]
 pub struct GameConfig {
@@ -6,4 +6,5 @@ pub struct GameConfig {
     pub factions: Vec<FactionId>,
     pub assignment: Assignment,
     pub map: GameMap,
+    pub deck: Deck,
 }

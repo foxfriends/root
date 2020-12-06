@@ -32,6 +32,10 @@ winter = Winter
 lake = Lake
 caves = Caves
 
+deck = Deck
+standard = Standard
+exiles_and_partisans = Exiles and Partisans
+
 suit-fox = Fox
 suit-rabbit = Rabbit
 suit-mouse = Mouse

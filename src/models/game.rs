@@ -151,7 +151,7 @@ impl Game {
     }
 
     pub fn create(config: GameConfig) -> Self {
-        let cards = Deck::Standard.create();
+        let cards = config.deck.create();
         let dominance = cards
             .iter()
             .filter(|card| card.card() == CardId::Dominance)
@@ -212,7 +212,7 @@ impl Game {
             name: config.name,
             assignment: config.assignment,
             map: config.map,
-            deck: Deck::Standard,
+            deck: config.deck,
             factions: config
                 .factions
                 .iter()
