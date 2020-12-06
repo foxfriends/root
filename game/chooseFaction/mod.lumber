@@ -1,4 +1,5 @@
 :- use(@core::list(update/4, in/2, notin/2)).
+:- use(@core(equal/2)).
 
 :- pub(actions/3).
 :- pub(perform/4).
@@ -11,11 +12,11 @@ actions(Name, game { factions: Factions, .. }, choose(Faction)) :-
 allChosen([]).
 allChosen([faction { player: !, .. }, ..Factions]) :- allChosen(Factions).
 
-perform(Name, game { factions: Factions, phase: phase(chooseFaction), ..State }, choose(Faction), game { factions: NewFactions, phase: phase(Phase), ..State }) :-
+perform(Name, game { factions: Factions, phase: phase(choose_faction), ..State }, choose(Faction), game { factions: NewFactions, phase: phase(Phase), ..State }) :-
     update(
         Factions,
         faction { faction: faction(Faction), player: ?, ..Rest },
         faction { faction: faction(Faction), player: Name, ..Rest },
         NewFactions,
     ),
-    (allChosen(NewFactions) ->> Phase <- setup; Phase <- chooseFaction).
+    (allChosen(NewFactions) ->> equal(Phase, setup); equal(Phase, choose_faction)).
