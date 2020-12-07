@@ -7,11 +7,14 @@ thread_local! {
 }
 
 #[cfg(test)]
-mod test {
-    use super::*;
+#[test]
+fn lumber_tests() {
+    let result = Lumber::builder()
+        .test(true)
+        .build_from_file("game/main.lumber");
 
-    #[test]
-    fn lumber_program_should_compile() {
-        LUMBER.with(|_| {})
+    if let Err(error) = result {
+        println!("{}", error);
+        assert!(false);
     }
 }

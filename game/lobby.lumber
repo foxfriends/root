@@ -33,12 +33,11 @@ all_ready([player { ready: true, .. }, ..Rest]) :- all_ready(Rest).
 actions(Name, game { players: Players, factions: Factions, .. }, start) :-
     equal([player { name: Name, .. }, ..], Players),
     length(Players, N),
-    length(Factions, M), // NOTE: length cannot be checked, only computed... is that a bug?
-    @core::equal(N, M),
+    length(Factions, N),
     all_ready(Players).
 
 // NOTE: This is kind of a pain, how assignment has to be copied over manually like this. Let's keep
-// on how often this comes up, maybe it's a pattern we should account for in the language?
+// an eye on how often this comes up, maybe it's a pattern we should account for in the language?
 perform(
     _,
     game { phase: phase(lobby), assignment: assignment(random), ..State },
