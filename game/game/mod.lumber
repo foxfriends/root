@@ -1,0 +1,24 @@
+:- use(@core(equal/2)).
+:- use(@core::list(in/2, notin/2)).
+
+:- mod(gameMap).
+
+:- pub(gameOwner/2).
+gameOwner(game { players: [player { name: Name, .. }, ..], .. }, Name).
+
+:- pub(phase/2).
+phase(game { phase: phase(Phase), .. }, Phase).
+
+:- pub(playerFaction/3).
+playerFaction(game { factions: Factions, .. }, Name, Faction) :-
+    in(faction { faction: Faction, player: Name, .. }, Factions).
+
+:- pub(placeToken/4).
+placeToken(
+    game { tokens: Tokens, placed_tokens: PlacedTokens, ..State },
+    Token,
+    Position,
+    game { tokens: Tokens, placed_tokens: [placed_token { token: Id, position: Position }, ..PlacedTokens], ..State },
+) :-
+    in(token { token: token(Token), id: Id, .. }, Tokens),
+    notin(placed_token { token: Id, .. }, PlacedTokens).

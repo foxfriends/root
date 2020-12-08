@@ -1,10 +1,12 @@
 :- mod(lobby).
 :- mod(chooseFaction).
+:- mod(game).
+:- mod(setup).
+
+:- use(game(phase/2)).
 
 :- pub(actions/3).
 :- pub(command/5).
-
-isPhase(Phase, game { phase: phase(Phase), .. }).
 
 // NOTE: kind of a pain that this needs to be copy pasted so many times. Is this just how it's
 // designed, or can that be improved? I suspect higher-order predicates may do the trick here.
@@ -12,19 +14,27 @@ isPhase(Phase, game { phase: phase(Phase), .. }).
 
 // Lobby phase
 actions(Name, State, lobby(LobbyAction)) :-
-    isPhase(lobby, State),
+    phase(State, lobby),
     lobby::actions(Name, State, LobbyAction).
 perform(Name, State, lobby(LobbyAction), NewState) :-
-    isPhase(lobby, State),
+    phase(State, lobby),
     lobby::perform(Name, State, LobbyAction, NewState).
 
 // Choose Faction phase
 actions(Name, State, chooseFaction(ChooseFactionAction)) :-
-    isPhase(choose_faction, State),
+    phase(State, choose_faction),
     chooseFaction::actions(Name, State, ChooseFactionAction).
 perform(Name, State, chooseFaction(ChooseFactionAction), NewState) :-
-    isPhase(choose_faction, State),
+    phase(State, choose_faction),
     chooseFaction::perform(Name, State, ChooseFactionAction, NewState).
+
+// Choose Faction phase
+actions(Name, State, setup(SetupAction)) :-
+    phase(State, setup),
+    setup::actions(Name, State, SetupAction).
+perform(Name, State, setup(SetupAction), NewState) :-
+    phase(State, setup),
+    setup::perform(Name, State, SetupAction, NewState).
 
 // Public function for running commands and returning actions at the same time
 command(Name, State, Command, NewState, Actions) :-

@@ -1,0 +1,11 @@
+:- pub(cornerClearing/1).
+
+// Refer to the clearing labels from the Rootbotics expansion:
+//    https://clockroot.seiyria.com/
+// Forests are labelled arbitrarily afterwards, not so important.
+
+// The corner clearings are always labelled 1, 2, 3, and 4
+cornerClearing(1).
+cornerClearing(2).
+cornerClearing(3).
+cornerClearing(4).

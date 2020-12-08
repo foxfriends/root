@@ -1,0 +1,16 @@
+:- use(@core(equal/2)).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::gameMap).
+
+actions(Name, State, placeKeep(Position)) :-
+    playerFaction(State, Name, marquise),
+    cornerClearing(Position).
+
+perform(_, State, placeKeep(Position), NewState) :-
+    placeToken(State, keep, Position, NewState).
+    // TODO: Place the warriors as well. Who knows if this even works
+    // though, I haven't tested it.
