@@ -1,5 +1,5 @@
-:- use(@core::list(update/4, in/2, notin/2)).
-:- use(@core(equal/2)).
+:- use(@core::list).
+:- use(@core).
 
 :- pub(actions/3).
 :- pub(perform/4).

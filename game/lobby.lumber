@@ -1,5 +1,5 @@
-:- use(@core::list(in/2, update/4, length/2)).
-:- use(@core(equal/2)).
+:- use(@core::list).
+:- use(@core).
 :- use(~::game).
 
 :- pub(actions/3).

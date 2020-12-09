@@ -796,7 +796,7 @@ dependencies = [
 [[package]]
 name = "lumber"
 version = "0.1.0"
-source = "git+https://github.com/foxfriends/lumber#efb95e0b2fdb3fd527055934aeb2e0ff4aef62b9"
+source = "git+https://github.com/foxfriends/lumber#08c5c5f030cfa193bf599aaa7509c7815856c853"
 dependencies = [
  "paw",
  "pest",
