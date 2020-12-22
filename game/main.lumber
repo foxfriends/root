@@ -40,5 +40,5 @@ perform(Name, State, setup(SetupAction), NewState) :-
 command(Name, State, Command, NewState, Actions) :-
     actions(Name, State, Command), // ensure that this action is permitted before doing it
     perform(Name, State, Command, NewState) ->
-    Actions <- [Action : actions(Name, NewState, Action)],
+    Actions =:= [Action : actions(Name, NewState, Action)],
     @core::print(Actions).
