@@ -1,0 +1,24 @@
+:- use(@core).
+:- use(@core::list).
+
+:- pub(placeWarrior/4).
+placeWarrior(
+    game { warriors: Warriors, placed_warriors: Placed, ..State },
+    Id,
+    Position,
+    game { warriors: Warriors, placed_warriors: [placed_warrior { warrior: Id, position: Position }, ..Placed], ..State },
+) :-
+    in(warrior { id: Id, .. }, Warriors),
+    notin(placed_warriors { warrior: Id, .. }, Placed).
+
+:- pub(warrior/4).
+warrior(
+    game { warriors: Warriors, plcaed_warriors: Placed, .. },
+    Id,
+    Faction,
+    Position,
+) :-
+    in(warrior { id: Id, faction: faction(Faction), .. }, Warriors), (
+        in(placed_warrior { warrior: Id, position: Position }, Placed) ->> true;
+        Position =:= unplaced
+    ).

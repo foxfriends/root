@@ -5,12 +5,16 @@
 
 :- use(~::game).
 :- use(~::game::gameMap).
+:- use(~::game::tokens).
+:- use(~::game::warriors).
 
 actions(Name, State, placeKeep(Position)) :-
     playerFaction(State, Name, marquise),
+    token(State, _, keep, unplaced),
     cornerClearing(Position).
 
 perform(_, State, placeKeep(Position), NewState) :-
-    placeToken(State, keep, Position, NewState).
+    token(State, Keep, keep, unplaced),
+    placeToken(State, Keep, Position, NewState).
     // TODO: Place the warriors as well. Who knows if this even works
     // though, I haven't tested it.

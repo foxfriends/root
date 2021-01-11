@@ -1,0 +1,24 @@
+:- use(@core).
+:- use(@core::list).
+
+:- pub(placeToken/4).
+placeToken(
+    game { tokens: Tokens, placed_tokens: Placed, ..State },
+    Id,
+    Position,
+    game { tokens: Tokens, placed_tokens: [placed_token { token: Id, position: Position }, ..Placed], ..State },
+) :-
+    in(token { id: Id, .. }, Tokens),
+    notin(placed_token { token: Id, .. }, Placed).
+
+:- pub(token/4).
+token(
+    game { tokens: Tokens, placed_tokens: Placed, .. },
+    Id,
+    Kind,
+    Position,
+) :-
+    in(token { id: Id, token: token(Kind), .. }, Tokens), (
+        in(placed_token { token: Id, position: Position }, Placed) ->> true;
+        Position =:= unplaced
+    ).
