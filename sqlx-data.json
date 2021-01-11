@@ -1160,6 +1160,19 @@
       ]
     }
   },
+  "5f1cf6a2d88efb71b282cee3aae0b8dc93ffb197e79a3b4be7e51229c77fa81f": {
+    "query": "INSERT INTO water (game, clearing) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "5f9e595467cdb814c2920570a9ea2aa571d6b7e7689404d39c6cb795ad514708": {
     "query": "SELECT quest, faction as \"faction: _\" FROM completed_quests WHERE game = $1",
     "describe": {
@@ -1254,6 +1267,21 @@
         "Left": [
           "Varchar",
           "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "6b6699a3ac6ab2370d68d9ec6460a7e09f680113c6e727453b4af2169cd83b20": {
+    "query": "INSERT INTO connections (game, position_a, position_b, closed) VALUES ($1, $2, $3, $4) ON CONFLICT (game, position_a, position_b) DO UPDATE SET closed = $4",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2",
+          "Bool"
         ]
       },
       "nullable": []
@@ -1579,6 +1607,19 @@
       ]
     }
   },
+  "90aab9dcadcfcc273caaf72376acdde1e1a0398d8bd3b8724955618d44f0e7b8": {
+    "query": "INSERT INTO forests (game, position) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "9280a833cc04d0a481b5472a3d1668dd781f87c6ac08e95c5b7665bdd5b8036e": {
     "query": "INSERT INTO dominance (game, card, faction) VALUES ($1, $2, $3) ON CONFLICT (game, card) DO UPDATE SET faction = $3",
     "describe": {
@@ -1809,6 +1850,20 @@
               }
             }
           }
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "a3f0e88f07654535c16e0a9c4ca7a7b28ef88e45a0aa670d2d428c90d70238fa": {
+    "query": "INSERT INTO rivers (game, position_a, position_b) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2"
         ]
       },
       "nullable": []

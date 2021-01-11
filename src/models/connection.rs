@@ -13,9 +13,13 @@ impl Connection {
     pub fn new(position_a: &Position, position_b: &Position) -> Self {
         let a = std::cmp::min(position_a.id(), position_b.id());
         let b = std::cmp::max(position_a.id(), position_b.id());
-        Self { position_a: a, position_b: b, closed: false }
+        Self {
+            position_a: a,
+            position_b: b,
+            closed: false,
+        }
     }
-    
+
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
         query_as!(
             Self,

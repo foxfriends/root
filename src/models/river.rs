@@ -12,7 +12,10 @@ impl River {
     pub fn new(position_a: &Water, position_b: &Water) -> Self {
         let a = std::cmp::min(position_a.position(), position_b.position());
         let b = std::cmp::max(position_a.position(), position_b.position());
-        Self { position_a: a, position_b: b }
+        Self {
+            position_a: a,
+            position_b: b,
+        }
     }
 
     pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {

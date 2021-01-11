@@ -25,7 +25,9 @@ impl Forest {
             "INSERT INTO forests (game, position) VALUES ($1, $2) ON CONFLICT DO NOTHING",
             game,
             self.position,
-        ).execute(conn).await?;
+        )
+        .execute(conn)
+        .await?;
         Ok(())
     }
 }

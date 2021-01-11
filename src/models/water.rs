@@ -29,7 +29,9 @@ impl Water {
             "INSERT INTO water (game, clearing) VALUES ($1, $2) ON CONFLICT DO NOTHING",
             game,
             self.clearing,
-        ).execute(conn).await?;
+        )
+        .execute(conn)
+        .await?;
         Ok(())
     }
 }
