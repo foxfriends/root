@@ -14,13 +14,17 @@ pub struct Clearing {
 }
 
 impl Clearing {
-    /// Creates a new clearing, at the specified position.
+    /// Creates a new clearing at the specified position.
     pub fn new(position: &Position, suit: Suit, slots: i16) -> Self {
         Self {
             position: position.id(),
             suit,
             slots,
         }
+    }
+
+    pub fn position(&self) -> i16 {
+        self.position
     }
 
     /// Load the clearings for a game from the database.

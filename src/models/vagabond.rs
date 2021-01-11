@@ -32,7 +32,7 @@ impl Vagabond {
 
     pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
-            r#"INSERT INTO vagabond (game, faction, vagabond, position) VALUES ($1, $2, $3, $4) ON CONFLICT (game, faction) DO UPDATE SET vagabond = $3, position = $4"#,
+            "INSERT INTO vagabond (game, faction, vagabond, position) VALUES ($1, $2, $3, $4) ON CONFLICT (game, faction) DO UPDATE SET vagabond = $3, position = $4",
             game,
             self.faction as FactionId,
             self.vagabond as Option<VagabondId>,
