@@ -1,5 +1,6 @@
 :- use(@core).
 :- use(@core::list).
+:- use(^::gameMap(clearing/4)).
 
 :- pub(placeToken/4).
 placeToken(
@@ -8,6 +9,7 @@ placeToken(
     Position,
     game { tokens: Tokens, placed_tokens: [placed_token { token: Id, position: Position }, ..Placed], ..State },
 ) :-
+    clearing(State, Position, _, _),
     in(token { id: Id, .. }, Tokens),
     notin(placed_token { token: Id, .. }, Placed).
 

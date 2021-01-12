@@ -15,6 +15,13 @@ actions(Name, State, placeKeep(Position)) :-
 
 perform(_, State, placeKeep(Position), NewState) :-
     token(State, Keep, keep, unplaced),
-    placeToken(State, Keep, Position, NewState).
-    // TODO: Place the warriors as well. Who knows if this even works
-    // though, I haven't tested it.
+    placeToken(State, Keep, Position, State2),
+    Warriors =:= [Id : warrior(State, Id, marquise, unplaced)],
+    Clearings =:= [Id : clearing(State, Id, _, _), (oppositeCorner(Position, Id) ->> false; true)],
+    zipPlaceWarriors(State2, Warriors, Clearings, NewState).
+
+zipPlaceWarriors(State, [], _, State).
+zipPlaceWarriors(State, _, [], State).
+zipPlaceWarriors(State, [W, ..Ws], [C, ..Cs], NewState) :-
+    placeWarrior(State, W, C, State2),
+    zipPlaceWarriors(State2, Ws, Cs, NewState).

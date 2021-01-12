@@ -1,5 +1,6 @@
 :- use(@core).
 :- use(@core::list).
+:- use(^::gameMap(clearing/4)).
 
 :- pub(placeWarrior/4).
 placeWarrior(
@@ -8,6 +9,7 @@ placeWarrior(
     Position,
     game { warriors: Warriors, placed_warriors: [placed_warrior { warrior: Id, position: Position }, ..Placed], ..State },
 ) :-
+    clearing(State, Position, _, _),
     in(warrior { id: Id, .. }, Warriors),
     notin(placed_warriors { warrior: Id, .. }, Placed).
 

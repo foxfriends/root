@@ -1,11 +1,24 @@
-:- pub(cornerClearing/1).
+:- use(@core::list(in/2)).
 
 // Refer to the clearing labels from the Rootbotics expansion:
 //    https://clockroot.seiyria.com/
 // Forests are labelled arbitrarily afterwards, not so important.
 
 // The corner clearings are always labelled 1, 2, 3, and 4
+:- pub(cornerClearing/1).
 cornerClearing(1).
 cornerClearing(2).
 cornerClearing(3).
 cornerClearing(4).
+
+:- pub(clearing/4).
+clearing(game { clearings: Clearings, .. }, Id, Suit, Slots) :- in(clearing { position: Id, suit: suit(Suit), slots: Slots, .. }, Clearings).
+
+:- pub(forest/2).
+forest(game { forests: Forests, .. }, Id) :- in(forest { position: Id, .. }, Forests).
+
+:- pub(oppositeCorner/2).
+oppositeCorner(1, 3).
+oppositeCorner(2, 4).
+oppositeCorner(3, 1).
+oppositeCorner(4, 2).
