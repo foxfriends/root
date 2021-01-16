@@ -1,0 +1,14 @@
+:- pub(actions/3).
+:- pub(perform/4).
+:- use(~::game).
+
+:- mod(marquise).
+
+actions(Name, State, Action) :-
+    turn(State, marquise),
+    playerFaction(State, Name, marquise),
+    marquise::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    turn(State, marquise),
+    playerFaction(State, Name, marquise),
+    marquise::perform(Name, State, Action, NewState).

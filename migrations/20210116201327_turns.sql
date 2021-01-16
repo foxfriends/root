@@ -1,0 +1,2 @@
+ALTER TABLE games ADD COLUMN turn enum_faction NOT NULL;
+ALTER TABLE games ADD COLUMN action SMALLINT NOT NULL;

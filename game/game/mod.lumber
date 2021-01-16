@@ -1,6 +1,8 @@
+:- use(@core).
 :- use(@core::list(in/2)).
 
 :- mod(gameMap).
+:- mod(buildings).
 :- mod(tokens).
 :- mod(warriors).
 
@@ -8,7 +10,56 @@
 gameOwner(game { players: [player { name: Name, .. }, ..], .. }, Name).
 
 :- pub(phase/2).
-phase(game { phase: phase(Phase), .. }, Phase).
+phase(game { phase: phase(P), .. }, P).
+setPhase(game { phase: _, ..G }, P, game { phase: phase(P), ..G }).
+
+:- pub(turn/2).
+turn(game { turn: faction(T), .. }, T).
+setTurn(game { turn: _, ..G }, T, game { turn: turn(T), ..G }).
+
+:- pub(action/2).
+action(game { action: A, .. }, A).
+setAction(game { action: _, ..G }, A, game { action: A, ..G }).
+
+:- pub(doneAction/2).
+doneAction(G, G2) :-
+    action(G, A),
+    setAction(G, A + 1, G2).
+
+setupOrder(marquise, eyrie).
+setupOrder(eyrie, alliance).
+setupOrder(alliance, vagabond).
+setupOrder(vagabond, vagabond2).
+setupOrder(vagabond2, cult).
+setupOrder(cult, riverfolk).
+setupOrder(riverfolk, duchy).
+setupOrder(duchy, conspiracy).
+
+turnOrder(game { factions: Fs, .. }, T, F) ::-
+    turnOrder(Fs, T, F) ->> true;
+    [faction { faction: faction(F), .. }, ..] =:= Fs.
+turnOrder([faction { faction: faction(T), .. }, faction { faction: faction(F), .. }, ..], T, F) ::- true.
+turnOrder([faction { faction: faction(_), .. }, ..Fs], T, F) :- turnOrder(Fs, T, F).
+
+:- pub(doneTurn/2).
+doneTurn(G, NG) :-
+    phase(G, setup),
+    turn(G, T),
+    (setupOrder(T, U) ->>
+        setTurn(G, U, G2),
+        (playerFaction(G2, _, U) ->> setAction(G2, 0, NG); doneTurn(G2, NG))
+    ;   setPhase(G2, birdsong, G3),
+        setAction(G3, 0, G4),
+        G4 =:= game { factions: [{ faction: faction(F), .. }, ..], .. },
+        setTurn(G4, F, NG)
+    ).
+doneTurn(G, NG) :-
+    phase(G, evening),
+    turn(G, T),
+    turnOrder(G, T, U),
+    setTurn(G, U, G2),
+    setPhase(G2, birdsong, G3),
+    setAction(G3, 0, NG).
 
 :- pub(playerFaction/3).
 playerFaction(game { factions: Factions, .. }, Name, Faction) :-

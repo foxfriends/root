@@ -1,0 +1,129 @@
+:- use(@core).
+:- use(@core::list).
+:- use(^::gameMap(clearing/4)).
+
+:- pub(placeBuilding/4).
+placeBuilding(
+    G,
+    Id,
+    Position,
+    game { buildings: Buildings, built_buildings: [built_building { building: Id, position: Position }, ..Built], ..State },
+) :-
+    G =:= game { buildings: Buildings, built_buildings: Built, ..State },
+    slotAvailable(G, Position),
+    in(building { id: Id, .. }, Buildings),
+    (buildingSuit(G, Id, Suit) ->> clearing(G, Position, Suit, _); true),
+    notin(built_building { building: Id, .. }, Built).
+
+:- pub(building/4).
+building(
+    game { buildings: Buildings, built_buildings: Built, .. },
+    Id,
+    Kind,
+    Position,
+) :-
+    in(building { id: Id, building: building(Kind), .. }, Buildings),
+    (in(built_building { building: Id, position: Position }, Built) ->> true
+    ; Position =:= unplaced).
+
+:- test(
+    building(
+        game {
+            buildings: [
+                building { id: 1, building: building(base), faction: faction(alliance), suit: suit(fox) },
+                building { id: 2, building: building(base), faction: faction(alliance), suit: suit(rabbit) },
+            ],
+            built_buildings: [built_building { building: 1, position: 2 }],
+        },
+        1,
+        base,
+        2,
+    )
+).
+
+:- test(
+    building(
+        game {
+            buildings: [
+                building { id: 1, building: building(base), faction: faction(alliance), suit: suit(fox) },
+                building { id: 2, building: building(base), faction: faction(alliance), suit: suit(rabbit) },
+            ],
+            built_buildings: [built_building { building: 1, position: 2 }],
+        },
+        2,
+        base,
+        unplaced,
+    )
+).
+
+:- pub(buildingSuit/3).
+buildingSuit(game { buildings: Buildings, .. }, Id, S) :-
+    in(building { id: Id, suit: !suit(S), .. }, Buildings).
+
+:- test(
+    buildingSuit(
+        game {
+            buildings: [
+                building { id: 1, building: building(sawmill), faction: faction(marquise), suit: _ },
+                building { id: 2, building: building(base), faction: faction(alliance), suit: suit(rabbit) },
+            ],
+        },
+        2,
+        rabbit,
+    )
+).
+
+:- test(
+    buildingSuit(
+        game {
+            buildings: [
+                building { id: 1, building: building(sawmill), faction: faction(marquise), suit: _ },
+                building { id: 2, building: building(base), faction: faction(alliance), suit: suit(rabbit) },
+            ],
+        },
+        1,
+        _,
+    ) ->> false; true
+).
+
+:- pub(slotAvailable/2).
+slotAvailable(G, P) :-
+    clearing(G, P, _, S),
+    length([_ : building(G, _, _, P)], L),
+    L < S.
+
+:- test(
+    slotAvailable(
+        game {
+            positions: [position { id: 1 }, position { id: 2 }],
+            clearings: [
+                clearing { position: 1, slots: 2, suit: suit(fox) },
+                clearing { position: 2, slots: 1, suit: suit(fox) },
+            ],
+            buildings: [
+                building { id: 1, building: building(base), faction: faction(alliance), suit: suit(fox) },
+                building { id: 2, building: building(base), faction: faction(alliance), suit: suit(rabbit) },
+            ],
+            built_buildings: [built_building { building: 1, position: 2 }],
+        },
+        2,
+    ) ->> false; true
+).
+
+:- test(
+    slotAvailable(
+        game {
+            positions: [position { id: 1 }, position { id: 2 }],
+            clearings: [
+                clearing { position: 1, slots: 2, suit: suit(fox) },
+                clearing { position: 2, slots: 1, suit: suit(fox) },
+            ],
+            buildings: [
+                building { id: 1, building: building(base), faction: faction(alliance), suit: suit(fox) },
+                building { id: 2, building: building(base), faction: faction(alliance), suit: suit(rabbit) },
+            ],
+            built_buildings: [built_building { building: 1, position: 2 }],
+        },
+        1,
+    )
+).

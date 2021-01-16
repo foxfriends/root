@@ -1,0 +1,41 @@
+:- use(@core).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::gameMap).
+:- use(~::game::tokens).
+:- use(~::game::buildings).
+:- use(~::game::warriors).
+
+actions(_, State, placeToken[keep, Position]) :-
+    action(State, 0),
+    cornerClearing(Position).
+
+perform(_, State, placeToken[keep, Position], NewState) ::-
+    // Place Keep
+    token(State, Keep, keep, unplaced),
+    placeToken(State, Keep, Position, State2),
+    // Garrison
+    Warriors =:= [Id : warrior(State, Id, marquise, unplaced)],
+    Clearings =:= [Id : clearing(State, Id, _, _), (oppositeCorner(Position, Id) ->> false; true)],
+    zipPlaceWarriors(State2, Warriors, Clearings, State3),
+    doneAction(State3, NewState).
+
+zipPlaceWarriors(State, [], _, State).
+zipPlaceWarriors(State, _, [], State).
+zipPlaceWarriors(State, [W, ..Ws], [C, ..Cs], NewState) :-
+    placeWarrior(State, W, C, State2),
+    zipPlaceWarriors(State2, Ws, Cs, NewState).
+
+nearKeep(S, P) :- token(S, _, keep, L), (adjacent(S, L, P), clearing(S, P, _, _); P =:= L).
+
+actions(_, State, placeBuilding[sawmill, Position]) :- action(State, 1), nearKeep(State, Position), slotAvailable(State, Position).
+actions(_, State, placeBuilding[workshop, Position]) :- action(State, 2), nearKeep(State, Position), slotAvailable(State, Position).
+actions(_, State, placeBuilding[recruiter, Position]) :- action(State, 3), nearKeep(State, Position), slotAvailable(State, Position).
+
+perform(_, State, placeBuilding[T, Position], NewState) :-
+    building(State, Tid, T, unplaced),
+    placeBuilding(State, Tid, Position, State2),
+    (T =:= recruiter ->> doneTurn(State2, NewState); doneAction(State2, NewState)).

@@ -1,82 +1,143 @@
 use super::*;
 use sqlx::query;
 
-#[derive(Clone, Default, serde::Serialize, serde::Deserialize)]
+#[derive(Clone, serde::Serialize, serde::Deserialize)]
 #[serde(rename = "game")]
 pub struct Game {
+    /// A name for the game.
     name: String,
+    /// The method by which to assign factions to players.
     assignment: Assignment,
+    /// Which map the game is being played on.
     map: GameMap,
+    /// What phase of the game it is.
     phase: Phase,
+    /// Faction whose turn it is currently.
+    turn: FactionId,
+    /// The current action number, for tracking state within a phase.
+    action: i16,
+    /// Which shared deck to use.
     deck: Deck,
 
     // General game state
     players: Vec<Player>,
 
     // Board setup
+    /// The list of all positions on the board (where other pieces may be placed).
     positions: Vec<Position>,
+    /// Identifies positions which are forests.
     forests: Vec<Forest>,
+    /// Identifies positions which are clearings, along with details about that clearing.
     clearings: Vec<Clearing>,
+    /// Whether a clearing has water (relevant for the Riverfolk).
     water: Vec<Water>,
+    /// Which positions are connected (by paths or by being an adjacent forest).
     connections: Vec<Connection>,
+    /// The clearings which are connected by rivers.
     rivers: Vec<River>,
+    /// The current location of the ferry, if a ferry is in play (lake map).
     ferry: Option<Ferry>,
+    /// The current location of the tower, if the tower is in play (mountain map).
     tower: Option<Tower>,
 
+    /// Basic information about the factions in play. The order in this list determines
+    /// the turn order. Note that setup order is always the order defined in [`FactionId`][].
     factions: Vec<Faction>,
 
+    /// The buildings pieces that are available in this game.
     buildings: Vec<Building>,
+    /// The positions of buildings that are on the board.
     built_buildings: Vec<BuiltBuilding>,
 
+    /// The token pieces that are available in this game.
     tokens: Vec<Token>,
+    /// The positions of tokens that are on the board.
     placed_tokens: Vec<PlacedToken>,
 
+    /// The identifications of each card. This order determines the order of the shared
+    /// deck. Cards not in another location are yet undrawn.
     cards: Vec<Card>,
+    /// The order of cards in the discard pile.
     discards: Vec<Discard>,
+    /// The cards in each player's hand.
     hand: Vec<Hand>,
+    /// The dominance cards that have been activated.
     dominance: Vec<Dominance>,
 
+    /// The identifications of each item in the game.
     items: Vec<Item>,
+    /// The items in each player's Owned Items box.
     owned_items: Vec<OwnedItem>,
+    /// The items under ruins.
     ruin_items: Vec<RuinItem>,
 
+    /// The identifications of each warrior.
     warriors: Vec<Warrior>,
+    /// The positions of warriors that are on the board.
     placed_warriors: Vec<PlacedWarrior>,
 
     // Faction specific details
+
+    /// Marquise specific state information.
     marquise: Option<Marquise>,
 
+    /// Eyrie specific state information.
     eyrie: Option<Eyrie>,
+    /// Cards in the Eyrie's decree.
     eyrie_decree: Vec<EyrieDecree>,
+    /// Definitions of each available Eyrie Leader.
     eyrie_leaders: Vec<EyrieLeader>,
+    /// The currently selected Eyrie Leader. May be none if they currently need to pick one.
     eyrie_current_leader: Option<EyrieCurrentLeader>,
 
+    /// Alliance specific state information.
     alliance: Option<Alliance>,
+    /// Cards currently in the Alliance supporters stack.
     alliance_supporters: Vec<AllianceSupporter>,
+    /// alliance warriors which have been designated as officers.
     officers: Vec<Officer>,
 
+    /// Vagabond specific state information (for the first Vagabond).
     vagabond: Option<Vagabond>,
+    /// Vagabond specific state information (for the second Vagabond).
     vagabond2: Option<Vagabond>,
+    /// The state of items currently owned by the vagabond.
     vagabond_items: Vec<VagabondItem>,
+    /// The relationships the vagabond has with each other player.
     vagabond_relationships: Vec<VagabondRelationship>,
+    /// The list of all quests, in order they will be drawn.
     quests: Vec<Quest>,
+    /// The currently available quests.
     active_quests: Vec<ActiveQuest>,
+    /// The quests which have been completed by each Vagabond.
     completed_quests: Vec<CompletedQuest>,
+    /// Any coalitions a Vagabond has formed.
     coalition: Vec<Coalition>,
 
+    /// Cult specific state information.
     cult: Option<Cult>,
+    /// Warriors that have been designated as Cult acolytes.
     acolytes: Vec<Acolyte>,
+    /// The current lost souls stack.
     lost_souls: Vec<LostSoul>,
 
+    /// Riverfolk specific state information.
     riverfolk: Option<Riverfolk>,
+    /// Warriors in the commitments area.
     commitments: Vec<Commitment>,
+    /// Warriors in the funds area.
     funds: Vec<Fund>,
+    /// Warriors in the payments area.
     payments: Vec<Payment>,
 
+    /// Duchy specific state information.
     duchy: Option<Duchy>,
+    /// Warriors currently in the Burrow.
     burrow: Vec<Burrow>,
+    /// Ministers that are available to the Duchy.
     ministers: Vec<Minister>,
 
+    /// Conspiracy specific state information.
     conspiracy: Option<Conspiracy>,
 }
 
@@ -84,12 +145,23 @@ impl Game {
     #[allow(clippy::eval_order_dependence)]
     pub async fn load(name: &str) -> sqlx::Result<Self> {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
-        let game = query!(r#"SELECT assignment as "assignment: Assignment", map as "map: GameMap", phase as "phase: Phase", deck as "deck: Deck" FROM games WHERE name = $1"#, name).fetch_one(&mut conn).await?;
+        let game = query!(
+            r#"
+                SELECT assignment as "assignment: Assignment",
+                       map as "map: GameMap",
+                       phase as "phase: Phase",
+                       deck as "deck: Deck",
+                       turn as "turn: FactionId",
+                       action
+                  FROM games
+                 WHERE name = $1"#, name).fetch_one(&mut conn).await?;
         let game = Self {
             name: name.to_owned(),
             assignment: game.assignment,
             map: game.map,
+            turn: game.turn,
             phase: game.phase,
+            action: game.action,
             deck: game.deck,
             players: Player::load(name, &mut conn).await?,
             positions: Position::load(name, &mut conn).await?,
@@ -216,10 +288,16 @@ impl Game {
         } = Board::create(config.map, &items[12..]);
 
         Game {
-            name: config.name,
             assignment: config.assignment,
             map: config.map,
             deck: config.deck,
+            phase: Phase::default(),
+            turn: FactionId::setup_order()
+                .find(|faction| config.factions.contains(faction))
+                .unwrap(),
+            name: config.name,
+            action: 0,
+            players: vec![],
             factions: config
                 .factions
                 .iter()
@@ -234,28 +312,45 @@ impl Game {
             connections,
             rivers,
             cards,
+            discards: vec![],
+            hand: vec![],
             dominance,
             marquise,
             eyrie,
+            eyrie_decree: vec![],
             eyrie_leaders,
             eyrie_current_leader,
             alliance,
+            alliance_supporters: vec![],
             officers,
             vagabond,
             vagabond2,
+            vagabond_items: vec![],
             vagabond_relationships,
+            coalition: vec![],
             quests,
+            active_quests: vec![],
+            completed_quests: vec![],
             cult,
+            acolytes: vec![],
+            lost_souls: vec![],
             riverfolk,
+            commitments: vec![],
+            payments: vec![],
+            funds: vec![],
             duchy,
+            burrow: vec![],
             ministers,
             conspiracy,
             buildings,
+            built_buildings: vec![],
             tokens,
+            placed_tokens: vec![],
             warriors,
+            placed_warriors: vec![],
             items,
+            owned_items: vec![],
             ruin_items,
-            ..Self::default()
         }
     }
 

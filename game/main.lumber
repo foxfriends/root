@@ -13,28 +13,28 @@
 // Maybe a macro could be of use too, if that's something we might ever want..?
 
 // Lobby phase
-actions(Name, State, lobby(LobbyAction)) :-
+actions(Name, State, lobby(Action)) :-
     phase(State, lobby),
-    lobby::actions(Name, State, LobbyAction).
-perform(Name, State, lobby(LobbyAction), NewState) :-
+    lobby::actions(Name, State, Action).
+perform(Name, State, lobby(Action), NewState) :-
     phase(State, lobby),
-    lobby::perform(Name, State, LobbyAction, NewState).
+    lobby::perform(Name, State, Action, NewState).
 
 // Choose Faction phase
-actions(Name, State, chooseFaction(ChooseFactionAction)) :-
+actions(Name, State, chooseFaction(Action)) :-
     phase(State, choose_faction),
-    chooseFaction::actions(Name, State, ChooseFactionAction).
-perform(Name, State, chooseFaction(ChooseFactionAction), NewState) :-
+    chooseFaction::actions(Name, State, Action).
+perform(Name, State, chooseFaction(Action), NewState) :-
     phase(State, choose_faction),
-    chooseFaction::perform(Name, State, ChooseFactionAction, NewState).
+    chooseFaction::perform(Name, State, Action, NewState).
 
 // Choose Faction phase
-actions(Name, State, setup(SetupAction)) :-
+actions(Name, State, setup(Action)) :-
     phase(State, setup),
-    setup::actions(Name, State, SetupAction).
-perform(Name, State, setup(SetupAction), NewState) :-
+    setup::actions(Name, State, Action).
+perform(Name, State, setup(Action), NewState) :-
     phase(State, setup),
-    setup::perform(Name, State, SetupAction, NewState).
+    setup::perform(Name, State, Action, NewState).
 
 // Public function for running commands and returning actions at the same time
 command(Name, State, Command, NewState, Actions) :-
