@@ -2,40 +2,34 @@
 import context from '../context';
 import Board from './Board.svelte';
 import FactionPicker from './FactionPicker.svelte';
-import Phase from '../types/Phase';
-// import PlayArea from './PlayArea.svelte';
+import Phases from '../types/Phase';
+import PlayArea from './PlayArea.svelte';
 
 const { state } = context();
-
-let windowWidth, windowHeight;
-$: boardHeight = windowHeight;
-$: boardWidth = windowWidth - 350;
 
 $: expanded = false; // why would this expand?
 </script>
 
 <div class='table'>
-  <div class='board' style='width: {boardWidth}px;'>
-    <Board tableWidth={boardWidth} tableHeight={boardHeight} />
+  <div class='board'>
+    <Board />
   </div>
-  <div class='play-area' class:expanded>
-    <!-- PlayArea tableWidth={boardWidth} tableHeight={boardHeight} {client} /-->
-  </div>
+  {#if $state.phase !== Phases.CHOOSE_FACTION}
+    <div class='play-area' class:expanded>
+      <PlayArea />
+    </div>
+  {/if}
 </div>
 
-{#if $state.phase === Phase.CHOOSE_FACTION}
+{#if $state.phase === Phases.CHOOSE_FACTION}
   <FactionPicker />
 {/if}
-
-<svelte:window
-  bind:innerWidth={windowWidth}
-  bind:innerHeight={windowHeight} />
 
 <style>
 .table {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -52,14 +46,14 @@ $: expanded = false; // why would this expand?
   left: 100%;
   top: 0;
   bottom: 0;
-  width: calc(100% - 350px);
+  width: calc(100vw - 350px);
   transform: translateX(-350px);
   transition: transform 0.2s;
   background-color: blue;
-}
 
-.play-area:hover,
-.play-area.expanded {
-  transform: translateX(-100%);
+  &:hover,
+  &.expanded {
+    transform: translateX(-100%);
+  }
 }
 </style>

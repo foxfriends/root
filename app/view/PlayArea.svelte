@@ -1,50 +1,46 @@
 <script>
-import cardBack from '../image/card/card-shared-back.jpg';
-import cardImages from '../image/card/card-shared-front.*.jpg';
-import factionImages from '../image/card-*-front.jpg';
+import { propEq } from 'ramda';
+import FACTION_BOARDS from '../image/faction';
+import context from '../context';
 import FactionCard from './FactionCard.svelte';
 import Deck from './Deck.svelte';
-import Pile from './Pile.svelte';
 
-// let focusedPlayer = get(username);
-// $: focusedIndex = $game.factions.indexOf($game.players[focusedPlayer].faction);
-let focusedPlayer = '';
-let focusedIndex = 0;
-let game = {};
+const { state, socket } = context();
 
-function cardImage({ key }) {
-  return cardImages[key];
-}
-
-let width, height;
-export let client;
+let currentFaction = $state.factions.find(propEq('player', socket.name)).faction;
+$: currentIndex = $state.factions.findIndex(propEq('faction', currentFaction));
 </script>
 
 <div class='table'>
   <div class='shared'>
-    <div class='shared-deck'>
-      <Deck cardImage={cardBack} cardCount={$game.cards} />
+    <div class='deck'>
+      <Deck shared down cards={$state.cards} />
     </div>
-    <div class='discards-deck'>
-      <Pile showEmpty cards={$game.discards.map(cardImage)} />
+    <div class='deck'>
+      <Deck shared up cards={$state.discards} />
     </div>
   </div>
   <div class='pager'>
-    <div class='pages' bind:clientWidth={width} bind:clientHeight={height}>
-      {#each $game.factions as faction, i (faction)}
-        <div class='page' style={`transform: translateX(${(i - focusedIndex) * 100}%); opacity: ${focusedIndex === i ? 1 : 0}`}>
-          <FactionCard {faction} {client} width={width - 40} height={height - 40} />
+    <div class='pages'>
+      {#each $state.factions as { faction }, i (faction)}
+        <div
+          class='page'
+          class:current={faction === currentFaction}
+          style='transform: translateX({(i - currentIndex) * 100}%);'>
+          <div class='page-content'>
+            <FactionCard {faction} />
+          </div>
         </div>
       {/each}
     </div>
     <div class='previews'>
-      {#each $game.playerNames as name}
-        <!-- svelte-ignore a11y-missing-attribute -->
+      {#each $state.factions as { faction } (faction)}
+        <!-- svelte-ignore a11y-missing-attribute-->
         <img
           class='preview'
-          class:current={name === focusedPlayer}
-          src={factionImages[$game.players[name].faction]}
-          on:click={() => focusedPlayer = name} />
+          class:current={faction === currentFaction}
+          src={FACTION_BOARDS[faction].front}
+          on:click={() => currentFaction = faction} />
       {/each}
     </div>
   </div>
@@ -66,8 +62,7 @@ export let client;
   padding: 20px;
 }
 
-.shared-deck,
-.discards-deck {
+.deck {
   margin: 20px;
   width: 183px;
   height: 249px;
@@ -95,6 +90,17 @@ export let client;
   height: calc(100% - 128px);
   padding: 20px;
   transition: opacity 0.2s, transform 0.2s;
+  opacity: 0;
+
+  &.current {
+    opacity: 1;
+  }
+}
+
+.page-content {
+  box-sizing: border-box;
+  padding: 40px;
+  height: 100%;
 }
 
 .previews {
@@ -111,9 +117,8 @@ export let client;
   cursor: pointer;
   height: 108px;
   margin: 10px;
-}
-
-.preview:not(.current) {
   opacity: 0.7;
+
+  &.current { opacity: 1; }
 }
 </style>

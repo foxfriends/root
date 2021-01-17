@@ -1438,91 +1438,6 @@
       "nullable": []
     }
   },
-  "81cba9ae3b4fd5f2d1035dcd29b1b14125a9d338e6165bdc6c68acc9e3206481": {
-    "query": "SELECT assignment as \"assignment: Assignment\", map as \"map: GameMap\", phase as \"phase: Phase\", deck as \"deck: Deck\" FROM games WHERE name = $1",
-    "describe": {
-      "columns": [
-        {
-          "ordinal": 0,
-          "name": "assignment: Assignment",
-          "type_info": {
-            "Custom": {
-              "name": "enum_assignment",
-              "kind": {
-                "Enum": [
-                  "random",
-                  "choose"
-                ]
-              }
-            }
-          }
-        },
-        {
-          "ordinal": 1,
-          "name": "map: GameMap",
-          "type_info": {
-            "Custom": {
-              "name": "enum_game_map",
-              "kind": {
-                "Enum": [
-                  "autumn",
-                  "winter",
-                  "caves",
-                  "lake"
-                ]
-              }
-            }
-          }
-        },
-        {
-          "ordinal": 2,
-          "name": "phase: Phase",
-          "type_info": {
-            "Custom": {
-              "name": "enum_phase",
-              "kind": {
-                "Enum": [
-                  "lobby",
-                  "choose_faction",
-                  "setup",
-                  "birdsong",
-                  "daylight",
-                  "evening",
-                  "complete"
-                ]
-              }
-            }
-          }
-        },
-        {
-          "ordinal": 3,
-          "name": "deck: Deck",
-          "type_info": {
-            "Custom": {
-              "name": "enum_deck",
-              "kind": {
-                "Enum": [
-                  "standard",
-                  "exiles_and_partisans"
-                ]
-              }
-            }
-          }
-        }
-      ],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": [
-        false,
-        false,
-        false,
-        false
-      ]
-    }
-  },
   "896c7b9063fe1020b68cc1451295eb711178572f614e4e25f38e7274f0d74952": {
     "query": "INSERT INTO quests (game, id, quest, suit) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
     "describe": {
@@ -1717,6 +1632,120 @@
       "nullable": [
         false,
         true
+      ]
+    }
+  },
+  "96a2aff534a7649f5c1a78b1e2330f95d1bb88091c4430661e277c906d2348ec": {
+    "query": "\n                SELECT assignment as \"assignment: Assignment\",\n                       map as \"map: GameMap\",\n                       phase as \"phase: Phase\",\n                       deck as \"deck: Deck\",\n                       turn as \"turn: FactionId\",\n                       action\n                  FROM games\n                 WHERE name = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "assignment: Assignment",
+          "type_info": {
+            "Custom": {
+              "name": "enum_assignment",
+              "kind": {
+                "Enum": [
+                  "random",
+                  "choose"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 1,
+          "name": "map: GameMap",
+          "type_info": {
+            "Custom": {
+              "name": "enum_game_map",
+              "kind": {
+                "Enum": [
+                  "autumn",
+                  "winter",
+                  "caves",
+                  "lake"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 2,
+          "name": "phase: Phase",
+          "type_info": {
+            "Custom": {
+              "name": "enum_phase",
+              "kind": {
+                "Enum": [
+                  "lobby",
+                  "choose_faction",
+                  "setup",
+                  "birdsong",
+                  "daylight",
+                  "evening",
+                  "complete"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 3,
+          "name": "deck: Deck",
+          "type_info": {
+            "Custom": {
+              "name": "enum_deck",
+              "kind": {
+                "Enum": [
+                  "standard",
+                  "exiles_and_partisans"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 4,
+          "name": "turn: FactionId",
+          "type_info": {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "ordinal": 5,
+          "name": "action",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
       ]
     }
   },

@@ -129,7 +129,6 @@ impl Board {
             River::new(&water[1], &water[2]),
             River::new(&water[2], &water[3]),
             River::new(&water[3], &water[4]),
-            River::new(&water[4], &water[5]),
         ];
         let mut item_ids: Vec<_> = items.iter().map(Item::id).collect();
         let mut rng = thread_rng();

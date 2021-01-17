@@ -1,8 +1,8 @@
 <script>
-import IMG_MAP_AUTUMN from '../image/map-autumn.jpg';
+import * as BOARDS from '../image/map';
 
 let boardWidth, boardHeight;
-export let tableWidth, tableHeight;
+let tableWidth, tableHeight;
 
 const maxScale = 1;
 let targetScale = 0;
@@ -49,6 +49,8 @@ function drag({ buttons, movementX, movementY }) {
 </script>
 
 <div
+  bind:clientWidth={tableWidth}
+  bind:clientHeight={tableHeight}
   class='container'
   on:wheel={zoom}
   on:mousemove={drag}>
@@ -58,7 +60,7 @@ function drag({ buttons, movementX, movementY }) {
     <!-- svelte-ignore a11y-missing-attribute -->
     <img
       class='board'
-      src={IMG_MAP_AUTUMN}
+      src={BOARDS.AUTUMN}
       on:load={setInitialViewport} />
   </div>
 </div>

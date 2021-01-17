@@ -7,35 +7,7 @@ import Button from './component/Button.svelte';
 import Box from './component/Box.svelte';
 import Text from './component/Text.svelte';
 import Faction from '../types/Faction';
-
-// TODO: locate the images for the moles and crows.
-import IMG_CARD_ALLIANCE_FRONT from '../image/card-alliance-front.jpg';
-import IMG_CARD_ALLIANCE_BACK from '../image/card-alliance-back.jpg';
-import IMG_CARD_CULT_FRONT from '../image/card-cult-front.jpg';
-import IMG_CARD_CULT_BACK from '../image/card-cult-back.jpg';
-import IMG_CARD_EYRIE_FRONT from '../image/card-eyrie-front.jpg';
-import IMG_CARD_EYRIE_BACK from '../image/card-eyrie-back.jpg';
-import IMG_CARD_MARQUISE_FRONT from '../image/card-marquise-front.jpg';
-import IMG_CARD_MARQUISE_BACK from '../image/card-marquise-back.jpg';
-import IMG_CARD_RIVERFOLK_FRONT from '../image/card-riverfolk-front.jpg';
-import IMG_CARD_RIVERFOLK_BACK from '../image/card-riverfolk-back.jpg';
-import IMG_CARD_VAGABOND_FRONT from '../image/card-vagabond-front.jpg';
-import IMG_CARD_VAGABOND_BACK from '../image/card-vagabond-back.jpg';
-import IMG_CARD_VAGABOND2_FRONT from '../image/card-vagabond2-front.jpg';
-import IMG_CARD_VAGABOND2_BACK from '../image/card-vagabond2-back.jpg';
-
-const images = {
-  [Faction.MARQUISE]: { front: IMG_CARD_MARQUISE_FRONT, back: IMG_CARD_MARQUISE_BACK },
-  [Faction.EYRIE]: { front: IMG_CARD_EYRIE_FRONT, back: IMG_CARD_EYRIE_BACK },
-  [Faction.ALLIANCE]: { front: IMG_CARD_ALLIANCE_FRONT, back: IMG_CARD_ALLIANCE_BACK },
-  [Faction.VAGABOND]: { front: IMG_CARD_VAGABOND_FRONT, back: IMG_CARD_VAGABOND_BACK },
-  [Faction.VAGABOND2]: { front: IMG_CARD_VAGABOND2_FRONT, back: IMG_CARD_VAGABOND2_BACK },
-  [Faction.RIVERFOLK]: { front: IMG_CARD_RIVERFOLK_FRONT, back: IMG_CARD_RIVERFOLK_BACK },
-  [Faction.CULT]: { front: IMG_CARD_CULT_FRONT, back: IMG_CARD_CULT_BACK },
-  // TODO: these two are just using the wrong image for now
-  [Faction.DUCHY]: { front: IMG_CARD_CULT_FRONT, back: IMG_CARD_CULT_BACK },
-  [Faction.CONSPIRACY]: { front: IMG_CARD_CULT_FRONT, back: IMG_CARD_CULT_BACK },
-};
+import CARD_IMAGES from '../image/faction';
 
 const { state } = context();
 
@@ -52,8 +24,8 @@ let flipped = {};
               class='card'
               class:show-back={!!flipped[faction.faction]}
               on:click={() => { flipped[faction.faction] = !flipped[faction.faction]; }}>
-              <div class='front' style='background-image: url({images[faction.faction].front});' />
-              <div class='back' style='background-image: url({images[faction.faction].back});' />
+              <div class='front' style='background-image: url({CARD_IMAGES[faction.faction].front});' />
+              <div class='back' style='background-image: url({CARD_IMAGES[faction.faction].back});' />
             </div>
           </div>
         </div>

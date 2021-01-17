@@ -21,7 +21,6 @@ onMount(() => state
     first(complement(equals(Phase.LOBBY))),
   )
   .subscribe(next));
-
 </script>
 
 <Box flex>
