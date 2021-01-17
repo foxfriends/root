@@ -6,7 +6,6 @@ import Picker from './component/Picker.svelte';
 import Button from './component/Button.svelte';
 import Box from './component/Box.svelte';
 import Text from './component/Text.svelte';
-import Faction from '../types/Faction';
 import CARD_IMAGES from '../image/faction';
 
 const { state } = context();

@@ -26,7 +26,7 @@ $: currentIndex = $state.factions.findIndex(propEq('faction', currentFaction));
         <div
           class='page'
           class:current={faction === currentFaction}
-          style='transform: translateX({(i - currentIndex) * 100}%);'>
+          style={`transform: translateX(${(i - currentIndex) * 100}%);`}>
           <div class='page-content'>
             <FactionCard {faction} />
           </div>

@@ -77,7 +77,6 @@ pub struct Game {
     placed_warriors: Vec<PlacedWarrior>,
 
     // Faction specific details
-
     /// Marquise specific state information.
     marquise: Option<Marquise>,
 
@@ -154,7 +153,11 @@ impl Game {
                        turn as "turn: FactionId",
                        action
                   FROM games
-                 WHERE name = $1"#, name).fetch_one(&mut conn).await?;
+                 WHERE name = $1"#,
+            name
+        )
+        .fetch_one(&mut conn)
+        .await?;
         let game = Self {
             name: name.to_owned(),
             assignment: game.assignment,

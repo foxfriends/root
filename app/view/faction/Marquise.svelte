@@ -1,5 +1,5 @@
 <script>
-import { __, complement, compose, includes, prop, propEq } from 'ramda';
+import { complement, compose, prop, propEq } from 'ramda';
 import { memberOf } from '../../util/ramda';
 import context from '../../context';
 import Building from '../Building.svelte';
