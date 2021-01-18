@@ -1,6 +1,7 @@
 import { map, share } from 'rxjs/operators';
 import { map as rmap, prop } from 'ramda';
 import { setContext, getContext, onDestroy } from 'svelte';
+import { writable } from 'svelte/store';
 import StoreSubject from './StoreSubject';
 import Socket from './Socket';
 import { parse } from '../util/lumber';
@@ -12,6 +13,16 @@ export default function context() {
     actions: getContext('@root/actions'),
     socket: getContext('@root/socket'),
   };
+}
+
+export function useScale(scale) {
+  if (scale !== undefined) {
+    const store = writable(scale);
+    setContext('@root/scale', store);
+    return store;
+  } else {
+    return getContext('@root/scale');
+  }
 }
 
 export function init() {

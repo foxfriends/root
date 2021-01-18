@@ -1,6 +1,7 @@
 /**
  * Ramdalike utility functions
  */
-import { flip, includes } from 'ramda';
+import { __, assoc, flip, includes } from 'ramda';
 
 export const memberOf = flip(includes);
+export const build = assoc(__, __, {});

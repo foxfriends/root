@@ -14,6 +14,7 @@ import GARDEN_MOUSE from './token.cult-garden_mouse.png';
 import GARDEN_RABBIT from './token.cult-garden_rabbit.png';
 import CITADEL from './token.cult-garden_rabbit.png';
 import MARKET from './token.cult-garden_rabbit.png';
+import RUIN from './token.ruin.png';
 
 export { BASE_FOX, BASE_MOUSE, BASE_RABBIT, ROOST, SAWMILL, WORKSHOP, RECRUITER, GARDEN_FOX, GARDEN_MOUSE, GARDEN_RABBIT, CITADEL, MARKET };
 
@@ -30,4 +31,5 @@ export default cond([
   [whereEq({ building: Buildings.GARDEN, suit: Suits.RABBIT }), always(GARDEN_RABBIT)],
   [whereEq({ building: Buildings.CITADEL }), always(CITADEL)],
   [whereEq({ building: Buildings.MARKET }), always(MARKET)],
+  [whereEq({ building: Buildings.RUIN }), always(RUIN)],
 ]);

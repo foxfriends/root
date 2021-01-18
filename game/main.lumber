@@ -28,11 +28,11 @@ perform(Name, State, chooseFaction(Action), NewState) :-
     phase(State, choose_faction),
     chooseFaction::perform(Name, State, Action, NewState).
 
-// Choose Faction phase
-actions(Name, State, setup(Action)) :-
+// Setup phase
+actions(Name, State, Action) :-
     phase(State, setup),
     setup::actions(Name, State, Action).
-perform(Name, State, setup(Action), NewState) :-
+perform(Name, State, Action, NewState) :-
     phase(State, setup),
     setup::perform(Name, State, Action, NewState).
 

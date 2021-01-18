@@ -7,4 +7,5 @@ export default {
   GARDEN: 'garden',
   CITADEL: 'citadel',
   MARKET: 'market',
+  RUIN: 'ruin',
 };

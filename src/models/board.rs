@@ -27,16 +27,16 @@ impl Board {
     /// The Autumn map is laid out as follows:
     ///
     /// ```
-    /// (1)------(6)----------\
+    /// (1)------(5)----------\
     ///  |\      [13]          \
-    ///  | \----(5)------------(2)
+    ///  | \----(10)-----------(2)
     ///  |  [14] |              |
-    /// (10)__   |    [15]      |
+    /// (9)___   |    [15]      |
     ///  |    \  |              |
-    ///  |[16] (11)----(12)----(7)
+    ///  |[16] (12)----(11)----(6)
     ///  | ___/   \ [18] \_[19]_/
     ///  |/  [17]  \       \  /
-    /// (4)--(9)---(8)------(3)
+    /// (4)--(8)---(7)------(3)
     /// ```
     fn autumn(items: &[Item]) -> Self {
         let positions: Vec<Position> = (1..=19).map(Position::new).collect();
@@ -46,13 +46,13 @@ impl Board {
             Clearing::new(&positions[2], Suit::Rabbit, 1),
             Clearing::new(&positions[3], Suit::Rabbit, 1),
             Clearing::new(&positions[4], Suit::Rabbit, 2),
-            Clearing::new(&positions[5], Suit::Rabbit, 2),
-            Clearing::new(&positions[6], Suit::Fox, 2),
-            Clearing::new(&positions[7], Suit::Mouse, 2),
-            Clearing::new(&positions[8], Suit::Fox, 2),
-            Clearing::new(&positions[9], Suit::Mouse, 2),
-            Clearing::new(&positions[10], Suit::Fox, 2),
-            Clearing::new(&positions[11], Suit::Mouse, 3),
+            Clearing::new(&positions[5], Suit::Fox, 2),
+            Clearing::new(&positions[6], Suit::Mouse, 2),
+            Clearing::new(&positions[7], Suit::Fox, 2),
+            Clearing::new(&positions[8], Suit::Mouse, 2),
+            Clearing::new(&positions[9], Suit::Rabbit, 2),
+            Clearing::new(&positions[10], Suit::Mouse, 3),
+            Clearing::new(&positions[11], Suit::Fox, 2),
         ];
         let forests = vec![
             Forest::new(&positions[12]),
@@ -72,48 +72,48 @@ impl Board {
         ];
         let connections = vec![
             Connection::new(&positions[0], &positions[4]),
-            Connection::new(&positions[0], &positions[5]),
+            Connection::new(&positions[0], &positions[8]),
             Connection::new(&positions[0], &positions[9]),
             Connection::new(&positions[0], &positions[12]),
             Connection::new(&positions[0], &positions[13]),
             Connection::new(&positions[1], &positions[4]),
             Connection::new(&positions[1], &positions[5]),
-            Connection::new(&positions[1], &positions[6]),
+            Connection::new(&positions[1], &positions[9]),
             Connection::new(&positions[1], &positions[12]),
             Connection::new(&positions[1], &positions[14]),
+            Connection::new(&positions[2], &positions[5]),
             Connection::new(&positions[2], &positions[6]),
-            Connection::new(&positions[2], &positions[7]),
-            Connection::new(&positions[2], &positions[11]),
+            Connection::new(&positions[2], &positions[10]),
             Connection::new(&positions[2], &positions[17]),
             Connection::new(&positions[2], &positions[18]),
+            Connection::new(&positions[3], &positions[7]),
             Connection::new(&positions[3], &positions[8]),
-            Connection::new(&positions[3], &positions[9]),
-            Connection::new(&positions[3], &positions[10]),
+            Connection::new(&positions[3], &positions[11]),
             Connection::new(&positions[3], &positions[15]),
             Connection::new(&positions[3], &positions[16]),
-            Connection::new(&positions[4], &positions[10]),
+            Connection::new(&positions[4], &positions[11]),
             Connection::new(&positions[4], &positions[13]),
             Connection::new(&positions[4], &positions[14]),
-            Connection::new(&positions[5], &positions[12]),
-            Connection::new(&positions[6], &positions[11]),
-            Connection::new(&positions[6], &positions[14]),
-            Connection::new(&positions[6], &positions[18]),
-            Connection::new(&positions[7], &positions[8]),
+            Connection::new(&positions[5], &positions[10]),
+            Connection::new(&positions[5], &positions[14]),
+            Connection::new(&positions[5], &positions[18]),
+            Connection::new(&positions[6], &positions[7]),
+            Connection::new(&positions[6], &positions[16]),
+            Connection::new(&positions[6], &positions[17]),
             Connection::new(&positions[7], &positions[16]),
-            Connection::new(&positions[7], &positions[17]),
-            Connection::new(&positions[8], &positions[16]),
-            Connection::new(&positions[9], &positions[10]),
-            Connection::new(&positions[9], &positions[13]),
-            Connection::new(&positions[9], &positions[15]),
-            Connection::new(&positions[10], &positions[11]),
-            Connection::new(&positions[10], &positions[13]),
-            Connection::new(&positions[10], &positions[14]),
-            Connection::new(&positions[10], &positions[15]),
-            Connection::new(&positions[10], &positions[16]),
-            Connection::new(&positions[10], &positions[17]),
+            Connection::new(&positions[8], &positions[11]),
+            Connection::new(&positions[8], &positions[13]),
+            Connection::new(&positions[8], &positions[15]),
+            Connection::new(&positions[9], &positions[12]),
+            Connection::new(&positions[11], &positions[10]),
+            Connection::new(&positions[11], &positions[13]),
             Connection::new(&positions[11], &positions[14]),
+            Connection::new(&positions[11], &positions[15]),
+            Connection::new(&positions[11], &positions[16]),
             Connection::new(&positions[11], &positions[17]),
-            Connection::new(&positions[11], &positions[18]),
+            Connection::new(&positions[10], &positions[14]),
+            Connection::new(&positions[10], &positions[17]),
+            Connection::new(&positions[10], &positions[18]),
             Connection::new(&positions[12], &positions[13]),
             Connection::new(&positions[12], &positions[14]),
             Connection::new(&positions[13], &positions[14]),
@@ -135,7 +135,7 @@ impl Board {
         item_ids.shuffle(&mut rng);
         let ruin_items = item_ids
             .into_iter()
-            .zip([5, 7, 11, 12].iter().copied().cycle())
+            .zip([6, 10, 11, 12].iter().copied().cycle())
             .map(|(item, clearing)| RuinItem::new(clearing, item))
             .collect();
         Self {

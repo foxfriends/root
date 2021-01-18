@@ -73,6 +73,7 @@
   ],
   "dependencies": {
     "fluent": "^0.13.0",
+    "prng": "0.0.1",
     "ramda": "^0.27.1",
     "rxjs": "^6.6.3",
     "shades": "^2.1.0",
