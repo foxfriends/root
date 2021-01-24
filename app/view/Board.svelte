@@ -3,9 +3,10 @@ import { clamp } from 'ramda';
 import boardImage from '../image/map';
 import context, { useScale } from '../context';
 import Positions from './Positions.svelte';
+import Items from './Items.svelte';
 
 const { state } = context();
-const scale = useScale(1);
+useScale(1);
 
 let boardWidth, boardHeight;
 let tableWidth, tableHeight;
@@ -13,12 +14,12 @@ let tableWidth, tableHeight;
 const maxScale = 1;
 let targetScale = 0;
 $: minScale = Math.max(tableWidth / boardWidth, tableHeight / boardHeight);
-$: $scale = clamp(minScale, maxScale, targetScale);
+$: scale = clamp(minScale, maxScale, targetScale);
 
 let targetPan = { x: 0, y: 0 };
 $: pan = {
-  x: Math.floor(clamp(0, boardWidth * $scale - tableWidth, targetPan.x)),
-  y: Math.floor(clamp(0, boardHeight * $scale - tableHeight, targetPan.y)),
+  x: Math.floor(clamp(0, boardWidth * scale - tableWidth, targetPan.x)),
+  y: Math.floor(clamp(0, boardHeight * scale - tableHeight, targetPan.y)),
 };
 
 function setInitialViewport(event) {
@@ -26,20 +27,21 @@ function setInitialViewport(event) {
 }
 
 function zoom({ clientX, clientY, deltaY }) {
+  targetScale = scale;
   // TODO: make this smoother
   const pointUnderCursor = {
-    x: (pan.x + clientX) / $scale,
-    y: (pan.y + clientY) / $scale,
+    x: (pan.x + clientX) / scale,
+    y: (pan.y + clientY) / scale,
   };
 
-  if (deltaY < 0 && $scale !== maxScale) {
-    targetScale += 1 / ((2 - $scale) ** 2) / 10;
+  if (deltaY < 0 && scale !== maxScale) {
+    targetScale += 1 / ((2 - scale) ** 2) / 10;
     targetPan = {
       x: (pointUnderCursor.x * Math.min(maxScale, targetScale)) - clientX,
       y: (pointUnderCursor.y * Math.min(maxScale, targetScale)) - clientY,
     };
-  } else if (deltaY > 0 && $scale !== minScale) {
-    targetScale -= 1 / ((2 - $scale) ** 2) / 10;
+  } else if (deltaY > 0 && scale !== minScale) {
+    targetScale -= 1 / ((2 - scale) ** 2) / 10;
     targetPan = {
       x: (pointUnderCursor.x * Math.max(minScale, targetScale)) - clientX,
       y: (pointUnderCursor.y * Math.max(minScale, targetScale)) - clientY,
@@ -62,13 +64,14 @@ function drag({ buttons, movementX, movementY }) {
   on:mousemove={drag}>
   <div
     class='viewport'
-    style='transform: translate(-{pan.x}px, -{pan.y}px) scale({$scale});'>
+    style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale});'>
     <!-- svelte-ignore a11y-missing-attribute -->
     <img
       class='board'
       src={boardImage($state.map)}
       on:load={setInitialViewport} />
     <Positions />
+    <Items />
   </div>
 </div>
 

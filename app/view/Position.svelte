@@ -79,7 +79,7 @@ $: arrangedPieces = do {
     building={{ building: Buildings.RUIN }}
     x={last(slots).x}
     y={last(slots).y}
-    stack={ruinItems.length}
+    stack={ruinItems.length + 1}
     />
 {/if}
 {#each arrangedPieces as { x, y, piece: { token, warrior } }}
