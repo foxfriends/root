@@ -36,9 +36,9 @@ $: image = (ruin ? ruinItemImage : itemImage)(item);
   border-radius: 31px;
   box-shadow:
     0 0 0 2px rgba(0, 0, 0, 0.6) inset,
-    0 11px 0 rgb(179, 174, 166),
-    0 15px 0 rgb(198, 185, 165),
-    0 16px 0 rgb(113, 107, 97);
+    0 3px 0 rgb(179, 174, 166),
+    0 7px 0 rgb(198, 185, 165),
+    0 9px 0 rgb(113, 107, 97);
 }
 
 .exhausted {
