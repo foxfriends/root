@@ -1,25 +1,21 @@
 <script>
-import { game } from '../store';
-import images from '../image/token/token.*-victory_points.png';
-import Token from './Token.svelte';
+import { groupBy, prop } from 'ramda';
+import context from '../context';
+import GameMaps from '../types/GameMap';
+import VictoryPointMarker from './VictoryPointMarker.svelte';
 
-export let scale;
+const { state } = context();
 
-$: track = $game.board.scoreTrack;
-$: scores = Object.entries($game.factionData)
-  .map(([name, { victoryPoints }]) => ({ score: victoryPoints, faction: name }))
-  .reduce((acc, { score, faction }) => {
-    acc[score] = acc[score] || [];
-    acc[score].push(faction);
-    return acc;
-  }, {});
+$: track = do {
+  switch ($state.map) {
+    case GameMaps.AUTUMN: ({ x: 192, y: 4229 }); break;
+  }
+};
+
+$: scores = groupBy(prop('points'), $state.factions);
 </script>
 
+<!-- TODO#41: this will not animate well, as pieces are added and removed if they are on the same score -->
 {#each Object.entries(scores) as [score, factions]}
-  <Token square
-    {scale}
-    image={images[factions[0]]}
-    x={(track.x + 146 * score) * scale}
-    y={track.y * scale}
-    stack={factions.length} />
+  <VictoryPointMarker {factions} x={track.x + 146 * score} y={track.y} />
 {/each}

@@ -4,6 +4,7 @@ import boardImage from '../image/map';
 import context, { useScale } from '../context';
 import Positions from './Positions.svelte';
 import Items from './Items.svelte';
+import Scores from './Scores.svelte';
 
 const { state } = context();
 useScale(1);
@@ -72,6 +73,7 @@ function drag({ buttons, movementX, movementY }) {
       on:load={setInitialViewport} />
     <Positions />
     <Items />
+    <Scores />
   </div>
 </div>
 
