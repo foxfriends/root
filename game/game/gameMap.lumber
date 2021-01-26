@@ -13,7 +13,8 @@ cornerClearing(3).
 cornerClearing(4).
 
 :- pub(clearing/4).
-clearing(game { clearings: Clearings, .. }, Id, Suit, Slots) :- in(clearing { position: Id, suit: suit(Suit), slots: Slots, .. }, Clearings).
+clearing(game { clearings: Clearings, .. }, Id, Suit, Slots) :-
+    in(clearing { position: Id, suit: suit(Suit), slots: Slots, .. }, Clearings).
 
 :- pub(forest/2).
 forest(game { forests: Forests, .. }, Id) :- in(forest { position: Id, .. }, Forests).

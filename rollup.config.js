@@ -60,7 +60,7 @@ export default {
     commonjs(),
 
     // reloads page during serve after every code change
-    !production && livereload(),
+    !production && livereload('dist'),
 
     // copying files to dist, because rollup doesn't do it by itself
     copy({

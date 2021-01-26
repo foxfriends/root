@@ -4,12 +4,14 @@
 
 :- pub(placeWarrior/4).
 placeWarrior(
-    game { warriors: Warriors, placed_warriors: Placed, ..State },
+    G, 
     Id,
     Position,
-    game { warriors: Warriors, placed_warriors: [placed_warrior { warrior: Id, position: Position }, ..Placed], ..State },
+    game { placed_warriors: [placed_warrior { warrior: Id, position: Position }, ..Placed], ..State },
 ) :-
-    clearing(State, Position, _, _),
+    G =:= game { warriors: Warriors, placed_warriors: Placed, .. },
+    G =:= game { placed_warriors: _, ..State },
+    clearing(G, Position, _, _),
     in(warrior { id: Id, .. }, Warriors),
     notin(placed_warriors { warrior: Id, .. }, Placed).
 
@@ -21,6 +23,6 @@ warrior(
     Position,
 ) :-
     in(warrior { id: Id, faction: faction(Faction), .. }, Warriors), (
-        in(placed_warrior { warrior: Id, position: Position }, Placed) ->> true;
+        in(placed_warrior { warrior: Id, position: P }, Placed) ->> P =:= Position;
         Position =:= unplaced
     ).

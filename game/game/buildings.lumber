@@ -7,13 +7,14 @@ placeBuilding(
     G,
     Id,
     Position,
-    game { buildings: Buildings, built_buildings: [built_building { building: Id, position: Position }, ..Built], ..State },
+    game { built_buildings: [built_building { building: Id, position: Position }, ..Built], ..State },
 ) :-
-    G =:= game { buildings: Buildings, built_buildings: Built, ..State },
+    G =:= game { buildings: Buildings, built_buildings: Built, .. },
+    G =:= game { built_buildings: _, ..State },
     slotAvailable(G, Position),
     in(building { id: Id, .. }, Buildings),
-    (buildingSuit(G, Id, Suit) ->> clearing(G, Position, Suit, _); true),
-    notin(built_building { building: Id, .. }, Built).
+    notin(built_building { building: Id, .. }, Built),
+    (buildingSuit(G, Id, Suit) ->> clearing(G, Position, Suit, _); true).
 
 :- pub(building/4).
 building(
@@ -22,9 +23,10 @@ building(
     Kind,
     Position,
 ) :-
-    in(building { id: Id, building: building(Kind), .. }, Buildings),
-    (in(built_building { building: Id, position: Position }, Built) ->> true
-    ; Position =:= unplaced).
+    in(building { id: Id, building: building(Kind), .. }, Buildings), (
+        in(built_building { building: Id, position: P }, Built) ->> P =:= Position;
+        Position =:= unplaced
+    ).
 
 :- test(
     building(

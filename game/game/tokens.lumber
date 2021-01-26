@@ -4,12 +4,14 @@
 
 :- pub(placeToken/4).
 placeToken(
-    game { tokens: Tokens, placed_tokens: Placed, ..State },
+    G,
     Id,
     Position,
-    game { tokens: Tokens, placed_tokens: [placed_token { token: Id, position: Position }, ..Placed], ..State },
+    game { placed_tokens: [placed_token { token: Id, position: Position }, ..Placed], ..State },
 ) :-
-    clearing(State, Position, _, _),
+    G =:= game { tokens: Tokens, placed_tokens: Placed, .. },
+    G =:= game { placed_tokens: _, ..State },
+    clearing(G, Position, _, _),
     in(token { id: Id, .. }, Tokens),
     notin(placed_token { token: Id, .. }, Placed).
 
@@ -21,6 +23,6 @@ token(
     Position,
 ) :-
     in(token { id: Id, token: token(Kind), .. }, Tokens), (
-        in(placed_token { token: Id, position: Position }, Placed) ->> true;
+        in(placed_token { token: Id, position: P }, Placed) ->> Position =:= P;
         Position =:= unplaced
     ).

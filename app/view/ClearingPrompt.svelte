@@ -1,10 +1,21 @@
 <script>
+import { useScale } from '../context';
+  
 export let x;
 export let y;
-export let scale;
+export let tooltip = undefined; // TODO: do something with this
+
+const scale = useScale();
 </script>
 
-<div class='circle' style={`left: ${x * scale}px; top: ${y * scale}px; transform: translate(-50%, -50%) scale(${scale})`} on:click />
+<div
+  class='circle'
+  style={`
+    left: ${x * $scale}px;
+    top: ${y * $scale}px;
+    transform: translate(-50%, -50%) scale(${$scale});
+  `}
+  on:click />
 
 <style>
 .circle {

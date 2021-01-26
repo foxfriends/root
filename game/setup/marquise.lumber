@@ -10,18 +10,16 @@
 :- use(~::game::warriors).
 
 actions(_, State, place_token[keep, Position]) :-
-    print(place_token),
     action(State, 0),
-    cornerClearing(Position),
-    print(Position).
+    cornerClearing(Position).
 
 perform(_, State, place_token[keep, Position], NewState) ::-
     // Place Keep
     token(State, Keep, keep, unplaced),
     placeToken(State, Keep, Position, State2),
     // Garrison
-    Warriors =:= [Id : warrior(State, Id, marquise, unplaced)],
-    Clearings =:= [Id : clearing(State, Id, _, _), (oppositeCorner(Position, Id) ->> false; true)],
+    Warriors =:= [Id : warrior(State2, Id, marquise, unplaced)],
+    Clearings =:= [Id : clearing(State2, Id, _, _), (oppositeCorner(Position, Id) ->> false; true)],
     zipPlaceWarriors(State2, Warriors, Clearings, State3),
     doneAction(State3, NewState).
 

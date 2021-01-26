@@ -6,6 +6,9 @@ import context from '../context';
 import Token from './Token.svelte';
 import Building from './Building.svelte';
 import Buildings from '../types/Building';
+import Action from './component/Action.svelte';
+import ClearingPrompt from './ClearingPrompt.svelte';
+import { l } from '../util/localization';
 // TODO: warriors
 
 const { state } = context();
@@ -89,3 +92,7 @@ $: arrangedPieces = do {
     <!-- TODO -->
   {/if}
 {/each}
+
+<Action action='place_token[T, {position.id}]' let:perform let:binding>
+  <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.T.name })} {x} {y} />
+</Action>

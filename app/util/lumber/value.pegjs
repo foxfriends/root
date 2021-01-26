@@ -32,7 +32,6 @@ struct
 list = '[' _ contents:list_entries? _ ']' { return contents || [] }
 list_entries = head:pattern tails:(_ "," _ pattern)* {
     const tail = (tails || []).map((tail) => tail[tail.length - 1]);
-    console.log(tail);
     return [head, ...tail]
 }
 

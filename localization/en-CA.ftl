@@ -196,6 +196,8 @@ prompt-set-prices = Set your service costs
 prompt-choose-first-outcast = Choose the first outcast
 prompt-choose-sawmill = Choose a sawmill to produce wood
 
+tooltip-place = Place { $piece }
+
 rejection-game-already-exists = A game named { $name } already exists.
 rejection-game-does-not-exist = No game named { $name } exists.
 rejection-game-is-full = The game named { $name } is already full.
