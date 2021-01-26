@@ -30,10 +30,17 @@ struct
     / name:$atom { return new Struct(name) }
 
 list = '[' _ contents:list_entries? _ ']' { return contents || [] }
-list_entries = head:pattern (_ "," _ tail:pattern)* { return [head, ...tail] }
+list_entries = head:pattern tails:(_ "," _ pattern)* {
+    const tail = (tails || []).map((tail) => tail[tail.length - 1]);
+    console.log(tail);
+    return [head, ...tail]
+}
 
 record = '{' _ contents:fields? _ '}' { return contents || {} }
-fields = head:field (_ "," _ tail:field)* { return Object.fromEntries([head, ...tail]) }
+fields = head:field tails:(_ "," _ field)* {
+    const tail = (tails || []).map((tail) => tail[tail.length - 1]);
+    return Object.fromEntries([head, ...tail || []])
+}
 field = key:$atom _ ":" _ val:pattern { return [key, val] }
 
 atom = [a-z] [A-Za-z0-9_]*

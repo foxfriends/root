@@ -63,4 +63,4 @@ doneTurn(G, NG) :-
 
 :- pub(playerFaction/3).
 playerFaction(game { factions: Factions, .. }, Name, Faction) :-
-    in(faction { faction: Faction, player: Name, .. }, Factions).
+    in(faction { faction: faction(Faction), player: Name, .. }, Factions).

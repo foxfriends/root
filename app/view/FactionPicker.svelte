@@ -29,7 +29,7 @@ let flipped = {};
           </div>
         </div>
         <div slot='select' let:current>
-          <Action action='chooseFaction(choose({current.faction}))' let:perform>
+          <Action action='choose_faction(choose({current.faction}))' let:perform>
             <Button on:click={perform}>
               <Text text='select' />
             </Button>
