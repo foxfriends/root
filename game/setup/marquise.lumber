@@ -18,12 +18,8 @@ perform(_, State, place_token[keep, Position], NewState) ::-
     token(State, Keep, keep, unplaced),
     placeToken(State, Keep, Position, State2),
     // Garrison
-    warrior(State2, Test, marquise, unplaced),
-    print(Test),
     Warriors =:= [Id : warrior(State2, Id, marquise, unplaced)],
-    print(Warriors),
     Clearings =:= [Id : clearing(State2, Id, _, _), (oppositeCorner(Position, Id) ->> false; true)],
-    print(Clearings),
     zipPlaceWarriors(State2, Warriors, Clearings, State3),
     doneAction(State3, NewState).
 

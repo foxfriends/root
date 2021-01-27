@@ -4,7 +4,7 @@ use rand::{seq::SliceRandom, thread_rng};
 /// Which shared deck to use. Currently, only standard is supported.
 #[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize, sqlx::Type)]
 #[serde(rename = "deck", rename_all = "snake_case")]
-#[sqlx(rename = "enum_deck", rename_all = "snake_case")]
+#[sqlx(type_name = "enum_deck", rename_all = "snake_case")]
 pub enum Deck {
     Standard,
     ExilesAndPartisans,

@@ -1,6 +1,6 @@
 #[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize, sqlx::Type)]
 #[serde(rename = "card", rename_all = "snake_case")]
-#[sqlx(rename = "enum_card", rename_all = "snake_case")]
+#[sqlx(type_name = "enum_card", rename_all = "snake_case")]
 pub enum CardId {
     Ambush,
     BirdyBindle,

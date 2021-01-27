@@ -1,6 +1,6 @@
 #[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize, sqlx::Type)]
 #[serde(rename = "assignment", rename_all = "snake_case")]
-#[sqlx(rename = "enum_assignment", rename_all = "snake_case")]
+#[sqlx(type_name = "enum_assignment", rename_all = "snake_case")]
 pub enum Assignment {
     Random,
     Choose,

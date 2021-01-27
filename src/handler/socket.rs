@@ -1,5 +1,6 @@
 use super::{runtime::LUMBER, Message, Room};
 use crate::models::GameConfig;
+use tokio_stream::wrappers::UnboundedReceiverStream;
 use futures::StreamExt;
 use log::warn;
 use lumber::{Question, Value};
@@ -53,7 +54,7 @@ impl Socket {
                 to_handler,
             },
         };
-        tokio::task::spawn(messages.for_each({
+        tokio::task::spawn(UnboundedReceiverStream::new(messages).for_each({
             let socket = socket.clone();
             move |message| {
                 let socket = socket.clone();

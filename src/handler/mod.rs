@@ -2,6 +2,7 @@ use colored::*;
 use futures::StreamExt;
 use log::{debug, info};
 use warp::ws::{self, WebSocket};
+use tokio_stream::wrappers::UnboundedReceiverStream;
 
 mod client_command;
 mod command_error;
@@ -24,7 +25,7 @@ pub async fn handler(websocket: WebSocket) {
     let (ws_tx, ws_rx) = websocket.split();
     let (socket, outputs) = Socket::new();
     tokio::task::spawn(
-        outputs
+        UnboundedReceiverStream::new(outputs)
             .map(|value| value.to_string())
             .map(ws::Message::text)
             .map(Ok)

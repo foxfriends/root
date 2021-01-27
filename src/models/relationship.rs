@@ -1,6 +1,6 @@
 #[derive(Copy, Clone, Eq, PartialEq, Debug, serde::Serialize, serde::Deserialize, sqlx::Type)]
 #[serde(rename = "relationship", rename_all = "snake_case")]
-#[sqlx(rename = "enum_relationship", rename_all = "snake_case")]
+#[sqlx(type_name = "enum_relationship", rename_all = "snake_case")]
 pub enum Relationship {
     Hostile,
     Indifferent,
