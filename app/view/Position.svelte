@@ -1,5 +1,5 @@
 <script>
-import Prng from 'prng';
+import Chance from 'chance';
 import { __, add, ascend, assoc, compose, concat, evolve, find, last, mergeWith, prop, propEq, subtract } from 'ramda';
 import { build } from '../util/ramda';
 import context from '../context';
@@ -45,14 +45,14 @@ $: pieces = concat(tokens.map(build('token')), warriors.map(build('warrior')));
 
 $: arrangedPieces = do {
   // create an RNG with the same seed every time to make a predictable arragment per clearing
-  const prng = new Prng(seed);
+  const rng = new Chance(seed);
   const forces = slots.map(assoc('r', 70));
   forces.push({ x, y, r: 30 });
   pieces
     .map((piece, i) => {
       const rngForces = new Array(i)
         .fill(0)
-        .map(() => ({ x: x + prng.rand(-325, 325), y: y + prng.rand(-325, 325), r: 0 }));
+        .map(() => ({ x: x + rng.integer({ min: -325, max: 325 }), y: y + rng.integer({ min: -325, max: 325 }), r: 0 }));
       const effectiveForces = concat(forces, rngForces);
       const netForce = effectiveForces
         .map(evolve({ x: subtract(x), y: subtract(y) }))

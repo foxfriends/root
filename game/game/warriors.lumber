@@ -17,12 +17,12 @@ placeWarrior(
 
 :- pub(warrior/4).
 warrior(
-    game { warriors: Warriors, plcaed_warriors: Placed, .. },
+    game { warriors: Warriors, placed_warriors: Placed, .. },
     Id,
     Faction,
     Position,
 ) :-
-    in(warrior { id: Id, faction: faction(Faction), .. }, Warriors), (
+    in(warrior { id: Id, faction: faction(Faction) }, Warriors), (
         in(placed_warrior { warrior: Id, position: P }, Placed) ->> P =:= Position;
         Position =:= unplaced
     ).
