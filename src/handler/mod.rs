@@ -1,8 +1,8 @@
 use colored::*;
 use futures::StreamExt;
 use log::{debug, info};
-use warp::ws::{self, WebSocket};
 use tokio_stream::wrappers::UnboundedReceiverStream;
+use warp::ws::{self, WebSocket};
 
 mod client_command;
 mod command_error;

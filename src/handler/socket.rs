@@ -1,6 +1,5 @@
 use super::{runtime::LUMBER, Message, Room};
 use crate::models::GameConfig;
-use tokio_stream::wrappers::UnboundedReceiverStream;
 use futures::StreamExt;
 use log::warn;
 use lumber::{Question, Value};
@@ -11,6 +10,7 @@ use tokio::sync::{
     mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender},
     RwLock,
 };
+use tokio_stream::wrappers::UnboundedReceiverStream;
 use uuid::Uuid;
 
 /// The state of a single client's socket.
