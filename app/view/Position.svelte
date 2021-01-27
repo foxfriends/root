@@ -87,7 +87,7 @@ $: arrangedPieces = do {
 {/if}
 {#each arrangedPieces as { x, y, piece: { token, warrior } }}
   {#if token}
-    <Token {token} {x} {y} />
+    <Token tokens={[token]} {x} {y} />
   {:else if warrior}
     <!-- TODO -->
   {/if}

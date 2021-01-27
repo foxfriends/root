@@ -14,10 +14,19 @@ cornerClearing(4).
 
 :- pub(clearing/4).
 clearing(game { clearings: Clearings, .. }, Id, Suit, Slots) :-
-    in(clearing { position: Id, suit: suit(Suit), slots: Slots, .. }, Clearings).
+    in(clearing { position: Id, suit: suit(Suit), slots: Slots }, Clearings).
+
+:- test(
+    clearing(
+        game { clearings: [clearing { position: 2, suit: suit(fox), slots: 2 }] },
+        2,
+        fox,
+        2,
+    )
+).
 
 :- pub(forest/2).
-forest(game { forests: Forests, .. }, Id) :- in(forest { position: Id, .. }, Forests).
+forest(game { forests: Forests }, Id) :- in(forest { position: Id }, Forests).
 
 :- pub(oppositeCorner/2).
 oppositeCorner(1, 3).
