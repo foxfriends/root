@@ -1,7 +1,6 @@
 <script>
 import Chance from 'chance';
-import { __, add, ascend, assoc, compose, concat, evolve, find, last, mergeWith, prop, propEq, subtract } from 'ramda';
-import { build } from '../util/ramda';
+import { __, add, ascend, assoc, compose, concat, evolve, find, last, mergeWith, objOf, prop, propEq, subtract } from 'ramda';
 import context from '../context';
 import Token from './Token.svelte';
 import Building from './Building.svelte';
@@ -41,7 +40,7 @@ $: warriors = $state
   .placed_warriors
   .filter(propEq('position', position.id))
   .map(compose(find(__, $state.warriors), propEq('id'), prop('warrior')));
-$: pieces = concat(tokens.map(build('token')), warriors.map(build('warrior')));
+$: pieces = concat(tokens.map(objOf('token')), warriors.map(objOf('warrior')));
 
 $: arrangedPieces = do {
   // create an RNG with the same seed every time to make a predictable arragment per clearing
