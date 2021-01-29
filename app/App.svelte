@@ -46,6 +46,15 @@
   --color--accent: #DF7F83;
   --color--accent__hover: #C15943;
   --color--background: #FBF7E7;
+
+  /* Factions */
+  --color-marquise: #D26024;
+  --color-eyrie: #4360AC;
+  --color-alliance: #58AE41;
+  --color-vagabond: #D7D7D7;
+  --color-vagabond2: #353132;
+  --color-cult: #E2E019;
+  --color-riverfolk: #5CBDAD;
 }
 
 :global(body),
