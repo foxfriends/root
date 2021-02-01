@@ -1,9 +1,7 @@
 <script>
   import { useScale } from '../context';
-  import logger from '../util/logger';
-  import warriorImage from '../image/piece/warriors/warrior';
 
-  export let warriors;
+  export let warrior;
   export let x;
   export let y;
 
@@ -11,16 +9,16 @@
   const size = 8;
 </script>
 
-{#if warriors.length}
-  <div
+{#if warrior}
+  <svg
     class='warrior'
     style={`
-      background-image: url(${warriorImage(warriors[0])});
       left: ${x}px;
       top: ${y}px;
-      transform: translate(-50%, -50%) translateY(-${size * warriors.length * $scale}px) scale(${$scale});
-    `}
-  />
+      transform: translate(-50%, -50%) translateY(-${size * $scale}px) scale(${$scale});
+    `}>
+    <use xlink:href={`../image/piece/warriors/token.${warrior.faction}-warrior.svg#warrior`} />
+  </svg>
 {/if}
 
 <style>
@@ -30,7 +28,8 @@
     user-select: none;
     transform-origin: center;
     width: 135px;
-    height: 180px;
+    height: 169px;
     transition: top 0.2s, left 0.2s;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.7));
   }
 </style>

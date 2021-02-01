@@ -92,7 +92,7 @@
   {#if token}
     <Token tokens={[token]} {x} {y} />
   {:else if warrior}
-    <Warrior warriors={[warrior]} {x} {y} />
+    <Warrior warrior={warrior} {x} {y} />
   {/if}
 {/each}
 
