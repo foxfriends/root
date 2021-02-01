@@ -17,7 +17,7 @@
       top: ${y}px;
       transform: translate(-50%, -50%) translateY(-${size * $scale}px) scale(${$scale});
     `}>
-    <use xlink:href={`../image/piece/warriors/token.${warrior.faction}-warrior.svg#warrior`} />
+    <use xlink:href={`./image/piece/warriors/token.${warrior.faction}-warrior.svg#warrior`} />
   </svg>
 {/if}
 
