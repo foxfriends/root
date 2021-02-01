@@ -1,11 +1,11 @@
 <script>
-import context from '../context';
-import Board from './Board.svelte';
-import FactionPicker from './FactionPicker.svelte';
-import Phases from '../types/Phase';
-import PlayArea from './PlayArea.svelte';
+  import context from '../context';
+  import Board from './Board.svelte';
+  import FactionPicker from './FactionPicker.svelte';
+  import Phases from '../types/Phase';
+  import PlayArea from './PlayArea.svelte';
 
-const { state } = context();
+  const { state } = context();
 
 $: expanded = false; // why would this expand?
 </script>
@@ -46,10 +46,28 @@ $: expanded = false; // why would this expand?
   left: 100%;
   top: 0;
   bottom: 0;
-  width: calc(100vw - 350px);
+  z-index: 1;
+  width: calc(100% - 350px);
   transform: translateX(-350px);
   transition: transform 0.2s;
   background-color: blue;
+  background-size: 20%;
+
+  &.marquise {
+    background-image: url('../image/pattern-marquise.jpg');
+  }
+
+  &.eyrie {
+    background-image: url('../image/pattern-eyrie.jpg');
+  }
+
+  &.alliance {
+    background-image: url('../image/pattern-alliance.jpg');
+  }
+
+  &.vagabond {
+    background-image: url('../image/pattern-vagabond.jpg');
+  }
 
   &:hover,
   &.expanded {

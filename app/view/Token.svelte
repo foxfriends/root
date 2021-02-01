@@ -7,9 +7,10 @@ export let x;
 export let y;
 
 const scale = useScale();
+const size = 8;
 
 $: boxShadow = tokens
-  .map((_, i) => `0 ${8 * i + 3}px 0 rgb(179, 174, 166), 0 ${8 * i + 7}px 0 rgb(198, 185, 165), 0 ${8 * i + 8}px 0 rgb(113, 107, 97)`)
+  .map((_, i) => `0 ${size * i + 3}px 0 rgb(179, 174, 166), 0 ${size * i + size - 1}px 0 rgb(198, 185, 165), 0 ${size * i + size}px 0 rgb(113, 107, 97)`)
   .join(',');
 </script>
 
@@ -20,7 +21,7 @@ $: boxShadow = tokens
       background-image: url(${tokenImage(tokens[0])});
       left: ${x}px;
       top: ${y}px;
-      transform: translate(-50%, -50%) translateY(-${8 * tokens.length * $scale}px) scale(${$scale});
+      transform: translate(-50%, -50%) translateY(-${size * tokens.length * $scale}px) scale(${$scale});
       box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset, ${boxShadow};
     `}
     />

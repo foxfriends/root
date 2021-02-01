@@ -1,72 +1,76 @@
 <script>
-import Chance from 'chance';
-import { __, add, ascend, assoc, compose, concat, evolve, find, last, mergeWith, objOf, prop, propEq, subtract } from 'ramda';
-import context from '../context';
-import Token from './Token.svelte';
-import Building from './Building.svelte';
-import Buildings from '../types/Building';
-import Action from './component/Action.svelte';
-import ClearingPrompt from './ClearingPrompt.svelte';
-import { l } from '../util/localization';
-// TODO: warriors
+  import Chance from 'chance';
+  import { __, add, ascend, assoc, compose, concat, evolve, find, last, mergeWith, objOf, prop, propEq, subtract } from 'ramda';
+  import context from '../context';
+  import Token from './Token.svelte';
+  import Building from './Building.svelte';
+  import Buildings from '../types/Building';
+  import Action from './component/Action.svelte';
+  import ClearingPrompt from './ClearingPrompt.svelte';
+  import { l } from '../util/localization';
+  import Warrior from './Warrior.svelte';
 
-const { state } = context();
+  const { state } = context();
 
-export let position;
-export let x;
-export let y;
-export let slots = [];
-export let seed = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+  export let position;
+  export let x;
+  export let y;
+  export let slots = [];
+  export let seed = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
 
-const intersects = (placement, forces) => forces
-  .some(({ x, y, r }) => {
-    const radius = placement.r - r;
-    return Math.abs(placement.x - x) < radius && Math.abs(placement.y - y) < radius;
-  });
+  const intersects = (placement, forces) => forces
+    .some(({ x, y, r }) => {
+      const radius = placement.r - r;
+      return Math.abs(placement.x - x) < radius && Math.abs(placement.y - y) < radius;
+    });
 
-$: buildings = $state
-  .built_buildings
-  .filter(propEq('position', position.id))
-  .map(compose(find(__, $state.buildings), propEq('id'), prop('building')));
-$: ruinItems = $state
-  .ruin_items
-  .filter(propEq('clearing', position.id))
-  .map(compose(find(__, $state.items), propEq('id'), prop('item')));
-$: tokens = $state
-  .placed_tokens
-  .filter(propEq('position', position.id))
-  .map(compose(find(__, $state.tokens), propEq('id'), prop('token')));
-$: warriors = $state
-  .placed_warriors
-  .filter(propEq('position', position.id))
-  .map(compose(find(__, $state.warriors), propEq('id'), prop('warrior')));
-$: pieces = concat(tokens.map(objOf('token')), warriors.map(objOf('warrior')));
+  $: buildings = $state
+    .built_buildings
+    .filter(propEq('position', position.id))
+    .map(compose(find(__, $state.buildings), propEq('id'), prop('building')));
+  $: ruinItems = $state
+    .ruin_items
+    .filter(propEq('clearing', position.id))
+    .map(compose(find(__, $state.items), propEq('id'), prop('item')));
+  $: tokens = $state
+    .placed_tokens
+    .filter(propEq('position', position.id))
+    .map(compose(find(__, $state.tokens), propEq('id'), prop('token')));
+  $: warriors = $state
+    .placed_warriors
+    .filter(propEq('position', position.id))
+    .map(compose(find(__, $state.warriors), propEq('id'), prop('warrior')));
+  $: pieces = concat(tokens.map(objOf('token')), warriors.map(objOf('warrior')));
 
-$: arrangedPieces = do {
-  // create an RNG with the same seed every time to make a predictable arragment per clearing
-  const rng = new Chance(seed);
-  const forces = slots.map(assoc('r', 70));
-  forces.push({ x, y, r: 30 });
-  pieces
-    .map((piece, i) => {
-      const rngForces = new Array(i)
-        .fill(0)
-        .map(() => ({ x: x + rng.integer({ min: -325, max: 325 }), y: y + rng.integer({ min: -325, max: 325 }), r: 0 }));
-      const effectiveForces = concat(forces, rngForces);
-      const netForce = effectiveForces
-        .map(evolve({ x: subtract(x), y: subtract(y) }))
-        .reduce(mergeWith(add), { x: 0, y: 0 });
-      const forceMagnitude = Math.sqrt(netForce.x ** 2 + netForce.y ** 2);
-      const placement = { x, y, r: 70 };
-      while (intersects(placement, effectiveForces)) {
-        placement.x += Math.max(1, Math.ceil(Math.abs(netForce.x) / forceMagnitude * 35)) * Math.sign(netForce.x);
-        placement.y += Math.max(1, Math.ceil(Math.abs(netForce.y) / forceMagnitude * 35)) * Math.sign(netForce.y);
-      }
-      forces.push(placement);
-      return { ...placement, piece };
-    })
-    .sort(ascend(prop('y')));
-};
+  $: arrangedPieces = do {
+    // create an RNG with the same seed every time to make a predictable arragment per clearing
+    const rng = new Chance(seed);
+    const forces = slots.map(assoc('r', 70));
+    forces.push({ x, y, r: 30 });
+    pieces
+      .map((piece, i) => {
+        const rngForces = new Array(i)
+          .fill(0)
+          .map(() => ({
+            x: x + rng.integer({ min: -325, max: 325 }),
+            y: y + rng.integer({ min: -325, max: 325 }),
+            r: 0,
+          }));
+        const effectiveForces = concat(forces, rngForces);
+        const netForce = effectiveForces
+          .map(evolve({ x: subtract(x), y: subtract(y) }))
+          .reduce(mergeWith(add), { x: 0, y: 0 });
+        const forceMagnitude = Math.sqrt(netForce.x ** 2 + netForce.y ** 2);
+        const placement = { x, y, r: 70 };
+        while (intersects(placement, effectiveForces)) {
+          placement.x += Math.max(1, Math.ceil(Math.abs(netForce.x) / forceMagnitude * 35)) * Math.sign(netForce.x);
+          placement.y += Math.max(1, Math.ceil(Math.abs(netForce.y) / forceMagnitude * 35)) * Math.sign(netForce.y);
+        }
+        forces.push(placement);
+        return { ...placement, piece };
+      })
+      .sort(ascend(prop('y')));
+  };
 </script>
 
 {#each buildings as building, i}
@@ -88,7 +92,7 @@ $: arrangedPieces = do {
   {#if token}
     <Token tokens={[token]} {x} {y} />
   {:else if warrior}
-    <!-- TODO -->
+    <Warrior warrior={warrior} {x} {y} />
   {/if}
 {/each}
 
