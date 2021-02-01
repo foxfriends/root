@@ -9,8 +9,6 @@
 
   const scale = useScale();
   const size = 8;
-  
-  logger.log(warriorImage);
 </script>
 
 {#if warriors.length}
