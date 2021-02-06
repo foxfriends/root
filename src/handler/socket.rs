@@ -78,11 +78,9 @@ impl Socket {
                                                 .with("State", Value::serialize(game).unwrap());
                                         let actions = lumber
                                             .ask(&question)
-                                            .map(|binding| question.answer(&binding).unwrap())
                                             .map(|mut answer| {
                                                 answer
                                                     .remove("Action")
-                                                    .unwrap()
                                                     .unwrap()
                                                     .to_string()
                                             })
@@ -192,13 +190,11 @@ impl Socket {
                             Ok(question) => {
                                 let mut answers = lumber.ask(&question);
                                 match answers.next() {
-                                    Some(binding) => {
-                                        let mut answer = question.answer(&binding).unwrap();
-                                        let new_state = answer.remove("NewState").unwrap().unwrap();
+                                    Some(mut answer) => {
+                                        let new_state = answer.remove("NewState").unwrap();
                                         *game = Value::deserialize(&new_state).unwrap();
                                         let actions: Vec<String> = answer
                                             .remove("Actions")
-                                            .unwrap()
                                             .unwrap()
                                             .as_list()
                                             .unwrap()

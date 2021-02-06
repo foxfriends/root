@@ -13,23 +13,23 @@
 // Maybe a macro could be of use too, if that's something we might ever want..?
 
 // Lobby phase
-actions(Name, State, lobby(Action)) :-
+actions(!Name, !State, lobby(Action)) :-
     phase(State, lobby),
     lobby::actions(Name, State, Action).
-perform(Name, State, lobby(Action), NewState) :-
+perform(!Name, !State, lobby(Action), NewState) :-
     phase(State, lobby),
     lobby::perform(Name, State, Action, NewState).
 
 // Choose Faction phase
-actions(Name, State, choose_faction(Action)) :-
+actions(!Name, !State, choose_faction(Action)) :-
     phase(State, choose_faction),
     chooseFaction::actions(Name, State, Action).
-perform(Name, State, choose_faction(Action), NewState) :-
+perform(!Name, !State, choose_faction(Action), NewState) :-
     phase(State, choose_faction),
     chooseFaction::perform(Name, State, Action, NewState).
 
 // Setup phase
-actions(Name, State, Action) :-
+actions(!Name, !State, Action) :-
     phase(State, setup),
     setup::actions(Name, State, Action).
 perform(Name, State, Action, NewState) :-
@@ -37,7 +37,7 @@ perform(Name, State, Action, NewState) :-
     setup::perform(Name, State, Action, NewState).
 
 // Public function for running commands and returning actions at the same time
-command(Name, State, Command, NewState, Actions) :-
+command(!Name, !State, !Command, NewState, Actions) :-
     actions(Name, State, Command), // ensure that this action is permitted before doing it
     perform(Name, State, Command, NewState) ->
     Actions =:= [Action : actions(Name, NewState, Action)],

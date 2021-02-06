@@ -13,6 +13,9 @@ gameOwner(game { players: [player { name: Name, .. }, ..], .. }, Name).
 phase(game { phase: phase(P), .. }, P).
 setPhase(game { phase: _, ..G }, P, game { phase: phase(P), ..G }).
 
+:- test(phase(game { phase: phase(lobby) }, lobby)).
+:- test(phase(game { phase: phase(lobby) }, setup) ->> false; true).
+
 :- pub(turn/2).
 turn(game { turn: faction(T), .. }, T).
 setTurn(game { turn: _, ..G }, T, game { turn: turn(T), ..G }).
