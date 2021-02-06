@@ -1,9 +1,9 @@
 use colored::*;
 use futures::StreamExt;
 use log::{debug, info};
+use std::time::Instant;
 use tokio_stream::wrappers::UnboundedReceiverStream;
 use warp::ws::{self, WebSocket};
-use std::time::Instant;
 
 mod client_command;
 mod command_error;

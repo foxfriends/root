@@ -79,10 +79,7 @@ impl Socket {
                                         let actions = lumber
                                             .ask(&question)
                                             .map(|mut answer| {
-                                                answer
-                                                    .remove("Action")
-                                                    .unwrap()
-                                                    .to_string()
+                                                answer.remove("Action").unwrap().to_string()
                                             })
                                             .collect::<Vec<_>>();
                                         socket
