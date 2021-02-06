@@ -3,6 +3,7 @@ use futures::StreamExt;
 use log::{debug, info};
 use tokio_stream::wrappers::UnboundedReceiverStream;
 use warp::ws::{self, WebSocket};
+use std::time::Instant;
 
 mod client_command;
 mod command_error;
@@ -42,6 +43,7 @@ pub async fn handler(websocket: WebSocket) {
             move |packet| {
                 let socket = socket.clone();
                 async move {
+                    let start = Instant::now();
                     let name = socket.name().await;
                     match name {
                         Some(name) => {
@@ -50,6 +52,8 @@ pub async fn handler(websocket: WebSocket) {
                         None => debug!("{}: {:?}", id, packet.command()),
                     }
                     let response = packet.execute(&socket).await;
+                    let duration = Instant::now() - start;
+                    debug!("{} {:?}", id, duration);
                     socket.broadcast(Message::Update).await;
                     socket.emit(response).ok();
                 }
