@@ -415,6 +415,19 @@
       ]
     }
   },
+  "197a05a6d8e9887fff59e179182105a030e2fbcda0b730b8d8e7e4218d25025b": {
+    "query": "INSERT INTO discards (game, card) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "1aea6c72249d51e18552b1fcc057612acaaa3370f5570844f33097d9cc6d32f2": {
     "query": "INSERT INTO clearings (game, position, suit, slots) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
     "describe": {
@@ -527,6 +540,39 @@
         false,
         false
       ]
+    }
+  },
+  "20650f4d26397c0458b1cadb6b4568b6e187dc5efd952a3f73be2bb3ac3be915": {
+    "query": "\n                INSERT INTO vagabond_items (game, item, faction, exhausted, damaged) VALUES ($1, $2, $3, $4, $5)\n                    ON CONFLICT (game, item) DO UPDATE SET faction = $3, exhausted = $4, damaged = $5\n            ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          },
+          "Bool",
+          "Bool"
+        ]
+      },
+      "nullable": []
     }
   },
   "2116e3e5574b89bbd3682d83bf52158e4eea893e4fee8b5c3e876acbbf6c77ca": {
@@ -647,6 +693,54 @@
             }
           },
           "Bool"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "30dc057fcc57e9630ee224cfc963f70324679005627ba2556d24e97e568a4e76": {
+    "query": "INSERT INTO coalition (game, vagabond, faction) VALUES ($1, $2, $3) ON CONFLICT (game, vagabond) DO UPDATE SET faction = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
         ]
       },
       "nullable": []
@@ -1216,6 +1310,51 @@
       ]
     }
   },
+  "6011acc3e4bbaf191eeea6519bceaec47f437a3f07bd549880b8138ce348fece": {
+    "query": "INSERT INTO factions (game, faction, player, points) VALUES ($1, $2, $3, $4) ON CONFLICT (game, faction) DO UPDATE SET player = $3, points = $4",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          },
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "61a32ba4b3ef1a1218043e948f185a939f425397393ccdc9cf238a308dc4e8e3": {
+    "query": "INSERT INTO alliance_supporters (game, card) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "61ed44257b9d01c2a1f5f58436ed060b8fcd0227b5f6159889c8e93d02e0dcb6": {
     "query": "INSERT INTO buildings (game, id, building, suit) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
     "describe": {
@@ -1272,6 +1411,37 @@
       "nullable": []
     }
   },
+  "6707e6ccdcd8806f9e6a797f0d59ee76a451451fb09963c07d8d9d0bf6c1000f": {
+    "query": "INSERT INTO completed_quests (game, quest, faction) VALUES ($1, $2, $3) ON CONFLICT (game, quest) DO UPDATE SET faction = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "nullable": []
+    }
+  },
   "6b6699a3ac6ab2370d68d9ec6460a7e09f680113c6e727453b4af2169cd83b20": {
     "query": "INSERT INTO connections (game, position_a, position_b, closed) VALUES ($1, $2, $3, $4) ON CONFLICT (game, position_a, position_b) DO UPDATE SET closed = $4",
     "describe": {
@@ -1282,6 +1452,37 @@
           "Int2",
           "Int2",
           "Bool"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "6ffd908b7a12e60bd46a805132d847affc7cc444c043104b71f304cfec7caf04": {
+    "query": "INSERT INTO owned_items (game, item, faction) VALUES ($1, $2, $3) ON CONFLICT (game, item) DO UPDATE SET faction = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
         ]
       },
       "nullable": []
@@ -1433,6 +1634,37 @@
       "parameters": {
         "Left": [
           "Varchar"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "817f7ea55e5bdd1f52d713e7564043771a5bb6a7215313309e5801b3fe1a5fe2": {
+    "query": "INSERT INTO hand (game, card, faction) VALUES ($1, $2, $3) ON CONFLICT (game, card) DO UPDATE SET faction = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          }
         ]
       },
       "nullable": []
@@ -1592,6 +1824,34 @@
               }
             }
           }
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "9417338a18334a567b3e71c265034f329fb7b1f08bd01e614724c76cf37897aa": {
+    "query": "INSERT INTO placed_tokens (game, token, position) VALUES ($1, $2, $3) ON CONFLICT (game, token) DO UPDATE SET position = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "94dbd0f35f6edb0a1c3f9af96193b6cefc456380b0167dc36acf162764ccf5d7": {
+    "query": "INSERT INTO built_buildings (game, building, position) VALUES ($1, $2, $3) ON CONFLICT (game, building) DO UPDATE SET building = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2"
         ]
       },
       "nullable": []
@@ -1854,6 +2114,88 @@
       ]
     }
   },
+  "a1e4d60b694ff7fd4f9b342e487ac622bd81264c678c09c769a189082f383df1": {
+    "query": "\n                INSERT INTO games (name, assignment, map, deck, phase, turn, action)\n                    VALUES ($1, $2, $3, $4, $5, $6, $7)\n                    ON CONFLICT (name) DO UPDATE\n                    SET phase = $5, turn = $6, action = $7\n            ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          {
+            "Custom": {
+              "name": "enum_assignment",
+              "kind": {
+                "Enum": [
+                  "random",
+                  "choose"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_game_map",
+              "kind": {
+                "Enum": [
+                  "autumn",
+                  "winter",
+                  "caves",
+                  "lake"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_deck",
+              "kind": {
+                "Enum": [
+                  "standard",
+                  "exiles_and_partisans"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_phase",
+              "kind": {
+                "Enum": [
+                  "lobby",
+                  "choose_faction",
+                  "setup",
+                  "birdsong",
+                  "daylight",
+                  "evening",
+                  "complete"
+                ]
+              }
+            }
+          },
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          },
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "a3e5771363d9dafaa672a5722719e3e5125647240ae0184ee1d3088c76718f44": {
     "query": "INSERT INTO items (game, id, item) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
     "describe": {
@@ -1893,6 +2235,32 @@
           "Varchar",
           "Int2",
           "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "a448d9c3cf38af3a0bd51b11d2be0270f5e2331d8090a34411f577ed1ad4f846": {
+    "query": "INSERT INTO commitments (game, warrior, craft_suit) VALUES ($1, $2, $3) ON CONFLICT (game, warrior) DO UPDATE SET craft_suit = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_suit",
+              "kind": {
+                "Enum": [
+                  "mouse",
+                  "fox",
+                  "rabbit",
+                  "bird"
+                ]
+              }
+            }
+          }
         ]
       },
       "nullable": []
@@ -1974,6 +2342,19 @@
       "nullable": []
     }
   },
+  "b09026d3fb8ed6a88e34c0a47a9e07731a88bfeea711a7b4e8768d6e2d41eec4": {
+    "query": "INSERT INTO burrow (game, warrior) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "b1f01637c71b2bba9c56299f9bb4abd0b08173a5648622ee44fb749500c19328": {
     "query": "SELECT token, position FROM placed_tokens WHERE game = $1",
     "describe": {
@@ -2041,6 +2422,19 @@
         false,
         true
       ]
+    }
+  },
+  "b3acc49c56309cdd0ffe34f6089c0243c5652a952fa658c26f32d649dad81fcd": {
+    "query": "INSERT INTO tower (game, clearing) VALUES ($1, $2) ON CONFLICT (game) DO UPDATE SET clearing = $2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
     }
   },
   "b47d15656bcc6d793e2a12e44f7644d8e92eb3ff32336ec3bb3203e7a66b601e": {
@@ -2196,6 +2590,32 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "bdad41178f627bf360b7ef01080cfb30835066508efa68e4d845f07f61dfa90f": {
+    "query": "INSERT INTO officers (game, warrior) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "c1e0462530a984fc7df3ef89cb44546f0c64a9dc2e3113b71a1b7e3141830ffd": {
+    "query": "INSERT INTO funds (game, warrior) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
     }
   },
   "c1e1c69f84ed76a4f2c0fc4f52e7d3e8410ce579aebc5b8f5b9b963a84a2921d": {
@@ -2365,6 +2785,19 @@
       "nullable": []
     }
   },
+  "c6555fd2e43f62d3ce314cf71a1a6f8fecd67bc3fe860a8f27e93feca63242b3": {
+    "query": "INSERT INTO acolytes (game, warrior) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "c8c158cc512a56bc44e150ad878299c43a46fb3af1b70406b3ab7dd0f10e1ddd": {
     "query": "SELECT card FROM discards WHERE game = $1",
     "describe": {
@@ -2405,6 +2838,46 @@
       ]
     }
   },
+  "cc4e95fbad932ac8b0be5755cdf944ab7e981e0a1654f9f4502f67ce5179e6b1": {
+    "query": "INSERT INTO ferry (game, clearing) VALUES ($1, $2) ON CONFLICT (game) DO UPDATE SET clearing = $2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "cc5283a2fc27a5bef18e72e865630b2921e85237d2a5aa5d326ac17204dfb643": {
+    "query": "INSERT INTO placed_warriors (game, warrior, position) VALUES ($1, $2, $3) ON CONFLICT (game, warrior) DO UPDATE SET position = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "cc776da8fa4fffc52bc9cada9323474c59cf4c5f6609ee74fef20c21bbba5d32": {
+    "query": "INSERT INTO active_quests (game, quest) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "ccf6a5af693a5e0f7a5bb71012ca335a73ef1dda5c1e4590f1a8da0b2689c783": {
     "query": "SELECT faction as \"faction: _\" FROM conspiracy WHERE game = $1",
     "describe": {
@@ -2442,6 +2915,19 @@
       ]
     }
   },
+  "cf72b564b701b89d6f4c8f8c22ed6847577f64cdb53b858e952766128300a693": {
+    "query": "INSERT INTO lost_souls (game, card) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "dbef95f19667ffcca6c5db400129a2c1fbf5b37d6991a2530f15a2993d6d6958": {
     "query": "SELECT warrior FROM payments WHERE game = $1",
     "describe": {
@@ -2460,6 +2946,19 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "e41f7c33c0f9961e7a62e223ad6542e8d04d00b182027d00dc87e2b67d192c20": {
+    "query": "INSERT INTO payments (game, warrior) VALUES ($1, $2) ON CONFLICT DO NOTHING",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2"
+        ]
+      },
+      "nullable": []
     }
   },
   "e531b87894ac9f9a48dfa4ded4547b75abedce67a9a6b200e82c9257e39d0635": {
@@ -2632,6 +3131,20 @@
       "nullable": [
         false
       ]
+    }
+  },
+  "eeadb1aebdde1e116832fddb05c6ecb58145d2993a1cafe16a5d1b586e89fc8c": {
+    "query": "INSERT INTO players (game, name, ready) VALUES ($1, $2, $3) ON CONFLICT (game, name) DO UPDATE SET ready = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Varchar",
+          "Bool"
+        ]
+      },
+      "nullable": []
     }
   },
   "f408ed6922ad6de9ba60532e2885bd3605fc44674a68c1809b4c80a04f196591": {
