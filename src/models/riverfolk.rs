@@ -1,5 +1,5 @@
 #![allow(clippy::new_without_default)]
-use super::FactionId;
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -20,12 +20,24 @@ impl Riverfolk {
             mercenaries: 1,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Option<Self>> {
-        query_as!(Self, r#"SELECT faction as "faction: _", hand_card, riverboats, mercenaries FROM riverfolk WHERE game = $1"#, game).fetch_optional(conn).await
+#[async_trait]
+impl Loadable for Option<Riverfolk> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
+        query_as!(
+            Riverfolk,
+            r#"SELECT faction as "faction: _", hand_card, riverboats, mercenaries FROM riverfolk WHERE game = $1"#,
+            game,
+        )
+        .fetch_optional(conn)
+        .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Riverfolk {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"
             INSERT INTO riverfolk (game, hand_card, riverboats, mercenaries) VALUES ($1, $2, $3, $4)

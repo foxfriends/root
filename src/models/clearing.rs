@@ -1,4 +1,4 @@
-use super::{Position, Suit};
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 /// Marks a position as representing a clearing with the given suit and slots.
@@ -26,27 +26,33 @@ impl Clearing {
     pub fn position(&self) -> i16 {
         self.position
     }
+}
 
-    /// Load the clearings for a game from the database.
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
+#[async_trait]
+impl Loadable for Vec<Clearing> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
         query_as!(
-            Self,
+            Clearing,
             r#"SELECT position, suit as "suit: _", slots FROM clearings WHERE game = $1"#,
             game
         )
         .fetch_all(conn)
         .await
     }
+}
 
-    /// Write this clearing to the database.
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Clearing {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO clearings (game, position, suit, slots) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
             game,
             self.position,
             self.suit as Suit,
             self.slots,
-        ).execute(conn).await?;
+        )
+        .execute(conn)
+        .await?;
         Ok(())
     }
 }

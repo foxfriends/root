@@ -1,4 +1,4 @@
-use super::{FactionId, VagabondId};
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -27,17 +27,29 @@ impl Vagabond {
         faction: FactionId,
         conn: &mut PgConnection,
     ) -> sqlx::Result<Option<Self>> {
-        query_as!(Self, r#"SELECT faction as "faction: _", vagabond as "vagabond: _", position FROM vagabond WHERE game = $1 AND faction = $2::enum_faction"#, game, faction as FactionId).fetch_optional(conn).await
+        query_as!(
+            Self,
+            r#"SELECT faction as "faction: _", vagabond as "vagabond: _", position FROM vagabond WHERE game = $1 AND faction = $2::enum_faction"#,
+            game,
+            faction as FactionId,
+        )
+        .fetch_optional(conn)
+        .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Vagabond {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO vagabond (game, faction, vagabond, position) VALUES ($1, $2, $3, $4) ON CONFLICT (game, faction) DO UPDATE SET vagabond = $3, position = $4",
             game,
             self.faction as FactionId,
             self.vagabond as Option<VagabondId>,
             self.position,
-        ).execute(conn).await?;
+        )
+        .execute(conn)
+        .await?;
         Ok(())
     }
 }

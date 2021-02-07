@@ -1,4 +1,4 @@
-use super::{FactionId, Suit, TokenId};
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -19,12 +19,24 @@ impl Token {
             suit,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, r#"SELECT id, token as "token: _", faction as "faction: _", suit as "suit: _" FROM tokens WHERE game = $1"#, game).fetch_all(conn).await
+#[async_trait]
+impl Loadable for Vec<Token> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
+        query_as!(
+            Token,
+            r#"SELECT id, token as "token: _", faction as "faction: _", suit as "suit: _" FROM tokens WHERE game = $1"#,
+            game,
+        )
+        .fetch_all(conn)
+        .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Token {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO tokens (game, id, token, suit) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING"#,
             game,

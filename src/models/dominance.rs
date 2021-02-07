@@ -1,4 +1,4 @@
-use super::FactionId;
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -15,20 +15,26 @@ impl Dominance {
             faction: None,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
+#[async_trait]
+impl Loadable for Vec<Dominance> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
         query_as!(
-            Self,
+            Dominance,
             r#"SELECT card, faction as "faction: _" FROM dominance WHERE game = $1"#,
             game
         )
         .fetch_all(conn)
         .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Dominance {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
-            r#"INSERT INTO dominance (game, card, faction) VALUES ($1, $2, $3) ON CONFLICT (game, card) DO UPDATE SET faction = $3"#,
+            "INSERT INTO dominance (game, card, faction) VALUES ($1, $2, $3) ON CONFLICT (game, card) DO UPDATE SET faction = $3",
             game,
             self.card,
             self.faction as Option<FactionId>,

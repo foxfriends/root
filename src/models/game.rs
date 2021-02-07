@@ -166,63 +166,138 @@ impl Game {
             phase: game.phase,
             action: game.action,
             deck: game.deck,
-            players: Player::load(name, &mut conn).await?,
-            positions: Position::load(name, &mut conn).await?,
-            forests: Forest::load(name, &mut conn).await?,
-            clearings: Clearing::load(name, &mut conn).await?,
-            water: Water::load(name, &mut conn).await?,
-            connections: Connection::load(name, &mut conn).await?,
-            rivers: River::load(name, &mut conn).await?,
-            ferry: Ferry::load(name, &mut conn).await?,
-            tower: Tower::load(name, &mut conn).await?,
-            factions: Faction::load(name, &mut conn).await?,
-            buildings: Building::load(name, &mut conn).await?,
-            built_buildings: BuiltBuilding::load(name, &mut conn).await?,
-            tokens: Token::load(name, &mut conn).await?,
-            placed_tokens: PlacedToken::load(name, &mut conn).await?,
-            cards: Card::load(name, &mut conn).await?,
-            discards: Discard::load(name, &mut conn).await?,
-            hand: Hand::load(name, &mut conn).await?,
-            dominance: Dominance::load(name, &mut conn).await?,
-            items: Item::load(name, &mut conn).await?,
-            owned_items: OwnedItem::load(name, &mut conn).await?,
-            ruin_items: RuinItem::load(name, &mut conn).await?,
-            warriors: Warrior::load(name, &mut conn).await?,
-            placed_warriors: PlacedWarrior::load(name, &mut conn).await?,
-            marquise: Marquise::load(name, &mut conn).await?,
-            eyrie: Eyrie::load(name, &mut conn).await?,
-            eyrie_decree: EyrieDecree::load(name, &mut conn).await?,
-            eyrie_leaders: EyrieLeader::load(name, &mut conn).await?,
-            eyrie_current_leader: EyrieCurrentLeader::load(name, &mut conn).await?,
-            alliance: Alliance::load(name, &mut conn).await?,
-            alliance_supporters: AllianceSupporter::load(name, &mut conn).await?,
-            officers: Officer::load(name, &mut conn).await?,
+            players: Loadable::load(name, &mut conn).await?,
+            positions: Loadable::load(name, &mut conn).await?,
+            forests: Loadable::load(name, &mut conn).await?,
+            clearings: Loadable::load(name, &mut conn).await?,
+            water: Loadable::load(name, &mut conn).await?,
+            connections: Loadable::load(name, &mut conn).await?,
+            rivers: Loadable::load(name, &mut conn).await?,
+            ferry: Loadable::load(name, &mut conn).await?,
+            tower: Loadable::load(name, &mut conn).await?,
+            factions: Loadable::load(name, &mut conn).await?,
+            buildings: Loadable::load(name, &mut conn).await?,
+            built_buildings: Loadable::load(name, &mut conn).await?,
+            tokens: Loadable::load(name, &mut conn).await?,
+            placed_tokens: Loadable::load(name, &mut conn).await?,
+            cards: Loadable::load(name, &mut conn).await?,
+            discards: Loadable::load(name, &mut conn).await?,
+            hand: Loadable::load(name, &mut conn).await?,
+            dominance: Loadable::load(name, &mut conn).await?,
+            items: Loadable::load(name, &mut conn).await?,
+            owned_items: Loadable::load(name, &mut conn).await?,
+            ruin_items: Loadable::load(name, &mut conn).await?,
+            warriors: Loadable::load(name, &mut conn).await?,
+            placed_warriors: Loadable::load(name, &mut conn).await?,
+            marquise: Loadable::load(name, &mut conn).await?,
+            eyrie: Loadable::load(name, &mut conn).await?,
+            eyrie_decree: Loadable::load(name, &mut conn).await?,
+            eyrie_leaders: Loadable::load(name, &mut conn).await?,
+            eyrie_current_leader: Loadable::load(name, &mut conn).await?,
+            alliance: Loadable::load(name, &mut conn).await?,
+            alliance_supporters: Loadable::load(name, &mut conn).await?,
+            officers: Loadable::load(name, &mut conn).await?,
             vagabond: Vagabond::load(name, FactionId::Vagabond, &mut conn).await?,
             vagabond2: Vagabond::load(name, FactionId::Vagabond2, &mut conn).await?,
-            vagabond_items: VagabondItem::load(name, &mut conn).await?,
-            vagabond_relationships: VagabondRelationship::load(name, &mut conn).await?,
-            coalition: Coalition::load(name, &mut conn).await?,
-            quests: Quest::load(name, &mut conn).await?,
-            active_quests: ActiveQuest::load(name, &mut conn).await?,
-            completed_quests: CompletedQuest::load(name, &mut conn).await?,
-            cult: Cult::load(name, &mut conn).await?,
-            acolytes: Acolyte::load(name, &mut conn).await?,
-            lost_souls: LostSoul::load(name, &mut conn).await?,
-            riverfolk: Riverfolk::load(name, &mut conn).await?,
-            commitments: Commitment::load(name, &mut conn).await?,
-            funds: Fund::load(name, &mut conn).await?,
-            payments: Payment::load(name, &mut conn).await?,
-            duchy: Duchy::load(name, &mut conn).await?,
-            burrow: Burrow::load(name, &mut conn).await?,
-            ministers: Minister::load(name, &mut conn).await?,
-            conspiracy: Conspiracy::load(name, &mut conn).await?,
+            vagabond_items: Loadable::load(name, &mut conn).await?,
+            vagabond_relationships: Loadable::load(name, &mut conn).await?,
+            coalition: Loadable::load(name, &mut conn).await?,
+            quests: Loadable::load(name, &mut conn).await?,
+            active_quests: Loadable::load(name, &mut conn).await?,
+            completed_quests: Loadable::load(name, &mut conn).await?,
+            cult: Loadable::load(name, &mut conn).await?,
+            acolytes: Loadable::load(name, &mut conn).await?,
+            lost_souls: Loadable::load(name, &mut conn).await?,
+            riverfolk: Loadable::load(name, &mut conn).await?,
+            commitments: Loadable::load(name, &mut conn).await?,
+            funds: Loadable::load(name, &mut conn).await?,
+            payments: Loadable::load(name, &mut conn).await?,
+            duchy: Loadable::load(name, &mut conn).await?,
+            burrow: Loadable::load(name, &mut conn).await?,
+            ministers: Loadable::load(name, &mut conn).await?,
+            conspiracy: Loadable::load(name, &mut conn).await?,
         };
         conn.commit().await?;
         Ok(game)
     }
 
     pub async fn save(&self) -> sqlx::Result<()> {
-        todo!()
+        let mut conn = crate::POOL.get().unwrap().begin().await?;
+        query!(
+            r#"
+                INSERT INTO games (name, assignment, map, deck, phase, turn, action)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7)
+                    ON CONFLICT (name) DO UPDATE
+                    SET phase = $5, turn = $6, action = $7
+            "#,
+            self.name,
+            self.assignment as Assignment,
+            self.map as GameMap,
+            self.deck as Deck,
+            self.phase as Phase,
+            self.turn as FactionId,
+            self.action,
+        )
+        .execute(&mut conn)
+        .await?;
+
+        self.players.save(&self.name, &mut conn).await?;
+        self.positions.save(&self.name, &mut conn).await?;
+        self.forests.save(&self.name, &mut conn).await?;
+        self.clearings.save(&self.name, &mut conn).await?;
+        self.water.save(&self.name, &mut conn).await?;
+        self.connections.save(&self.name, &mut conn).await?;
+        self.rivers.save(&self.name, &mut conn).await?;
+        self.ferry.save(&self.name, &mut conn).await?;
+        self.tower.save(&self.name, &mut conn).await?;
+        self.factions.save(&self.name, &mut conn).await?;
+        self.buildings.save(&self.name, &mut conn).await?;
+        self.built_buildings.save(&self.name, &mut conn).await?;
+        self.tokens.save(&self.name, &mut conn).await?;
+        self.placed_tokens.save(&self.name, &mut conn).await?;
+        self.cards.save(&self.name, &mut conn).await?;
+        self.discards.save(&self.name, &mut conn).await?;
+        self.hand.save(&self.name, &mut conn).await?;
+        self.dominance.save(&self.name, &mut conn).await?;
+        self.items.save(&self.name, &mut conn).await?;
+        self.owned_items.save(&self.name, &mut conn).await?;
+        self.ruin_items.save(&self.name, &mut conn).await?;
+        self.warriors.save(&self.name, &mut conn).await?;
+        self.placed_warriors.save(&self.name, &mut conn).await?;
+        self.marquise.save(&self.name, &mut conn).await?;
+        self.eyrie.save(&self.name, &mut conn).await?;
+        self.eyrie_decree.save(&self.name, &mut conn).await?;
+        self.eyrie_leaders.save(&self.name, &mut conn).await?;
+        self.eyrie_current_leader
+            .save(&self.name, &mut conn)
+            .await?;
+        self.alliance.save(&self.name, &mut conn).await?;
+        self.alliance_supporters.save(&self.name, &mut conn).await?;
+        self.officers.save(&self.name, &mut conn).await?;
+        self.vagabond.save(&self.name, &mut conn).await?;
+        self.vagabond2.save(&self.name, &mut conn).await?;
+        self.vagabond_items.save(&self.name, &mut conn).await?;
+        self.vagabond_relationships
+            .save(&self.name, &mut conn)
+            .await?;
+        self.coalition.save(&self.name, &mut conn).await?;
+        self.quests.save(&self.name, &mut conn).await?;
+        self.active_quests.save(&self.name, &mut conn).await?;
+        self.completed_quests.save(&self.name, &mut conn).await?;
+        self.cult.save(&self.name, &mut conn).await?;
+        self.acolytes.save(&self.name, &mut conn).await?;
+        self.lost_souls.save(&self.name, &mut conn).await?;
+        self.riverfolk.save(&self.name, &mut conn).await?;
+        self.commitments.save(&self.name, &mut conn).await?;
+        self.funds.save(&self.name, &mut conn).await?;
+        self.payments.save(&self.name, &mut conn).await?;
+        self.duchy.save(&self.name, &mut conn).await?;
+        self.burrow.save(&self.name, &mut conn).await?;
+        self.ministers.save(&self.name, &mut conn).await?;
+        self.conspiracy.save(&self.name, &mut conn).await?;
+
+        conn.commit().await?;
+        Ok(())
     }
 
     pub fn create(config: GameConfig) -> Self {
@@ -304,7 +379,7 @@ impl Game {
             factions: config
                 .factions
                 .iter()
-                .map(|faction| Faction::create(*faction))
+                .map(|faction| Faction::new(*faction))
                 .collect(),
             positions,
             clearings,
@@ -367,10 +442,6 @@ impl Game {
 
     pub fn players(&self) -> &[Player] {
         self.players.as_slice()
-    }
-
-    pub fn factions(&self) -> &[Faction] {
-        self.factions.as_slice()
     }
 
     pub fn add_player(&mut self, name: &str) -> Result<(), String> {

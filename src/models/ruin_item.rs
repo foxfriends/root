@@ -1,3 +1,4 @@
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -14,20 +15,26 @@ impl RuinItem {
             item,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
+#[async_trait]
+impl Loadable for Vec<RuinItem> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
         query_as!(
-            Self,
+            RuinItem,
             "SELECT clearing, item FROM ruin_items WHERE game = $1",
             game
         )
         .fetch_all(conn)
         .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for RuinItem {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
-            r#"INSERT INTO ruin_items (game, clearing, item) VALUES ($1, $2, $3) ON CONFLICT (game, item) DO UPDATE SET clearing = $2"#,
+            "INSERT INTO ruin_items (game, clearing, item) VALUES ($1, $2, $3) ON CONFLICT (game, item) DO UPDATE SET clearing = $2",
             game,
             self.clearing,
             self.item,

@@ -1,5 +1,5 @@
 #![allow(clippy::new_without_default)]
-use super::{FactionId, Suit};
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -18,12 +18,18 @@ impl Cult {
             hated_outcast: false,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Option<Self>> {
-        query_as!(Self, r#"SELECT faction as "faction: _", outcast as "outcast: _", hated_outcast FROM cult WHERE game = $1"#, game).fetch_optional(conn).await
+#[async_trait]
+impl Loadable for Option<Cult> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
+        query_as!(Cult, r#"SELECT faction as "faction: _", outcast as "outcast: _", hated_outcast FROM cult WHERE game = $1"#, game).fetch_optional(conn).await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Cult {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO cult (game, outcast, hated_outcast) VALUES ($1, $2, $3) ON CONFLICT (game) DO UPDATE SET outcast = $2, hated_outcast = $3"#,
             game,

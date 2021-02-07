@@ -1,5 +1,5 @@
 #![allow(clippy::new_without_default)]
-use super::FactionId;
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -14,18 +14,24 @@ impl Conspiracy {
             faction: FactionId::Conspiracy,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Option<Self>> {
+#[async_trait]
+impl Loadable for Option<Conspiracy> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
         query_as!(
-            Self,
+            Conspiracy,
             r#"SELECT faction as "faction: _" FROM conspiracy WHERE game = $1"#,
             game
         )
         .fetch_optional(conn)
         .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Conspiracy {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO conspiracy (game) VALUES ($1) ON CONFLICT DO NOTHING"#,
             game,

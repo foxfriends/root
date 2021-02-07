@@ -1,4 +1,4 @@
-use super::Position;
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -13,14 +13,20 @@ impl Forest {
             position: position.id(),
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, "SELECT position FROM forests WHERE game = $1", game)
+#[async_trait]
+impl Loadable for Vec<Forest> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
+        query_as!(Forest, "SELECT position FROM forests WHERE game = $1", game)
             .fetch_all(conn)
             .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Forest {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO forests (game, position) VALUES ($1, $2) ON CONFLICT DO NOTHING",
             game,

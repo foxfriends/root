@@ -1,4 +1,4 @@
-use super::{MinisterId, MinisterRank};
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -17,12 +17,24 @@ impl Minister {
             swayed: false,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
-        query_as!(Self, r#"SELECT minister as "minister: _", rank as "rank: _", swayed FROM ministers WHERE game = $1"#, game).fetch_all(conn).await
+#[async_trait]
+impl Loadable for Vec<Minister> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
+        query_as!(
+            Minister,
+            r#"SELECT minister as "minister: _", rank as "rank: _", swayed FROM ministers WHERE game = $1"#,
+            game,
+        )
+        .fetch_all(conn)
+        .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Minister {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO ministers (game, minister, swayed) VALUES ($1, $2, $3) ON CONFLICT (game, minister) DO UPDATE SET swayed = $3"#,
             game,

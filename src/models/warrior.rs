@@ -1,4 +1,4 @@
-use super::FactionId;
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -12,18 +12,24 @@ impl Warrior {
     pub fn new(id: i16, faction: FactionId) -> Self {
         Self { id, faction }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
+#[async_trait]
+impl Loadable for Vec<Warrior> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
         query_as!(
-            Self,
+            Warrior,
             r#"SELECT id, faction as "faction: _" FROM warriors WHERE game = $1"#,
             game
         )
         .fetch_all(conn)
         .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for Warrior {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO warriors (game, id, faction) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING"#,
             game,

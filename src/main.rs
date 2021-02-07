@@ -1,5 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
+#[macro_use]
+extern crate async_trait;
 
 use colored::*;
 use log::info;
@@ -7,8 +9,9 @@ use once_cell::sync::OnceCell;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use warp::Filter;
 
+mod database;
 mod handler;
-pub mod models;
+mod models;
 
 use handler::handler;
 

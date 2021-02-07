@@ -1,4 +1,4 @@
-use super::EyrieLeaderId;
+use super::*;
 use sqlx::{postgres::PgConnection, query, query_as};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
@@ -15,18 +15,24 @@ impl EyrieLeader {
             used: false,
         }
     }
+}
 
-    pub async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Vec<Self>> {
+#[async_trait]
+impl Loadable for Vec<EyrieLeader> {
+    async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
         query_as!(
-            Self,
+            EyrieLeader,
             r#"SELECT leader as "leader: _", used FROM eyrie_leaders WHERE game = $1"#,
             game
         )
         .fetch_all(conn)
         .await
     }
+}
 
-    pub async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+#[async_trait]
+impl Saveable for EyrieLeader {
+    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO eyrie_leaders (game, leader, used) VALUES ($1, $2, $3) ON CONFLICT (game, leader) DO UPDATE SET used = $3"#,
             game,
