@@ -29,7 +29,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Install SQLx
-        run: cargo install sqlx
+        run: cargo install sqlx-cli
       - name: Create database
         run: sqlx database create
         env:
