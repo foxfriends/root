@@ -39,7 +39,7 @@ $: decree = { y: 133 * scale, recruit: 0, move: 567 * scale, battle: 1153 * scal
 
 .board {
   position: relative;
-  background-image: url('../../image/card-eyrie-front.jpg');
+  background-image: url('./image/board/board.eyrie-front.jpg');
   background-size: contain;
   background-attachment: top left;
   background-repeat: no-repeat;

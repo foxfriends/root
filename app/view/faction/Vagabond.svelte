@@ -134,11 +134,11 @@ $: hostileFactions = Object.entries($game.factionData[faction].relations)
 }
 
 .vagabond {
-  background-image: url('../../image/card-vagabond-front.jpg');
+  background-image: url('./board.vagabond-front.jpg');
 }
 
 .vagabond2 {
-  background-image: url('../../image/card-vagabond2-front.jpg');
+  background-image: url('./board.vagabond2-front.jpg');
 }
 
 .board {

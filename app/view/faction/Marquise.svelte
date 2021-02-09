@@ -66,7 +66,7 @@ $: woods = unplacedTokens.filter(propEq('token', Tokens.WOOD));
 
 .board {
   position: relative;
-  background-image: url('../../image/card-marquise-front.jpg');
+  background-image: url('./image/board/board.marquise-front.jpg');
   background-size: contain;
   background-attachment: top left;
   background-repeat: no-repeat;
