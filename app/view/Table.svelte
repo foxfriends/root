@@ -54,19 +54,19 @@ $: expanded = false; // why would this expand?
   background-size: 20%;
 
   &.marquise {
-    background-image: url('../image/pattern-marquise.jpg');
+    background-image: url('../image/pattern/pattern-marquise.jpg');
   }
 
   &.eyrie {
-    background-image: url('../image/pattern-eyrie.jpg');
+    background-image: url('../image/pattern/pattern-eyrie.jpg');
   }
 
   &.alliance {
-    background-image: url('../image/pattern-alliance.jpg');
+    background-image: url('../image/pattern/pattern-alliance.jpg');
   }
 
   &.vagabond {
-    background-image: url('../image/pattern-vagabond.jpg');
+    background-image: url('../image/pattern/pattern-vagabond.jpg');
   }
 
   &:hover,
