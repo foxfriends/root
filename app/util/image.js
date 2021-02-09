@@ -17,6 +17,12 @@ export function getFactionIconPath(faction) {
   return `/image/piece/icons/token.${faction}-icon.png`;
 }
 
+export function getItemImagePath(item, ruin) {
+  let ruinPath = ruin ? 'ruin_' : '';
+
+  return `/image/piece/item/token.item-${ruinPath}${item}.png`;
+}
+
 export function getEyrieLeaderPath(leader) {
   let path = leader ? 'front.' + leader : 'back';
 
