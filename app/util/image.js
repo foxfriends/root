@@ -9,8 +9,8 @@ export function getBuildingImagePath(building) {
 }
 
 export function getTokenImagePath(token) {
-  let faction = token.faction ? token.faction + '-' : '';
-  let suit = token.suit ? '_' + token.suit : '';
+  const faction = token.faction ? token.faction + '-' : '';
+  const suit = token.suit ? '_' + token.suit : '';
 
   return `/image/piece/token.${faction}${token.token}${suit}.png`;
 }
@@ -28,25 +28,25 @@ export function getFactionIconPath(faction) {
 }
 
 export function getItemImagePath(item, ruin) {
-  let ruinPath = ruin ? 'ruin_' : '';
+  const ruinPath = ruin ? 'ruin_' : '';
 
   return `/image/piece/item/token.item-${ruinPath}${item}.png`;
 }
 
 export function getEyrieLeaderPath(leader) {
-  let path = leader ? 'front.' + leader : 'back';
+  const path = leader ? 'front.' + leader : 'back';
 
   return `/image/card/eyrie/card-eyrie_leader-${path}.jpg`;
 }
 
 export function getVagabondCharacterPath(character) {
-  let path = character ? 'front.' + character : 'back';
+  const path = character ? 'front.' + character : 'back';
 
   return `/image/card/vagabond-character/card-vagabond_character-${path}.jpg`;
 }
 
 export function getFactionBoardPath(faction, back) {
-  let side = back ? 'back' : 'front';
+  const side = back ? 'back' : 'front';
 
   return `/image/board/board-${faction}-${side}.jpg`;
 }
