@@ -5,6 +5,7 @@ import tokenImages from '../../image/token/token.*.png';
 import { Item } from '../../model/Item';
 import Token from '../Token.svelte';
 import Deck from '../Deck.svelte';
+import { getFactionIconPath } from '../../util/image';
 
 export let faction;
 
@@ -63,7 +64,7 @@ $: hostileFactions = Object.entries($game.factionData[faction].relations)
         `}>
         {#each factions as faction, i}
           <div style={i === 0 ? '' : `margin-top: ${Math.min(5, (394 - (factions.length * 146)) / (factions.length - 1))}px;`}>
-            <Token square block image={tokenImages[`vagabond-relationship_${faction}`]} />
+            <Token square block image={getFactionIconPath(faction.faction)} />
           </div>
         {/each}
       </div>
@@ -77,7 +78,7 @@ $: hostileFactions = Object.entries($game.factionData[faction].relations)
       `}>
       {#each hostileFactions as faction, i}
         <div style={i === 0 ? '' : `margin-left: ${Math.min(5, (439 - (hostileFactions.length * 146)) / (hostileFactions.length - 1))}px;`}>
-          <Token square block image={tokenImages[`vagabond-relationship_${faction}`]} />
+          <Token square block image={getFactionIconPath(faction.faction)} />
         </div>
       {/each}
     </div>

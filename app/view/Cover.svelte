@@ -136,7 +136,7 @@ async function * gameLobby() {
     right: 0;
     top: 0;
     bottom: 0;
-    background-image: url('../image/cover.jpg');
+    background-image: url('./image/cover.jpg');
     background-size: cover;
     background-position: center;
     font-family: var(--font-family--body);

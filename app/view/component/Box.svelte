@@ -27,7 +27,7 @@
 
     display: inline-block;
     border: var(--border-width) solid transparent;
-    border-image-source: url('../../image/box.png');
+    border-image-source: url('./image/box.png');
     border-image-slice: 55 fill;
     border-image-width: var(--border-width);
     border-image-repeat: round;
