@@ -1,6 +1,6 @@
 export function getBuildingImagePath(building) {
-  let faction = building.faction ? building.faction + '-' : '';
-  let suit = building.suit ? '_' + building.suit : '';
+  const faction = building.faction ? building.faction + '-' : '';
+  const suit = building.suit ? '_' + building.suit : '';
 
   return `/image/piece/token.${faction}${building.building}${suit}.png`;
 }

@@ -45,18 +45,16 @@
         <Text text='available-factions' />
       </legend>
       {#each Object.values(Faction) as faction}
-        {#if ['cult', 'riverfolk', 'vagabond2', 'duchy', 'conspiracy'].indexOf(faction) === -1}
-          <label class="faction">
-            <input
-              type='checkbox'
-              class="faction__checkbox"
-              bind:group={factions}
-              value={faction}
-            />
-            <img src={getFactionIconPath(faction)} class="faction__icon" />
-            <Text text={faction} params={{ form: 'long' }} />
-          </label>
-        {/if}
+        <label class="faction">
+          <input
+            type='checkbox'
+            class="faction__checkbox"
+            bind:group={factions}
+            value={faction}
+          />
+          <img src={getFactionIconPath(faction)} class="faction__icon" />
+          <Text text={faction} params={{ form: 'long' }} />
+        </label>
       {/each}
     </fieldset>
     <div class='flex'>

@@ -16,6 +16,6 @@ $: scores = groupBy(prop('points'), $state.factions);
 </script>
 
 <!-- TODO#41: this will not animate well, as pieces are added and removed if they are on the same score -->
-{#each Object.entries(scores) as [score, factions], i}
+{#each Object.entries(scores) as [score, factions]}
   <VictoryPointMarker {factions} x={track.x + 148 * score} y={track.y} />
 {/each}
