@@ -1,8 +1,8 @@
 <script>
-import { useScale } from '../context';
-import tokenImage from '../image/piece/token';
+  import { useScale } from '../context';
+  import { getTokenImagePath } from '../util/image';
 
-export let tokens;
+  export let tokens;
 export let x;
 export let y;
 
@@ -10,15 +10,15 @@ const scale = useScale();
 const size = 8;
 
 $: boxShadow = tokens
-  .map((_, i) => `0 ${size * i + 3}px 0 rgb(179, 174, 166), 0 ${size * i + size - 1}px 0 rgb(198, 185, 165), 0 ${size * i + size}px 0 rgb(113, 107, 97)`)
-  .join(',');
+    .map((_, i) => `0 ${size * i + 3}px 0 rgb(179, 174, 166), 0 ${size * i + size - 1}px 0 rgb(198, 185, 165), 0 ${size * i + size}px 0 rgb(113, 107, 97)`)
+    .join(',');
 </script>
 
 {#if tokens.length}
   <div
     class='token'
     style={`
-      background-image: url(${tokenImage(tokens[0])});
+      background-image: url(${getTokenImagePath(tokens[0])});
       left: ${x}px;
       top: ${y}px;
       transform: translate(-50%, -50%) translateY(-${size * tokens.length * $scale}px) scale(${$scale});
