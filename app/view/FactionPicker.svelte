@@ -6,7 +6,7 @@
   import Button from './component/Button.svelte';
   import Box from './component/Box.svelte';
   import Text from './component/Text.svelte';
-  import { getFactionBoardPath } from '../util/image';
+  import { getFactionBoardBackPath, getFactionBoardFrontPath } from '../util/image';
 
   const { state } = context();
 
@@ -23,8 +23,8 @@ let flipped = {};
               class='card'
               class:show-back={!!flipped[faction.faction]}
               on:click={() => { flipped[faction.faction] = !flipped[faction.faction]; }}>
-              <div class='front' style={`background-image: url(${getFactionBoardPath(faction.faction)});`} />
-              <div class='back' style={`background-image: url(${getFactionBoardPath(faction.faction, true)});`} />
+              <div class='front' style={`background-image: url(${getFactionBoardFrontPath(faction.faction)});`} />
+              <div class='back' style={`background-image: url(${getFactionBoardBackPath(faction.faction)});`} />
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { propEq } from 'ramda';
 import context from '../context';
 import FactionCard from './FactionCard.svelte';
 import Deck from './Deck.svelte';
-import { getFactionBoardPath } from '../util/image';
+import { getFactionBoardFrontPath } from '../util/image';
 
 const { state, socket } = context();
 
@@ -39,7 +39,7 @@ $: currentIndex = $state.factions.findIndex(propEq('faction', currentFaction));
         <img
           class='preview'
           class:current={faction === currentFaction}
-          src={getFactionBoardPath(faction)}
+          src={getFactionBoardFrontPath(faction)}
           on:click={() => currentFaction = faction} />
       {/each}
     </div>

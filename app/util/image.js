@@ -45,8 +45,10 @@ export function getVagabondCharacterPath(character) {
   return `/image/card/vagabond-character/card-vagabond_character-${path}.jpg`;
 }
 
-export function getFactionBoardPath(faction, back) {
-  const side = back ? 'back' : 'front';
+export function getFactionBoardFrontPath(faction) {
+  return `/image/board/board-${faction}-front.jpg`;
+}
 
-  return `/image/board/board-${faction}-${side}.jpg`;
+export function getFactionBoardBackPath(faction) {
+  return `/image/board/board-${faction}-back.jpg`;
 }
