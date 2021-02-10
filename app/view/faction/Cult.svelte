@@ -1,13 +1,13 @@
 <script>
-import { game, prompts } from '../../store';
-import Pieces from '../../model/Piece';
-import Message from '../../model/Message';
-import Suit from '../../model/Suit';
-import Piece from '../Piece.svelte';
-import Pile from '../Pile.svelte';
-import CraftedItems from './CraftedItems.svelte';
+  import { game, prompts } from '../../store';
+  import Pieces from '../../model/Piece';
+  import Message from '../../model/Message';
+  import Suit from '../../model/Suit';
+  import Piece from '../Piece.svelte';
+  import Pile from '../Pile.svelte';
+  import CraftedItems from './CraftedItems.svelte';
 
-export let width, height;
+  export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
 $: garden = {
   x: [869 * scale, 1037 * scale, 1192 * scale, 1360 * scale, 1529 * scale],
@@ -103,7 +103,7 @@ function notifyOutcast(suit) {
 
 .board {
   position: relative;
-  background-image: url('../../image/card-cult-front.jpg');
+  background-image: url('./image/board/board.cult-front.jpg');
   background-size: contain;
   background-attachment: top left;
   background-repeat: no-repeat;

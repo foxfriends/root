@@ -1,14 +1,14 @@
 <script>
-import context from '../context';
-import Action from './component/Action.svelte';
-import Dialog from './component/Dialog.svelte';
-import Picker from './component/Picker.svelte';
-import Button from './component/Button.svelte';
-import Box from './component/Box.svelte';
-import Text from './component/Text.svelte';
-import CARD_IMAGES from '../image/faction';
+  import context from '../context';
+  import Action from './component/Action.svelte';
+  import Dialog from './component/Dialog.svelte';
+  import Picker from './component/Picker.svelte';
+  import Button from './component/Button.svelte';
+  import Box from './component/Box.svelte';
+  import Text from './component/Text.svelte';
+  import { getFactionBoardBackPath, getFactionBoardFrontPath } from '../util/image';
 
-const { state } = context();
+  const { state } = context();
 
 let flipped = {};
 </script>
@@ -23,8 +23,8 @@ let flipped = {};
               class='card'
               class:show-back={!!flipped[faction.faction]}
               on:click={() => { flipped[faction.faction] = !flipped[faction.faction]; }}>
-              <div class='front' style='background-image: url({CARD_IMAGES[faction.faction].front});' />
-              <div class='back' style='background-image: url({CARD_IMAGES[faction.faction].back});' />
+              <div class='front' style={`background-image: url(${getFactionBoardFrontPath(faction.faction)});`} />
+              <div class='back' style={`background-image: url(${getFactionBoardBackPath(faction.faction)});`} />
             </div>
           </div>
         </div>

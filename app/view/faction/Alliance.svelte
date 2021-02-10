@@ -1,15 +1,15 @@
 <script>
-import { game, username } from '../../store';
-import cardImages from '../../image/card/card-shared-front.*.jpg';
-import cardBack from '../../image/card/card-shared-back.jpg';
-import Pieces from '../../model/Piece';
-import Faction from '../../model/Faction';
-import Piece from '../Piece.svelte';
-import Deck from '../Deck.svelte';
-import Pile from '../Pile.svelte';
-import CraftedItems from './CraftedItems.svelte';
+  import { game, username } from '../../store';
+  import cardImages from '../../image/card/card-shared-front.*.jpg';
+  import cardBack from '../../image/card/card-shared-back.jpg';
+  import Pieces from '../../model/Piece';
+  import Faction from '../../model/Faction';
+  import Piece from '../Piece.svelte';
+  import Deck from '../Deck.svelte';
+  import Pile from '../Pile.svelte';
+  import CraftedItems from './CraftedItems.svelte';
 
-let isMe = $game.players[$username].faction === Faction.alliance;
+  let isMe = $game.players[$username].faction === Faction.alliance;
 export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
 $: base = { x: 1301 * scale, y: 1053 * scale, dx: 154 * scale };
@@ -73,7 +73,7 @@ $: craftedItems = { x: 1528 * scale, y: 280 * scale, width: 555 };
 
 .board {
   position: relative;
-  background-image: url('../../image/card-alliance-front.jpg');
+  background-image: url('./image/board/board.alliance-front.jpg');
   background-size: contain;
   background-attachment: top left;
   background-repeat: no-repeat;

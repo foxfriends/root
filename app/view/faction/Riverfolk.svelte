@@ -157,7 +157,7 @@ function notifyPrices() {
 
 .board {
   position: relative;
-  background-image: url('../../image/card-riverfolk-front.jpg');
+  background-image: url('./image/board/board.riverfolk-front.jpg');
   background-size: contain;
   background-attachment: top left;
   background-repeat: no-repeat;

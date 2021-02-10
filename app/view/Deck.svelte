@@ -1,43 +1,46 @@
 <script>
-import { cond, always } from 'ramda';
-import * as SHARED_DECK from '../image/card/shared';
-import * as QUEST_DECK from '../image/card/quest';
-import Text from './component/Text.svelte';
+  import Text from './component/Text.svelte';
 
-export let shared = false;
-export let quest = false;
-if (shared === quest) {
-  throw new TypeError('Deck must be shared or quest');
-}
-$: images = do {
-  switch (true) {
-    case shared: SHARED_DECK; break;
-    case quest: QUEST_DECK; break;
+  // TODO: add dynamic image import
+  // (this component will be reworked later with the whole right sidebar)
+
+  const sharedDeck = { BACK: '/image/card/card-shared-back.jpg' }
+  const questsDeck = { BACK: '/image/card/vagabond-quests/card-vagabond_quest-back.jpg' }
+
+  export let shared = false;
+  export let quest = false;
+  if (shared === quest) {
+    throw new TypeError('Deck must be shared or quest');
   }
-};
+  $: images = do {
+    switch (true) {
+      case shared: sharedDeck; break;
+      case quest: questsDeck; break;
+    }
+  };
 
-export let up = false;
-export let down = false;
-if (up === down) {
-  throw new TypeError('Deck must be face up or face down');
-}
+  export let up = false;
+  export let down = false;
+  if (up === down) {
+    throw new TypeError('Deck must be face up or face down');
+  }
 
-export let cards;
+  export let cards;
 
-const EDGE_COLOR = [
-  'rgb(148, 142, 118)',
-  'rgb(182, 176, 150)',
-];
+  const EDGE_COLOR = [
+    'rgb(148, 142, 118)',
+    'rgb(182, 176, 150)',
+  ];
 
-$: boxShadow = new Array(Math.ceil(cards.length / 2))
-  .fill(0)
-  .map((_, i) => `0 ${i + 1}px 0 ${EDGE_COLOR[i % 2]}`)
-  .join(',');
+  $: boxShadow = new Array(Math.ceil(cards.length / 2))
+    .fill(0)
+    .map((_, i) => `0 ${i + 1}px 0 ${EDGE_COLOR[i % 2]}`)
+    .join(',');
 
-function image(card) {
-  if (down) { return images.BACK; }
-  return images[card]; // TODO: this won't work
-}
+  function image(card) {
+    if (down) { return images.BACK; }
+    return images[card];
+  }
 </script>
 
 {#if cards.length}
@@ -49,19 +52,19 @@ function image(card) {
 {/if}
 
 <style>
-.card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  font-family: var(--font-family--display);
-}
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    font-family: var(--font-family--display);
+  }
 
-.empty {
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  color: rgba(255, 255, 255, 0.7);
-}
+  .empty {
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.7);
+  }
 </style>

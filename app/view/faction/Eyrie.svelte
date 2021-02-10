@@ -1,11 +1,11 @@
 <script>
 import { game } from '../../store';
-import leaderImages from '../../image/card/card-eyrie_leader-front.*.jpg';
 import images from '../../image/token/token.*.png';
 import Piece from '../../model/Piece';
 import Token from '../Token.svelte';
 import Deck from '../Deck.svelte';
 import CraftedItems from './CraftedItems.svelte';
+import { getEyrieLeaderPath } from '../../util/image';
 
 export let width, height;
 $: scale = Math.min(width / 2252, height / 1749);
@@ -22,7 +22,7 @@ $: decree = { y: 133 * scale, recruit: 0, move: 567 * scale, battle: 1153 * scal
     {/each}
     {#if $game.factionData.eyrie.leader}
       <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
-        <Deck cardImage={leaderImages[$game.factionData.eyrie.leader]} cardCount={1} />
+        <Deck cardImage={getEyrieLeaderPath($game.factionData.eyrie.leader)} cardCount={1} />
       </div>
     {/if}
     <CraftedItems {...craftedItems} {scale} items={$game.factionData.eyrie.craftedItems} />
@@ -39,7 +39,7 @@ $: decree = { y: 133 * scale, recruit: 0, move: 567 * scale, battle: 1153 * scal
 
 .board {
   position: relative;
-  background-image: url('../../image/card-eyrie-front.jpg');
+  background-image: url('./image/board/board.eyrie-front.jpg');
   background-size: contain;
   background-attachment: top left;
   background-repeat: no-repeat;
