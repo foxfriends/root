@@ -142,6 +142,7 @@ pub struct Game {
 
 impl Game {
     #[allow(clippy::eval_order_dependence)]
+    #[allow(dead_code)]
     pub async fn load(name: &str) -> sqlx::Result<Self> {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
         let game = query!(
@@ -221,6 +222,7 @@ impl Game {
         Ok(game)
     }
 
+    #[allow(dead_code)]
     pub async fn save(&self) -> sqlx::Result<()> {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
         query!(
