@@ -44,15 +44,15 @@
       <legend>
         <Text text='available-factions' />
       </legend>
-      {#each Object.values(Faction) as faction}
-        <label class="faction">
+      {#each Object.values(Faction) as faction, i}
+        <label class='faction'>
           <input
             type='checkbox'
-            class="faction__checkbox"
+            class='faction-checkbox'
             bind:group={factions}
             value={faction}
           />
-          <img src={getFactionIconPath(faction)} class="faction__icon" />
+          <img src={getFactionIconPath(faction)} class='faction-icon' />
           <Text text={faction} params={{ form: 'long' }} />
         </label>
       {/each}
@@ -133,6 +133,7 @@
 
   label {
     display: block;
+    white-space: nowrap;
   }
 
   .faction {
@@ -144,21 +145,40 @@
     width: 48%;
   }
 
-  .faction__checkbox {
-    display: none;
+  .faction-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
   }
 
-  .faction__checkbox:checked + .faction__icon {
-    opacity: 1;
-    border-color: black;
-  }
-
-  .faction__icon {
+  .faction-icon {
+    filter: grayscale(100%);
     opacity: 0.5;
     width: 40px;
     height: 40px;
     margin-right: 10px;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     border-radius: 10px;
+  }
+
+  .faction-checkbox:active + .faction-icon,
+  .faction-checkbox:hover + .faction-icon,
+  .faction-checkbox:focus + .faction-icon {
+    filter: grayscale(50%);
+    opacity: 0.6;
+  }
+
+  .faction-checkbox:checked + .faction-icon {
+    filter: unset;
+    opacity: 1;
+    border-color: black;
+  }
+
+  .faction-checkbox:checked:active + .faction-icon,
+  .faction-checkbox:checked:hover + .faction-icon,
+  .faction-checkbox:checked:focus + .faction-icon {
+    filter: grayscale(30%);
+    opacity: 0.8;
   }
 </style>
