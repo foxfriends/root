@@ -10,7 +10,7 @@
   export let ruin = false;
   export let exhausted = false;
 
-  $: image = getItemImagePath(item, ruin);
+  $: image = getItemImagePath(item.item, ruin);
 </script>
 
 <div
@@ -26,6 +26,7 @@
 
 <style>
   .item {
+    background-size: cover;
     position: absolute;
     pointer-events: none;
     user-select: none;
@@ -33,7 +34,7 @@
     width: 141px;
     height: 141px;
     transition: top 0.2s, left 0.2s;
-    border-radius: 31px;
+    border-radius: 16px;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.6) inset,
     0 3px 0 rgb(179, 174, 166),
     0 7px 0 rgb(198, 185, 165),

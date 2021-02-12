@@ -27,13 +27,14 @@
 
 <style>
   .building {
+    background-size: cover;
     position: absolute;
     pointer-events: none;
     user-select: none;
     transform-origin: center;
     width: 141px;
     height: 141px;
-    border-radius: 20px;
+    border-radius: 12px;
     transition: top 0.2s, left 0.2s;
   }
 </style>

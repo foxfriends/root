@@ -46,9 +46,9 @@ export function getVagabondCharacterPath(character) {
 }
 
 export function getFactionBoardFrontPath(faction) {
-  return `/image/board/board-${faction}-front.jpg`;
+  return `/image/board/board.${faction}-front.jpg`;
 }
 
 export function getFactionBoardBackPath(faction) {
-  return `/image/board/board-${faction}-back.jpg`;
+  return `/image/board/board.${faction}-back.jpg`;
 }
