@@ -157,7 +157,7 @@
     opacity: 0.5;
     width: 40px;
     height: 40px;
-    margin-right: 10px;
+    margin: 1px 11px 1px 1px;
     border: 1px solid transparent;
     border-radius: 10px;
   }
@@ -167,18 +167,13 @@
   .faction-checkbox:focus + .faction-icon {
     filter: grayscale(50%);
     opacity: 0.6;
+    border: 2px solid black;
+    margin: 0 10px 0 0;
   }
 
   .faction-checkbox:checked + .faction-icon {
     filter: unset;
     opacity: 1;
     border-color: black;
-  }
-
-  .faction-checkbox:checked:active + .faction-icon,
-  .faction-checkbox:checked:hover + .faction-icon,
-  .faction-checkbox:checked:focus + .faction-icon {
-    filter: grayscale(30%);
-    opacity: 0.8;
   }
 </style>
