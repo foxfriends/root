@@ -8,21 +8,21 @@
   import CraftedItems from './CraftedItems.svelte';
 
   export let width, height;
-$: scale = Math.min(width / 2252, height / 1749);
-$: garden = {
-  x: [869 * scale, 1037 * scale, 1192 * scale, 1360 * scale, 1529 * scale],
-  y: 1264 * scale,
-  dy: 160 * scale,
-};
-$: outcast = { x: 1742 * scale, y: 827 * scale, dx: 170 * scale };
-$: lostSouls = { x: 1650 * scale, y: 955 * scale };
-$: acolytes = { x: 850 * scale, y: 767 * scale, w: 716, h: 190 };
-$: craftedItems = { x: 1580 * scale, y: 270 * scale, width: 527 };
+  $: scale = Math.min(width / 2252, height / 1749);
+  $: garden = {
+    x: [869 * scale, 1037 * scale, 1192 * scale, 1360 * scale, 1529 * scale],
+    y: 1264 * scale,
+    dy: 160 * scale,
+  };
+  $: outcast = { x: 1742 * scale, y: 827 * scale, dx: 170 * scale };
+  $: lostSouls = { x: 1650 * scale, y: 955 * scale };
+  $: acolytes = { x: 850 * scale, y: 767 * scale, w: 716, h: 190 };
+  $: craftedItems = { x: 1580 * scale, y: 270 * scale, width: 527 };
 
-export let client;
-function notifyOutcast(suit) {
-  client.notify(Message.direct('Prompts:outcast', { outcast: suit }));
-}
+  export let client;
+  function notifyOutcast(suit) {
+    client.notify(Message.direct('Prompts:outcast', { outcast: suit }));
+  }
 </script>
 
 <div class='container'>
