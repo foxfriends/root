@@ -1,5 +1,7 @@
 :- use(@core::list).
 :- use(@core).
+:- use(^::game(setPhase/3)).
+:- use(^::setup(nextSetup/2)).
 
 :- pub(actions/3).
 :- pub(perform/4).
@@ -9,14 +11,29 @@ actions(Name, game { factions: Factions, .. }, choose(Faction)) :-
     notin(faction { player: !Name, .. }, Factions),
     in(faction { faction: faction(Faction), player: ?, .. }, Factions).
 
-allChosen([]).
-allChosen([faction { player: !, .. }, ..Factions]) :- allChosen(Factions).
 
-perform(Name, game { factions: Factions, phase: phase(choose_faction), ..State }, choose(Faction), game { factions: NewFactions, phase: phase(Phase), ..State }) :-
+allChosen(game { factions: Factions, .. }) :- allChosen(Factions).
+allChosen([faction { player: !, .. }, ..Factions]) :- allChosen(Factions).
+allChosen([]).
+
+setPlayerFaction(
+    game { factions: Factions, ..State },
+    Player,
+    Faction,
+    game { factions: NewFactions, ..State },
+) :-
     update(
         Factions,
         faction { faction: faction(Faction), player: ?, ..Rest },
-        faction { faction: faction(Faction), player: Name, ..Rest },
+        faction { faction: faction(Faction), player: Player, ..Rest },
         NewFactions,
-    ),
-    (allChosen(NewFactions) ->> equal(Phase, setup); equal(Phase, choose_faction)).
+    ).
+
+perform(Name, State, choose(Faction), NextState) :-
+    setPlayerFaction(State, Name, Faction, G2),
+    (
+        allChosen(G2) ->>
+            setPhase(G2, setup, G3),
+            nextSetup(G3, NextState);
+        NextState =:= G2
+    ).

@@ -1,0 +1,32 @@
+:- use(@core).
+
+:- pub(init/2).
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::gameMap).
+:- use(~::game::tokens).
+:- use(~::game::buildings).
+:- use(~::game::warriors).
+
+init(G, N) :- (
+    token(G, _, keep, KeepCorner) ->>
+        // if the keep is placed, the eyrie starts in the opposite corner
+        oppositeCorner(KeepCorner, Across),
+        building(G, Roost, roost, unplaced),
+        placeBuilding(G, Roost, Across, G2),
+        placeWarriors(G2, eyrie, Across, 6, G3),
+        doneAction(G3, N);
+    G =:= N
+).
+
+actions(_, State, place_building[roost, Position]) :-
+    action(State, 0),
+    cornerClearing(Position).
+
+perform(_, State, place_building[roost, Position], NewState) ::-
+    building(State, Roost, roost, unplaced),
+    placeBuilding(State, Roost, Position, G2),
+    placeWarriors(G2, eyrie, Position, 6, G3),
+    doneAction(G3, NewState).

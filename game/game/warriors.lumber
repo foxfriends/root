@@ -4,7 +4,7 @@
 
 :- pub(placeWarrior/4).
 placeWarrior(
-    G, 
+    G,
     Id,
     Position,
     game { placed_warriors: [placed_warrior { warrior: Id, position: Position }, ..Placed], ..State },
@@ -14,6 +14,19 @@ placeWarrior(
     clearing(G, Position, _, _),
     in(warrior { id: Id, .. }, Warriors),
     notin(placed_warriors { warrior: Id, .. }, Placed).
+
+:- pub(placeWarriors/5).
+placeWarriors(G, _, _, 0, G).
+placeWarriors(
+    G,
+    Faction,
+    Position,
+    Count,
+    NewGame,
+) :-
+    warrior(G, Id, Faction, unplaced),
+    placeWarrior(G, Id, Position, G2),
+    placeWarriors(G2, Faction, Position, Count - 1, NewGame).
 
 :- pub(warrior/4).
 warrior(

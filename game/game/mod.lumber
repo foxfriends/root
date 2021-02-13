@@ -11,6 +11,7 @@ gameOwner(game { players: [player { name: Name, .. }, ..], .. }, Name).
 
 :- pub(phase/2).
 phase(game { phase: phase(P), .. }, P).
+:- pub(setPhase/3).
 setPhase(game { phase: _, ..G }, P, game { phase: phase(P), ..G }).
 
 :- test(phase(game { phase: phase(lobby) }, lobby)).

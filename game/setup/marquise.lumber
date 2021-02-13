@@ -35,7 +35,13 @@ actions(_, State, place_building[sawmill, Position]) :- action(State, 1), nearKe
 actions(_, State, place_building[workshop, Position]) :- action(State, 2), nearKeep(State, Position), slotAvailable(State, Position).
 actions(_, State, place_building[recruiter, Position]) :- action(State, 3), nearKeep(State, Position), slotAvailable(State, Position).
 
+perform(_, State, place_building[recruiter, Position], NewState) ::-
+    building(State, Tid, recruiter, unplaced),
+    placeBuilding(State, Tid, Position, State2),
+    doneTurn(State2, State3),
+    ^::nextSetup(State3, NewState).
+
 perform(_, State, place_building[T, Position], NewState) :-
     building(State, Tid, T, unplaced),
     placeBuilding(State, Tid, Position, State2),
-    (T =:= recruiter ->> doneTurn(State2, NewState); doneAction(State2, NewState)).
+    doneAction(State2, NewState).
