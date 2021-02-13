@@ -51,7 +51,8 @@
             class='faction-checkbox'
             bind:group={factions}
             value={faction}
-          />
+            />
+          <!-- svelte-ignore a11y-missing-attribute-->
           <img src={getFactionIconPath(faction)} class='faction-icon' />
           <Text text={faction} params={{ form: 'long' }} />
         </label>

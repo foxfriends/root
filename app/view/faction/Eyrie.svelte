@@ -3,9 +3,7 @@ import { complement, compose, prop, propEq } from 'ramda';
 import { memberOf } from '../../util/ramda';
 import context, { useScale } from '../../context';
 import Building from '../Building.svelte';
-import Token from '../Token.svelte';
 import Factions from '../../types/Faction';
-import Tokens from '../../types/Token';
 import Buildings from '../../types/Building';
 
 const { state } = context();
