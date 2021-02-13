@@ -302,10 +302,12 @@ impl Game {
 
     pub async fn exists(name: &str) -> sqlx::Result<bool> {
         let mut conn = crate::POOL.get().unwrap().acquire().await?;
-        Ok(query_scalar!("SELECT EXISTS (SELECT 1 FROM games WHERE name = $1)", name)
-            .fetch_one(&mut conn)
-            .await?
-            .unwrap_or(false))
+        Ok(
+            query_scalar!("SELECT EXISTS (SELECT 1 FROM games WHERE name = $1)", name)
+                .fetch_one(&mut conn)
+                .await?
+                .unwrap_or(false),
+        )
     }
 
     pub async fn delete(&self) -> sqlx::Result<()> {

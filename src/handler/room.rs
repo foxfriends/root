@@ -30,7 +30,7 @@ impl Room {
             game: RwLock::new(game),
         }))
     }
-    
+
     /// Creates a new room with a game set up as described.
     ///
     /// # Errors
@@ -38,7 +38,11 @@ impl Room {
     /// Creating a new room will fail if the name is already in use.
     pub async fn new(config: GameConfig) -> Result<Self, String> {
         let mut rooms = ROOMS.write().await;
-        if rooms.contains_key(&config.name) || Game::exists(&config.name).await.map_err(|err| err.to_string())? {
+        if rooms.contains_key(&config.name)
+            || Game::exists(&config.name)
+                .await
+                .map_err(|err| err.to_string())?
+        {
             return Err(format!("A room named {} already exists.", config.name));
         }
         let name = config.name.clone();
