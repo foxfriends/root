@@ -1,29 +1,43 @@
+<script context='module'>
+  const FRONT = Symbol('front');
+  const BACK = Symbol('back');
+  export const front = (card) => ({ card, side: FRONT });
+  export const back = (card) => ({ card, side: BACK });
+</script>
+
 <script>
   import Text from './component/Text.svelte';
+  import { identity, times } from 'ramda';
+  import { fmt, pairWith } from '../util/ramda';
+  import EyrieLeaders from '../types/EyrieLeaders';
 
   // TODO: add dynamic image import
   // (this component will be reworked later with the whole right sidebar)
 
   const sharedDeck = { BACK: '/image/card/card-shared-back.jpg' }
   const questsDeck = { BACK: '/image/card/vagabond-quests/card-vagabond_quest-back.jpg' }
+  const leadersDeck = {
+    BACK: '/image/card/eyrie/card-eyrie_leader-back.jpg',
+    ...Object.fromEntries(Object
+      .values(EyrieLeaders)
+      .map(pairWith(fmt`/image/card/eyrie/card-eyrie_leader-front.${identity}.jpg`))),
+  }
 
   export let shared = false;
   export let quest = false;
-  if (shared === quest) {
-    throw new TypeError('Deck must be shared or quest');
+  export let leaders = false;
+  if ([shared, quest, leaders].filter(identity).length !== 1) {
+    throw new TypeError('Deck must have one type');
   }
   $: images = do {
     switch (true) {
       case shared: sharedDeck; break;
       case quest: questsDeck; break;
+      case leaders: leadersDeck; break;
     }
   };
 
-  export let up = false;
-  export let down = false;
-  if (up === down) {
-    throw new TypeError('Deck must be face up or face down');
-  }
+  export let expandable = false;
 
   export let cards;
 
@@ -32,13 +46,10 @@
     'rgb(182, 176, 150)',
   ];
 
-  $: boxShadow = new Array(Math.ceil(cards.length / 2))
-    .fill(0)
-    .map((_, i) => `0 ${i + 1}px 0 ${EDGE_COLOR[i % 2]}`)
-    .join(',');
+  $: boxShadow = times((i) => `0 ${i + 1}px 0 ${EDGE_COLOR[i % 2]}`, Math.ceil(cards.length / 2)).join(',');
 
-  function image(card) {
-    if (down) { return images.BACK; }
+  function image({ card, side }) {
+    if (side === BACK) { return images.BACK; }
     return images[card];
   }
 </script>

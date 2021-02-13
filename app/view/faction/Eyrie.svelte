@@ -1,8 +1,9 @@
 <script>
-import { complement, compose, prop, propEq } from 'ramda';
+import { ascend, complement, compose, prop, propEq, sortWith } from 'ramda';
 import { memberOf } from '../../util/ramda';
 import context, { useScale } from '../../context';
 import Building from '../Building.svelte';
+import Deck, { front, back } from '../Deck.svelte';
 import Factions from '../../types/Faction';
 import Buildings from '../../types/Building';
 
@@ -25,6 +26,15 @@ $: roosts = $state
   .filter(propEq('faction', Factions.EYRIE))
   .filter(complement(built))
   .filter(propEq('building', Buildings.ROOST));
+
+$: currentLeader = $state.eyrie_current_leader.leader;
+const currentFirst = (lhs, rhs) => {
+  if (lhs.leader === currentLeader) { return -1; }
+  if (rhs.leader === currentLeader) { return 1; }
+  return 0;
+};
+$: leaders = sortWith([currentFirst, ascend(prop('used'))], $state.eyrie_leaders)
+  .map(({ leader, used }) => (used ? back : front)(leader));
 </script>
 
 <div class='container' bind:clientWidth={width} bind:clientHeight={height}>
@@ -32,13 +42,15 @@ $: roosts = $state
     {#each roosts as building, i (building.id)}
       <Building {building} x={tile.x - tile.dx * i} y={tile.y} />
     {/each}
-    <!--
-    {#if $game.factionData.eyrie.leader}
-      <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
-        <Deck cardImage={getEyrieLeaderPath($game.factionData.eyrie.leader)} cardCount={1} />
+    {#if $state.eyrie_current_leader}
+      <div class='leader' class:unchosen={!currentLeader} style={`
+        transform: translate(${card.x}px, ${card.y}px);
+        width: ${517 * $scale}px;
+        height: ${702 * $scale}px
+      `}>
+        <Deck expandable leaders cards={leaders} />
       </div>
     {/if}
-    -->
     <!--CraftedItems {...craftedItems} {scale} items={$game.factionData.marquise.craftedItems} /-->
   </div>
 </div>
@@ -66,5 +78,9 @@ $: roosts = $state
   left: 0;
   top: 0;
   transform-origin: top left;
+
+  &.unchosen {
+    filter: grayscale(70%);
+  }
 }
 </style>

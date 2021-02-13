@@ -2,7 +2,7 @@
 import { propEq } from 'ramda';
 import context from '../context';
 import FactionCard from './FactionCard.svelte';
-import Deck from './Deck.svelte';
+import Deck, { front, back } from './Deck.svelte';
 import { getFactionBoardFrontPath } from '../util/image';
 
 const { state, socket } = context();
@@ -14,10 +14,10 @@ $: currentIndex = $state.factions.findIndex(propEq('faction', currentFaction));
 <div class='table'>
   <div class='shared'>
     <div class='deck'>
-      <Deck shared down cards={$state.cards} />
+      <Deck shared cards={$state.cards.map(back)} />
     </div>
     <div class='deck'>
-      <Deck shared up cards={$state.discards} />
+      <Deck shared expandable cards={$state.discards.map(front)} />
     </div>
   </div>
   <div class='pager'>
