@@ -1,6 +1,6 @@
 <script>
 import Marquise from './faction/Marquise.svelte';
-// import Eyrie from './faction/Eyrie.svelte';
+import Eyrie from './faction/Eyrie.svelte';
 // import Alliance from './faction/Alliance.svelte';
 // import Vagabond from './faction/Vagabond.svelte';
 // import Riverfolk from './faction/Riverfolk.svelte';
@@ -14,6 +14,8 @@ export let faction;
 
 {#if faction === Faction.MARQUISE}
   <Marquise />
+{:else if faction === Faction.EYRIE}
+  <Eyrie />
 {:else}
   TODO
 {/if}

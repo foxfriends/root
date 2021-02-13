@@ -1,31 +1,47 @@
 <script>
-import { game } from '../../store';
-import images from '../../image/token/token.*.png';
-import Piece from '../../model/Piece';
+import { complement, compose, prop, propEq } from 'ramda';
+import { memberOf } from '../../util/ramda';
+import context, { useScale } from '../../context';
+import Building from '../Building.svelte';
 import Token from '../Token.svelte';
-import Deck from '../Deck.svelte';
-import CraftedItems from './CraftedItems.svelte';
-import { getEyrieLeaderPath } from '../../util/image';
+import Factions from '../../types/Faction';
+import Tokens from '../../types/Token';
+import Buildings from '../../types/Building';
 
-export let width, height;
-$: scale = Math.min(width / 2252, height / 1749);
-$: tile = { x: 2085 * scale, y: 806 * scale, dx: 159 * scale };
-$: card = { x: 1654 * scale, y: 976 * scale };
-$: craftedItems = { x: 1531 * scale, y: 501 * scale, width: 555 };
-$: decree = { y: 133 * scale, recruit: 0, move: 567 * scale, battle: 1153 * scale, build: 1733 * scale };
+const { state } = context();
+const scale = useScale(1);
+
+let width;
+let height;
+$: $scale = Math.min(width / 2252, height / 1749);
+$: tile = { x: 2085 * $scale, y: 806 * $scale, dx: 159 * $scale };
+$: card = { x: 1654 * $scale, y: 976 * $scale };
+$: craftedItems = { x: 1531 * $scale, y: 501 * $scale, width: 555 };
+$: decree = { y: 133 * $scale, recruit: 0, move: 567 * $scale, battle: 1153 * $scale, build: 1733 * $scale };
+
+$: builtIds = $state.built_buildings.map(prop('building'));
+$: built = compose(memberOf(builtIds), prop('id'));
+
+$: roosts = $state
+  .buildings
+  .filter(propEq('faction', Factions.EYRIE))
+  .filter(complement(built))
+  .filter(propEq('building', Buildings.ROOST));
 </script>
 
-<div class='container'>
-  <div class='board' style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
-    {#each new Array($game.factionData.eyrie.roost).fill(0) as _, i}
-      <Token square image={images[Piece.eyrie.roost.key]} x={tile.x - tile.dx * i} y={tile.y} {scale} />
+<div class='container' bind:clientWidth={width} bind:clientHeight={height}>
+  <div class='board' style={`width: ${2252 * $scale}px; height: ${1749 * $scale}px`}>
+    {#each roosts as building, i (building.id)}
+      <Building {building} x={tile.x - tile.dx * i} y={tile.y} />
     {/each}
+    <!--
     {#if $game.factionData.eyrie.leader}
       <div class='leader' style={`transform: translate(${card.x}px, ${card.y}px); width: ${517 * scale}px; height: ${702 * scale}px`}>
         <Deck cardImage={getEyrieLeaderPath($game.factionData.eyrie.leader)} cardCount={1} />
       </div>
     {/if}
-    <CraftedItems {...craftedItems} {scale} items={$game.factionData.eyrie.craftedItems} />
+    -->
+    <!--CraftedItems {...craftedItems} {scale} items={$game.factionData.marquise.craftedItems} /-->
   </div>
 </div>
 

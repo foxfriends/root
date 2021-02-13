@@ -9,9 +9,9 @@ import Tokens from '../../types/Token';
 import Buildings from '../../types/Building';
 
 const { state } = context();
+const scale = useScale(1);
 
 // Piece Positions
-const scale = useScale(1);
 let width;
 let height;
 $: $scale = Math.min(width / 2252, height / 1749);
