@@ -1033,6 +1033,26 @@
       "nullable": []
     }
   },
+  "4fee0affed9655d734fc0c59c528b2d740a25fdbf5d17870cc86b5a2a623b690": {
+    "query": "SELECT EXISTS (SELECT 1 FROM games WHERE name = $1)",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "exists",
+          "type_info": "Bool"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        null
+      ]
+    }
+  },
   "50d52b9fce7885c51dc813e3210d13b06b97d2dd308f2f407a4672f3a67f0e2a": {
     "query": "SELECT faction as \"faction: _\" FROM eyrie WHERE game = $1",
     "describe": {
@@ -3142,6 +3162,18 @@
           "Varchar",
           "Varchar",
           "Bool"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "f3a37e6e35987cd74f30ded5e09f999e51f4035195e534500021b8a3a3ac2d91": {
+    "query": "DELETE FROM games WHERE name = $1",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text"
         ]
       },
       "nullable": []
