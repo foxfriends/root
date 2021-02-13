@@ -142,7 +142,7 @@ impl Socket {
     pub async fn join_room(&self, name: String) -> Result<(), String> {
         let room = Room::get(&name)
             .await
-            .ok_or_else(|| format!("No room {} exists. Maybe you should make one?", name))?;
+            .map_err(|_| format!("No room {} exists. Maybe you should make one?", name))?;
         self.join_room_inner(room).await
     }
 

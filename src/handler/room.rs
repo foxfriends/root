@@ -24,6 +24,13 @@ struct RoomContent {
 }
 
 impl Room {
+    fn new_inner(game: Game) -> Self {
+        Self(Arc::new(RoomContent {
+            sockets: Default::default(),
+            game: RwLock::new(game),
+        }))
+    }
+    
     /// Creates a new room with a game set up as described.
     ///
     /// # Errors
@@ -31,21 +38,26 @@ impl Room {
     /// Creating a new room will fail if the name is already in use.
     pub async fn new(config: GameConfig) -> Result<Self, String> {
         let mut rooms = ROOMS.write().await;
-        if rooms.contains_key(&config.name) {
+        if rooms.contains_key(&config.name) || Game::exists(&config.name).await.map_err(|err| err.to_string())? {
             return Err(format!("A room named {} already exists.", config.name));
         }
         let name = config.name.clone();
-        let room = Room(Arc::new(RoomContent {
-            sockets: Default::default(),
-            game: RwLock::new(Game::create(config)),
-        }));
+        let room = Room::new_inner(Game::create(config).await.map_err(|err| err.to_string())?);
         rooms.insert(name, room.clone());
         Ok(room)
     }
 
     /// Get a reference to the Room by the given name.
-    pub async fn get(name: &str) -> Option<Self> {
-        ROOMS.read().await.get(name).cloned()
+    pub async fn get(name: &str) -> Result<Self, String> {
+        let mut rooms = ROOMS.write().await;
+        if let Some(room) = rooms.get(name) {
+            Ok(room.clone())
+        } else {
+            let game = Game::load(name).await.map_err(|err| err.to_string())?;
+            let room = Room::new_inner(game);
+            rooms.insert(name.to_owned(), room.clone());
+            Ok(room)
+        }
     }
 
     /// Attempt to add a socket to this room. A socket may only join if:
@@ -88,13 +100,17 @@ impl Room {
     pub async fn leave(&self, name: &str) {
         let mut game = self.0.game.write().await;
         let mut sockets = self.0.sockets.write().await;
+        sockets.remove(name);
         if game.phase() == Phase::Lobby {
             game.remove_player(name).unwrap();
             if game.players().is_empty() {
+                game.delete().await.ok();
                 ROOMS.write().await.remove(game.name());
             }
+        } else if sockets.is_empty() {
+            game.save().await.ok();
+            ROOMS.write().await.remove(game.name());
         }
-        sockets.remove(name);
     }
 
     /// Allows access to the contained game object.

@@ -1,5 +1,5 @@
 use super::*;
-use sqlx::query;
+use sqlx::{query, query_scalar};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
 #[serde(rename = "game")]
@@ -142,7 +142,6 @@ pub struct Game {
 
 impl Game {
     #[allow(clippy::eval_order_dependence)]
-    #[allow(dead_code)]
     pub async fn load(name: &str) -> sqlx::Result<Self> {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
         let game = query!(
@@ -222,7 +221,6 @@ impl Game {
         Ok(game)
     }
 
-    #[allow(dead_code)]
     pub async fn save(&self) -> sqlx::Result<()> {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
         query!(
@@ -302,7 +300,23 @@ impl Game {
         Ok(())
     }
 
-    pub fn create(config: GameConfig) -> Self {
+    pub async fn exists(name: &str) -> sqlx::Result<bool> {
+        let mut conn = crate::POOL.get().unwrap().acquire().await?;
+        Ok(query_scalar!("SELECT EXISTS (SELECT 1 FROM games WHERE name = $1)", name)
+            .fetch_one(&mut conn)
+            .await?
+            .unwrap_or(false))
+    }
+
+    pub async fn delete(&self) -> sqlx::Result<()> {
+        let mut conn = crate::POOL.get().unwrap().acquire().await?;
+        query!("DELETE FROM games WHERE name = $1", self.name)
+            .execute(&mut conn)
+            .await?;
+        Ok(())
+    }
+
+    pub async fn create(config: GameConfig) -> sqlx::Result<Self> {
         let cards = config.deck.create();
         let dominance = cards
             .iter()
@@ -367,7 +381,7 @@ impl Game {
             ruin_items,
         } = Board::create(config.map, &items[12..]);
 
-        Game {
+        let game = Game {
             assignment: config.assignment,
             map: config.map,
             deck: config.deck,
@@ -431,7 +445,9 @@ impl Game {
             items,
             owned_items: vec![],
             ruin_items,
-        }
+        };
+        game.save().await?;
+        Ok(game)
     }
 
     pub fn name(&self) -> &str {
