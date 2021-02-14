@@ -9,6 +9,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
 const production = !process.env.ROLLUP_WATCH;
+const reload = !production && !process.env.noreload;
 
 export default {
   input: 'app/index.js',
@@ -60,7 +61,7 @@ export default {
     commonjs(),
 
     // reloads page during serve after every code change
-    !production && livereload('dist'),
+    reload && livereload('dist'),
 
     // copying files to dist, because rollup doesn't do it by itself
     copy({

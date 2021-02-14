@@ -4,6 +4,7 @@
   "description": "Play Root online with friends. Original board game by Cole Wehrle, with art by Kyle Ferrin",
   "scripts": {
     "dev": "rollup -cw",
+    "dev:noreload": "env noreload=true rollup -cw",
     "build": "rollup -c",
     "lint": "eslint app/ -c eslint.config.js",
     "stylelint": "stylelint 'app/**/*.{svelte,css}'",
