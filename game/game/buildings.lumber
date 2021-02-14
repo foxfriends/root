@@ -1,7 +1,6 @@
 :- use(@core).
 :- use(@core::list).
-:- use(^::gameMap(clearing/4)).
-:- use(^::gameMap(ruin/2)).
+:- use(^::gameMap(clearing/4, ruin/2)).
 
 :- pub(placeBuilding/4).
 placeBuilding(
@@ -93,8 +92,7 @@ buildingSuit(game { buildings: Buildings, .. }, Id, S) :-
 slotAvailable(G, P) :-
     clearing(G, P, _, Slots),
     length([_ : building(G, _, _, P)], Buildings),
-    // TODO: also check ruins
-    Buildings < Slots.
+    (itemInRuin(G, P, _) ->> Buildings + 1 < Slots; Buildings < Slots).
 
 :- test(
     slotAvailable(
