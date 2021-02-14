@@ -19,7 +19,7 @@ setPhase(game { phase: _, ..G }, P, game { phase: phase(P), ..G }).
 
 :- pub(turn/2).
 turn(game { turn: faction(T), .. }, T).
-setTurn(game { turn: _, ..G }, T, game { turn: turn(T), ..G }).
+setTurn(game { turn: _, ..G }, T, game { turn: faction(T), ..G }).
 
 :- pub(action/2).
 action(game { action: A, .. }, A).
