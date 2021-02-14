@@ -29,7 +29,10 @@ zipPlaceWarriors(State, [W, ..Ws], [C, ..Cs], NewState) :-
     placeWarrior(State, W, C, State2),
     zipPlaceWarriors(State2, Ws, Cs, NewState).
 
-nearKeep(S, P) :- token(S, _, keep, L), (clearing(S, P, _, _), adjacent(S, L, P); P =:= L).
+nearKeep(State, Position) :-
+  token(State, _, keep, KeepPosition),
+  clearing(State, Position, _, _),
+  (adjacent(State, KeepPosition, Position); Position =:= KeepPosition).
 
 actions(_, State, place_building[sawmill, Position]) :- action(State, 1), nearKeep(State, Position), slotAvailable(State, Position).
 actions(_, State, place_building[workshop, Position]) :- action(State, 2), nearKeep(State, Position), slotAvailable(State, Position).
