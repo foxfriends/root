@@ -99,3 +99,7 @@
 <Action action='place_token[T, {position.id}]' let:perform let:binding>
   <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.T.name })} {x} {y} />
 </Action>
+
+<Action action='place_building[T, {position.id}]' let:perform let:binding>
+  <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.T.name })} {x} {y} />
+</Action>
