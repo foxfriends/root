@@ -1,9 +1,9 @@
 use super::{Message, SocketHandle};
 use crate::models::{Game, GameConfig, Phase};
+use log::{error, info};
 use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use log::{info, error};
 
 lazy_static! {
     /// TODO: I think there are some races that can happen about adding/removing from this
