@@ -30,8 +30,8 @@ impl Loadable for Option<Duchy> {
 }
 
 #[async_trait]
-impl Saveable for Duchy {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Duchy {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(r#"
             INSERT INTO duchy (game, lord_crown, noble_crown, squire_crown) VALUES ($1, $2, $3, $4)
                 ON CONFLICT (game) DO UPDATE SET lord_crown = $2, noble_crown = $3, squire_crown = $4

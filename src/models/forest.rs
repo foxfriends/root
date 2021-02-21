@@ -25,8 +25,8 @@ impl Loadable for Vec<Forest> {
 }
 
 #[async_trait]
-impl Saveable for Forest {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Forest {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO forests (game, position) VALUES ($1, $2) ON CONFLICT DO NOTHING",
             game,
@@ -34,16 +34,6 @@ impl Saveable for Forest {
         )
         .execute(conn)
         .await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for Forest {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM forests WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }

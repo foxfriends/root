@@ -10,14 +10,14 @@
 
   const { state } = context();
 
-let flipped = {};
+  let flipped = {};
 </script>
 
 <Dialog backed>
   <Box>
     <div class='content'>
       <Picker options={$state.factions}>
-        <div slot='option' let:isCurrent let:option={faction} class='option'  class:current={isCurrent}>
+        <div slot='option' let:isCurrent let:option={faction} class='option' class:current={isCurrent}>
           <div class='faction' class:taken={!!faction.player}>
             <div
               class='card'

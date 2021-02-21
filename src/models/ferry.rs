@@ -17,8 +17,8 @@ impl Loadable for Option<Ferry> {
 }
 
 #[async_trait]
-impl Saveable for Ferry {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Ferry {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!("INSERT INTO ferry (game, clearing) VALUES ($1, $2) ON CONFLICT (game) DO UPDATE SET clearing = $2", game, self.clearing)
             .execute(conn)
             .await?;

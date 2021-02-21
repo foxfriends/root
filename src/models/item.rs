@@ -32,8 +32,8 @@ impl Loadable for Vec<Item> {
 }
 
 #[async_trait]
-impl Saveable for Item {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Item {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO items (game, id, item) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING"#,
             game,
@@ -42,16 +42,6 @@ impl Saveable for Item {
         )
         .execute(conn)
         .await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for Item {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM items WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }

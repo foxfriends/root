@@ -31,8 +31,8 @@ impl Loadable for Vec<Position> {
 }
 
 #[async_trait]
-impl Saveable for Position {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Position {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO positions (game, id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
             game,
@@ -40,16 +40,6 @@ impl Saveable for Position {
         )
         .execute(conn)
         .await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for Position {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM positions WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }

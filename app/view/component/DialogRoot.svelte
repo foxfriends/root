@@ -66,6 +66,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    z-index: 10;
   }
 
   .backing {
@@ -79,6 +80,5 @@
 
   .dialog {
     position: absolute;
-    z-index: 1;
   }
 </style>

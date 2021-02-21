@@ -35,8 +35,8 @@ impl Loadable for Vec<Connection> {
 }
 
 #[async_trait]
-impl Saveable for Connection {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Connection {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO connections (game, position_a, position_b, closed) VALUES ($1, $2, $3, $4) ON CONFLICT (game, position_a, position_b) DO UPDATE SET closed = $4",
             game,
@@ -44,16 +44,6 @@ impl Saveable for Connection {
             self.position_b,
             self.closed,
         ).execute(conn).await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for Connection {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM connections WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }

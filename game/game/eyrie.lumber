@@ -14,7 +14,7 @@ chooseLeader(
     },
     Leader,
     game {
-        eyrie_current_leader: eyrie_current_leader { leader: Leader },
+        eyrie_current_leader: eyrie_current_leader { leader: leader(Leader) },
         eyrie_leaders: Leaders2,
         eyrie_decree: Decree,
         ..State

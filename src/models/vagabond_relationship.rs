@@ -33,8 +33,8 @@ impl Loadable for Vec<VagabondRelationship> {
 }
 
 #[async_trait]
-impl Saveable for VagabondRelationship {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for VagabondRelationship {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO vagabond_relationships (game, vagabond, faction, relationship) VALUES ($1, $2, $3, $4) ON CONFLICT (game, vagabond, faction) DO UPDATE SET relationship = $4"#,
             game,
@@ -44,16 +44,6 @@ impl Saveable for VagabondRelationship {
         )
         .execute(conn)
         .await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for VagabondRelationship {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM vagabond_relationships WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }

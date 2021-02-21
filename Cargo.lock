@@ -802,7 +802,7 @@ dependencies = [
 [[package]]
 name = "lumber"
 version = "0.1.0"
-source = "git+https://github.com/foxfriends/lumber#123a4e27df44cb9f131b679968f0e40a4d857c5e"
+source = "git+https://github.com/foxfriends/lumber#2a76bf305e649826fd779896aaf1cb0638f679f1"
 dependencies = [
  "im-rc",
  "paw",

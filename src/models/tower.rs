@@ -17,8 +17,8 @@ impl Loadable for Option<Tower> {
 }
 
 #[async_trait]
-impl Saveable for Tower {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Tower {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!("INSERT INTO tower (game, clearing) VALUES ($1, $2) ON CONFLICT (game) DO UPDATE SET clearing = $2", game, self.clearing)
             .execute(conn)
             .await?;

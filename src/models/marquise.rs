@@ -30,8 +30,8 @@ impl Loadable for Option<Marquise> {
 }
 
 #[async_trait]
-impl Saveable for Marquise {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Marquise {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO marquise (game) VALUES ($1) ON CONFLICT DO NOTHING"#,
             game,

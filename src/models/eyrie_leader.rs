@@ -31,8 +31,8 @@ impl Loadable for Vec<EyrieLeader> {
 }
 
 #[async_trait]
-impl Saveable for EyrieLeader {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for EyrieLeader {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO eyrie_leaders (game, leader, used) VALUES ($1, $2, $3) ON CONFLICT (game, leader) DO UPDATE SET used = $3"#,
             game,
@@ -41,16 +41,6 @@ impl Saveable for EyrieLeader {
         )
         .execute(conn)
         .await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for EyrieLeader {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM eyrie_leaders WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }

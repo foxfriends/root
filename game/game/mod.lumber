@@ -42,9 +42,9 @@ setupOrder(duchy, conspiracy).
 
 turnOrder(game { factions: Fs, .. }, T, F) ::-
     turnOrder(Fs, T, F) ->> true;
-    [faction { faction: faction(F), .. }, ..] =:= Fs.
+    Fs =:= [faction { faction: faction(F), .. }, ..].
 turnOrder([faction { faction: faction(T), .. }, faction { faction: faction(F), .. }, ..], T, F) ::- true.
-turnOrder([faction { faction: faction(_), .. }, ..Fs], T, F) :- turnOrder(Fs, T, F).
+turnOrder([_, ..Fs], T, F) :- turnOrder(Fs, T, F).
 
 :- pub(doneTurn/2).
 doneTurn(G, NG) :-
@@ -53,10 +53,10 @@ doneTurn(G, NG) :-
     (setupOrder(T, U) ->>
         setTurn(G, U, G2),
         (playerFaction(G2, _, U) ->> setAction(G2, 0, NG); doneTurn(G2, NG))
-    ;   setPhase(G2, birdsong, G3),
-        setAction(G3, 0, G4),
-        G4 =:= game { factions: [{ faction: faction(F), .. }, ..], .. },
-        setTurn(G4, F, NG)
+    ;   setPhase(G, birdsong, G2),
+        setAction(G2, 0, G3),
+        G3 =:= game { factions: [faction { faction: faction(F), .. }, ..], .. },
+        setTurn(G3, F, NG)
     ).
 doneTurn(G, NG) :-
     phase(G, evening),

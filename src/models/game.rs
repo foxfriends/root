@@ -241,60 +241,60 @@ impl Game {
         .execute(&mut conn)
         .await?;
 
-        self.players.save(&self.name, &mut conn).await?;
-        self.positions.save(&self.name, &mut conn).await?;
-        self.forests.save(&self.name, &mut conn).await?;
-        self.clearings.save(&self.name, &mut conn).await?;
-        self.water.save(&self.name, &mut conn).await?;
-        self.connections.save(&self.name, &mut conn).await?;
-        self.rivers.save(&self.name, &mut conn).await?;
-        self.ferry.save(&self.name, &mut conn).await?;
-        self.tower.save(&self.name, &mut conn).await?;
-        self.factions.save(&self.name, &mut conn).await?;
-        self.buildings.save(&self.name, &mut conn).await?;
+        self.players.overwrite(&self.name, &mut conn).await?;
+        self.positions.overwrite(&self.name, &mut conn).await?;
+        self.forests.overwrite(&self.name, &mut conn).await?;
+        self.clearings.overwrite(&self.name, &mut conn).await?;
+        self.water.overwrite(&self.name, &mut conn).await?;
+        self.connections.overwrite(&self.name, &mut conn).await?;
+        self.rivers.overwrite(&self.name, &mut conn).await?;
+        self.ferry.overwrite(&self.name, &mut conn).await?;
+        self.tower.overwrite(&self.name, &mut conn).await?;
+        self.factions.overwrite(&self.name, &mut conn).await?;
+        self.buildings.overwrite(&self.name, &mut conn).await?;
         self.built_buildings.save(&self.name, &mut conn).await?;
-        self.tokens.save(&self.name, &mut conn).await?;
+        self.tokens.overwrite(&self.name, &mut conn).await?;
         self.placed_tokens.save(&self.name, &mut conn).await?;
-        self.cards.save(&self.name, &mut conn).await?;
+        self.cards.overwrite(&self.name, &mut conn).await?;
         self.discards.save(&self.name, &mut conn).await?;
         self.hand.save(&self.name, &mut conn).await?;
         self.dominance.save(&self.name, &mut conn).await?;
-        self.items.save(&self.name, &mut conn).await?;
+        self.items.overwrite(&self.name, &mut conn).await?;
         self.owned_items.save(&self.name, &mut conn).await?;
-        self.ruin_items.save(&self.name, &mut conn).await?;
-        self.warriors.save(&self.name, &mut conn).await?;
+        self.ruin_items.overwrite(&self.name, &mut conn).await?;
+        self.warriors.overwrite(&self.name, &mut conn).await?;
         self.placed_warriors.save(&self.name, &mut conn).await?;
-        self.marquise.save(&self.name, &mut conn).await?;
-        self.eyrie.save(&self.name, &mut conn).await?;
+        self.marquise.overwrite(&self.name, &mut conn).await?;
+        self.eyrie.overwrite(&self.name, &mut conn).await?;
         self.eyrie_decree.save(&self.name, &mut conn).await?;
-        self.eyrie_leaders.save(&self.name, &mut conn).await?;
+        self.eyrie_leaders.overwrite(&self.name, &mut conn).await?;
         self.eyrie_current_leader
-            .save(&self.name, &mut conn)
+            .overwrite(&self.name, &mut conn)
             .await?;
-        self.alliance.save(&self.name, &mut conn).await?;
+        self.alliance.overwrite(&self.name, &mut conn).await?;
         self.alliance_supporters.save(&self.name, &mut conn).await?;
         self.officers.save(&self.name, &mut conn).await?;
-        self.vagabond.save(&self.name, &mut conn).await?;
-        self.vagabond2.save(&self.name, &mut conn).await?;
+        self.vagabond.overwrite(&self.name, &mut conn).await?;
+        self.vagabond2.overwrite(&self.name, &mut conn).await?;
         self.vagabond_items.save(&self.name, &mut conn).await?;
         self.vagabond_relationships
-            .save(&self.name, &mut conn)
+            .overwrite(&self.name, &mut conn)
             .await?;
         self.coalition.save(&self.name, &mut conn).await?;
-        self.quests.save(&self.name, &mut conn).await?;
+        self.quests.overwrite(&self.name, &mut conn).await?;
         self.active_quests.save(&self.name, &mut conn).await?;
         self.completed_quests.save(&self.name, &mut conn).await?;
-        self.cult.save(&self.name, &mut conn).await?;
+        self.cult.overwrite(&self.name, &mut conn).await?;
         self.acolytes.save(&self.name, &mut conn).await?;
         self.lost_souls.save(&self.name, &mut conn).await?;
-        self.riverfolk.save(&self.name, &mut conn).await?;
+        self.riverfolk.overwrite(&self.name, &mut conn).await?;
         self.commitments.save(&self.name, &mut conn).await?;
         self.funds.save(&self.name, &mut conn).await?;
         self.payments.save(&self.name, &mut conn).await?;
-        self.duchy.save(&self.name, &mut conn).await?;
+        self.duchy.overwrite(&self.name, &mut conn).await?;
         self.burrow.save(&self.name, &mut conn).await?;
-        self.ministers.save(&self.name, &mut conn).await?;
-        self.conspiracy.save(&self.name, &mut conn).await?;
+        self.ministers.overwrite(&self.name, &mut conn).await?;
+        self.conspiracy.overwrite(&self.name, &mut conn).await?;
 
         conn.commit().await?;
         Ok(())

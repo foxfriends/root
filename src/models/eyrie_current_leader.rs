@@ -28,8 +28,8 @@ impl Loadable for Option<EyrieCurrentLeader> {
 }
 
 #[async_trait]
-impl Saveable for EyrieCurrentLeader {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for EyrieCurrentLeader {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO eyrie_current_leader (game, leader) VALUES ($1, $2) ON CONFLICT (game) DO UPDATE SET leader = $2"#,
             game,

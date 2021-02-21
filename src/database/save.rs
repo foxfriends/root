@@ -23,11 +23,13 @@ where
 #[async_trait]
 impl<T> Saveable for Option<T>
 where
-    T: Saveable + Sync,
+    T: Saveable + Deletable + Sync,
 {
     async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         if let Some(item) = self {
             item.save(game, conn).await?;
+        } else {
+            T::delete(game, conn).await?;
         }
         Ok(())
     }

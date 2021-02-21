@@ -36,8 +36,8 @@ impl Loadable for Option<Riverfolk> {
 }
 
 #[async_trait]
-impl Saveable for Riverfolk {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Riverfolk {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"
             INSERT INTO riverfolk (game, hand_card, riverboats, mercenaries) VALUES ($1, $2, $3, $4)

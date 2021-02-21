@@ -30,8 +30,8 @@ impl Loadable for Option<Eyrie> {
 }
 
 #[async_trait]
-impl Saveable for Eyrie {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Eyrie {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO eyrie (game) VALUES ($1) ON CONFLICT DO NOTHING"#,
             game,

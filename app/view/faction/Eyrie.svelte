@@ -34,7 +34,7 @@ const currentFirst = (lhs, rhs) => {
   return 0;
 };
 $: leaders = sortWith([currentFirst, ascend(prop('used'))], $state.eyrie_leaders)
-  .map(({ leader, used }) => (used ? back : front)(leader));
+  .map(({ leader, used }, i) => (used && i !== 0 ? back : front)(leader));
 </script>
 
 <div class='container' bind:clientWidth={width} bind:clientHeight={height}>

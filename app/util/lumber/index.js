@@ -62,7 +62,7 @@ export const unify = curry((pattern, value) => {
   if (!(pattern instanceof Value) || !(value instanceof Value)) {
     throw new TypeError('Can only unify instances of class Value.');
   }
-  let binding = new Binding(value);
+  const binding = new Binding(value);
 
   class UnificationError extends Error {}
   function unifyInner(pattern, value) {

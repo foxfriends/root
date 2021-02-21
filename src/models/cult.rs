@@ -28,8 +28,8 @@ impl Loadable for Option<Cult> {
 }
 
 #[async_trait]
-impl Saveable for Cult {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Cult {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             r#"INSERT INTO cult (game, outcast, hated_outcast) VALUES ($1, $2, $3) ON CONFLICT (game) DO UPDATE SET outcast = $2, hated_outcast = $3"#,
             game,

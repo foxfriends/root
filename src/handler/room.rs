@@ -3,6 +3,7 @@ use crate::models::{Game, GameConfig, Phase};
 use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::RwLock;
+use log::{info, error};
 
 lazy_static! {
     /// TODO: I think there are some races that can happen about adding/removing from this
@@ -59,6 +60,7 @@ impl Room {
         } else {
             let game = Game::load(name).await.map_err(|err| err.to_string())?;
             let room = Room::new_inner(game);
+            info!("loaded game {}", name);
             rooms.insert(name.to_owned(), room.clone());
             Ok(room)
         }
@@ -108,11 +110,15 @@ impl Room {
         if game.phase() == Phase::Lobby {
             game.remove_player(name).unwrap();
             if game.players().is_empty() {
+                info!("deleting unstarted game {}", game.name());
                 game.delete().await.ok();
                 ROOMS.write().await.remove(game.name());
             }
         } else if sockets.is_empty() {
-            game.save().await.ok();
+            info!("saving game {}", game.name());
+            if let Err(error) = game.save().await {
+                error!("failed to save game {}: {}", game.name(), error);
+            }
             ROOMS.write().await.remove(game.name());
         }
     }

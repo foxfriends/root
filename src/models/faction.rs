@@ -33,8 +33,8 @@ impl Loadable for Vec<Faction> {
 }
 
 #[async_trait]
-impl Saveable for Faction {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Faction {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO factions (game, faction, player, points) VALUES ($1, $2, $3, $4) ON CONFLICT (game, faction) DO UPDATE SET player = $3, points = $4",
             game,
@@ -44,16 +44,6 @@ impl Saveable for Faction {
         )
         .execute(conn)
         .await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for Faction {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM factions WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }

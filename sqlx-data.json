@@ -621,18 +621,6 @@
       ]
     }
   },
-  "235386bbaa438a1acec6b1171d780401d6b3055193b1700ed6dd98a6f90fbb19": {
-    "query": "DELETE FROM buildings WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "25f03eeb684617535f1453922fc4fc431ade08e0b86c67e122b689f8104dfe67": {
     "query": "SELECT clearing, item FROM ruin_items WHERE game = $1",
     "describe": {
@@ -694,18 +682,6 @@
       "nullable": [
         false
       ]
-    }
-  },
-  "2e7eb298e5322567758d835007aa30894624526a923bc18c2e3d824f275c03cb": {
-    "query": "DELETE FROM cards WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
     }
   },
   "3020dead2bf15f9508774f5774deb7de51fd727795acc71119c328052e9b0e2f": {
@@ -782,30 +758,6 @@
       "nullable": []
     }
   },
-  "321f83d8f794d3b5fb9958efbb4ad87c97c4d0b0c9ed02452314395a22eda6a5": {
-    "query": "DELETE FROM ruin_items WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "343412fbca383b852bb847558bc81d96a9a8306036ef53d736d3a2ccb382c3de": {
-    "query": "DELETE FROM clearings WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "3788775eed3241b4088906f5efe6f789ace498e7938a89cf602968b62c6ba421": {
     "query": "INSERT INTO conspiracy (game) VALUES ($1) ON CONFLICT DO NOTHING",
     "describe": {
@@ -820,18 +772,6 @@
   },
   "3be100d174a32ea99b9883aaee1f408f3eedc337261d8d6b6d0bc7bf05626bf5": {
     "query": "DELETE FROM placed_tokens WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "3c66889478c0c38047b4cf509d23c1729caea33f55361533aa75126d8ec99767": {
-    "query": "DELETE FROM items WHERE game = $1",
     "describe": {
       "columns": [],
       "parameters": {
@@ -933,18 +873,6 @@
       "parameters": {
         "Left": [
           "Varchar"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "48c82717d589126698fb312933b792dcd5a4dd8509178444716fdf888cc3026d": {
-    "query": "DELETE FROM tokens WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
         ]
       },
       "nullable": []
@@ -1902,18 +1830,6 @@
       "nullable": []
     }
   },
-  "8c255e88587ce02487c74247c68ee7dcde70e4af1e59a0b9d2e030673f3cbe0b": {
-    "query": "DELETE FROM players WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "8ca62772f5748f204278fb29ece1e327402a1802305330cec8561208d6c59a89": {
     "query": "DELETE FROM alliance_supporters WHERE game = $1",
     "describe": {
@@ -2313,18 +2229,6 @@
       "nullable": []
     }
   },
-  "9e9e7ea7a64608eab0f0bb3a7c5093015d52052516da2e440b563c593f78afef": {
-    "query": "DELETE FROM eyrie_leaders WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "9f9c4a3509932777e127f81d34e85cd813dcb83fc90b00da1e7caab3b4242b26": {
     "query": "SELECT faction as \"faction: _\" FROM marquise WHERE game = $1",
     "describe": {
@@ -2444,30 +2348,6 @@
       "nullable": []
     }
   },
-  "a25798337dcd2cb7920530855647991b76c2e72bee365ff703f671a0f9487737": {
-    "query": "DELETE FROM warriors WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "a35f24827b43d9976ad12218248acfb949dfef812f4c736370a82ba664ebcbd2": {
-    "query": "DELETE FROM water WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "a3e5771363d9dafaa672a5722719e3e5125647240ae0184ee1d3088c76718f44": {
     "query": "INSERT INTO items (game, id, item) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
     "describe": {
@@ -2512,18 +2392,6 @@
       "nullable": []
     }
   },
-  "a42b06f9ff4853bb6292b85e5c9af4560ff57f198e0625c211429ecdd8b23b9a": {
-    "query": "DELETE FROM forests WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "a448d9c3cf38af3a0bd51b11d2be0270f5e2331d8090a34411f577ed1ad4f846": {
     "query": "INSERT INTO commitments (game, warrior, craft_suit) VALUES ($1, $2, $3) ON CONFLICT (game, warrior) DO UPDATE SET craft_suit = $3",
     "describe": {
@@ -2545,18 +2413,6 @@
               }
             }
           }
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "a4bc49c233332636cb2d6237ccf7547ae3cca1e56d23b657b705aa5b724e0d33": {
-    "query": "DELETE FROM vagabond_relationships WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
         ]
       },
       "nullable": []
@@ -2925,18 +2781,6 @@
       "nullable": []
     }
   },
-  "be5e2aed0b161d90bd1f235db1b2982f5c3b56a867aad52ca19a6a7a2ca6dab4": {
-    "query": "DELETE FROM factions WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "bf3d8d6712d3072411326f3ace550aa1b7d6824a0c65ac0fd2ace1a557c93d12": {
     "query": "DELETE FROM completed_quests WHERE game = $1",
     "describe": {
@@ -2980,18 +2824,6 @@
       "nullable": [
         false
       ]
-    }
-  },
-  "c41b5582c5eb8aa840a2f617ebcbf460639d8e546b1ac76be1925f79f115c073": {
-    "query": "DELETE FROM rivers WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
     }
   },
   "c45dd079220d7b96385cd2be4fe7752c3dfbeba098a1d947c17cf717c5414a6d": {
@@ -3136,18 +2968,6 @@
               }
             }
           }
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "c5ebe60765dc892bd86bbcc62f0cf13de01caae98468295b3f0887f5c3a536de": {
-    "query": "DELETE FROM ministers WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
         ]
       },
       "nullable": []
@@ -3338,42 +3158,6 @@
       "nullable": [
         false
       ]
-    }
-  },
-  "dc6fb94beb486ca91c75685654cb15ba66c5cfb385fc37d1ed99d1f735fe73b1": {
-    "query": "DELETE FROM positions WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "dcab1fec90e44b7358db1f8cd9fe5072ff7388a2ab1d61524b1a27c136690360": {
-    "query": "DELETE FROM connections WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "e1184281073e4c2320373894207f92f39839ceac3929533d508ee19a97dabd4e": {
-    "query": "DELETE FROM quests WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
     }
   },
   "e41f7c33c0f9961e7a62e223ad6542e8d04d00b182027d00dc87e2b67d192c20": {

@@ -39,8 +39,8 @@ impl Vagabond {
 }
 
 #[async_trait]
-impl Saveable for Vagabond {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Vagabond {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO vagabond (game, faction, vagabond, position) VALUES ($1, $2, $3, $4) ON CONFLICT (game, faction) DO UPDATE SET vagabond = $3, position = $4",
             game,

@@ -2,12 +2,14 @@
   import context from '../context';
   import Board from './Board.svelte';
   import FactionPicker from './FactionPicker.svelte';
+  import EyrieLeaderPicker from './EyrieLeaderPicker.svelte';
   import Phases from '../types/Phase';
   import PlayArea from './PlayArea.svelte';
+  import { match } from '../util/lumber';
 
-  const { state } = context();
+  const { state, actions } = context();
 
-$: expanded = false; // why would this expand?
+  $: expanded = false; // why would this expand?
 </script>
 
 <div class='table'>
@@ -23,6 +25,10 @@ $: expanded = false; // why would this expand?
 
 {#if $state.phase === Phases.CHOOSE_FACTION}
   <FactionPicker />
+{/if}
+
+{#if $actions.filter(match('eyrie_choose_leader(A)')).length}
+  <EyrieLeaderPicker />
 {/if}
 
 <style>

@@ -30,8 +30,8 @@ impl Loadable for Option<Alliance> {
 }
 
 #[async_trait]
-impl Saveable for Alliance {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Alliance {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO alliance (game) VALUES ($1) ON CONFLICT DO NOTHING",
             game

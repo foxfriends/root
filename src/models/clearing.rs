@@ -42,8 +42,8 @@ impl Loadable for Vec<Clearing> {
 }
 
 #[async_trait]
-impl Saveable for Clearing {
-    async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+impl Overwritable for Clearing {
+    async fn overwrite(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
             "INSERT INTO clearings (game, position, suit, slots) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING",
             game,
@@ -53,16 +53,6 @@ impl Saveable for Clearing {
         )
         .execute(conn)
         .await?;
-        Ok(())
-    }
-}
-
-#[async_trait]
-impl Deletable for Clearing {
-    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
-        query!("DELETE FROM clearings WHERE game = $1", game)
-            .execute(conn)
-            .await?;
         Ok(())
     }
 }
