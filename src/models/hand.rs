@@ -35,3 +35,13 @@ impl Saveable for Hand {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Hand {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM hand WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

@@ -51,3 +51,13 @@ impl Saveable for Card {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Card {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM cards WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

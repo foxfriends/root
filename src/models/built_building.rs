@@ -35,3 +35,13 @@ impl Saveable for BuiltBuilding {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for BuiltBuilding {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM built_buildings WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

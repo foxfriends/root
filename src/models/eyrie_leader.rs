@@ -44,3 +44,13 @@ impl Saveable for EyrieLeader {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for EyrieLeader {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM eyrie_leaders WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

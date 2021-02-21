@@ -35,3 +35,13 @@ impl Saveable for CompletedQuest {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for CompletedQuest {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM completed_quests WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

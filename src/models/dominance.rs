@@ -43,3 +43,13 @@ impl Saveable for Dominance {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Dominance {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM dominance WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

@@ -47,3 +47,13 @@ impl Saveable for Connection {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Connection {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM connections WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

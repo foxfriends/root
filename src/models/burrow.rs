@@ -29,3 +29,13 @@ impl Saveable for Burrow {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Burrow {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM burrow WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

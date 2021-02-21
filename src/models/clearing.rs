@@ -56,3 +56,13 @@ impl Saveable for Clearing {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Clearing {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM clearings WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

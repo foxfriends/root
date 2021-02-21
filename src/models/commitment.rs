@@ -35,3 +35,13 @@ impl Saveable for Commitment {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Commitment {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM commitments WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

@@ -37,3 +37,13 @@ impl Saveable for EyrieDecree {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for EyrieDecree {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM eyrie_decree WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

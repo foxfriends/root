@@ -29,3 +29,13 @@ impl Saveable for Fund {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Fund {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM funds WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

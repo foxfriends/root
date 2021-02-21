@@ -45,3 +45,13 @@ impl Saveable for Player {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for Player {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM players WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

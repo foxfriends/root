@@ -33,8 +33,8 @@ impl Loadable for Option<Conspiracy> {
 impl Saveable for Conspiracy {
     async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
-            r#"INSERT INTO conspiracy (game) VALUES ($1) ON CONFLICT DO NOTHING"#,
-            game,
+            "INSERT INTO conspiracy (game) VALUES ($1) ON CONFLICT DO NOTHING",
+            game
         )
         .execute(conn)
         .await?;

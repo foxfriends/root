@@ -33,3 +33,13 @@ impl Saveable for AllianceSupporter {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for AllianceSupporter {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM alliance_supporters WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

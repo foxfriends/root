@@ -44,3 +44,13 @@ impl Saveable for River {
         Ok(())
     }
 }
+
+#[async_trait]
+impl Deletable for River {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM rivers WHERE game = $1", game)
+            .execute(conn)
+            .await?;
+        Ok(())
+    }
+}

@@ -36,13 +36,23 @@ impl Loadable for Vec<Minister> {
 impl Saveable for Minister {
     async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         query!(
-            r#"INSERT INTO ministers (game, minister, swayed) VALUES ($1, $2, $3) ON CONFLICT (game, minister) DO UPDATE SET swayed = $3"#,
+            "INSERT INTO ministers (game, minister, swayed) VALUES ($1, $2, $3) ON CONFLICT (game, minister) DO UPDATE SET swayed = $3",
             game,
             self.minister as MinisterId,
             self.swayed,
         )
         .execute(conn)
         .await?;
+        Ok(())
+    }
+}
+
+#[async_trait]
+impl Deletable for Minister {
+    async fn delete(game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
+        query!("DELETE FROM ministers WHERE game = $1", game)
+            .execute(conn)
+            .await?;
         Ok(())
     }
 }
