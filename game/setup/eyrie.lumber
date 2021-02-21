@@ -5,9 +5,10 @@
 :- pub(perform/4).
 
 :- use(~::game).
+:- use(~::game::buildings).
+:- use(~::game::eyrie).
 :- use(~::game::gameMap).
 :- use(~::game::tokens).
-:- use(~::game::buildings).
 :- use(~::game::warriors).
 
 init(G, N) :- (
@@ -30,3 +31,12 @@ perform(_, State, place_building[roost, Position], NewState) ::-
     placeBuilding(State, Roost, Position, G2),
     placeWarriors(G2, eyrie, Position, 6, G3),
     doneAction(G3, NewState).
+
+actions(_, State, eyrie_choose_leader(Leader)) :-
+    action(State, 1),
+    unusedLeader(State, Leader).
+
+perform(_, State, eyrie_choose_leader(Leader), NewState) ::-
+    chooseLeader(State, Leader, State2),
+    doneTurn(State2, State3),
+    ^::nextSetup(State3, NewState).

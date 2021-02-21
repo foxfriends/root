@@ -8,7 +8,7 @@ pub trait Saveable {
 #[async_trait]
 impl<T> Saveable for Vec<T>
 where
-    T: Saveable + Sync,
+    T: Saveable + Sync, // TODO: + Deletable
 {
     async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         for item in self {
@@ -21,7 +21,7 @@ where
 #[async_trait]
 impl<T> Saveable for Option<T>
 where
-    T: Saveable + Sync,
+    T: Saveable + Sync, // TODO: + Deletable
 {
     async fn save(&self, game: &str, conn: &mut PgConnection) -> sqlx::Result<()> {
         if let Some(item) = self {

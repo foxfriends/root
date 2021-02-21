@@ -1,0 +1,50 @@
+:- use(@core::list(in/2, update/4)).
+
+:- pub(unusedLeader/2).
+unusedLeader(game { eyrie_leaders: Leaders, .. }, Leader) :-
+    in(eyrie_leader { leader: leader(Leader), used: false }, Leaders).
+
+:- pub(chooseLeader/3).
+chooseLeader(
+    game {
+        eyrie_current_leader: eyrie_current_leader { leader: ? },
+        eyrie_leaders: Leaders,
+        eyrie_decree: _,
+        ..State
+    },
+    Leader,
+    game {
+        eyrie_current_leader: eyrie_current_leader { leader: Leader },
+        eyrie_leaders: Leaders2,
+        eyrie_decree: Decree,
+        ..State
+    }
+) :-
+    in(eyrie_leader { leader: leader(Leader), used: false }, Leaders),
+    update(
+        Leaders,
+        eyrie_leader { leader: leader(Leader), used: false },
+        eyrie_leader { leader: leader(Leader), used: true },
+        Leaders2
+    ),
+    initialDecree(Leader, Decree).
+
+initialDecree(builder, [
+    eyrie_decree { card: _, id: 1, action: action(recruit) },
+    eyrie_decree { card: _, id: 2, action: action(move) },
+]).
+
+initialDecree(charismatic, [
+    eyrie_decree { card: _, id: 1, action: action(recruit) },
+    eyrie_decree { card: _, id: 2, action: action(battle) },
+]).
+
+initialDecree(commander, [
+    eyrie_decree { card: _, id: 1, action: action(move) },
+    eyrie_decree { card: _, id: 2, action: action(battle) },
+]).
+
+initialDecree(despot, [
+    eyrie_decree { card: _, id: 1, action: action(move) },
+    eyrie_decree { card: _, id: 2, action: action(build) },
+]).
