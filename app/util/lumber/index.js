@@ -11,6 +11,12 @@ export class Struct {
   get isAtom() {
     return this.contents === undefined;
   }
+
+  toString() {
+    return this.contents === undefined
+      ? this.name
+      : `${this.name}(${this.contents})`;
+  }
 }
 
 export class Variable {

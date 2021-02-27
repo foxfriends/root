@@ -1,16 +1,13 @@
-// NOTE: not all of this functions are tested
-// since gameplay is not ready yet
-
 export function getBuildingImagePath(building) {
-  const faction = building.faction ? building.faction + '-' : '';
-  const suit = building.suit ? '_' + building.suit : '';
+  const faction = building.faction ? `${building.faction}-` : '';
+  const suit = building.suit ? `_${building.suit}` : '';
 
   return `/image/piece/token.${faction}${building.building}${suit}.png`;
 }
 
 export function getTokenImagePath(token) {
-  const faction = token.faction ? token.faction + '-' : '';
-  const suit = token.suit ? '_' + token.suit : '';
+  const faction = token.faction ? `${token.faction}-` : '';
+  const suit = token.suit ? `_${token.suit}` : '';
 
   return `/image/piece/token.${faction}${token.token}${suit}.png`;
 }
@@ -34,15 +31,15 @@ export function getItemImagePath(item, ruin) {
 }
 
 export function getEyrieLeaderPath(leader) {
-  const path = leader ? 'front.' + leader : 'back';
+  const path = leader ? `front.${leader}` : 'back';
 
   return `/image/card/eyrie/card-eyrie_leader-${path}.jpg`;
 }
 
 export function getVagabondCharacterPath(character) {
-  const path = character ? 'front.' + character : 'back';
+  const path = character ? `front.${character}` : 'back';
 
-  return `/image/card/vagabond-character/card-vagabond_character-${path}.jpg`;
+  return `/image/card/vagabond-characters/card-vagabond_character-${path}.jpg`;
 }
 
 export function getFactionBoardFrontPath(faction) {

@@ -3,6 +3,7 @@
   import Board from './Board.svelte';
   import FactionPicker from './FactionPicker.svelte';
   import EyrieLeaderPicker from './EyrieLeaderPicker.svelte';
+  import VagabondPicker from './VagabondPicker.svelte';
   import Phases from '../types/Phase';
   import PlayArea from './PlayArea.svelte';
   import { match } from '../util/lumber';
@@ -29,6 +30,10 @@
 
 {#if $actions.filter(match('eyrie_choose_leader(A)')).length}
   <EyrieLeaderPicker />
+{/if}
+
+{#if $actions.filter(match('vagabond_choose_character(A)')).length}
+  <VagabondPicker />
 {/if}
 
 <style>

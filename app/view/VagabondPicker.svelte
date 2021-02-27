@@ -4,7 +4,7 @@
   import Dialog from './component/Dialog.svelte';
   import Button from './component/Button.svelte';
   import Box from './component/Box.svelte';
-  import { getEyrieLeaderPath } from '../util/image';
+  import { getVagabondCharacterPath } from '../util/image';
 
   const { state } = context();
 </script>
@@ -12,14 +12,12 @@
 <Dialog backed>
   <Box>
     <div class='content'>
-      {#each $state.eyrie_leaders as { leader, used } (leader)}
-        <div class='leader' class:used>
-          <img class='image' src={getEyrieLeaderPath(leader)} />
-          <Action action='eyrie_choose_leader({leader})' let:perform>
-            <div class='select-button' on:click={perform} />
-          </Action>
+      <Action action='vagabond_choose_character(C)' let:binding let:perform>
+        <div class='character'>
+          <img class='image' src={getVagabondCharacterPath(binding.C)} />
+          <div class='select-button' on:click={perform} />
         </div>
-      {/each}
+      </Action>
     </div>
   </Box>
 </Dialog>
@@ -27,22 +25,19 @@
 <style>
 .content {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: space-around;
   width: 80vw;
   height: 80vh;
 }
 
-.leader {
+.character {
   position: relative;
-  flex-basis: 20%;
+  flex-basis: 15%;
   flex-grow: 0;
   flex-shrink: 0;
   border-radius: 8px;
-}
-
-.leader.used {
-  filter: grayscale(100%);
+  margin: 40px;
 }
 
 .image {
