@@ -10,8 +10,8 @@
   const size = 8;
 
   $: boxShadow = tokens
-      .map((_, i) => `0 ${size * i + 3}px 0 rgb(179, 174, 166), 0 ${size * i + size - 1}px 0 rgb(198, 185, 165), 0 ${size * i + size}px 0 rgb(113, 107, 97)`)
-      .join(',');
+    .map((_, i) => `0 ${size * i + 3}px 0 rgb(179, 174, 166), 0 ${size * i + size - 1}px 0 rgb(198, 185, 165), 0 ${size * i + size}px 0 rgb(113, 107, 97)`)
+    .join(',');
 </script>
 
 {#if tokens.length}

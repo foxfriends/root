@@ -2,11 +2,8 @@
   import context from '../context';
   import Action from './component/Action.svelte';
   import Dialog from './component/Dialog.svelte';
-  import Button from './component/Button.svelte';
   import Box from './component/Box.svelte';
   import { getVagabondCharacterPath } from '../util/image';
-
-  const { state } = context();
 </script>
 
 <Dialog backed>

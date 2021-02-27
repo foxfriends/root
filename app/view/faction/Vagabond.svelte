@@ -1,12 +1,11 @@
 <script>
-  import { evolve, complement, pathEq, pathSatisfies, prop, propEq,  } from 'ramda';
+  import { evolve, complement, pathEq, pathSatisfies, prop, propEq } from 'ramda';
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Item from '../Item.svelte';
   import RelationshipMarker from '../RelationshipMarker.svelte';
   import Scale from '../Scale.svelte';
   import Deck, { front } from '../Deck.svelte';
-  import Factions from '../../types/Faction';
   import Items from '../../types/Item';
   import Relationships from '../../types/Relationship';
 
@@ -58,8 +57,6 @@
     .vagabond_relationships
     .filter(propEq('vagabond', faction))
     .filter(propEq('relationship', Relationships.HOSTILE));
-
-  $: console.log(friendlies);
 
   const relationshipMargin = (level) => {
     const factions = friendlies.filter(propEq('relationship', level));
