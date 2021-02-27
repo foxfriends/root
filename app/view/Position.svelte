@@ -1,6 +1,6 @@
 <script>
   import Chance from 'chance';
-  import { __, add, ascend, assoc, compose, concat, evolve, find, last, mergeWith, objOf, prop, propEq, subtract } from 'ramda';
+  import { __, add, ascend, assoc, compose, evolve, find, identity, last, mergeWith, objOf, prop, propEq, subtract } from 'ramda';
   import context from '../context';
   import Token from './Token.svelte';
   import Building from './Building.svelte';
@@ -40,7 +40,10 @@
     .placed_warriors
     .filter(propEq('position', position.id))
     .map(compose(find(__, $state.warriors), propEq('id'), prop('warrior')));
-  $: pieces = concat(tokens.map(objOf('token')), warriors.map(objOf('warrior')));
+  $: vagabonds = [$state.vagabond, $state.vagabond2]
+    .filter(identity)
+    .filter(propEq('position', position.id));
+  $: pieces = [...tokens.map(objOf('token')), ...warriors.map(objOf('warrior')), ...vagabonds.map(objOf('vagabond'))];
 
   $: arrangedPieces = do {
     // create an RNG with the same seed every time to make a predictable arragment per clearing
@@ -56,13 +59,13 @@
             y: y + rng.integer({ min: -325, max: 325 }),
             r: 0,
           }));
-        const effectiveForces = concat(forces, rngForces);
+        const effectiveForces = [...forces, ...rngForces];
         const netForce = effectiveForces
           .map(evolve({ x: subtract(x), y: subtract(y) }))
           .reduce(mergeWith(add), { x: 0, y: 0 });
         const forceMagnitude = Math.sqrt(netForce.x ** 2 + netForce.y ** 2);
         const placement = { x, y, r: 70 };
-        while (intersects(placement, effectiveForces)) {
+        while (forceMagnitude && intersects(placement, effectiveForces)) {
           placement.x += Math.max(1, Math.ceil(Math.abs(netForce.x) / forceMagnitude * 35)) * Math.sign(netForce.x);
           placement.y += Math.max(1, Math.ceil(Math.abs(netForce.y) / forceMagnitude * 35)) * Math.sign(netForce.y);
         }
@@ -88,11 +91,13 @@
     stack={ruinItems.length + 1}
     />
 {/if}
-{#each arrangedPieces as { x, y, piece: { token, warrior } }}
+{#each arrangedPieces as { x, y, piece: { token, warrior, vagabond } }}
   {#if token}
     <Token tokens={[token]} {x} {y} />
   {:else if warrior}
     <Warrior warrior={warrior} {x} {y} />
+  {:else if vagabond}
+    <Warrior warrior={{ faction: vagabond.faction }} {x} {y} />
   {/if}
 {/each}
 
