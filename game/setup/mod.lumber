@@ -1,7 +1,9 @@
 :- use(~::game).
+:- use(~::game::vagabond).
 
 :- mod(marquise).
 :- mod(eyrie).
+:- mod(vagabond).
 
 :- pub(nextSetup/2).
 :- pub(actions/3).
@@ -29,3 +31,14 @@ perform(Name, State, Action, NewState) :-
     turn(State, eyrie),
     playerFaction(State, Name, eyrie),
     eyrie::perform(Name, State, Action, NewState).
+
+actions(Name, State, Action) :-
+    turn(State, V),
+    playerFaction(State, Name, V),
+    factionIsVagabond(V),
+    vagabond::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    turn(State, V),
+    playerFaction(State, Name, V),
+    factionIsVagabond(V),
+    vagabond::perform(Name, State, Action, NewState).

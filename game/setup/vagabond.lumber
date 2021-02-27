@@ -1,0 +1,30 @@
+:- use(@core).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::buildings).
+:- use(~::game::vagabond).
+:- use(~::game::gameMap).
+:- use(~::game::tokens).
+:- use(~::game::warriors).
+
+actions(_, State, vagabond_choose_character(C)) :-
+    action(State, 0),
+    vagabondCharacter(C),
+    (vagabond(State, _, !C, _) ->> false; true).
+
+perform(Name, State, vagabond_choose_character(Character), NewState) ::-
+    playerFaction(State, Name, V),
+    vagabondSetCharacter(State, V, Character, State2),
+    doneAction(State2, NewState).
+
+actions(_, State, place_vagabond(Forest)) :-
+    forest(State, Forest).
+
+perform(Name, State, place_vagabond(Forest), NewState) ::-
+    playerFaction(State, Name, V),
+    placeVagabond(State, V, Forest, State2),
+    doneTurn(State2, State3),
+    ^::nextSetup(State3, NewState).

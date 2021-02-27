@@ -1,0 +1,46 @@
+:- use(@core).
+:- use(@core::list).
+
+:- pub(createItems/4).
+createItems(G, [], [], G).
+createItems(G, [I, ..Is], [Id, ..Ids], G3) :-
+    G  =:= game { items: Items, ..S },
+    length(Items, L),
+    Id =:= L + 1,
+    G2 =:= game { items: [item { id: Id, item: item(I) }, ..Is], ..S },
+    createItems(G2, Is, Ids, G3).
+
+:- pub(item/4).
+item(game { items: Is, owned_items: Os, .. }, Id, Item, Owner) :-
+    in(item { id: Id, item: item(Item) }, Is),
+    (in(owned_item { item: Id, faction: faction(Owner) }, Os) ->> true; Owner =:= unowned).
+
+takeItem(G, Id, G2) :-
+    G  =:= game { owned_items: Os, vagabond_items: Vs, ..S },
+    remove(Os, owned_item { item: Id, .. }, Os2),
+    remove(Vs, vagabond_item { item: Id, .. }, Vs2),
+    G2 =:= game { owned_items: Os2, vagabond_items: Vs2, ..S }.
+
+:- pub(giveItem/4).
+giveItem(G, F, Id, N) :-
+    takeItem(G, Id, G2),
+    G2 =:= game { owned_items: Owned, vagabond_items: Vs, ..S },
+    (
+        ^::vagabond::factionIsVagabond(F) ->>
+            N =:= game {
+                owned_items: [owned_item { item: Id, faction: faction(F) }, ..Owned],
+                vagabond_items: [vagabond_item { item: Id, faction: faction(F), exhausted: false, damaged: false }, ..Vs],
+                ..S
+            };
+        N =:= game {
+            owned_items: [owned_item { item: Id, faction: faction(F) }, ..Owned],
+            vagabond_items: Vs,
+            ..S
+        }
+    ).
+
+:- pub(giveItems/4).
+giveItems(G, _, [], G).
+giveItems(G, F, [Id, ..Ids], G3) :-
+    giveItem(G, F, Id, G2),
+    giveItems(G2, F, Ids, G3).

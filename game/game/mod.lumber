@@ -4,7 +4,9 @@
 :- mod(buildings).
 :- mod(eyrie).
 :- mod(gameMap).
+:- mod(items).
 :- mod(tokens).
+:- mod(vagabond).
 :- mod(warriors).
 
 :- pub(gameOwner/2).
