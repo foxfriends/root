@@ -7,7 +7,7 @@ createItems(G, [I, ..Is], [Id, ..Ids], G3) :-
     G  =:= game { items: Items, ..S },
     length(Items, L),
     Id =:= L + 1,
-    G2 =:= game { items: [item { id: Id, item: item(I) }, ..Is], ..S },
+    G2 =:= game { items: [item { id: Id, item: item(I) }, ..Items], ..S },
     createItems(G2, Is, Ids, G3).
 
 :- pub(item/4).

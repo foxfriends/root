@@ -1,3 +1,4 @@
+:- use(@core).
 :- use(^::items).
 
 :- pub(factionIsVagabond/1).
@@ -15,15 +16,15 @@ vagabondCharacter(adventurer).
 vagabondCharacter(ronin).
 vagabondCharacter(harrier).
 
-startingItem(thief, [boot, torch, tea, dagger]).
-startingItem(ranger, [boot, torch, crossbow, dagger]).
-startingItem(tinker, [boot, torch, bag, hammer]).
-startingItem(vagrant, [coin, torch, boot]).
-startingItem(arbiter, [boot, torch, dagger, dagger]).
-startingItem(scoundrel, [boot, boot, torch, crossbow]).
-startingItem(adventurer, [boot, torch, hammer]).
-startingItem(ronin, [boot, boot, torch, dagger]).
-startingItem(harrier, [coin, torch, dagger, crossbow]).
+startingItems(thief, [boot, torch, tea, dagger]).
+startingItems(ranger, [boot, torch, crossbow, dagger]).
+startingItems(tinker, [boot, torch, bag, hammer]).
+startingItems(vagrant, [coin, torch, boot]).
+startingItems(arbiter, [boot, torch, dagger, dagger]).
+startingItems(scoundrel, [boot, boot, torch, crossbow]).
+startingItems(adventurer, [boot, torch, hammer]).
+startingItems(ronin, [boot, boot, torch, dagger]).
+startingItems(harrier, [coin, torch, dagger, crossbow]).
 
 :- pub(vagabond/4).
 vagabond(G, vagabond, C, P) :-
@@ -32,16 +33,16 @@ vagabond(G, vagabond2, C, P) :-
     G =:= game { vagabond2: vagabond { vagabond: vagabond(C), position: P, .. }, .. }.
 
 :- pub(vagabondSetCharacter/4).
-vagabondSetCharacter(G, vagabond, C, G3) :-
+vagabondSetCharacter(G, vagabond, C, G4) :-
     G  =:= game { vagabond: vagabond { vagabond: _, ..V }, ..S },
     G2 =:= game { vagabond: vagabond { vagabond: vagabond(C), ..V }, ..S },
-    startingItem(C, Is),
+    startingItems(C, Is),
     createItems(G2, Is, Ids, G3),
-    giveItems(G3, vagabond, Ids, G3).
+    giveItems(G3, vagabond, Ids, G4).
 vagabondSetCharacter(G, vagabond2, C, G3) :-
     G  =:= game { vagabond2: vagabond { vagabond: _, ..V }, ..S },
     G2 =:= game { vagabond2: vagabond { vagabond: vagabond(C), ..V }, ..S },
-    startingItem(C, Is),
+    startingItems(C, Is),
     createItems(G2, Is, Ids, G3),
     giveItems(G3, vagabond2, Ids, G3).
 
