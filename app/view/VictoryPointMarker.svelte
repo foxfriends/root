@@ -1,8 +1,8 @@
 <script>
-  import { move } from 'ramda';
-  import context, { useScale } from '../context';
+  import { move, propEq } from 'ramda';
+  import context from '../context';
   import { getVictoryPointImagePath } from '../util/image';
-  import propEq from 'ramda/src/propEq';
+  import { useScale } from './Scale.svelte';
 
   const scale = useScale();
   const { state } = context();

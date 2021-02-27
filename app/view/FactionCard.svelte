@@ -2,7 +2,7 @@
 import Marquise from './faction/Marquise.svelte';
 import Eyrie from './faction/Eyrie.svelte';
 // import Alliance from './faction/Alliance.svelte';
-// import Vagabond from './faction/Vagabond.svelte';
+import Vagabond from './faction/Vagabond.svelte';
 // import Riverfolk from './faction/Riverfolk.svelte';
 // import Cult from './faction/Cult.svelte';
 // import Duchy from './faction/Duchy.svelte';
@@ -16,6 +16,8 @@ export let faction;
   <Marquise />
 {:else if faction === Faction.EYRIE}
   <Eyrie />
+{:else if faction === Faction.VAGABOND || faction === Faction.VAGABOND2}
+  <Vagabond {faction} />
 {:else}
   TODO
 {/if}

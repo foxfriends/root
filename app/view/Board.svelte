@@ -1,13 +1,13 @@
 <script>
   import { clamp } from 'ramda';
-  import context, { useScale } from '../context';
+  import context from '../context';
+  import Scale from './Scale.svelte';
   import Positions from './Positions.svelte';
   import Items from './Items.svelte';
   import Scores from './Scores.svelte';
   import { getMapImagePath } from '../util/image';
 
   const { state } = context();
-  useScale(1);
 
   let boardWidth, boardHeight;
   let tableWidth, tableHeight;
@@ -57,25 +57,27 @@
   }
 </script>
 
-<div
-  bind:clientWidth={tableWidth}
-  bind:clientHeight={tableHeight}
-  class='container'
-  on:wheel={zoom}
-  on:mousemove={drag}>
+<Scale scale={1}>
   <div
-    class='viewport'
-    style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale});'>
-    <!-- svelte-ignore a11y-missing-attribute -->
-    <img
-      class='board'
-      src={getMapImagePath($state.map)}
-      on:load={setInitialViewport} />
-    <Positions />
-    <Items />
-    <Scores />
+    bind:clientWidth={tableWidth}
+    bind:clientHeight={tableHeight}
+    class='container'
+    on:wheel={zoom}
+    on:mousemove={drag}>
+    <div
+      class='viewport'
+      style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale});'>
+      <!-- svelte-ignore a11y-missing-attribute -->
+      <img
+        class='board'
+        src={getMapImagePath($state.map)}
+        on:load={setInitialViewport} />
+      <Positions />
+      <Items />
+      <Scores />
+    </div>
   </div>
-</div>
+</Scale>
 
 <style>
   .container {

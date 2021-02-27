@@ -1,5 +1,5 @@
 <script>
-import { useScale } from '../context';
+import { useScale } from './Scale.svelte';
   
 export let x;
 export let y;

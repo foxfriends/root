@@ -9,24 +9,36 @@
   import Text from './component/Text.svelte';
   import { identity, times } from 'ramda';
   import { fmt, pairWith } from '../util/ramda';
-  import EyrieLeaders from '../types/EyrieLeaders';
+  import {
+    getEyrieLeaderPath,
+    getVagabondCharacterPath,
+  } from '../util/image';
+  import EyrieLeaders from '../types/EyrieLeader';
+  import Vagabonds from '../types/Vagabond';
 
   // TODO: add dynamic image import
   // (this component will be reworked later with the whole right sidebar)
 
-  const sharedDeck = { BACK: '/image/card/card-shared-back.jpg' }
-  const questsDeck = { BACK: '/image/card/vagabond-quests/card-vagabond_quest-back.jpg' }
+  const sharedDeck = { BACK: '/image/card/card-shared-back.jpg' };
+  const questsDeck = { BACK: '/image/card/vagabond-quests/card-vagabond_quest-back.jpg' };
   const leadersDeck = {
-    BACK: '/image/card/eyrie/card-eyrie_leader-back.jpg',
+    BACK: getEyrieLeaderPath(),
     ...Object.fromEntries(Object
       .values(EyrieLeaders)
-      .map(pairWith(fmt`/image/card/eyrie/card-eyrie_leader-front.${identity}.jpg`))),
-  }
+      .map(pairWith(getEyrieLeaderPath))),
+  };
+  const vagabondsDeck = {
+    BACK: getVagabondCharacterPath(),
+    ...Object.fromEntries(Object
+      .values(Vagabonds)
+      .map(pairWith(getVagabondCharacterPath))),
+  };
 
   export let shared = false;
   export let quest = false;
   export let leaders = false;
-  if ([shared, quest, leaders].filter(identity).length !== 1) {
+  export let vagabonds = false;
+  if ([shared, quest, leaders, vagabonds].filter(identity).length !== 1) {
     throw new TypeError('Deck must have one type');
   }
   $: images = do {
@@ -34,6 +46,7 @@
       case shared: sharedDeck; break;
       case quest: questsDeck; break;
       case leaders: leadersDeck; break;
+      case vagabonds: vagabondsDeck; break;
     }
   };
 

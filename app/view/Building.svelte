@@ -1,6 +1,6 @@
 <script>
   import { getBuildingImagePath } from '../util/image';
-  import { useScale } from '../context';
+  import { useScale } from './Scale.svelte';
 
   export let building;
   export let x;
