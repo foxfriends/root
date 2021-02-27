@@ -21,6 +21,7 @@ perform(Name, State, vagabond_choose_character(Character), NewState) ::-
     doneAction(State2, NewState).
 
 actions(_, State, place_vagabond(Forest)) :-
+    action(State, 1),
     forest(State, Forest).
 
 perform(Name, State, place_vagabond(Forest), NewState) ::-

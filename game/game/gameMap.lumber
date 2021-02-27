@@ -26,7 +26,7 @@ clearing(game { clearings: Clearings, .. }, Id, Suit, Slots) :-
 ).
 
 :- pub(forest/2).
-forest(game { forests: Forests }, Id) :- in(forest { position: Id }, Forests).
+forest(game { forests: Forests, .. }, Id) :- in(forest { position: Id }, Forests).
 
 :- pub(itemInRuin/3).
 itemInRuin(game { ruin_items: RuinItems, owned_items: OwnedItems, .. }, Clearing, Item) :-
