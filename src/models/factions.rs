@@ -40,7 +40,8 @@ impl Factions {
             FactionId::Marquise => self.add_marquise(),
             FactionId::Eyrie => self.add_eyrie(),
             FactionId::Alliance => self.add_alliance(),
-            FactionId::Vagabond | FactionId::Vagabond2 => self.add_vagabond(faction),
+            FactionId::Vagabond => self.add_vagabond(),
+            FactionId::Vagabond2 => self.add_vagabond2(),
             FactionId::Cult => self.add_cult(),
             FactionId::Riverfolk => self.add_riverfolk(),
             FactionId::Duchy => self.add_duchy(),
@@ -118,8 +119,12 @@ impl Factions {
         self.add_warriors(FactionId::Alliance, 10);
     }
 
-    fn add_vagabond(&mut self, faction: FactionId) {
-        self.vagabond = Some(Vagabond::new(faction));
+    fn add_vagabond(&mut self) {
+        self.vagabond = Some(Vagabond::new(FactionId::Vagabond));
+    }
+
+    fn add_vagabond2(&mut self) {
+        self.vagabond2 = Some(Vagabond::new(FactionId::Vagabond2));
     }
 
     fn add_cult(&mut self) {

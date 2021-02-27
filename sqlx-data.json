@@ -554,39 +554,6 @@
       ]
     }
   },
-  "20650f4d26397c0458b1cadb6b4568b6e187dc5efd952a3f73be2bb3ac3be915": {
-    "query": "\n                INSERT INTO vagabond_items (game, item, faction, exhausted, damaged) VALUES ($1, $2, $3, $4, $5)\n                    ON CONFLICT (game, item) DO UPDATE SET faction = $3, exhausted = $4, damaged = $5\n            ",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Varchar",
-          "Int2",
-          {
-            "Custom": {
-              "name": "enum_faction",
-              "kind": {
-                "Enum": [
-                  "marquise",
-                  "eyrie",
-                  "alliance",
-                  "vagabond",
-                  "vagabond2",
-                  "cult",
-                  "riverfolk",
-                  "duchy",
-                  "conspiracy"
-                ]
-              }
-            }
-          },
-          "Bool",
-          "Bool"
-        ]
-      },
-      "nullable": []
-    }
-  },
   "2116e3e5574b89bbd3682d83bf52158e4eea893e4fee8b5c3e876acbbf6c77ca": {
     "query": "INSERT INTO ruin_items (game, clearing, item) VALUES ($1, $2, $3) ON CONFLICT (game, item) DO UPDATE SET clearing = $2",
     "describe": {
@@ -1505,18 +1472,6 @@
               }
             }
           }
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "6931622eca8885749af2a402f994e7d233ddece8a5752a84e2ffa3ab6a3392de": {
-    "query": "DELETE FROM owned_items WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
         ]
       },
       "nullable": []
@@ -3357,6 +3312,39 @@
       ]
     }
   },
+  "ee65ae18b3dcc7d79a49484ea77dd56b7a7f627c7ed279e659e419d9c03124cb": {
+    "query": "\n                INSERT INTO vagabond_items (game, item, faction, exhausted, damaged) VALUES ($1, $2, $3, $4, $5)\n                    ON CONFLICT (game, item, faction) DO UPDATE SET exhausted = $4, damaged = $5\n            ",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          {
+            "Custom": {
+              "name": "enum_faction",
+              "kind": {
+                "Enum": [
+                  "marquise",
+                  "eyrie",
+                  "alliance",
+                  "vagabond",
+                  "vagabond2",
+                  "cult",
+                  "riverfolk",
+                  "duchy",
+                  "conspiracy"
+                ]
+              }
+            }
+          },
+          "Bool",
+          "Bool"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "eeadb1aebdde1e116832fddb05c6ecb58145d2993a1cafe16a5d1b586e89fc8c": {
     "query": "INSERT INTO players (game, name, ready) VALUES ($1, $2, $3) ON CONFLICT (game, name) DO UPDATE SET ready = $3",
     "describe": {
@@ -3423,18 +3411,6 @@
   },
   "f42525a1b24076fbb3be6a0aeda0637766c86b15ac80c3256410f699b74d04bc": {
     "query": "DELETE FROM officers WHERE game = $1",
-    "describe": {
-      "columns": [],
-      "parameters": {
-        "Left": [
-          "Text"
-        ]
-      },
-      "nullable": []
-    }
-  },
-  "f4c56acd26550fe5353e00c2409d601f72dd79375738211341e7d9b374eb437f": {
-    "query": "DELETE FROM vagabond_items WHERE game = $1",
     "describe": {
       "columns": [],
       "parameters": {

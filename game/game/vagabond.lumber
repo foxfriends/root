@@ -26,11 +26,11 @@ startingItems(adventurer, [boot, torch, hammer]).
 startingItems(ronin, [boot, boot, torch, dagger]).
 startingItems(harrier, [coin, torch, dagger, crossbow]).
 
-:- pub(vagabond/4).
-vagabond(G, vagabond, C, P) :-
-    G =:= game { vagabond: vagabond { vagabond: vagabond(C), position: P, .. }, .. }.
-vagabond(G, vagabond2, C, P) :-
-    G =:= game { vagabond2: vagabond { vagabond: vagabond(C), position: P, .. }, .. }.
+:- pub(vagabondChosen/2).
+vagabondChosen(G, C) :-
+    G =:= game { vagabond: vagabond { vagabond: !vagabond(C), .. }, .. }.
+vagabondChosen(G, C) :-
+    G =:= game { vagabond2: vagabond { vagabond: !vagabond(C), .. }, .. }.
 
 :- pub(vagabondSetCharacter/4).
 vagabondSetCharacter(G, vagabond, C, G4) :-
@@ -39,12 +39,12 @@ vagabondSetCharacter(G, vagabond, C, G4) :-
     startingItems(C, Is),
     createItems(G2, Is, Ids, G3),
     giveItems(G3, vagabond, Ids, G4).
-vagabondSetCharacter(G, vagabond2, C, G3) :-
+vagabondSetCharacter(G, vagabond2, C, G4) :-
     G  =:= game { vagabond2: vagabond { vagabond: _, ..V }, ..S },
     G2 =:= game { vagabond2: vagabond { vagabond: vagabond(C), ..V }, ..S },
     startingItems(C, Is),
     createItems(G2, Is, Ids, G3),
-    giveItems(G3, vagabond2, Ids, G3).
+    giveItems(G3, vagabond2, Ids, G4).
 
 :- pub(placeVagabond/4).
 placeVagabond(G, vagabond, P, G2) :-

@@ -13,7 +13,7 @@
 actions(_, State, vagabond_choose_character(C)) :-
     action(State, 0),
     vagabondCharacter(C),
-    (vagabond(State, _, !C, _) ->> false; true).
+    (vagabondChosen(State, C) ->> false; true).
 
 perform(Name, State, vagabond_choose_character(Character), NewState) ::-
     playerFaction(State, Name, V),

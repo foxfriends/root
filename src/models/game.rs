@@ -260,7 +260,7 @@ impl Game {
         self.hand.save(&self.name, &mut conn).await?;
         self.dominance.save(&self.name, &mut conn).await?;
         self.items.overwrite(&self.name, &mut conn).await?;
-        self.owned_items.save(&self.name, &mut conn).await?;
+        self.owned_items.overwrite(&self.name, &mut conn).await?;
         self.ruin_items.overwrite(&self.name, &mut conn).await?;
         self.warriors.overwrite(&self.name, &mut conn).await?;
         self.placed_warriors.save(&self.name, &mut conn).await?;
@@ -276,7 +276,7 @@ impl Game {
         self.officers.save(&self.name, &mut conn).await?;
         self.vagabond.overwrite(&self.name, &mut conn).await?;
         self.vagabond2.overwrite(&self.name, &mut conn).await?;
-        self.vagabond_items.save(&self.name, &mut conn).await?;
+        self.vagabond_items.overwrite(&self.name, &mut conn).await?;
         self.vagabond_relationships
             .overwrite(&self.name, &mut conn)
             .await?;
