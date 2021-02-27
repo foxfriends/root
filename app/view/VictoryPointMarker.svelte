@@ -20,7 +20,7 @@
 </script>
 
 <div
-  class="marker-stack"
+  class='marker-stack'
   style={`
     transform: translate(-50%, -50%) translateY(-${8 * factions.length * $scale}px) scale(${$scale});
     left: ${x}px;
@@ -29,7 +29,7 @@
 >
   {#each factionsSorted as faction, i }
     <div
-      class="marker"
+      class='marker'
       style={`
         background-image: url(${getVictoryPointImagePath(faction.faction)});
         top: -${158 * i}px;

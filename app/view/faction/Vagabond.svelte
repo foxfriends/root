@@ -3,12 +3,12 @@
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Item from '../Item.svelte';
+  import RelationshipMarker from '../RelationshipMarker.svelte';
   import Scale from '../Scale.svelte';
   import Deck, { front } from '../Deck.svelte';
   import Factions from '../../types/Faction';
-  import Buildings from '../../types/Building';
   import Items from '../../types/Item';
-  import { getFactionIconPath, getVagabondCharacterPath } from '../../util/image';
+  import Relationships from '../../types/Relationship';
 
   export let faction;
 
@@ -50,15 +50,21 @@
 
   $: character = $state[faction].vagabond;
 
-  // $: relationshipFactions = Object
-  //   .entries($game.factionData[faction].relations)
-  //   .filter(([faction]) => faction in $game.factionData)
-  //   .filter(([, l]) => l !== null)
-  //   .reduce((factions, [faction, l]) => ({ ...factions, [l]: [...(factions[l] || []), faction] }), {});
-  // $: hostileFactions = Object.entries($game.factionData[faction].relations)
-  //   .filter(([faction]) => faction in $game.factionData)
-  //   .filter(([, l]) => l === null)
-  //   .map(([faction]) => faction);
+  $: friendlies = $state
+    .vagabond_relationships
+    .filter(propEq('vagabond', faction))
+    .filter(complement(propEq('relationship', Relationships.HOSTILE)));
+  $: hostiles = $state
+    .vagabond_relationships
+    .filter(propEq('vagabond', faction))
+    .filter(propEq('relationship', Relationships.HOSTILE));
+
+  $: console.log(friendlies);
+
+  const relationshipMargin = (level) => {
+    const factions = friendlies.filter(propEq('relationship', level));
+    return `margin-top: ${Math.min(5, (394 - (factions.length * 146)) / (factions.length - 1))}px;`;
+  };
 </script>
 
 <Scale {scale}>
@@ -70,18 +76,19 @@
         </div>
       {/if}
 
-      <!--
-      {#each Object.entries(relationshipFactions) as [level, factions]}
+      {#each Object.values(Relationships) as level, i}
         <div
           class='relationships friendly'
           style={`
-            left: ${relationships.x + relationships.dx * (level - 1)}px;
+            left: ${relationships.x + relationships.dx * i}px;
             top: ${relationships.y}px;
-            transform: scale(${scale});
+            height: ${404 * scale}px;
+            width: ${165 * scale}px;
+            padding-top: ${20 * scale}px;
           `}>
-          {#each factions as faction, i}
-            <div style={i === 0 ? '' : `margin-top: ${Math.min(5, (394 - (factions.length * 146)) / (factions.length - 1))}px;`}>
-              <Token square block image={getFactionIconPath(faction.faction)} />
+          {#each friendlies.filter(propEq('relationship', level)) as { faction }, i}
+            <div style={i === 0 ? '' : relationshipMargin(level)}>
+              <RelationshipMarker {faction} />
             </div>
           {/each}
         </div>
@@ -91,18 +98,24 @@
         style={`
           left: ${hostile.x}px;
           top: ${hostile.y}px;
-          transform: scale(${scale});
+          width: ${439 * scale}px;
+          height: ${163 * scale}px;
         `}>
-        {#each hostileFactions as faction, i}
-          <div style={i === 0 ? '' : `margin-left: ${Math.min(5, (439 - (hostileFactions.length * 146)) / (hostileFactions.length - 1))}px;`}>
-            <Token square block image={getFactionIconPath(faction.faction)} />
+        {#each hostiles as { faction }, i}
+          <div style={i === 0 ? '' : `margin-left: ${Math.min(5, (439 - (hostiles.length * 146)) / (hostiles.length - 1))}px;`}>
+            <RelationshipMarker {faction} />
           </div>
         {/each}
       </div>
-      -->
 
       <Scale scale={scale * 0.88}>
-        <div class='items refreshed' style={`left: ${satchel.x}px; top: ${satchel.y}px;`}>
+        <div class='items refreshed' style={`
+          left: ${satchel.x}px;
+          top: ${satchel.y}px;
+          width: ${620 * scale}px;
+          height: ${370 * scale}px;
+          padding-left: ${20 * scale}px;
+        `}>
           {#each satchelItems as { item, exhausted } (item.id)}
             <div class='item' class:exhausted>
               <Item {item} />
@@ -110,7 +123,14 @@
           {/each}
         </div>
 
-        <div class='items damaged' style={`left: ${satchel.damaged.x}px; top: ${satchel.damaged.y}px;`}>
+        <div class='items damaged' style={`
+          left: ${satchel.damaged.x}px;
+          top: ${satchel.damaged.y}px;
+          padding-left: ${20 * scale}px;
+          padding-top: ${20 * scale}px;
+          width: ${586 * scale}px;
+          height: ${150 * scale}px;
+        `}>
           {#each damagedItems as { item }, i (item.id)}
             <div
               class='item exhausted'
@@ -187,14 +207,6 @@
 
   .relationships.friendly {
     flex-direction: column;
-    height: 404px;
-    width: 165px;
-    padding-top: 20px;
-  }
-
-  .relationships.hostile {
-    width: 439px;
-    height: 163px;
   }
 
   .relationships.hostile,
@@ -206,17 +218,10 @@
 
   .items.refreshed {
     flex-wrap: wrap;
-    width: 620px;
-    height: 370px;
-    padding-left: 20px;
   }
 
   .items.damaged {
     flex-direction: row;
-    padding-left: 20px;
-    padding-top: 20px;
-    width: 586px;
-    height: 150px;
   }
 
   .item {
