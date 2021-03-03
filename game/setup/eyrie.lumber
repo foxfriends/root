@@ -11,17 +11,20 @@
 :- use(~::game::tokens).
 :- use(~::game::warriors).
 
+// if the keep is placed, the eyrie starts in the opposite corner,
+// so user hasn't to pick clearing manually
 init(G, N) :- (
     token(G, _, keep, KeepCorner) ->>
-        // if the keep is placed, the eyrie starts in the opposite corner
-        oppositeCorner(KeepCorner, Across),
+        oppositeCorner(KeepCorner, EyrieCorner),
         building(G, Roost, roost, unplaced),
-        placeBuilding(G, Roost, Across, G2),
-        placeWarriors(G2, eyrie, Across, 6, G3),
+        placeBuilding(G, Roost, EyrieCorner, G2),
+        placeWarriors(G2, eyrie, EyrieCorner, 6, G3),
         doneAction(G3, N);
     G =:= N
 ).
 
+// this action and perform are needed for
+// manual initial clearing picking
 actions(_, State, place_building[roost, Position]) :-
     action(State, 0),
     cornerClearing(Position).
