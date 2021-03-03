@@ -61,23 +61,23 @@
   width: calc(100% - 350px);
   transform: translateX(-350px);
   transition: transform 0.2s;
-  background-color: blue;
+  background-color: #3c4e42;
   background-size: 20%;
 
   &.marquise {
-    background-image: url('../image/pattern/pattern-marquise.jpg');
+    background-image: url('./image/pattern/pattern-marquise.jpg');
   }
 
   &.eyrie {
-    background-image: url('../image/pattern/pattern-eyrie.jpg');
+    background-image: url('./image/pattern/pattern-eyrie.jpg');
   }
 
   &.alliance {
-    background-image: url('../image/pattern/pattern-alliance.jpg');
+    background-image: url('./image/pattern/pattern-alliance.jpg');
   }
 
   &.vagabond {
-    background-image: url('../image/pattern/pattern-vagabond.jpg');
+    background-image: url('./image/pattern/pattern-vagabond.jpg');
   }
 
   &:hover,
