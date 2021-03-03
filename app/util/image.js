@@ -30,6 +30,12 @@ export function getItemImagePath(item, ruin) {
   return `/image/piece/item/token.item-${ruinPath}${item}.png`;
 }
 
+export function getSharedCardPath(card) {
+  const path = card ? `front.${card.suit}-${card.card}` : 'back';
+
+  return `/image/card/card-shared-${path}.jpg`;
+}
+
 export function getEyrieLeaderPath(leader) {
   const path = leader ? `front.${leader}` : 'back';
 

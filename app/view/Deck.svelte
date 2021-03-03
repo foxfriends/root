@@ -10,16 +10,23 @@
   import { identity, times } from 'ramda';
   import { fmt, pairWith } from '../util/ramda';
   import {
-    getEyrieLeaderPath,
+    getEyrieLeaderPath, getSharedCardPath,
     getVagabondCharacterPath,
   } from '../util/image';
   import EyrieLeaders from '../types/EyrieLeader';
   import Vagabonds from '../types/Vagabond';
+  import context from '../context';
 
-  // TODO: add dynamic image import
-  // (this component will be reworked later with the whole right sidebar)
+  const { state } = context();
 
-  const sharedDeck = { BACK: '/image/card/card-shared-back.jpg' };
+  // TODO: add reference to all cards, not to current deck state
+  const sharedDeck = {
+    BACK: '/image/card/card-shared-back.jpg',
+    ...Object.fromEntries(
+      $state.cards
+      .map(pairWith(getSharedCardPath))
+    ),
+  };
   const questsDeck = { BACK: '/image/card/vagabond-quests/card-vagabond_quest-back.jpg' };
   const leadersDeck = {
     BACK: getEyrieLeaderPath(),
@@ -61,9 +68,10 @@
 
   $: boxShadow = times((i) => `0 ${i + 1}px 0 ${EDGE_COLOR[i % 2]}`, Math.ceil(cards.length / 2)).join(',');
 
-  function image({ card, side }) {
+  function image({ card, side, suit }) {
     if (side === BACK) { return images.BACK; }
-    return images[card];
+
+    return images[suit ? `${suit}-${card}` : card];
   }
 </script>
 
