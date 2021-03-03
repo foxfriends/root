@@ -5,6 +5,7 @@
 :- mod(eyrie).
 :- mod(gameMap).
 :- mod(items).
+:- mod(cards).
 :- mod(tokens).
 :- mod(vagabond).
 :- mod(warriors).
