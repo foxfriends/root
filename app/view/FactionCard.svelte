@@ -1,14 +1,13 @@
 <script>
   import Marquise from './faction/Marquise.svelte';
   import Eyrie from './faction/Eyrie.svelte';
-  // import Alliance from './faction/Alliance.svelte';
+  import Alliance from './faction/Alliance.svelte';
   import Vagabond from './faction/Vagabond.svelte';
   // import Riverfolk from './faction/Riverfolk.svelte';
   // import Cult from './faction/Cult.svelte';
   // import Duchy from './faction/Duchy.svelte';
   // import Conspiracy from './faction/Conspiracy.svelte';
   import Faction from '../types/Faction';
-  import Alliance from './faction/Alliance.svelte';
 
   export let faction;
 </script>

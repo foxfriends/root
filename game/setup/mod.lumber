@@ -12,10 +12,9 @@
 :- pub(perform/4).
 
 nextSetup(G, S) :- (
-    turn(G, eyrie) ->> eyrie::init(G, S); (
-        turn(G, alliance) ->> alliance::init(G, S);
-        G =:= S
-    )
+    turn(G, eyrie) ->> eyrie::init(G, S);
+    turn(G, alliance) ->> alliance::init(G, S);
+    G =:= S
 ).
 
 actions(Name, State, Action) :-
@@ -35,15 +34,6 @@ perform(Name, State, Action, NewState) :-
     turn(State, eyrie),
     playerFaction(State, Name, eyrie),
     eyrie::perform(Name, State, Action, NewState).
-
-// actions(Name, State, Action) :-
-//     turn(State, alliance),
-//     playerFaction(State, Name, alliance),
-//     alliance::actions(Name, State, Action).
-// perform(Name, State, Action, NewState) :-
-//     turn(State, alliance),
-//     playerFaction(State, Name, alliance),
-//     alliance::perform(Name, State, Action, NewState).
 
 actions(Name, State, Action) :-
     turn(State, V),

@@ -10,7 +10,8 @@
   import { identity, times } from 'ramda';
   import { fmt, pairWith } from '../util/ramda';
   import {
-    getEyrieLeaderPath, getSharedCardPath,
+    getEyrieLeaderPath, 
+    getSharedCardPath,
     getVagabondCharacterPath,
   } from '../util/image';
   import EyrieLeaders from '../types/EyrieLeader';
