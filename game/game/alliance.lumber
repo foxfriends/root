@@ -9,7 +9,7 @@ drawSupporter(G, NG) :-
 
 :- pub(addSupporter/3).
 addSupporter(G, CardId, NG) :-
-    // card(G, CardId, _),
+    // card(G, CardId, _, _),
     G =:= game { alliance_supporters: Supporters, ..RestG },
     NG =:= game {
         alliance_supporters: [alliance_supporter { card: CardId }, ..Supporters],

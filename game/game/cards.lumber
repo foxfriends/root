@@ -7,13 +7,7 @@ takeCard(G, Id, G2) :-
     remove(Cards, card { id: Id, .. }, Cards2),
     G2 =:= game { cards: Cards2, ..State }.
 
-:- pub(card/3).
-card(G, Id, Kind) :-
-  G =:= game { cards: Cards, discards: Discards, .. },
-  Card =:= card { id: Id, card: card(Kind), .. },
-  in(Card, Cards),
-  notin(Card, Discards).
-
-:- pub(cardSuit/3).
-cardSuit(game { cards: Cards, ..}, Id, Suit ) :-
-  in(card { id: Id, suit: !suit(Suit), .. }, Cards).
+:- pub(card/4).
+card(G, Id, Kind, Suit) :-
+    G =:= game { cards: Cards, .. },
+    in(card { id: Id, card: card(Kind), suit: suit(Suit), .. }, Cards).

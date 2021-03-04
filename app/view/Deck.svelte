@@ -21,6 +21,8 @@
   const { state } = context();
 
   // TODO: add reference to all cards, not to current deck state
+  // Also, all hands, supporters, lost souls etc won't be shown,
+  // because they are removing from `cards` array
   const sharedDeck = {
     BACK: '/image/card/card-shared-back.jpg',
     ...Object.fromEntries(

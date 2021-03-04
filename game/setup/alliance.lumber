@@ -9,5 +9,5 @@ init(G, NG) :- (
     drawSupporter(G2, G3),
     drawSupporter(G3, G4),
     doneTurn(G4, G5),
-    ^::nextSetup(G5, NG),
+    ^::nextSetup(G5, NG)
 ).
