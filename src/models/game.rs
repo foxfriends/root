@@ -54,9 +54,16 @@ pub struct Game {
     /// The positions of tokens that are on the board.
     placed_tokens: Vec<PlacedToken>,
 
-    /// The identifications of each card. This order determines the order of the shared
-    /// deck. Cards not in another location are yet undrawn.
+    /// The identifications of each card.
     cards: Vec<Card>,
+    /// The current state of the shared deck.
+    ///
+    /// A card should be in one of:
+    /// *   `shared_deck`
+    /// *   `hand`
+    /// *   `discards`
+    /// *   `lost_souls`
+    shared_deck: Vec<SharedDeck>,
     /// The order of cards in the discard pile.
     discards: Vec<Discard>,
     /// The cards in each player's hand.
@@ -181,6 +188,7 @@ impl Game {
             tokens: Loadable::load(name, &mut conn).await?,
             placed_tokens: Loadable::load(name, &mut conn).await?,
             cards: Loadable::load(name, &mut conn).await?,
+            shared_deck: Loadable::load(name, &mut conn).await?,
             discards: Loadable::load(name, &mut conn).await?,
             hand: Loadable::load(name, &mut conn).await?,
             dominance: Loadable::load(name, &mut conn).await?,
@@ -256,6 +264,7 @@ impl Game {
         self.tokens.overwrite(&self.name, &mut conn).await?;
         self.placed_tokens.save(&self.name, &mut conn).await?;
         self.cards.overwrite(&self.name, &mut conn).await?;
+        self.shared_deck.save(&self.name, &mut conn).await?;
         self.discards.save(&self.name, &mut conn).await?;
         self.hand.save(&self.name, &mut conn).await?;
         self.dominance.save(&self.name, &mut conn).await?;
@@ -319,7 +328,7 @@ impl Game {
     }
 
     pub async fn create(config: GameConfig) -> sqlx::Result<Self> {
-        let cards = config.deck.create();
+        let (cards, shared_deck) = config.deck.create();
         let dominance = cards
             .iter()
             .filter(|card| card.card() == CardId::Dominance)
@@ -408,6 +417,7 @@ impl Game {
             connections,
             rivers,
             cards,
+            shared_deck,
             discards: vec![],
             hand: vec![],
             dominance,

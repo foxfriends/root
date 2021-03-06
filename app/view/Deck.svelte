@@ -25,10 +25,7 @@
   // because they are removing from `cards` array
   const sharedDeck = {
     BACK: '/image/card/card-shared-back.jpg',
-    ...Object.fromEntries(
-      $state.cards
-      .map(pairWith(getSharedCardPath))
-    ),
+    ...Object.fromEntries($state.cards.map(pairWith(getSharedCardPath))),
   };
   const questsDeck = { BACK: '/image/card/vagabond-quests/card-vagabond_quest-back.jpg' };
   const leadersDeck = {

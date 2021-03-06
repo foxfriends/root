@@ -17,18 +17,17 @@ impl Default for Deck {
 }
 
 impl Deck {
-    pub fn create(self) -> Vec<Card> {
+    pub fn create(self) -> (Vec<Card>, Vec<SharedDeck>) {
         match self {
             Self::Standard => Self::standard(),
             _ => todo!(),
         }
     }
 
-    fn standard() -> Vec<Card> {
+    fn standard() -> (Vec<Card>, Vec<SharedDeck>) {
         let mut rng = thread_rng();
         let mut id: Vec<i16> = (1..=54).collect();
-        id.shuffle(&mut rng);
-        vec![
+        let cards = vec![
             Card::new(id[0], CardId::Ambush, Suit::Bird),
             Card::new(id[1], CardId::Ambush, Suit::Bird),
             Card::new(id[2], CardId::BirdyBindle, Suit::Bird),
@@ -83,6 +82,16 @@ impl Deck {
             Card::new(id[51], CardId::Dominance, Suit::Rabbit),
             Card::new(id[52], CardId::Dominance, Suit::Mouse),
             Card::new(id[53], CardId::Dominance, Suit::Bird),
-        ]
+        ];
+        id.shuffle(&mut rng);
+        let shared_deck = id
+            .into_iter()
+            .enumerate()
+            .map(|(sort, card)| SharedDeck {
+                card,
+                sort: sort as i16,
+            })
+            .collect();
+        (cards, shared_deck)
     }
 }
