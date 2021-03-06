@@ -61,7 +61,7 @@
   width: calc(100% - 350px);
   transform: translateX(-350px);
   transition: transform 0.2s;
-  background-color: #3c4e42;
+  background-color: #3C4E42;
   background-size: 20%;
 
   &.marquise {
