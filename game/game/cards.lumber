@@ -1,0 +1,13 @@
+:- use(@core).
+:- use(@core::list).
+
+:- pub(takeCard/3).
+takeCard(G, Id, G2) :-
+    G =:= game { cards: Cards, ..State },
+    remove(Cards, card { id: Id, .. }, Cards2),
+    G2 =:= game { cards: Cards2, ..State }.
+
+:- pub(card/4).
+card(G, Id, Kind, Suit) :-
+    G =:= game { cards: Cards, .. },
+    in(card { id: Id, card: card(Kind), suit: suit(Suit), .. }, Cards).

@@ -4,6 +4,7 @@
 
 :- mod(marquise).
 :- mod(eyrie).
+:- mod(alliance).
 :- mod(vagabond).
 
 :- pub(nextSetup/2).
@@ -11,8 +12,10 @@
 :- pub(perform/4).
 
 nextSetup(G, S) :- (
-    turn(G, eyrie) ->> eyrie::init(G, S);
-    G =:= S
+    turn(G, eyrie) ->> eyrie::init(G, S); (
+        turn(G, alliance) ->> alliance::init(G, S);
+        G =:= S
+    )
 ).
 
 actions(Name, State, Action) :-
