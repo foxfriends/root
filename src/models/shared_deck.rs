@@ -11,9 +11,13 @@ pub struct SharedDeck {
 #[async_trait]
 impl Loadable for Vec<SharedDeck> {
     async fn load(game: &str, conn: &mut PgConnection) -> sqlx::Result<Self> {
-        query_as!(SharedDeck, "SELECT card, sort FROM shared_deck WHERE game = $1 ORDER BY sort ASC", game)
-            .fetch_all(conn)
-            .await
+        query_as!(
+            SharedDeck,
+            "SELECT card, sort FROM shared_deck WHERE game = $1 ORDER BY sort ASC",
+            game
+        )
+        .fetch_all(conn)
+        .await
     }
 }
 

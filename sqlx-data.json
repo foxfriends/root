@@ -1154,6 +1154,20 @@
       "nullable": []
     }
   },
+  "5220ffaf8513c9ebd6b19715f16fb905b522077762b875dfd9a2b33440b336d5": {
+    "query": "INSERT INTO shared_deck (game, card, sort) VALUES ($1, $2, $3) ON CONFLICT (game, card) DO UPDATE SET sort = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Int2",
+          "Int2"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "52dc50fe8c292d5f7e18206de4b7fbbe688f2410eae54c3fb054498e9c10f2b4": {
     "query": "SELECT position_a, position_b, closed FROM connections WHERE game = $1",
     "describe": {
@@ -1504,6 +1518,18 @@
       "nullable": []
     }
   },
+  "6f5af6ec654c2c0046062b54755e43a21f15a463eafd29cb7d5d74c7542ae7b9": {
+    "query": "DELETE FROM shared_deck WHERE game = $1",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
   "6ffd908b7a12e60bd46a805132d847affc7cc444c043104b71f304cfec7caf04": {
     "query": "INSERT INTO owned_items (game, item, faction) VALUES ($1, $2, $3) ON CONFLICT (game, item) DO UPDATE SET faction = $3",
     "describe": {
@@ -1633,6 +1659,32 @@
         ]
       },
       "nullable": [
+        false
+      ]
+    }
+  },
+  "7d7c3dc1e85a4833e6f044cc501534c9655a0da19eb3b8cf0fca7157e63c5b9d": {
+    "query": "SELECT card, sort FROM shared_deck WHERE game = $1 ORDER BY sort ASC",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "card",
+          "type_info": "Int2"
+        },
+        {
+          "ordinal": 1,
+          "name": "sort",
+          "type_info": "Int2"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      },
+      "nullable": [
+        false,
         false
       ]
     }
