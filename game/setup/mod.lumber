@@ -11,12 +11,13 @@
 :- pub(actions/3).
 :- pub(perform/4).
 
-nextSetup(G, S) :- (
-    turn(G, eyrie) ->> eyrie::init(G, S); (
+nextSetup(G, S) :-
+    phase(G, setup) ->> (
+        turn(G, eyrie) ->> eyrie::init(G, S);
         turn(G, alliance) ->> alliance::init(G, S);
         G =:= S
-    )
-).
+    );
+    G =:= S.
 
 actions(Name, State, Action) :-
     turn(State, marquise),

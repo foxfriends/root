@@ -28,9 +28,9 @@ startingItems(harrier, [coin, torch, dagger, crossbow]).
 
 :- pub(vagabondChosen/2).
 vagabondChosen(G, C) :-
-    G =:= game { vagabond: vagabond { vagabond: !vagabond(C), .. }, .. }.
+    G =:= game { vagabond: !vagabond { vagabond: !vagabond(C), .. }, .. }.
 vagabondChosen(G, C) :-
-    G =:= game { vagabond2: vagabond { vagabond: !vagabond(C), .. }, .. }.
+    G =:= game { vagabond2: !vagabond { vagabond: !vagabond(C), .. }, .. }.
 
 :- pub(vagabondSetCharacter/4).
 vagabondSetCharacter(G, vagabond, C, G4) :-

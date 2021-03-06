@@ -4,10 +4,9 @@
 :- use(~::game::alliance).
 
 :- pub(init/2).
-init(G, NG) :- (
+init(G, NG) :- 
     drawSupporter(G, G2),
     drawSupporter(G2, G3),
     drawSupporter(G3, G4),
     doneTurn(G4, G5),
-    ^::nextSetup(G5, NG)
-).
+    ^::nextSetup(G5, NG).
