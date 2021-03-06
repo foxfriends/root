@@ -1,15 +1,12 @@
 :- use(^::cards).
-:- use(@core::list).
 
 :- pub(drawSupporter/2).
 drawSupporter(G, NG) :-
-    // TODO: check if alliance is in game
-    takeCard(G, CardId, G2),
+    drawCard(G, CardId, G2),
     addSupporter(G2, CardId, NG).
 
 :- pub(addSupporter/3).
 addSupporter(G, CardId, NG) :-
-    // card(G, CardId, _, _),
     G =:= game { alliance_supporters: Supporters, ..RestG },
     NG =:= game {
         alliance_supporters: [alliance_supporter { card: CardId }, ..Supporters],

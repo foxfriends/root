@@ -1,11 +1,12 @@
 :- use(@core).
 :- use(@core::list).
 
-:- pub(takeCard/3).
-takeCard(G, Id, G2) :-
-    G =:= game { cards: Cards, ..State },
-    remove(Cards, card { id: Id, .. }, Cards2),
-    G2 =:= game { cards: Cards2, ..State }.
+:- pub(drawCard/3).
+drawCard(
+    game { shared_deck: [shared_deck { card: Drawn, .. }, ..Deck], ..State },
+    Drawn,
+    game { shared_deck: Deck, ..State },
+).
 
 :- pub(card/4).
 card(G, Id, Kind, Suit) :-
