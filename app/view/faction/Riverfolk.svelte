@@ -1,9 +1,10 @@
 <script>
-  import { __, compose, complement, find, prop, propEq } from 'ramda';
+  import { __, compose, complement, find, prop, propEq, unary } from 'ramda';
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Action from '../component/Action.svelte';
   import Token from '../Token.svelte';
+  import Warrior from '../Warrior.svelte';
   import Scale from '../Scale.svelte';
   import Factions from '../../types/Faction';
   import Tokens from '../../types/Token';
@@ -34,6 +35,25 @@
   $: mousePosts = tradePosts.filter(propEq('suit', Suits.MOUSE));
   $: rabbitPosts = tradePosts.filter(propEq('suit', Suits.RABBIT));
   $: foxPosts = tradePosts.filter(propEq('suit', Suits.FOX));
+
+  $: paymentWarriors = $state
+    .payments
+    .map(prop('warrior'))
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))));
+  $: fundWarriors = $state
+    .funds
+    .map(prop('warrior'))
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))));
+  $: commitmentWarriors = $state
+    .commitments
+    .filter(propEq('craft_suit', null))
+    .map(prop('warrior'))
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))))
+  $: craftedWarriors = $state
+    .commitments
+    .filter(prop('craft_suit'))
+    .map(prop('warrior'))
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))))
 </script>
 
 <Scale {scale}>
@@ -49,29 +69,47 @@
         <Token tokens={[token]} x={tradePost.x - i * tradePost.dx} y={tradePost.y + tradePost.dy * 2} />
       {/each}
 
-      <!--
-      <div class='funds' style={`left: ${payments.x}px; top: ${payments.y}px; width: ${payments.w}px; height: ${payments.h}px; transform: scale(${scale})`}>
-        {#each $game.factionData.riverfolk.funds.payments as piece}
-          <div class='fund'>
-            <Piece block {piece} scale={0.88} />
-          </div>
-        {/each}
-      </div>
-      <div class='funds' style={`left: ${funds.x}px; top: ${funds.y}px; width: ${funds.w}px; height: ${funds.h}px; transform: scale(${scale})`}>
-        {#each $game.factionData.riverfolk.funds.funds as piece}
-          <div class='fund'>
-            <Piece block {piece} scale={0.88} />
-          </div>
-        {/each}
-      </div>
-      <div class='funds' style={`left: ${commitments.x}px; top: ${commitments.y}px; width: ${commitments.w}px; height: ${commitments.h}px; transform: scale(${scale})`}>
-        {#each $game.factionData.riverfolk.funds.commitments as piece}
-          <div class='fund'>
-            <Piece block {piece} scale={0.88} />
-          </div>
-        {/each}
-      </div>
-      -->
+      <Scale scale={scale * 0.88}>
+        <div class='funds' style={`
+          left: ${payments.x}px;
+          top: ${payments.y}px;
+          width: ${payments.w}px;
+          height: ${payments.h}px;
+          transform: scale(${scale});
+        `}>
+          {#each paymentWarriors as warrior}
+            <div class='fund'>
+              <Warrior {warrior} />
+            </div>
+          {/each}
+        </div>
+        <div class='funds' style={`
+          left: ${funds.x}px;
+          top: ${funds.y}px;
+          width: ${funds.w}px;
+          height: ${funds.h}px;
+          transform: scale(${scale});
+        `}>
+          {#each fundWarriors as warrior}
+            <div class='fund'>
+              <Warrior {warrior} />
+            </div>
+          {/each}
+        </div>
+        <div class='funds' style={`
+          left: ${commitments.x}px;
+          top: ${commitments.y}px;
+          width: ${commitments.w}px;
+          height: ${commitments.h}px;
+          transform: scale(${scale});
+        `}>
+          {#each commitmentWarriors as warrior}
+            <div class='fund'>
+              <Warrior {warrior} />
+            </div>
+          {/each}
+        </div>
+      </Scale>
 
       <!--
       {#each $game.factionData.riverfolk.funds.crafted.fox as piece, i}

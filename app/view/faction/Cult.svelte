@@ -1,5 +1,5 @@
 <script>
-  import { __, compose, complement, find, prop, propEq } from 'ramda';
+  import { __, compose, complement, find, prop, propEq, unary } from 'ramda';
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Action from '../component/Action.svelte';
@@ -31,7 +31,7 @@
   $: lostSoulsDeck = $state
     .lost_souls
     .map(prop('card'))
-    .map(compose(find(__, $state.cards), propEq('id')))
+    .map(unary(compose(find(__, $state.cards), propEq('id'))))
     .map(front);
 
   $: builtIds = $state.built_buildings.map(prop('building'));

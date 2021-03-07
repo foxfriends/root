@@ -2,28 +2,31 @@
   import { useScale } from './Scale.svelte';
 
   export let warrior;
-  export let x;
-  export let y;
+  export let x = undefined;
+  export let y = undefined;
 
   const scale = useScale();
-  const size = 8;
+
+  $: style = x === undefined && y === undefined
+    ? `transform: scale(${$scale});`
+    : `
+      position: absolute;
+      left: ${x}px;
+      top: ${y}px;
+      transform: translate(-50%, -50%) scale(${$scale});
+    `;
 </script>
 
 {#if warrior}
   <svg
     class='warrior'
-    style={`
-      left: ${x}px;
-      top: ${y}px;
-      transform: translate(-50%, -50%) translateY(-${size * $scale}px) scale(${$scale});
-    `}>
+    {style}>
     <use xlink:href={`./image/piece/warriors/token.${warrior.faction}-warrior.svg#warrior`} />
   </svg>
 {/if}
 
 <style>
   .warrior {
-    position: absolute;
     pointer-events: none;
     user-select: none;
     transform-origin: center;
