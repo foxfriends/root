@@ -1,5 +1,5 @@
 <script>
-  import { ascend, complement, compose, prop, propEq, sortWith } from 'ramda';
+  import { __, compose, complement, find, prop, propEq } from 'ramda';
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Action from '../component/Action.svelte';
@@ -28,6 +28,23 @@
 
   $: currentOutcast = $state.cult.outcast;
   $: hated = $state.cult.hated_outcast;
+  $: lostSoulsDeck = $state
+    .lost_souls
+    .map(prop('card'))
+    .map(compose(find(__, $state.cards), propEq('id')))
+    .map(front);
+
+  $: builtIds = $state.built_buildings.map(prop('building'));
+  $: built = compose(memberOf(builtIds), prop('id'));
+
+  $: gardens = $state
+    .buildings
+    .filter(propEq('faction', Factions.CULT))
+    .filter(complement(built))
+    .filter(propEq('building', Buildings.GARDEN));
+  $: mouseGardens = gardens.filter(propEq('suit', Suits.MOUSE));
+  $: rabbitGardens = gardens.filter(propEq('suit', Suits.RABBIT));
+  $: foxGardens = gardens.filter(propEq('suit', Suits.FOX));
 </script>
 
 <Scale {scale}>
@@ -51,7 +68,6 @@
         {/if}
       </Action>
 
-      <!--
       <div
         class='lost-souls'
         style={`
@@ -59,34 +75,20 @@
           width: ${537 * scale}px;
           height: ${722 * scale}px;
         `}>
-        <Pile cards={$game.factionData.cult.lostSouls} />
+        <Deck shared expandable cards={lostSoulsDeck} />
       </div>
-      -->
 
-      <!--
-      {#each new Array($game.factionData.cult.garden_mouse).fill(0) as _, i}
-        <Piece
-          piece={Pieces.cult.garden_mouse}
-          x={garden.x[5 - i - 1]}
-          y={garden.y}
-          {scale} />
+      {#each mouseGardens as building, i}
+        <Building {building} x={garden.x[5 - i - 1]} y={garden.y} />
       {/each}
-      {#each new Array($game.factionData.cult.garden_rabbit).fill(0) as _, i}
-        <Piece
-          piece={Pieces.cult.garden_rabbit}
-          x={garden.x[5 - i - 1]}
-          y={garden.y + garden.dy}
-          {scale} />
+      {#each rabbitGardens as building, i}
+        <Building {building} x={garden.x[5 - i - 1]} y={garden.y + garden.dy} />
       {/each}
-      {#each new Array($game.factionData.cult.garden_fox).fill(0) as _, i}
-        <Piece
-          piece={Pieces.cult.garden_mouse}
-          x={garden.x[5 - i - 1]}
-          y={garden.y + 2 * garden.dy}
-          {scale} />
+      {#each foxGardens as building, i}
+        <Building {building} x={garden.x[5 - i - 1]} y={garden.y + garden.dy * 2} />
       {/each}
-      -->
 
+      <!-- Acolytes -->
       <!--CraftedItems {...craftedItems} {scale} items={$game.factionData.cult.craftedItems} /-->
     </div>
   </div>

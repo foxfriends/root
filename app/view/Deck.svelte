@@ -20,9 +20,6 @@
 
   const { state } = context();
 
-  // TODO: add reference to all cards, not to current deck state
-  // Also, all hands, supporters, lost souls etc won't be shown,
-  // because they are removing from `cards` array
   const sharedDeck = {
     BACK: '/image/card/card-shared-back.jpg',
     ...Object.fromEntries($state.cards.map(pairWith(getSharedCardPath))),
@@ -76,7 +73,11 @@
 </script>
 
 {#if cards.length}
-  <div class='card' style={`background-image: url(${image(cards[0])}); box-shadow: ${boxShadow}; transform: translateY(-${Math.ceil(cards.length / 2)}px)`} />
+  <div class='card' style={`
+    background-image: url(${image(cards[0])});
+    box-shadow: ${boxShadow};
+    transform: translateY(-${Math.ceil(cards.length / 2)}px);
+  `} />
 {:else}
   <div class='card empty'>
     <Text text='empty' />

@@ -20,7 +20,7 @@
 
   const intersects = (placement, forces) => forces
     .some(({ x, y, r }) => {
-      const radius = placement.r - r;
+      const radius = placement.r + r;
       return Math.abs(placement.x - x) < radius && Math.abs(placement.y - y) < radius;
     });
 
@@ -48,7 +48,7 @@
   $: arrangedPieces = do {
     // create an RNG with the same seed every time to make a predictable arragment per clearing
     const rng = new Chance(seed);
-    const forces = slots.map(assoc('r', 70));
+    const forces = slots.map(assoc('r', 40));
     forces.push({ x, y, r: 30 });
     pieces
       .map((piece, i) => {
@@ -64,7 +64,7 @@
           .map(evolve({ x: subtract(x), y: subtract(y) }))
           .reduce(mergeWith(add), { x: 0, y: 0 });
         const forceMagnitude = Math.sqrt(netForce.x ** 2 + netForce.y ** 2);
-        const placement = { x, y, r: 70 };
+        const placement = { x, y, r: 40 };
         while (forceMagnitude && intersects(placement, effectiveForces)) {
           placement.x += Math.max(1, Math.ceil(Math.abs(netForce.x) / forceMagnitude * 35)) * Math.sign(netForce.x);
           placement.y += Math.max(1, Math.ceil(Math.abs(netForce.y) / forceMagnitude * 35)) * Math.sign(netForce.y);

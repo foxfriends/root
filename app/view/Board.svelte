@@ -14,13 +14,13 @@
 
   const maxScale = 1;
   let targetScale = 0;
-  $: minScale = Math.max(tableWidth / boardWidth, tableHeight / boardHeight);
+  $: minScale = Math.min(Math.max(tableWidth / boardWidth, tableHeight / boardHeight), maxScale);
   $: scale = clamp(minScale, maxScale, targetScale);
 
   let targetPan = { x: 0, y: 0 };
   $: pan = {
-    x: Math.floor(clamp(0, boardWidth * scale - tableWidth, targetPan.x)),
-    y: Math.floor(clamp(0, boardHeight * scale - tableHeight, targetPan.y)),
+    x: Math.floor(clamp(0, Math.max(0, boardWidth * scale - tableWidth), targetPan.x)),
+    y: Math.floor(clamp(0, Math.max(0, boardHeight * scale - tableHeight), targetPan.y)),
   };
 
   function setInitialViewport(event) {
