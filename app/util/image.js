@@ -55,3 +55,7 @@ export function getFactionBoardFrontPath(faction) {
 export function getFactionBoardBackPath(faction) {
   return `/image/board/board.${faction}-back.jpg`;
 }
+
+export function getOutcastImagePath(hated) {
+  return `/image/piece/token.cult-${hated ? 'hated_' : ''}outcast.png`;
+}

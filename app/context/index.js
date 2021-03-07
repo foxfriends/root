@@ -29,7 +29,9 @@ export function init() {
     .subscribe(actions);
 
   const logState = state.subscribe(::logger.log);
-  const logActions = actions.subscribe(::logger.log);
+  const logActions = actions
+    .pipe(map(rmap((action) => action.toString())))
+    .subscribe(::logger.log);
 
   setContext('@root/state', state);
   setContext('@root/actions', actions);

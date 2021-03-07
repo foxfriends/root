@@ -73,7 +73,7 @@ export const unify = curry((pattern, value) => {
   class UnificationError extends Error {}
   function unifyInner(pattern, value) {
     if (pattern instanceof Variable) {
-      binding[pattern.name] = value;
+      binding[pattern.name] = value.toString();
     } else if (pattern instanceof Struct && value instanceof Struct && pattern.name === value.name) {
       unifyInner(pattern.contents, value.contents);
     } else if (Array.isArray(pattern) && Array.isArray(value) && pattern.length === value.length) {

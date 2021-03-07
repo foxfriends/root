@@ -2,11 +2,14 @@
   import { ascend, complement, compose, prop, propEq, sortWith } from 'ramda';
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
+  import Action from '../component/Action.svelte';
   import Building from '../Building.svelte';
+  import OutcastMarker from '../OutcastMarker.svelte';
   import Scale from '../Scale.svelte';
   import Deck, { front, back } from '../Deck.svelte';
   import Factions from '../../types/Faction';
   import Buildings from '../../types/Building';
+  import Suits from '../../types/Suit';
 
   const { state } = context();
 
@@ -22,48 +25,31 @@
   $: lostSouls = { x: 1650 * scale, y: 955 * scale };
   $: acolytes = { x: 850 * scale, y: 767 * scale, w: 716, h: 190 };
   $: craftedItems = { x: 1580 * scale, y: 270 * scale, width: 527 };
+
+  $: currentOutcast = $state.cult.outcast;
+  $: hated = $state.cult.hated_outcast;
 </script>
 
 <Scale {scale}>
   <div class='container' bind:clientWidth={width} bind:clientHeight={height}>
     <div class='board' style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
-      <!--
-      {#if $game.factionData.cult.outcast === Suit.mouse}
-        <Piece
-          piece={$game.factionData.cult.hated ? Pieces.cult.hated_outcast : Pieces.cult.outcast}
-          x={outcast.x}
-          y={outcast.y}
-          {scale} />
-      {:else if $game.factionData.cult.outcast === Suit.rabbit}
-        <Piece
-          piece={$game.factionData.cult.hated ? Pieces.cult.hated_outcast : Pieces.cult.outcast}
-          x={outcast.x + outcast.dx}
-          y={outcast.y}
-          {scale} />
-      {:else if $game.factionData.cult.outcast === Suit.fox}
-        <Piece
-          piece={$game.factionData.cult.hated ? Pieces.cult.hated_outcast : Pieces.cult.outcast}
-          x={outcast.x + 2 * outcast.dx}
-          y={outcast.y}
-          {scale} />
+      {#if currentOutcast === Suits.MOUSE}
+        <OutcastMarker {hated} x={outcast.x} y={outcast.y} />
+      {:else if currentOutcast === Suits.RABBIT}
+        <OutcastMarker {hated} x={outcast.x + outcast.dx} y={outcast.y} />
+      {:else if currentOutcast === Suits.FOX}
+        <OutcastMarker {hated} x={outcast.x + outcast.dx * 2} y={outcast.y} />
       {/if}
-      -->
 
-      <!--
-      {#if $prompts && $prompts.outcast}
-        {#each [Suit.mouse, Suit.rabbit, Suit.fox] as suit, i}
-          <div
-            class='outcast-prompt'
-            style={`
-              left: ${outcast.x + outcast.dx * i}px;
-              top: ${outcast.y}px;
-              width: ${141 * scale}px;
-              height: ${141 * scale}px;
-            `}
-            on:click={() => notifyOutcast(suit)} />
-        {/each}
-      {/if}
-      -->
+      <Action action='cult_choose_outcast(Suit)' let:binding let:perform>
+        {#if binding.Suit === Suits.MOUSE}
+          <OutcastMarker ghost on:click={perform} x={outcast.x} y={outcast.y} />
+        {:else if binding.Suit === Suits.RABBIT}
+          <OutcastMarker ghost on:click={perform} x={outcast.x + outcast.dx} y={outcast.y} />
+        {:else if binding.Suit === Suits.FOX}
+          <OutcastMarker ghost on:click={perform} x={outcast.x + outcast.dx * 2} y={outcast.y} />
+        {/if}
+      </Action>
 
       <!--
       <div
@@ -122,13 +108,5 @@
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;
-}
-
-.outcast-prompt {
-  position: absolute;
-  border-radius: 20px;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.7);
 }
 </style>
