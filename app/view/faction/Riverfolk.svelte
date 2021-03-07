@@ -48,28 +48,38 @@
     .commitments
     .filter(propEq('craft_suit', null))
     .map(prop('warrior'))
-    .map(unary(compose(find(__, $state.warriors), propEq('id'))))
-  $: craftedWarriors = $state
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))));
+  $: foxWarriors = $state
     .commitments
-    .filter(prop('craft_suit'))
+    .filter(propEq('craft_suit', Suits.FOX))
     .map(prop('warrior'))
-    .map(unary(compose(find(__, $state.warriors), propEq('id'))))
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))));
+  $: mouseWarriors = $state
+    .commitments
+    .filter(propEq('craft_suit', Suits.MOUSE))
+    .map(prop('warrior'))
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))));
+  $: rabbitWarriors = $state
+    .commitments
+    .filter(propEq('craft_suit', Suits.RABBIT))
+    .map(prop('warrior'))
+    .map(unary(compose(find(__, $state.warriors), propEq('id'))));
 </script>
 
 <Scale {scale}>
   <div class='container' bind:clientWidth={width} bind:clientHeight={height}>
     <div class='board' style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
-      {#each mousePosts as token, i}
+      {#each foxPosts as token, i}
         <Token tokens={[token]} x={tradePost.x - i * tradePost.dx} y={tradePost.y} />
       {/each}
       {#each rabbitPosts as token, i}
         <Token tokens={[token]} x={tradePost.x - i * tradePost.dx} y={tradePost.y + tradePost.dy} />
       {/each}
-      {#each foxPosts as token, i}
+      {#each mousePosts as token, i}
         <Token tokens={[token]} x={tradePost.x - i * tradePost.dx} y={tradePost.y + tradePost.dy * 2} />
       {/each}
 
-      <Scale scale={scale * 0.88}>
+      <Scale scale={scale * 0.7}>
         <div class='funds' style={`
           left: ${payments.x}px;
           top: ${payments.y}px;
@@ -109,31 +119,17 @@
             </div>
           {/each}
         </div>
-      </Scale>
 
-      <!--
-      {#each $game.factionData.riverfolk.funds.crafted.fox as piece, i}
-        <Piece
-          {piece}
-          x={tradePosts.x - i * tradePosts.dx}
-          y={tradePosts.y}
-          scale={scale * 0.88} />
-      {/each}
-      {#each $game.factionData.riverfolk.funds.crafted.rabbit as piece, i}
-        <Piece
-          {piece}
-          x={tradePosts.x - i * tradePosts.dx}
-          y={tradePosts.y + tradePosts.dy}
-          scale={scale * 0.88} />
-      {/each}
-      {#each $game.factionData.riverfolk.funds.crafted.mouse as piece, i}
-        <Piece
-          {piece}
-          x={tradePosts.x - i * tradePosts.dx}
-          y={tradePosts.y + 2 * tradePosts.dy}
-          scale={scale * 0.88} />
-      {/each}
-      -->
+        {#each foxWarriors as warrior, i}
+          <Warrior {warrior} x={tradePost.x - i * tradePost.dx} y={tradePost.y - 24} />
+        {/each}
+        {#each rabbitWarriors as warrior, i}
+          <Warrior {warrior} x={tradePost.x - i * tradePost.dx} y={tradePost.y + tradePost.dy - 24} />
+        {/each}
+        {#each mouseWarriors as warrior, i}
+          <Warrior {warrior} x={tradePost.x - i * tradePost.dx} y={tradePost.y + tradePost.dy * 2 - 24} />
+        {/each}
+      </Scale>
 
       <Action action='riverfolk_set_price[Service, Price]' let:binding let:perform>
         {#if binding.Service === 'hand_card'}
