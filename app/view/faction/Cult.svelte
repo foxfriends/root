@@ -6,7 +6,7 @@
   import Building from '../Building.svelte';
   import OutcastMarker from '../OutcastMarker.svelte';
   import Scale from '../Scale.svelte';
-  import Deck, { front, back } from '../Deck.svelte';
+  import Deck, { front } from '../Deck.svelte';
   import Factions from '../../types/Faction';
   import Buildings from '../../types/Building';
   import Suits from '../../types/Suit';

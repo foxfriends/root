@@ -1,5 +1,4 @@
 <script>
-  import context from '../context';
   import Action from './component/Action.svelte';
   import Dialog from './component/Dialog.svelte';
   import Box from './component/Box.svelte';
@@ -11,7 +10,7 @@
     <div class='content'>
       <Action action='vagabond_choose_character(C)' let:binding let:perform>
         <div class='character'>
-          <img class='image' src={getVagabondCharacterPath(binding.C)} />
+          <img class='image' src={getVagabondCharacterPath(binding.C)} alt={binding.C} />
           <div class='select-button' on:click={perform} />
         </div>
       </Action>
