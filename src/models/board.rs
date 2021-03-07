@@ -65,10 +65,10 @@ impl Board {
         ];
         let water = vec![
             Water::new(&clearings[3]),
-            Water::new(&clearings[7]),
-            Water::new(&clearings[11]),
+            Water::new(&clearings[6]),
+            Water::new(&clearings[10]),
+            Water::new(&clearings[9]),
             Water::new(&clearings[4]),
-            Water::new(&clearings[5]),
         ];
         let connections = vec![
             Connection::new(&positions[0], &positions[4]),

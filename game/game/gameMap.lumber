@@ -45,3 +45,6 @@ adjacent(game { connections: Cs, .. }, A, B) :-
     A < B,
     in(connection { position_a: A, position_b: B, closed: false }, Cs)
     ->> true.
+
+:- pub(water/2).
+water(game { water: Water, .. }, Clearing) :- in(water { clearing: Clearing }, Water).

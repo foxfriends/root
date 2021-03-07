@@ -102,11 +102,15 @@
 {/each}
 
 <Action action='place_token[T, {position.id}]' let:perform let:binding>
-  <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.T.name })} {x} {y} />
+  <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.T })} {x} {y} />
 </Action>
 
-<Action action='place_building[T, {position.id}]' let:perform let:binding>
-  <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.T.name })} {x} {y} />
+<Action action='place_building[B, {position.id}]' let:perform let:binding>
+  <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.B })} {x} {y} />
+</Action>
+
+<Action action='place_warrior[F, {position.id}]' let:perform let:binding>
+  <ClearingPrompt on:click={perform} tooltip={l`tooltip-place`({ piece: binding.F })} {x} {y} />
 </Action>
 
 <Action action='place_vagabond({position.id})' let:perform let:binding>

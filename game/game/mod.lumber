@@ -1,14 +1,15 @@
 :- use(@core).
 :- use(@core::list(in/2)).
 
+:- mod(alliance).
 :- mod(buildings).
+:- mod(cards).
 :- mod(cult).
 :- mod(eyrie).
 :- mod(gameMap).
 :- mod(items).
-:- mod(cards).
+:- mod(riverfolk).
 :- mod(tokens).
-:- mod(alliance).
 :- mod(vagabond).
 :- mod(warriors).
 

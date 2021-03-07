@@ -7,6 +7,7 @@
 :- mod(alliance).
 :- mod(vagabond).
 :- mod(cult).
+:- mod(riverfolk).
 
 :- pub(nextSetup/2).
 :- pub(actions/3).
@@ -58,3 +59,12 @@ perform(Name, State, Action, NewState) :-
     turn(State, cult),
     playerFaction(State, Name, cult),
     cult::perform(Name, State, Action, NewState).
+
+actions(Name, State, Action) :-
+    turn(State, riverfolk),
+    playerFaction(State, Name, riverfolk),
+    riverfolk::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    turn(State, riverfolk),
+    playerFaction(State, Name, riverfolk),
+    riverfolk::perform(Name, State, Action, NewState).

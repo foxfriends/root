@@ -1,0 +1,40 @@
+:- use(@core).
+:- use(@core(<)).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::riverfolk).
+:- use(~::game::gameMap).
+:- use(~::game::warriors).
+
+// This action and perform are needed for manual initial clearing picking.
+actions(_, State, place_warrior[riverfolk, Position]) :-
+    action(State, A),
+    A < 4,
+    water(State, Position).
+
+perform(_, State, place_warrior[riverfolk, Position], NewState) ::-
+    placeWarriors(State, riverfolk, Position, 1, S2),
+    (action(S2, 3) ->> addFunds(S2, riverfolk, 3, S3); S3 =:= S2),
+    doneAction(S3, NewState).
+
+actions(_, State, riverfolk_set_price[hand_card, Price]) :-
+    action(State, 4),
+    serviceCost(Price).
+actions(_, State, riverfolk_set_price[riverboats, Price]) :-
+    action(State, 5),
+    serviceCost(Price).
+actions(_, State, riverfolk_set_price[mercenaries, Price]) :-
+    action(State, 6),
+    serviceCost(Price).
+
+perform(_, State, riverfolk_set_price[Service, Price], NewState) ::-
+    setPrice(State, Service, Price, State2),
+    (
+        action(State2, 6) ->>
+            doneTurn(State2, State3),
+            ^::nextSetup(State3, NewState);
+        doneAction(State2, NewState)
+    ).

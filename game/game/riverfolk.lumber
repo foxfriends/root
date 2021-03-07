@@ -1,0 +1,28 @@
+:- use(@core).
+:- use(@core(-)).
+:- use(^::warriors).
+
+:- pub(addFunds/4).
+addFunds(G, _, 0, G) ::- true.
+addFunds(G, Faction, Count, N) ::-
+    G  =:= game { funds: Funds, ..State },
+    warrior(G, Id, Faction, unplaced),
+    G2 =:= game { funds: [fund { warrior: Id }, ..Funds], ..State },
+    addFunds(G2, Faction, Count - 1, N).
+
+:- pub(serviceCost/1).
+serviceCost(1).
+serviceCost(2).
+serviceCost(3).
+serviceCost(4).
+
+:- pub(setPrice/4).
+setPrice(G, hand_card, Price, G2) :-
+    G  =:= game { riverfolk: riverfolk { hand_card: _, ..Riverfolk }, ..State },
+    G2 =:= game { riverfolk: riverfolk { hand_card: Price, ..Riverfolk }, ..State }.
+setPrice(G, riverboats, Price, G2) :-
+    G  =:= game { riverfolk: riverfolk { riverboats: _, ..Riverfolk }, ..State },
+    G2 =:= game { riverfolk: riverfolk { riverboats: Price, ..Riverfolk }, ..State }.
+setPrice(G, mercenaries, Price, G2) :-
+    G  =:= game { riverfolk: riverfolk { mercenaries: _, ..Riverfolk }, ..State },
+    G2 =:= game { riverfolk: riverfolk { mercenaries: Price, ..Riverfolk }, ..State }.

@@ -4,7 +4,7 @@
   import Alliance from './faction/Alliance.svelte';
   import Vagabond from './faction/Vagabond.svelte';
   import Cult from './faction/Cult.svelte';
-  // import Riverfolk from './faction/Riverfolk.svelte';
+  import Riverfolk from './faction/Riverfolk.svelte';
   // import Duchy from './faction/Duchy.svelte';
   // import Conspiracy from './faction/Conspiracy.svelte';
   import Faction from '../types/Faction';
@@ -22,12 +22,12 @@
   <Alliance />
 {:else if faction === Faction.CULT}
   <Cult />
+{:else if faction === Faction.RIVERFOLK}
+  <Riverfolk />
 {:else}
   TODO
 {/if}
 <!--
-{:else if faction === Faction.RIVERFOLK}
-  <Riverfolk />
 {:else if faction === Faction.DUCHY}
   <Duchy />
 {:else if faction === Faction.CONSPIRACY}
