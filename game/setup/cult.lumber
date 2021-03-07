@@ -1,0 +1,50 @@
+:- use(@core).
+
+:- pub(init/2).
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::buildings).
+:- use(~::game::cult).
+:- use(~::game::gameMap).
+:- use(~::game::tokens).
+:- use(~::game::warriors).
+
+// Similar to Eyrie, the Cult starts across from the Eyrie or Marquise. If both (or neither) are in play,
+// then the Cult gets to choose a corner instead
+init(G, N) :- (
+    (placedToken(G, _, keep, _), placedBuilding(G, _, roost, _)) ->> G =:= N;
+    (placedToken(G, _, keep, P); placedBuilding(G, _, roost, P)) ->>
+        oppositeCorner(P, CultCorner),
+        startCult(G, CultCorner, G2),
+        doneAction(G2, N);
+    G =:= N
+).
+
+startCult(G, Clearing, NewG) :-
+    clearing(G, Clearing, Suit, _),
+    building(G, Garden, garden, unplaced),
+    buildingSuit(G, Garden, Suit),
+    placeBuilding(G, Garden, Clearing, G2),
+    placeWarriors(G2, cult, Clearing, 4, NewG).
+
+// This action and perform are needed for manual initial clearing picking.
+actions(_, State, place_building[garden, Position]) :-
+    action(State, 0),
+    cornerClearing(Position),
+    (placedBuilding(State, _, roost, Position) ->> false; true),
+    (placedToken(State, _, keep, Position) ->> false; true).
+
+perform(_, State, place_building[garden, Position], NewState) ::-
+    startCult(State, Position, S2),
+    doneAction(S2, NewState).
+
+actions(_, State, cult_choose_outcast(Suit)) :-
+    action(State, 1),
+    isMainSuit(Suit).
+
+perform(_, State, cult_choose_outcast(Suit), NewState) ::-
+    setOutcast(State, Suit, State2),
+    doneTurn(State2, State3),
+    ^::nextSetup(State3, NewState).

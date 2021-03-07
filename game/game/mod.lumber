@@ -2,6 +2,7 @@
 :- use(@core::list(in/2)).
 
 :- mod(buildings).
+:- mod(cult).
 :- mod(eyrie).
 :- mod(gameMap).
 :- mod(items).
@@ -73,3 +74,12 @@ doneTurn(G, NG) :-
 :- pub(playerFaction/3).
 playerFaction(game { factions: Factions, .. }, Name, Faction) :-
     in(faction { faction: faction(Faction), player: Name, .. }, Factions).
+
+:- pub(isMainSuit/1).
+isMainSuit(fox).
+isMainSuit(rabbit).
+isMainSuit(mouse).
+
+:- pub(isSuit/1).
+isSuit(bird).
+isSuit(S) :- isMainSuit(S).

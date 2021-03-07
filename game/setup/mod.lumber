@@ -6,6 +6,7 @@
 :- mod(eyrie).
 :- mod(alliance).
 :- mod(vagabond).
+:- mod(cult).
 
 :- pub(nextSetup/2).
 :- pub(actions/3).
@@ -15,6 +16,7 @@ nextSetup(G, S) :-
     phase(G, setup) ->> (
         turn(G, eyrie) ->> eyrie::init(G, S);
         turn(G, alliance) ->> alliance::init(G, S);
+        turn(G, cult) ->> cult::init(G, S);
         G =:= S
     );
     G =:= S.
@@ -47,3 +49,12 @@ perform(Name, State, Action, NewState) :-
     playerFaction(State, Name, V),
     factionIsVagabond(V),
     vagabond::perform(Name, State, Action, NewState).
+
+actions(Name, State, Action) :-
+    turn(State, cult),
+    playerFaction(State, Name, cult),
+    cult::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    turn(State, cult),
+    playerFaction(State, Name, cult),
+    cult::perform(Name, State, Action, NewState).

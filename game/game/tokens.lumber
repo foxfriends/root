@@ -43,3 +43,8 @@ token(
         in(placed_token { token: Id, position: P }, Placed) ->> Position =:= P;
         Position =:= unplaced
     ).
+
+:- pub(placedToken/4).
+placedToken(G, Id, Kind, Position) :-
+    token(G, Id, Kind, Position),
+    (Position =:= unplaced ->> false; true).

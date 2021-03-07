@@ -1,0 +1,4 @@
+:- pub(setOutcast/3).
+setOutcast(G, Suit, G2) :-
+    G  =:= game { cult: cult { outcast: _, hated_outcast: _, ..Cult }, ..Game },
+    G2 =:= game { cult: cult { outcast: suit(Suit), hated_outcast: false, ..Cult }, ..Game }.

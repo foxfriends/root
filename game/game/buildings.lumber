@@ -28,6 +28,11 @@ building(
         Position =:= unplaced
     ).
 
+:- pub(placedBuilding/4).
+placedBuilding(G, Id, Kind, Position) :-
+    building(G, Id, Kind, Position),
+    (Position =:= unplaced ->> false; true).
+
 :- test(
     building(
         game {
