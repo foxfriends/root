@@ -9,9 +9,7 @@ This is a digital port of the board game "Root" by Cole Wehrle, with art by Kyle
 
 > Work in progress.
 
-The rules are implemented according to the Law of Root, Fourth Printing (July 1st, 2019).
-The following omissions will be addressed:
-*   [Underground Duchy setup rules](https://boardgamegeek.com/thread/2335654/article/33682756#33682756)
+The rules are implemented according to the [Law of Root, Fifth Printing](./law-of-root.pdf) (July 13th, 2020).
 
 The intention is to eventually support all expansions, though some parts may come later.
 The planned order of implementation is as follows:
