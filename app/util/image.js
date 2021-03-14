@@ -61,5 +61,7 @@ export function getOutcastImagePath(hated) {
 }
 
 export function getMinisterCardPath(minister) {
-  return `/image/card/ministers/card.minister-${minister}.png`;
+  return minister
+    ? `/image/card/ministers/card.minister-${minister}.png`
+    : '/image/card/ministers/card.minister-back.png';
 }

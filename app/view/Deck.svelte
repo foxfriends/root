@@ -17,6 +17,7 @@
   } from '../util/image';
   import EyrieLeaders from '../types/EyrieLeader';
   import Vagabonds from '../types/Vagabond';
+  import Ministers from '../types/Minister';
   import context from '../context';
 
   const { state } = context();
@@ -41,15 +42,16 @@
   const ministersDeck = {
     BACK: getMinisterCardPath(),
     ...Object.fromEntries(Object
-      .values(Vagabonds)
-      .map(pairWith(getVagabondCharacterPath))),
+      .values(Ministers)
+      .map(pairWith(getMinisterCardPath))),
   };
 
   export let shared = false;
   export let quest = false;
   export let leaders = false;
   export let vagabonds = false;
-  if ([shared, quest, leaders, vagabonds].filter(identity).length !== 1) {
+  export let ministers = false;
+  if ([shared, quest, leaders, vagabonds, ministers].filter(identity).length !== 1) {
     throw new TypeError('Deck must have one type');
   }
   $: images = do {
@@ -58,6 +60,7 @@
       case quest: questsDeck; break;
       case leaders: leadersDeck; break;
       case vagabonds: vagabondsDeck; break;
+      case ministers: ministersDeck; break;
     }
   };
 

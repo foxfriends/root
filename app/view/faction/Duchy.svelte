@@ -3,20 +3,23 @@
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Building from '../Building.svelte';
+  import Token from '../Token.svelte';
   import Scale from '../Scale.svelte';
   import Deck, { front } from '../Deck.svelte';
   import Factions from '../../types/Faction';
   import Buildings from '../../types/Building';
+  import Tokens from '../../types/Token';
 
   const { state } = context();
 
   let width;
   let height;
   $: scale = Math.min(width / 2252, height / 1749);
-  $: ministers = { x: 1654 * scale, y: 976 * scale };
+  $: ministers = { x: 1358 * scale, y: 962 * scale };
   $: buildings = { x: 1844 * scale, y: 608 * scale, dx: 163 * scale, dy: 166 * scale };
   $: crowns = { x: 120 * scale, y: 1400 * scale };
   $: craftedItems = { x: 1531 * scale, y: 501 * scale, width: 555 }; // TODO: location not confirmed
+  $: tunnel = { x: 1205 * scale, y: 1481 * scale };
 
   $: builtIds = $state.built_buildings.map(prop('building'));
   $: built = compose(memberOf(builtIds), prop('id'));
@@ -36,7 +39,16 @@
   $: lords = times(identity, $state.duchy.lord_crown);
   $: unswayedMinisters = $state.ministers
     .filter(complement(prop('swayed')))
+    .map(prop('minister'))
     .map(front);
+
+  $: placedIds = $state.placed_tokens.map(prop('token'));
+  $: placed = compose(memberOf(placedIds), prop('id'));
+  $: tunnels = $state
+    .tokens
+    .filter(propEq('faction', Factions.MARQUISE))
+    .filter(complement(placed))
+    .filter(propEq('token', Tokens.TUNNEL));
 </script>
 
 <Scale {scale}>
@@ -48,15 +60,14 @@
       {#each markets as building, i (building.id)}
         <Building {building} x={buildings.x - buildings.dx * i} y={buildings.y + buildings.dy} />
       {/each}
-      {#if $state.eyrie_current_leader}
-        <div class='minister' class:unchosen={!currentLeader} style={`
-          transform: translate(${card.x}px, ${card.y}px);
-          width: ${517 * scale}px;
-          height: ${702 * scale}px
-        `}>
-          <Deck expandable ministers cards={unswayedMinisters} />
-        </div>
-      {/if}
+      <div class='minister' style={`
+        transform: translate(${ministers.x}px, ${ministers.y}px);
+        width: ${517 * scale}px;
+        height: ${702 * scale}px
+      `}>
+        <Deck expandable ministers cards={unswayedMinisters} />
+      </div>
+      <Token tokens={tunnels} x={tunnel.x} y={tunnel.y} />
       <!--CraftedItems {...craftedItems} {scale} items={$game.factionData.marquise.craftedItems} /-->
     </div>
   </div>
