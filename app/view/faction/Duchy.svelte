@@ -1,5 +1,5 @@
 <script>
-  import { ascend, complement, compose, identity, prop, propEq, sortWith, times } from 'ramda';
+  import { complement, compose, identity, prop, propEq, times } from 'ramda';
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Building from '../Building.svelte';
@@ -96,6 +96,5 @@
     left: 0;
     top: 0;
     transform-origin: top left;
-
   }
 </style>
