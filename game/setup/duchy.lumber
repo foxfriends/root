@@ -1,0 +1,50 @@
+:- use(@core).
+
+:- pub(init/2).
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::buildings).
+:- use(~::game::duchy).
+:- use(~::game::gameMap).
+:- use(~::game::tokens).
+:- use(~::game::warriors).
+
+notTaken(G, P) :-
+    (placedBuilding(G, _, _, P) ->> false; true),
+    (placedToken(G, _, _, P) ->> false; true).
+
+// The Duchy starts across from the Marquise, Eyrie, or Cult, if they are in play.
+// If there is no corner across from one of those, then they can choose from the rest.
+init(G, N) :- (
+    (placedToken(G, _, keep, P), oppositeCorner(P, DC), notTaken(G, DC)) ->> startDuchy(G, DC, G2), doneTurn(G2, N);
+    (placedToken(G, _, roost, P), oppositeCorner(P, DC), notTaken(G, DC)) ->> startDuchy(G, DC, G2), doneTurn(G2, N);
+    (placedToken(G, _, garden, P), oppositeCorner(P, DC), notTaken(G, DC)) ->> startDuchy(G, DC, G2), doneTurn(G2, N);
+    G =:= N
+).
+
+startDuchy(G, Clearing, NewG) :-
+    token(G, Tunnel, tunnel, unplaced),
+    placeToken(G, Tunnel, Clearing, G2),
+    placeWarriors(G2, duchy, Clearing, 2, G3),
+    WarriorLocations =:= [P : clearing(G3, P, _, _), adjacent(G3, Clearing, P)],
+    print(WarriorLocations),
+    placeInEach(G3, WarriorLocations, NewG).
+
+placeInEach(G, [], G).
+placeInEach(G, [P, ..Ps], G3) :-
+    placeWarriors(G, duchy, P, 2, G2),
+    placeInEach(G2, Ps, G3).
+
+// This action and perform are needed for manual initial clearing picking.
+actions(_, State, place_token[tunnel, Position]) :-
+    action(State, 0),
+    cornerClearing(Position),
+    (placedToken(State, _, keep, Position) ->> false; true),
+    (placedBuilding(State, _, roost, Position) ->> false; true),
+    (placedBuilding(State, _, garden, Position) ->> false; true).
+
+perform(_, State, place_token[tunnel, Position], NewState) ::-
+    startDuchy(State, Position, S2),
+    doneTurn(S2, NewState).

@@ -8,6 +8,7 @@
 :- mod(vagabond).
 :- mod(cult).
 :- mod(riverfolk).
+:- mod(duchy).
 
 :- pub(nextSetup/2).
 :- pub(actions/3).
@@ -18,6 +19,7 @@ nextSetup(G, S) :-
         turn(G, eyrie) ->> eyrie::init(G, S);
         turn(G, alliance) ->> alliance::init(G, S);
         turn(G, cult) ->> cult::init(G, S);
+        turn(G, duchy) ->> duchy::init(G, S);
         G =:= S
     );
     G =:= S.
@@ -68,3 +70,13 @@ perform(Name, State, Action, NewState) :-
     turn(State, riverfolk),
     playerFaction(State, Name, riverfolk),
     riverfolk::perform(Name, State, Action, NewState).
+
+actions(Name, State, Action) :-
+    print(Action),
+    turn(State, duchy),
+    playerFaction(State, Name, duchy),
+    duchy::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    turn(State, duchy),
+    playerFaction(State, Name, duchy),
+    duchy::perform(Name, State, Action, NewState).

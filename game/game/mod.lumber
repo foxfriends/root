@@ -5,6 +5,7 @@
 :- mod(buildings).
 :- mod(cards).
 :- mod(cult).
+:- mod(duchy).
 :- mod(eyrie).
 :- mod(gameMap).
 :- mod(items).
