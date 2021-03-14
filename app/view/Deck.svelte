@@ -13,6 +13,7 @@
     getEyrieLeaderPath, 
     getSharedCardPath,
     getVagabondCharacterPath,
+    getMinisterCardPath,
   } from '../util/image';
   import EyrieLeaders from '../types/EyrieLeader';
   import Vagabonds from '../types/Vagabond';
@@ -33,6 +34,12 @@
   };
   const vagabondsDeck = {
     BACK: getVagabondCharacterPath(),
+    ...Object.fromEntries(Object
+      .values(Vagabonds)
+      .map(pairWith(getVagabondCharacterPath))),
+  };
+  const ministersDeck = {
+    BACK: getMinisterCardPath(),
     ...Object.fromEntries(Object
       .values(Vagabonds)
       .map(pairWith(getVagabondCharacterPath))),

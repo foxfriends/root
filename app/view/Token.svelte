@@ -37,5 +37,6 @@
   width: 135px;
   height: 135px;
   transition: top 0.2s, left 0.2s;
+  background-size: 100%;
 }
 </style>
