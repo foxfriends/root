@@ -33,7 +33,7 @@ export function getItemImagePath(item, ruin) {
 export function getSharedCardPath(card) {
   const path = card ? `front.${card.suit}-${card.card}` : 'back';
 
-  return `/image/card/card-shared-${path}.jpg`;
+  return `/image/card/standard/card-shared-${path}.jpg`;
 }
 
 export function getEyrieLeaderPath(leader) {
@@ -58,4 +58,8 @@ export function getFactionBoardBackPath(faction) {
 
 export function getOutcastImagePath(hated) {
   return `/image/piece/token.cult-${hated ? 'hated_' : ''}outcast.png`;
+}
+
+export function getMinisterCardPath(minister) {
+  return `/image/card/ministers/card.minister-${minister}.png`;
 }
