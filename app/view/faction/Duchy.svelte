@@ -19,7 +19,7 @@
   $: buildings = { x: 1844 * scale, y: 608 * scale, dx: 163 * scale, dy: 166 * scale };
   $: crowns = { x: 120 * scale, y: 1400 * scale };
   $: craftedItems = { x: 1531 * scale, y: 501 * scale, width: 555 }; // TODO: location not confirmed
-  $: tunnel = { x: 1205 * scale, y: 1481 * scale };
+  $: tunnel = { x: 2105 * scale, y: 1481 * scale };
 
   $: builtIds = $state.built_buildings.map(prop('building'));
   $: built = compose(memberOf(builtIds), prop('id'));
@@ -46,7 +46,7 @@
   $: placed = compose(memberOf(placedIds), prop('id'));
   $: tunnels = $state
     .tokens
-    .filter(propEq('faction', Factions.MARQUISE))
+    .filter(propEq('faction', Factions.DUCHY))
     .filter(complement(placed))
     .filter(propEq('token', Tokens.TUNNEL));
 </script>
