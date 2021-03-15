@@ -6,7 +6,7 @@
   import Cult from './faction/Cult.svelte';
   import Riverfolk from './faction/Riverfolk.svelte';
   import Duchy from './faction/Duchy.svelte';
-  // import Conspiracy from './faction/Conspiracy.svelte';
+  import Conspiracy from './faction/Conspiracy.svelte';
   import Faction from '../types/Faction';
 
   export let faction;
@@ -26,8 +26,6 @@
   <Riverfolk />
 {:else if faction === Faction.DUCHY}
   <Duchy />
-<!--
 {:else if faction === Faction.CONSPIRACY}
   <Conspiracy />
--->
 {/if}
