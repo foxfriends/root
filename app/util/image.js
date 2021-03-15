@@ -65,3 +65,7 @@ export function getMinisterCardPath(minister) {
     ? `/image/card/ministers/card.minister-${minister}.png`
     : '/image/card/ministers/card.minister-back.png';
 }
+
+export function getCrownImage() {
+  return '/image/crown.svg';
+}

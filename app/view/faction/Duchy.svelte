@@ -9,6 +9,7 @@
   import Factions from '../../types/Faction';
   import Buildings from '../../types/Building';
   import Tokens from '../../types/Token';
+  import { getCrownImage } from '../../util/image';
 
   const { state } = context();
 
@@ -17,7 +18,13 @@
   $: scale = Math.min(width / 2252, height / 1749);
   $: ministers = { x: 1358 * scale, y: 962 * scale };
   $: buildings = { x: 1844 * scale, y: 608 * scale, dx: 163 * scale, dy: 166 * scale };
-  $: crowns = { x: 120 * scale, y: 1400 * scale };
+  $: crowns = {
+    width: 90 * scale,
+    squires: 148 * scale,
+    nobles: 512 * scale,
+    lords: 886 * scale,
+    y: 1124 * scale,
+  };
   $: craftedItems = { x: 1531 * scale, y: 501 * scale, width: 555 }; // TODO: location not confirmed
   $: tunnel = { x: 2105 * scale, y: 1481 * scale };
 
@@ -67,6 +74,33 @@
       `}>
         <Deck expandable ministers cards={unswayedMinisters} />
       </div>
+      {#each squires as i}
+        <img
+          src={getCrownImage()}
+          class='crown'
+          style={`
+            width: ${crowns.width}px;
+            transform: translate(${crowns.squires + (crowns.width + 5) * i}px, ${crowns.y - 8}px);
+          `} />
+      {/each}
+      {#each nobles as i}
+        <img
+          src={getCrownImage()}
+          class='crown'
+          style={`
+            width: ${crowns.width}px;
+            transform: translate(${crowns.nobles + (crowns.width + 5) * i}px, ${crowns.y - 8}px);
+          `} />
+      {/each}
+      {#each lords as i}
+        <img
+          src={getCrownImage()}
+          class='crown'
+          style={`
+            width: ${crowns.width}px;
+            transform: translate(${crowns.lords + (crowns.width + 5) * i}px, ${crowns.y - 8}px);
+          `} />
+      {/each}
       <Token tokens={tunnels} x={tunnel.x} y={tunnel.y} />
       <!--CraftedItems {...craftedItems} {scale} items={$game.factionData.marquise.craftedItems} /-->
     </div>
@@ -91,10 +125,15 @@
     height: 100%;
   }
 
-  .minister {
+  .minister,
+  .crown {
     position: absolute;
     left: 0;
     top: 0;
     transform-origin: top left;
+  }
+
+  .crown {
+    box-shadow: 0 8px 0 #876e1d;
   }
 </style>
