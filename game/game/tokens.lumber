@@ -1,6 +1,7 @@
 :- use(@core).
 :- use(@core::list).
 :- use(^::gameMap(clearing/4)).
+:- use(^(playerFaction/3)).
 
 :- pub(placeToken/4).
 placeToken(
@@ -48,3 +49,10 @@ token(
 placedToken(G, Id, Kind, Position) :-
     token(G, Id, Kind, Position),
     (Position =:= unplaced ->> false; true).
+
+:- pub(canPlaceToken/3).
+canPlaceToken(Name, G, P) :- (
+    playerFaction(G, Name, marquise) ->> true;
+    ^::tokens::placedToken(G, _, keep, P) ->> false;
+    true
+).

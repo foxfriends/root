@@ -8,4 +8,5 @@ export default {
   EXTORTION: 'extortion',
   RAID: 'raid',
   TUNNEL: 'tunnel',
+  PLOT_UNKNOWN: 'plot_back',
 };

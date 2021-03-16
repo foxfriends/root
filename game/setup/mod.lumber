@@ -9,6 +9,7 @@
 :- mod(cult).
 :- mod(riverfolk).
 :- mod(duchy).
+:- mod(conspiracy).
 
 :- pub(nextSetup/2).
 :- pub(actions/3).
@@ -72,7 +73,6 @@ perform(Name, State, Action, NewState) :-
     riverfolk::perform(Name, State, Action, NewState).
 
 actions(Name, State, Action) :-
-    print(Action),
     turn(State, duchy),
     playerFaction(State, Name, duchy),
     duchy::actions(Name, State, Action).
@@ -80,3 +80,12 @@ perform(Name, State, Action, NewState) :-
     turn(State, duchy),
     playerFaction(State, Name, duchy),
     duchy::perform(Name, State, Action, NewState).
+
+actions(Name, State, Action) :-
+    turn(State, conspiracy),
+    playerFaction(State, Name, conspiracy),
+    conspiracy::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    turn(State, conspiracy),
+    playerFaction(State, Name, conspiracy),
+    conspiracy::perform(Name, State, Action, NewState).

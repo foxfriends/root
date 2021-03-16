@@ -1,6 +1,7 @@
 :- use(@core).
 :- use(@core::list).
 :- use(^::gameMap(clearing/4, itemInRuin/3)).
+:- use(^(playerFaction/3)).
 
 :- pub(placeBuilding/4).
 placeBuilding(
@@ -135,3 +136,12 @@ slotAvailable(G, P) :-
         1,
     )
 ).
+
+:- pub(canPlaceBuilding/3).
+canPlaceBuilding(Name, G, P) :-
+    slotAvailable(G, P),
+    (
+        playerFaction(G, Name, marquise) ->> true;
+        ^::tokens::placedToken(G, _, keep, P) ->> false;
+        true
+    ).

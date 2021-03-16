@@ -1,5 +1,5 @@
 <script>
-  import { complement, compose, identity, prop, propEq, times } from 'ramda';
+  import { assoc, complement, compose, prop, propEq } from 'ramda';
   import { memberOf } from '../../util/ramda';
   import context from '../../context';
   import Token from '../Token.svelte';
@@ -18,7 +18,7 @@
   let height;
   $: scale = Math.min(width / 2252, height / 1749);
   $: craftedItems = { x: 1531 * scale, y: 501 * scale, width: 555 }; // TODO: location not confirmed
-  $: plot = { x: 2105 * scale, y: 1481 * scale };
+  $: plot = { x: 2005 * scale, y: 621 * scale };
 
   $: placedIds = $state.placed_tokens.map(prop('token'));
   $: placed = compose(memberOf(placedIds), prop('id'));
@@ -32,6 +32,8 @@
   $: snares = plots.filter(propEq('token', Tokens.SNARE));
   $: extortions = plots.filter(propEq('token', Tokens.EXTORTION));
   $: raids = plots.filter(propEq('token', Tokens.RAID));
+
+  const unknownPlot = assoc('token', Tokens.PLOT_UNKNOWN);
 </script>
 
 <Scale {scale}>
@@ -39,11 +41,11 @@
     <div class='board' style={`width: ${2252 * scale}px; height: ${1749 * scale}px`}>
       {#if isConspiracy}
         <Token tokens={bombs} x={plot.x} y={plot.y} />
-        <Token tokens={snares} x={plot.x} y={plot.y + 200} />
-        <Token tokens={extortions} x={plot.x} y={plot.y + 400} />
-        <Token tokens={raids} x={plot.x} y={plot.y + 600} />
+        <Token tokens={snares} x={plot.x} y={plot.y + 100} />
+        <Token tokens={extortions} x={plot.x} y={plot.y + 200} />
+        <Token tokens={raids} x={plot.x} y={plot.y + 300} />
       {:else}
-        <Token tokens={plots} x={plot.x} y={plot.y} />
+        <Token tokens={plots.map(unknownPlot)} x={plot.x} y={plot.y} />
       {/if}
       <!--CraftedItems {...craftedItems} {scale} items={$game.factionData.marquise.craftedItems} /-->
     </div>

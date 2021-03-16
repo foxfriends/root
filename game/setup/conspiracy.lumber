@@ -1,0 +1,25 @@
+:- use(@core).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+:- use(~::game).
+:- use(~::game::buildings).
+:- use(~::game::duchy).
+:- use(~::game::gameMap).
+:- use(~::game::tokens).
+:- use(~::game::warriors).
+
+actions(Name, G, place_warrior[conspiracy, Position]) :-
+    (
+        action(G, 0) ->> S =:= rabbit;
+        action(G, 1) ->> S =:= mouse;
+        action(G, 2) ->> S =:= fox
+    ),
+    clearing(G, Position, S, _),
+    canPlaceWarrior(Name, G, Position).
+
+perform(_, G, place_warrior[conspiracy, Position], NewState) :-
+    warrior(G, Id, conspiracy, unplaced),
+    placeWarrior(G, Id, Position, G2),
+    (action(G2, 2) ->> doneTurn(G2, NewState); doneAction(G2, NewState)).

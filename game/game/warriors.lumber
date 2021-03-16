@@ -1,6 +1,7 @@
 :- use(@core).
 :- use(@core::list).
 :- use(^::gameMap(clearing/4)).
+:- use(^(playerFaction/3)).
 
 :- pub(placeWarrior/4).
 placeWarrior(
@@ -57,3 +58,10 @@ warrior(
         in(officer { warrior: Id }, Officers) ->> Position =:= officer;
         Position =:= unplaced
     ).
+
+:- pub(canPlaceWarrior/3).
+canPlaceWarrior(Name, G, P) :- (
+    playerFaction(G, Name, marquise) ->> true;
+    ^::tokens::placedToken(G, _, keep, P) ->> false;
+    true
+).

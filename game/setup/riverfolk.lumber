@@ -10,10 +10,11 @@
 :- use(~::game::warriors).
 
 // This action and perform are needed for manual initial clearing picking.
-actions(_, State, place_warrior[riverfolk, Position]) :-
+actions(Name, State, place_warrior[riverfolk, Position]) :-
     action(State, A),
     A < 4,
-    water(State, Position).
+    water(State, Position),
+    canPlaceWarrior(Name, State, Position).
 
 perform(_, State, place_warrior[riverfolk, Position], NewState) ::-
     placeWarriors(State, riverfolk, Position, 1, S2),
