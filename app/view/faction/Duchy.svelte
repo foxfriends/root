@@ -134,6 +134,6 @@
   }
 
   .crown {
-    box-shadow: 0 8px 0 #876e1d;
+    box-shadow: 0 8px 0 #876E1D;
   }
 </style>
