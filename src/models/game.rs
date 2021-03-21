@@ -1,28 +1,34 @@
 use super::*;
+use serde_json::Value;
 use sqlx::{query, query_scalar};
 
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
 #[serde(rename = "game")]
 pub struct Game {
+    // Configuration
     /// A name for the game.
     name: String,
     /// The method by which to assign factions to players.
     assignment: Assignment,
     /// Which map the game is being played on.
     map: GameMap,
+    /// Which shared deck to use.
+    deck: Deck,
+    /// The players of this game.
+    players: Vec<Player>,
+
+    // Progress
     /// What phase of the game it is.
     phase: Phase,
     /// Faction whose turn it is currently.
     turn: FactionId,
     /// The current action number, for tracking state within a phase.
     action: i16,
-    /// Which shared deck to use.
-    deck: Deck,
 
-    // General game state
-    players: Vec<Player>,
+    // Dynamic state information used by the game logic.
+    state: Value,
 
-    // Board setup
+    // Board
     /// The list of all positions on the board (where other pieces may be placed).
     positions: Vec<Position>,
     /// Identifies positions which are forests.
@@ -158,7 +164,8 @@ impl Game {
                        phase as "phase: Phase",
                        deck as "deck: Deck",
                        turn as "turn: FactionId",
-                       action
+                       action,
+                       state as "state: Value"
                   FROM games
                  WHERE name = $1"#,
             name
@@ -173,6 +180,7 @@ impl Game {
             phase: game.phase,
             action: game.action,
             deck: game.deck,
+            state: game.state,
             players: Loadable::load(name, &mut conn).await?,
             positions: Loadable::load(name, &mut conn).await?,
             forests: Loadable::load(name, &mut conn).await?,
@@ -233,10 +241,10 @@ impl Game {
         let mut conn = crate::POOL.get().unwrap().begin().await?;
         query!(
             r#"
-                INSERT INTO games (name, assignment, map, deck, phase, turn, action)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7)
+                INSERT INTO games (name, assignment, map, deck, phase, turn, action, state)
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
                     ON CONFLICT (name) DO UPDATE
-                    SET phase = $5, turn = $6, action = $7
+                    SET phase = $5, turn = $6, action = $7, state = $8
             "#,
             self.name,
             self.assignment as Assignment,
@@ -245,6 +253,7 @@ impl Game {
             self.phase as Phase,
             self.turn as FactionId,
             self.action,
+            &self.state,
         )
         .execute(&mut conn)
         .await?;
@@ -402,6 +411,7 @@ impl Game {
                 .unwrap(),
             name: config.name,
             action: 0,
+            state: Value::Null,
             players: vec![],
             factions: config
                 .factions
