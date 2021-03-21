@@ -1,0 +1,18 @@
+:- use(@core).
+:- use(~::game).
+
+:- mod(marquise).
+
+:- pub(init/2).
+:- pub(actions/3).
+:- pub(perform/4).
+
+init(State, State).
+actions(Name, State, Action) :-
+    turn(State, marquise),
+    playerFaction(State, Name, marquise),
+    marquise::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    turn(State, marquise),
+    playerFaction(State, Name, marquise),
+    marquise::perform(Name, State, Action, NewState).

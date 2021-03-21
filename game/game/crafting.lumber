@@ -1,0 +1,76 @@
+:- use(@core).
+
+:- pub(beginCrafting/3).
+beginCrafting(
+    G,
+    { fox: F, rabbit: R, mouse: M },
+    G2,
+) ::-
+    G  =:= game { state: _, ..Rest },
+    G2 =:= game {
+        state: crafting {
+            available: { fox: F, rabbit: R, mouse: M },
+            spent: { fox: 0, rabbit: 0, mouse: 0, wild: 0 },
+        },
+        ..Rest
+    }.
+beginCrafting(G, Suits, G2) :-
+    countSuits(Suits, F, R, M),
+    beginCrafting(G, { fox: F, rabbit: R, mouse: M }, G2).
+
+countSuits([], 0, 0, 0).
+countSuits([fox, ..Suits], F2, R, M) :-
+    countSuits(Suits, F, R, M),
+    F2 =:= F + 1.
+countSuits([rabbit, ..Suits], F, R2, M) :-
+    countSuits(Suits, F, R, M),
+    R2 =:= R + 1.
+countSuits([mouse, ..Suits], F, R, M2) :-
+    countSuits(Suits, F, R, M),
+    M2 =:= M + 1.
+
+:- pub(isCrafting/1).
+isCrafting(game { state: !crafting(_), .. }).
+
+:- pub(canCraft/2).
+canCraft(G, Card) :-
+    isCrafting(G),
+    G =:= game {
+        state: crafting {
+            available: { fox: FA, rabbit: RA, mouse: MA },
+            spent: { fox: FS, rabbit: RS, mouse: MS, wild: WS },
+        },
+        ..
+    },
+    ^::cards::cost(G, Card, { fox: F, rabbit: R, mouse: M, wild: W }),
+    FR =:= FA - FS - F,
+    RR =:= RA - RS - R,
+    MR =:= MA - MS - M,
+    WR =:= FR + RR + MR - WS - W,
+    FR >= 0,
+    RR >= 0,
+    MR >= 0,
+    WR >= 0.
+
+:- pub(spendToCraft/3).
+spendToCraft(G, Card, G2) :-
+    isCrafting(G),
+    ^::cards::cost(G, Card, { fox: F, rabbit: R, mouse: M, wild: W }),
+    G =:= game {
+        state: crafting {
+            spent: { fox: FS, rabbit: RS, mouse: MS, wild: WS },
+            ..State
+        },
+        ..
+    },
+    FS2 =:= FS + F,
+    RS2 =:= RS + R,
+    MS2 =:= MS + M,
+    WS2 =:= WS + W,
+    G2 =:= game {
+        state: crafting {
+            spent: { fox: FS2, rabbit: RS2, mouse: MS2, wild: WS2 },
+            ..State
+        },
+        ..
+    }.

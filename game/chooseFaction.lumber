@@ -1,7 +1,6 @@
 :- use(@core::list).
 :- use(@core).
-:- use(^::game(setPhase/3)).
-:- use(^::setup(nextSetup/2)).
+:- use(^::game(donePhase/2)).
 
 :- pub(actions/3).
 :- pub(perform/4).
@@ -32,8 +31,6 @@ setPlayerFaction(
 perform(Name, State, choose(Faction), NextState) :-
     setPlayerFaction(State, Name, Faction, G2),
     (
-        allChosen(G2) ->>
-            setPhase(G2, setup, G3),
-            nextSetup(G3, NextState);
+        allChosen(G2) ->> donePhase(G2, NextState);
         NextState =:= G2
     ).

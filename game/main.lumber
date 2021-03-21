@@ -1,7 +1,11 @@
+:- mod(game).
+
 :- mod(lobby).
 :- mod(chooseFaction).
-:- mod(game).
 :- mod(setup).
+:- mod(birdsong).
+:- mod(daylight).
+:- mod(evening).
 
 :- use(game(phase/2)).
 
@@ -35,6 +39,30 @@ actions(!Name, !State, Action) :-
 perform(Name, State, Action, NewState) :-
     phase(State, setup),
     setup::perform(Name, State, Action, NewState).
+
+// Birdsong phase
+actions(!Name, !State, Action) :-
+    phase(State, birdsong),
+    birdsong::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    phase(State, birdsong),
+    birdsong::perform(Name, State, Action, NewState).
+
+// Daylight phase
+actions(!Name, !State, Action) :-
+    phase(State, daylight),
+    daylight::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    phase(State, daylight),
+    daylight::perform(Name, State, Action, NewState).
+
+// Evening phase
+actions(!Name, !State, Action) :-
+    phase(State, evening),
+    evening::actions(Name, State, Action).
+perform(Name, State, Action, NewState) :-
+    phase(State, evening),
+    evening::perform(Name, State, Action, NewState).
 
 // Public function for running commands and returning actions at the same time
 command(!Name, !State, !Command, NewState, Actions) :-

@@ -1,0 +1,8 @@
+:- use(@core).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+// TODO: the sawmill things!
+actions(_Name, _State, _Action) :- false.
+perform(_Name, _State, _Action, _NewState) :- false.

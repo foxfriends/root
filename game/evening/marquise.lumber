@@ -1,0 +1,6 @@
+:- use(@core).
+:- pub(actions/3).
+:- pub(perform/4).
+
+actions(_Name, _State, _Action) :- false.
+perform(_Name, _State, _Action, _NewState) :- false.

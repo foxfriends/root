@@ -8,7 +8,52 @@ drawCard(
     game { shared_deck: Deck, ..State },
 ).
 
+:- pub(hand/3).
+hand(G, Faction, Card) :-
+    G =:= game { hand: Hands, .. },
+    in(hand { card: Card, faction: faction(Faction) }, Hands).
+
 :- pub(card/4).
 card(G, Id, Kind, Suit) :-
     G =:= game { cards: Cards, .. },
     in(card { id: Id, card: card(Kind), suit: suit(Suit), .. }, Cards).
+
+:- pub(cost/3).
+cost(G, Id, { fox: F, rabbit: R, mouse: M, wild: W }) :-
+    card(G, Id, K, S),
+    cardCost(K, S, { fox: F, rabbit: R, mouse: M, wild: W }).
+
+cardCost(armorers, bird, { fox: 1, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(arms_trader, bird, { fox: 2, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(birdy_bindle, bird, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(brutal_tactics, bird, { fox: 2, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(crossbow, bird, { fox: 1, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(royal_claim, bird, { fox: 0, rabbit: 0, mouse: 0, wild: 4 }).
+cardCost(sappers, bird, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(woodland_runners, bird, { fox: 0, rabbit: 1, mouse: 0, wild: 0 }).
+cardCost(anvil, fox, { fox: 1, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(favor_of_the_foxes, fox, { fox: 3, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(foxfolk_steel, fox, { fox: 2, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(gently_used_knapsack, fox, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(protection_racket, fox, { fox: 0, rabbit: 2, mouse: 0, wild: 0 }).
+cardCost(root_tea, fox, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(stand_and_deliver, fox, { fox: 0, rabbit: 0, mouse: 3, wild: 0 }).
+cardCost(tax_collector, fox, { fox: 1, rabbit: 1, mouse: 1, wild: 0 }).
+cardCost(travel_gear, fox, { fox: 0, rabbit: 1, mouse: 0, wild: 0 }).
+cardCost(codebreakers, mouse, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(crossbow, mouse, { fox: 1, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(favor_of_the_mice, mouse, { fox: 0, rabbit: 0, mouse: 3, wild: 0 }).
+cardCost(investments, mouse, { fox: 0, rabbit: 2, mouse: 0, wild: 0 }).
+cardCost(mouse_in_a_sack, mouse, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(root_tea, mouse, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(scouting_party, mouse, { fox: 0, rabbit: 0, mouse: 2, wild: 0 }).
+cardCost(sword, mouse, { fox: 2, rabbit: 0, mouse: 0, wild: 0 }).
+cardCost(travel_gear, mouse, { fox: 0, rabbit: 1, mouse: 0, wild: 0 }).
+cardCost(a_visit_to_friends, rabbit, { fox: 0, rabbit: 1, mouse: 0, wild: 0 }).
+cardCost(bake_sale, rabbit, { fox: 0, rabbit: 2, mouse: 0, wild: 0 }).
+cardCost(better_burrow_bank, rabbit, { fox: 0, rabbit: 2, mouse: 0, wild: 0 }).
+cardCost(cobbler, rabbit, { fox: 0, rabbit: 2, mouse: 0, wild: 0 }).
+cardCost(command_warren, rabbit, { fox: 0, rabbit: 2, mouse: 0, wild: 0 }).
+cardCost(favor_of_the_rabbits, rabbit, { fox: 0, rabbit: 3, mouse: 0, wild: 0 }).
+cardCost(root_tea, rabbit, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).
+cardCost(smugglers_trail, rabbit, { fox: 0, rabbit: 0, mouse: 1, wild: 0 }).

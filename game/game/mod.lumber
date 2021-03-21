@@ -4,6 +4,7 @@
 :- mod(alliance).
 :- mod(buildings).
 :- mod(cards).
+:- mod(crafting).
 :- mod(cult).
 :- mod(duchy).
 :- mod(eyrie).
@@ -17,18 +18,6 @@
 :- pub(gameOwner/2).
 gameOwner(game { players: [player { name: Name, .. }, ..], .. }, Name).
 
-:- pub(phase/2).
-phase(game { phase: phase(P), .. }, P).
-:- pub(setPhase/3).
-setPhase(game { phase: _, ..G }, P, game { phase: phase(P), ..G }).
-
-:- test(phase(game { phase: phase(lobby) }, lobby)).
-:- test(phase(game { phase: phase(lobby) }, setup) ->> false; true).
-
-:- pub(turn/2).
-turn(game { turn: faction(T), .. }, T).
-setTurn(game { turn: _, ..G }, T, game { turn: faction(T), ..G }).
-
 :- pub(action/2).
 action(game { action: A, .. }, A).
 setAction(game { action: _, ..G }, A, game { action: A, ..G }).
@@ -37,6 +26,35 @@ setAction(game { action: _, ..G }, A, game { action: A, ..G }).
 doneAction(G, G2) :-
     action(G, A),
     setAction(G, A + 1, G2).
+
+:- pub(phase/2).
+phase(game { phase: phase(P), .. }, P).
+setPhase(game { phase: _, ..G }, P, game { phase: phase(P), ..G }).
+
+:- pub(donePhase/2).
+donePhase(G, G3) :-
+    setAction(G, 0, G1),
+    (
+        phase(G1, choose_faction) ->>
+            setPhase(G1, setup, G2),
+            ^::setup::nextSetup(G2, G3);
+        phase(G1, setup) ->>
+            setPhase(G1, birdsong, G2),
+            ^::birdsong::init(G2, G3);
+        phase(G1, birdsong) ->>
+            setPhase(G1, daylight, G2),
+            ^::daylight::init(G2, G3);
+        phase(G1, daylight),
+        setPhase(G1, evening, G2),
+        ^::evening::init(G2, G3)
+    ).
+
+:- test(phase(game { phase: phase(lobby) }, lobby)).
+:- test(phase(game { phase: phase(lobby) }, setup) ->> false; true).
+
+:- pub(turn/2).
+turn(game { turn: faction(T), .. }, T).
+setTurn(game { turn: _, ..G }, T, game { turn: faction(T), ..G }).
 
 setupOrder(marquise, eyrie).
 setupOrder(eyrie, alliance).
@@ -57,13 +75,15 @@ turnOrder([_, ..Fs], T, F) :- turnOrder(Fs, T, F).
 doneTurn(G, NG) :-
     phase(G, setup),
     turn(G, T),
-    (setupOrder(T, U) ->>
-        setTurn(G, U, G2),
-        (playerFaction(G2, _, U) ->> setAction(G2, 0, NG); doneTurn(G2, NG))
-    ;   setPhase(G, birdsong, G2),
-        setAction(G2, 0, G3),
-        G3 =:= game { factions: [faction { faction: faction(F), .. }, ..], .. },
-        setTurn(G3, F, NG)
+    (
+        setupOrder(T, U) ->>
+            setTurn(G, U, G2),
+            (playerFaction(G2, _, U) ->> setAction(G2, 0, NG); doneTurn(G2, NG));
+        G =:= game { factions: [faction { faction: faction(F), .. }, ..], .. },
+        setTurn(G, F, G2),
+        setPhase(G2, birdsong, G3),
+        setAction(G3, 0, G4),
+        ^::birdsong::init(G4, NG)
     ).
 doneTurn(G, NG) :-
     phase(G, evening),
@@ -71,7 +91,8 @@ doneTurn(G, NG) :-
     turnOrder(G, T, U),
     setTurn(G, U, G2),
     setPhase(G2, birdsong, G3),
-    setAction(G3, 0, NG).
+    setAction(G3, 0, G4),
+    ^::birdsong::init(G4, NG).
 
 :- pub(playerFaction/3).
 playerFaction(game { factions: Factions, .. }, Name, Faction) :-

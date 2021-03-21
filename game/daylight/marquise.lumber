@@ -1,0 +1,25 @@
+:- use(@core).
+:- use(~::game).
+:- use(~::game::buildings).
+:- use(~::game::gameMap).
+:- use(~::game::crafting).
+:- use(~::game::cards).
+
+:- pub(actions/3).
+:- pub(perform/4).
+
+init(G, NewState) :-
+    Suits =:= [Suit : placedBuilding(G, _, workshop, P), clearing(G, P, _, Suit)],
+    beginCrafting(G, Suits, NewState).
+
+actions(_, G, craft(Card)) :-
+    action(G, 0),
+    hand(G, marquise, Card),
+    canCraft(G, Card).
+actions(_, G, done_crafting) :- action(G, 0).
+
+perform(_, G, craft(Card), NewState) :-
+    // TODO: crafting effect?
+    spendToCraft(G, Card, NewState).
+
+perform(_, G, done_crafting, NewState) :- doneAction(G, NewState).
