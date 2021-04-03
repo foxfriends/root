@@ -23,8 +23,15 @@
     y: Math.floor(clamp(0, Math.max(0, boardHeight * scale - tableHeight), targetPan.y)),
   };
 
+  let viewport;
   function setInitialViewport(event) {
     ({ naturalWidth: boardWidth, naturalHeight: boardHeight } = event.target);
+    const left = parseInt(window.getComputedStyle(viewport).getPropertyValue('padding-left'), 10);
+    const right = parseInt(window.getComputedStyle(viewport).getPropertyValue('padding-left'), 10);
+    const top = parseInt(window.getComputedStyle(viewport).getPropertyValue('padding-left'), 10);
+    const bottom = parseInt(window.getComputedStyle(viewport).getPropertyValue('padding-left'), 10);
+    boardWidth += left + right;
+    boardHeight += top + bottom;
   }
 
   function zoom({ clientX, clientY, deltaY }) {
@@ -66,15 +73,18 @@
     on:mousemove={drag}>
     <div
       class='viewport'
-      style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale});'>
+      style='transform: translate(-{pan.x}px, -{pan.y}px) scale({scale});'
+      bind:this={viewport}>
       <!-- svelte-ignore a11y-missing-attribute -->
-      <img
-        class='board'
-        src={getMapImagePath($state.map)}
-        on:load={setInitialViewport} />
-      <Positions />
-      <Items />
-      <Scores />
+      <div class='piece-area'>
+        <img
+          class='board'
+          src={getMapImagePath($state.map)}
+          on:load={setInitialViewport} />
+        <Positions />
+        <Items />
+        <Scores />
+      </div>
     </div>
   </div>
 </Scale>
@@ -83,6 +93,7 @@
   .container {
     position: absolute;
     user-select: none;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -92,7 +103,13 @@
     position: absolute;
     top: 0;
     left: 0;
+    box-sizing: border-box;
+    padding: 128px;
     transform-origin: top left;
+  }
+
+  .piece-area {
+    position: relative;
   }
 
   .board {
