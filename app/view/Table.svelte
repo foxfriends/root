@@ -1,13 +1,15 @@
 <script>
   import { propEq } from 'ramda';
   import context from '../context';
+  import Button from './component/Button.svelte';
+  import Text from './component/Text.svelte';
   import Board from './Board.svelte';
   import FactionPicker from './FactionPicker.svelte';
   import EyrieLeaderPicker from './EyrieLeaderPicker.svelte';
   import VagabondPicker from './VagabondPicker.svelte';
-  import Phases from '../types/Phase';
   import PlayerHud from './PlayerHud.svelte';
-  import FactionCard from './FactionCard.svelte';
+  import PlayerArea from './PlayerArea.svelte';
+  import Phases from '../types/Phase';
   import { match } from '../util/lumber';
 
   const { state, socket, actions } = context();
@@ -20,6 +22,10 @@
   function show(faction) {
     expanded = true;
     currentFaction = faction;
+  }
+
+  function close() {
+    expanded = false;
   }
 
   function keydown({ key }) {
@@ -48,14 +54,20 @@
 </div>
 
 <div class='play-area' class:expanded>
-  {#each $state.factions as { faction }, i}
+  {#each $state.factions as faction, i (faction.faction)}
     <div
-      class='player-area {faction}'
+      class='player-area {faction.faction}'
       class:left={i < $state.factions.findIndex(propEq('faction', currentFaction))}
       class:right={i > $state.factions.findIndex(propEq('faction', currentFaction))}>
-      <FactionCard {faction} />
+      <PlayerArea {faction} />
     </div>
   {/each}
+  <div class='closer'>
+    <Button
+      on:click={close}>
+      <Text text='back' />
+    </Button>
+  </div>
 </div>
 
 {#if $state.phase === Phases.CHOOSE_FACTION}
@@ -131,16 +143,24 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-size: 20%;
     background-color: var(--color--background);
 
     transition: transform 0.2s;
     &.left { transform: translateX(-100%); }
     &.right { transform: translateX(100%); }
 
+    /*
+    background-size: 20%;
     &.marquise { background-image: url('./image/pattern/pattern-marquise.jpg'); }
     &.eyrie { background-image: url('./image/pattern/pattern-eyrie.jpg'); }
     &.alliance { background-image: url('./image/pattern/pattern-alliance.jpg'); }
     &.vagabond { background-image: url('./image/pattern/pattern-vagabond.jpg'); }
+    */
+  }
+
+  .closer {
+    position: absolute;
+    top: 16px;
+    right: 16px;
   }
 </style>
