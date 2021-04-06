@@ -17,7 +17,8 @@
   $: expanded = false; // why would this expand?
   $: currentFaction = $state.factions
     .find(propEq('player', socket.name))
-    .faction;
+    ?.faction
+    ?? $state.factions[0].faction;
 
   function show(faction) {
     expanded = true;
@@ -28,7 +29,8 @@
     expanded = false;
   }
 
-  function keydown({ key }) {
+  function keydown({ key, altKey, ctrlKey }) {
+    if (altKey || ctrlKey) { return; }
     if (key === 'Escape') {
       expanded = false;
     } else {

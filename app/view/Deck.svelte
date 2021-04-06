@@ -77,7 +77,6 @@
 
   function image({ card, side, suit }) {
     if (side === BACK) { return images.BACK; }
-
     return images[suit ? `${suit}-${card}` : card];
   }
 </script>
