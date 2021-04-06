@@ -337,13 +337,18 @@ impl Game {
     }
 
     pub async fn create(config: GameConfig) -> sqlx::Result<Self> {
-        let (cards, shared_deck) = config.deck.create();
-        let dominance = cards
-            .iter()
-            .filter(|card| card.card() == CardId::Dominance)
-            .map(Card::id)
-            .map(Dominance::new)
-            .collect();
+        let (mut cards, shared_deck) = config.deck.create();
+        let dominance = if config.factions.len() <= 2 {
+            cards.retain(|card| card.card() != CardId::Dominance);
+            vec![]
+        } else {
+            cards
+                .iter()
+                .filter(|card| card.card() == CardId::Dominance)
+                .map(Card::id)
+                .map(Dominance::new)
+                .collect()
+        };
         let Factions {
             marquise,
             eyrie,
