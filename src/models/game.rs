@@ -337,18 +337,25 @@ impl Game {
     }
 
     pub async fn create(config: GameConfig) -> sqlx::Result<Self> {
-        let (mut cards, shared_deck) = config.deck.create();
-        let dominance = if config.factions.len() <= 2 {
-            cards.retain(|card| card.card() != CardId::Dominance);
-            vec![]
-        } else {
-            cards
-                .iter()
-                .filter(|card| card.card() == CardId::Dominance)
-                .map(Card::id)
-                .map(Dominance::new)
-                .collect()
-        };
+        let (cards, mut shared_deck) = config.deck.create(config.factions.len() > 2);
+        let dominance = cards
+            .iter()
+            .filter(|card| card.card() == CardId::Dominance)
+            .map(Card::id)
+            .map(Dominance::new)
+            .collect();
+        let hand = config
+            .factions
+            .iter()
+            .cycle()
+            .take(config.factions.len() * 3)
+            .copied()
+            .map(|faction| Hand {
+                card: shared_deck.pop().unwrap().card,
+                faction,
+            })
+            .collect();
+
         let Factions {
             marquise,
             eyrie,
@@ -434,7 +441,7 @@ impl Game {
             cards,
             shared_deck,
             discards: vec![],
-            hand: vec![],
+            hand,
             dominance,
             marquise,
             eyrie,

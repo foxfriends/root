@@ -17,17 +17,17 @@ impl Default for Deck {
 }
 
 impl Deck {
-    pub fn create(self) -> (Vec<Card>, Vec<SharedDeck>) {
+    pub fn create(self, dominance: bool) -> (Vec<Card>, Vec<SharedDeck>) {
         match self {
-            Self::Standard => Self::standard(),
+            Self::Standard => Self::standard(dominance),
             _ => todo!(),
         }
     }
 
-    fn standard() -> (Vec<Card>, Vec<SharedDeck>) {
+    fn standard(dominance: bool) -> (Vec<Card>, Vec<SharedDeck>) {
         let mut rng = thread_rng();
-        let mut id: Vec<i16> = (1..=54).collect();
-        let cards = vec![
+        let mut id: Vec<i16> = (1..=50).collect();
+        let mut cards = vec![
             Card::new(id[0], CardId::Ambush, Suit::Bird),
             Card::new(id[1], CardId::Ambush, Suit::Bird),
             Card::new(id[2], CardId::BirdyBindle, Suit::Bird),
@@ -78,11 +78,17 @@ impl Deck {
             Card::new(id[47], CardId::Codebreakers, Suit::Mouse),
             Card::new(id[48], CardId::Codebreakers, Suit::Mouse),
             Card::new(id[49], CardId::FavorOfTheMice, Suit::Mouse),
-            Card::new(id[50], CardId::Dominance, Suit::Fox),
-            Card::new(id[51], CardId::Dominance, Suit::Rabbit),
-            Card::new(id[52], CardId::Dominance, Suit::Mouse),
-            Card::new(id[53], CardId::Dominance, Suit::Bird),
         ];
+        if dominance {
+            id.push(51);
+            id.push(52);
+            id.push(53);
+            id.push(54);
+            cards.push(Card::new(id[50], CardId::Dominance, Suit::Fox));
+            cards.push(Card::new(id[51], CardId::Dominance, Suit::Rabbit));
+            cards.push(Card::new(id[52], CardId::Dominance, Suit::Mouse));
+            cards.push(Card::new(id[53], CardId::Dominance, Suit::Bird));
+        }
         id.shuffle(&mut rng);
         let shared_deck = id
             .into_iter()

@@ -4,8 +4,8 @@ use sqlx::{postgres::PgConnection, query, query_as};
 #[derive(Clone, serde::Serialize, serde::Deserialize)]
 #[serde(rename = "hand")]
 pub struct Hand {
-    card: i16,
-    faction: FactionId,
+    pub card: i16,
+    pub faction: FactionId,
 }
 
 #[async_trait]
