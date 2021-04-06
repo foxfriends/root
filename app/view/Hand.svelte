@@ -1,20 +1,24 @@
 <script>
-  import { always } from 'ramda';
   import { getSharedCardPath } from '../util/image';
 
   export let cards;
+  export let show;
 </script>
 
 <div class='hand'>
-  {#each cards as card, i}
+  {#each cards as card, i (card.id)}
     <div class='card' style={`
-      background-image: url(${image(cards[0])});
-      transform: scale(${cardFocus[i]});
+      background-image: url(${getSharedCardPath(show ? card : null)});
     `} />
   {/each}
 </div>
 
 <style>
+  .hand {
+    display: flex;
+    gap: 16px;
+  }
+
   .card {
     background-size: cover;
     width: 183px;
