@@ -87,8 +87,7 @@ impl Room {
                 let is_valid_player = game
                     .players()
                     .iter()
-                    .find(|player| player.name() == name)
-                    .is_none();
+                    .any(|player| player.name() == name);
                 if is_valid_player {
                     return Err(format!("{} is not a player in this game.", name));
                 }
