@@ -115,9 +115,8 @@
       min-width: 0;
       pointer-events: auto;
       cursor: pointer;
-
       border: 55px solid transparent;
-      border-bottom: 0px solid;
+      border-bottom: 0 solid;
       border-image-source: url('./image/box.png');
       border-image-slice: 55 fill;
       border-image-width: 55px 55px 0 55px;
@@ -146,8 +145,8 @@
     right: 0;
     bottom: 0;
     background-color: var(--color--background);
-
     transition: transform 0.2s;
+
     &.left { transform: translateX(-100%); }
     &.right { transform: translateX(100%); }
 
