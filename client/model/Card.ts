@@ -1,1 +1,0 @@
-../../server/model/Card.ts

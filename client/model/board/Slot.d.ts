@@ -1,1 +1,0 @@
-../../../server/model/board/Slot.d.ts

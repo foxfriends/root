@@ -1,0 +1,36 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "fmt": "prettier . --write"
+  },
+  "engines": {
+    "node": "22.14.0",
+    "npm": "10.9.2"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "@types/koa-compress": "^2.0.9",
+    "@types/koa-mount": "^3.0.1",
+    "@types/koa-static": "^4.0.4",
+    "@types/node": "^22.14.0",
+    "prettier": "^3.5.3",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "koa": "^2.16.1",
+    "koa-compress": "^3.1.0",
+    "koa-mount": "^4.2.0",
+    "koa-static": "^5.0.0",
+    "koa-upgrade": "^1.0.1",
+    "prng": "0.0.1",
+    "uuid": "^11.1.0"
+  },
+  "exports": {
+    "./model/*": "./src/model/*"
+  }
+}

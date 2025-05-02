@@ -1,0 +1,47 @@
+import { get } from "svelte/store";
+import borrow from "../../util/borrow";
+import { game, username } from "../../store";
+import { accept } from "server/model/Acceptor.js";
+import update from "../update";
+import marquiseTurn from "./marquise";
+import Client from "server/model/Client.js";
+import Faction from "server/model/Faction.js";
+
+async function* turn(
+  this: Client,
+  faction: Faction,
+): AsyncIterableIterator<void> {
+  switch (faction) {
+    case Faction.marquise:
+      yield* marquiseTurn.call(this);
+      break;
+    case Faction.eyrie:
+      break;
+    case Faction.alliance:
+      break;
+    case Faction.vagabond:
+    case Faction.vagabond2:
+      break;
+    case Faction.riverfolk:
+      break;
+    case Faction.cult:
+      break;
+    default:
+      throw new Error("unimplemented");
+  }
+  yield* accept.call(this, update);
+}
+
+export default async function* play(this: Client) {
+  for (;;) {
+    const currentPlayer = borrow(game)(
+      (game) => game!.playerNames[game!.turn! % game!.playerNames.length],
+    );
+    if (get(username) === currentPlayer) {
+      turn.call(this, get(game)!.players[currentPlayer].faction!);
+    } else {
+      yield* accept.call(this, "gameUpdated");
+      this.send("update", this.game);
+    }
+  }
+}

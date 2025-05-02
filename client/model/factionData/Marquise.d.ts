@@ -1,1 +1,0 @@
-../../../server/model/factionData/Marquise.d.ts

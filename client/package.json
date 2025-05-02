@@ -1,0 +1,53 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "vite build --mode development"
+  },
+  "engines": {
+    "node": "22.14.0",
+    "npm": "10.9.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foxfriends/root.git"
+  },
+  "keywords": [
+    "boardgame",
+    "board",
+    "game",
+    "root",
+    "play",
+    "online",
+    "multiplayer"
+  ],
+  "author": "Cameron Eldridge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/foxfriends/root/issues"
+  },
+  "homepage": "https://github.com/foxfriends/root#readme",
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "prettier": "^3.5.3",
+    "prettier-plugin-svelte": "^3.3.3",
+    "svelte": "^5.28.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.4",
+    "vite-plugin-plain-text": "^1.4.2",
+    "vite-plugin-static-copy": "^2.3.1",
+    "vite-plugin-svelte-svgr": "^1.0.4"
+  },
+  "dependencies": {
+    "@fluent/bundle": "^0.19.1",
+    "prng": "0.0.1",
+    "uuid": "^11.1.0"
+  },
+  "svelte": {
+    "compilerOptions": {
+      "css": false
+    }
+  }
+}
