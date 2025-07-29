@@ -22,7 +22,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "koa": "^2.16.1",
+    "koa": "^3.0.1",
     "koa-compress": "^3.1.0",
     "koa-mount": "^4.2.0",
     "koa-static": "^5.0.0",
